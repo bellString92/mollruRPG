@@ -64,6 +64,7 @@ public class Intro : MonoBehaviour
         }
 
         startCor = StartCor(dot, dotTime);
+        StartCoroutine(startCor);
     }
 
     IEnumerator StartCor(int dot, float dotTime)
