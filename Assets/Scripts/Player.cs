@@ -57,6 +57,19 @@ public class Player : AnimatorProperty, IBattle
        
     }
 
+    public void OnAttack()
+    {
+        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 0.5f, 0.5f, enemyMask);
+        foreach(Collider col in list)
+        {
+            IDamage id = col.GetComponent<IDamage>();
+            if(id != null)
+            {
+                id.TakeDamage(myStat.AttackPoint);
+            }
+        }
+    }
+
     public void ComboCheckStart()
     {
         myAnim.ResetTrigger("OnAttack");

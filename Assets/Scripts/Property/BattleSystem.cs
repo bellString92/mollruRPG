@@ -54,6 +54,7 @@ public class BattleSystem : AIMovement, IBattle
     {
         myBattleStat.curHealPoint -= dmg;
         changeHpAct?.Invoke(myBattleStat.GetHpValue());
+        myAnim.ResetTrigger("OnDamage");
         if (myBattleStat.curHealPoint <= 0.0f)
         {
             myAnim.SetTrigger("OnDead");
