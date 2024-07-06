@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,6 +13,8 @@ public class Player : AnimatorProperty, IBattle
     Vector2 desireDir = Vector2.zero;
 
     bool IsComboCheck = false;
+
+
 
     //public SkillIcon mySkillicon;
 
@@ -96,4 +99,10 @@ public class Player : AnimatorProperty, IBattle
         IsComboCheck = false;
         myAnim.SetBool("IsCombo", true);
     }
+
+
+    // 타겟팅 시스템
+
+  
+
 }
