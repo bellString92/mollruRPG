@@ -66,8 +66,7 @@ public class AIMovement : Movement
         done?.Invoke();
     }
 
-    public new void FollowTarget(Transform target, CheckAction<float> checkAct,
-        UnityAction act)
+    public new void FollowTarget(Transform target, CheckAction<float> checkAct, UnityAction act)
     {
         if(coMove != null)
         {
@@ -90,57 +89,4 @@ public class AIMovement : Movement
             dir.Normalize();
         }
     }
-
-    /*
-    IEnumerator FollowingTarget(Transform target, CheckAction<float> checkAct,
-        UnityAction act)
-    {
-        while (target != null)
-        {
-            if (myPath == null) myPath = new NavMeshPath();
-            NavMesh.CalculatePath(transform.position, target.position, -1, myPath);
-            if (myPath.corners.Length > 1)
-            {
-                Vector3 dir = myPath.corners[1] - transform.position;
-                float dist = dir.magnitude, delta;
-                dir.Normalize();
-
-                if (checkAct != null && checkAct.Invoke(Vector3.Distance(transform.position, target.position)))
-                {
-                    myAnim.SetBool("IsMoving", false);
-                    //Action
-                    act?.Invoke();
-                }
-                else if (myAnim.GetBool("IsAttacking") == false)
-                {
-                    if (dist > 0.0f)
-                    {
-                        myAnim.SetBool("IsMoving", true);
-                        delta = Time.deltaTime * moveSpeed;
-                        if (delta > dist) delta = dist;
-                        transform.Translate(dir * delta, Space.World);
-                    }
-                    else
-                    {
-                        myAnim.SetBool("IsMoving", false);
-                    }
-                }
-
-                float angle = Vector3.Angle(transform.forward, dir);
-                float rotDir = Vector3.Dot(transform.right, dir) > 0.0f ? 1.0f : -1.0f;
-                if (angle > 0.0f)
-                {
-                    delta = Time.deltaTime * rotSpeed;
-                    if (delta > angle) delta = angle;
-                    transform.Rotate(Vector3.up * delta * rotDir);
-                }
-            }
-            else
-            {
-                myAnim.SetBool("IsMoving", false);
-            }
-            yield return null;
-        }
-    }
-    */
 }
