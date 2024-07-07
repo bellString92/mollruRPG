@@ -53,10 +53,17 @@ public class Player : AnimatorProperty, IBattle
             myAnim.SetTrigger("Roll");
         }
 
-        if (Input.GetMouseButton(0))
+        if (myAnim.GetBool("myState") && Input.GetMouseButton(0))
         {
             myAnim.SetTrigger("OnAttack");
         }
+
+        if (myAnim.GetBool("myState") && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            myAnim.SetTrigger("Skill_1");
+        }
+
+
        
     }
 
@@ -72,6 +79,8 @@ public class Player : AnimatorProperty, IBattle
             }
         }
     }
+
+    
 
     public void ComboCheckStart()
     {
@@ -100,9 +109,19 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetBool("IsCombo", true);
     }
 
+    public void SkillStart()
+    {
+        myAnim.SetBool("myState", false);
+    }
 
-    // 타겟팅 시스템
+    public void SkillEnd()
+    {
+        myAnim.ResetTrigger("OnAttack");
+        myAnim.SetBool("myState", true);
+    }
 
-  
-
+    public void Skill()
+    {
+        myAnim.ResetTrigger("OnAttack");
+    }
 }

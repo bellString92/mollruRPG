@@ -10,6 +10,8 @@ public class AnimEvent : MonoBehaviour
     public UnityEvent moveAct;
     public UnityEvent stopAct;
     public UnityEvent skillAct;
+    public UnityEvent skillStartAct;
+    public UnityEvent skillEndAct;
     public UnityEvent comboCheckStartAct;
     public UnityEvent comboCheckEndAct;
     public void OnAttack()
@@ -36,7 +38,17 @@ public class AnimEvent : MonoBehaviour
     {
         skillAct?.Invoke();
     }
-        
+
+    public void OnSkillStart()
+    {
+        skillStartAct?.Invoke();
+    }
+
+    public void OnSkillEnd()
+    {
+        skillEndAct?.Invoke();
+    }
+
     public void ComboCheckStart()
     {
         comboCheckStartAct?.Invoke();
