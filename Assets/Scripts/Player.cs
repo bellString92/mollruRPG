@@ -19,7 +19,7 @@ public class Player : AnimatorProperty, IBattle
     private bool myIsOneClick = false;
     private double myTimer = 0;
 
-
+    
 
     //public SkillIcon mySkillicon;
 
@@ -62,7 +62,7 @@ public class Player : AnimatorProperty, IBattle
         {
             myAnim.SetTrigger("OnAttack");
         }
-
+        
         if (myAnim.GetBool("myState") && Input.GetKeyDown(KeyCode.Alpha1))
         {
             myAnim.SetTrigger("Skill_1");
@@ -116,7 +116,46 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
-    
+    public void Skil_1()
+    {
+        //Transform Target = FieldOfView.visibleTargets[0];
+        StartCoroutine(rush(10.0f));
+    }
+
+    IEnumerator rush(float s)
+    {
+        Transform Target = FieldOfView.visibleTargets[0];
+        while (!myAnim.GetBool("myState"))
+        {
+            Vector3 myTDir = FieldOfView.visibleTargets[0].position - transform.position;
+            float myTDist = myTDir.magnitude;
+            //myTDir.Normalize;
+            float delta = 0.0f;
+            float rushSpeed = 10.0f;
+
+            if (Target != null)
+            {
+            
+                delta = s * Time.deltaTime;
+                if (delta > myTDist) delta = myTDist;
+                transform.Translate(myTDir * delta, Space.World);
+            }
+            else
+            {
+                break;
+            }
+            float angle = Vector3.Angle(transform.forward, myTDir);
+            float rotDir = Vector3.Dot(transform.right, myTDir) < 0.0f ? -1.0f : 1.0f;
+
+            delta = rushSpeed * Time.deltaTime;
+            if (delta > angle) delta = angle;
+
+            transform.Rotate(Vector3.up * delta * rotDir);
+
+            yield return null;
+        }
+    }
+
 
     public void ComboCheckStart()
     {
@@ -154,10 +193,5 @@ public class Player : AnimatorProperty, IBattle
     {
         myAnim.ResetTrigger("OnAttack");
         myAnim.SetBool("myState", true);
-    }
-
-    public void Skill()
-    {
-        myAnim.ResetTrigger("OnAttack");
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
 {
+    public static FieldOfView Instance = null;
+
     // 시야 영역의 반지름과 시야 각도
     public float viewRadius; [Range(0, 360)]
     public float viewAngle;
@@ -12,7 +14,13 @@ public class FieldOfView : MonoBehaviour
     public LayerMask targetMask, obstacleMask;
 
     // Target mask에 ray hit된 transform을 보관하는 리스트
-    public List<Transform> visibleTargets = new List<Transform>();
+    public static List<Transform> visibleTargets = new List<Transform>();
+    public List<Transform> visibleTargets1 = visibleTargets;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {

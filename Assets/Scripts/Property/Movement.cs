@@ -9,7 +9,7 @@ public class Movement : AnimatorProperty
     public Transform myArrow;
     public float moveSpeed = 1.0f;    
     public float rotSpeed = 180.0f;
-
+    
     protected Coroutine coMove = null;
     Coroutine coRotate = null;
     // Start is called before the first frame update
