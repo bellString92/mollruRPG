@@ -14,6 +14,11 @@ public class Player : AnimatorProperty, IBattle
 
     bool IsComboCheck = false;
 
+    // 더블 클릭 체크용
+    public float myDoubleClickSecond = 0.25f;
+    private bool myIsOneClick = false;
+    private double myTimer = 0;
+
 
 
     //public SkillIcon mySkillicon;
@@ -63,8 +68,39 @@ public class Player : AnimatorProperty, IBattle
             myAnim.SetTrigger("Skill_1");
         }
 
+        // 더블 클릭 체크
+        if (myIsOneClick && ((Time.time - myTimer) > myDoubleClickSecond))
+        {
+            myIsOneClick = false;
+        }
 
-       
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            if (!myIsOneClick)
+            {
+                myTimer = Time.time;
+                myIsOneClick = true;
+            }
+            else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
+            {
+                myIsOneClick = false;
+                myAnim.SetBool("Run", true);
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            myAnim.SetBool("Run", false);
+        }
+
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        {
+            myAnim.SetBool("Run", true);
+        }
+
+
+
+
     }
 
     public void OnAttack()
