@@ -4,8 +4,12 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
+
 public class Player : AnimatorProperty, IBattle
 {
+    private bool isNearButton = false;
+    private ButtonController currentButton;
+
     public UnityEvent<float> changeHpAct;
     public BattleStat myStat;
     public LayerMask enemyMask;
@@ -98,7 +102,10 @@ public class Player : AnimatorProperty, IBattle
             myAnim.SetBool("Run", true);
         }
 
-
+        if (isNearButton && Input.GetKeyDown(KeyCode.F))
+        {
+            currentButton.OnButtonPress();
+        }
 
 
     }
@@ -193,5 +200,22 @@ public class Player : AnimatorProperty, IBattle
     {
         myAnim.ResetTrigger("OnAttack");
         myAnim.SetBool("myState", true);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Button"))
+        {
+            isNearButton = true;
+            currentButton = other.gameObject.GetComponent<ButtonController>();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Button"))
+        {
+            isNearButton = false;
+            currentButton = null;
+        }
     }
 }
