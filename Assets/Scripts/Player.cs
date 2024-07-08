@@ -50,7 +50,7 @@ public class Player : AnimatorProperty, IBattle
     {
         if (FieldOfView.visibleTargets.Count > 0) 
         {
-            Transform myTarget = FieldOfView.visibleTargets[0]; // 실시간 타겟 저장
+            myTarget = FieldOfView.visibleTargets[0]; // 실시간 타겟 저장
         }
         
         //if (ChatSystem.Instance.IsActive) return;
@@ -139,7 +139,7 @@ public class Player : AnimatorProperty, IBattle
         while (!myAnim.GetBool("myState"))
         {
             if (!myTarget) yield break; // 타겟이 비어있으면 하지 빠져나감
-            Vector3 myTDir = FieldOfView.visibleTargets[0].position - transform.position; // 타겟과의 거리 계산
+            Vector3 myTDir = myTarget.transform.position - transform.position; // 타겟과의 거리 계산
             float myTDist = myTDir.magnitude; // 
             float delta = 0.0f;
 

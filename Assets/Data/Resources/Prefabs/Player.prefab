@@ -220,14 +220,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewRadius: 20
-  viewAngle: 15
+  viewAngle: 45
   targetMask:
     serializedVersion: 2
     m_Bits: 128
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1536
-  visibleTargets1: []
+  visibleTargetsView: []
 --- !u!136 &7128628249166682499
 CapsuleCollider:
   m_ObjectHideFlags: 0
