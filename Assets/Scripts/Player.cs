@@ -23,7 +23,8 @@ public class Player : AnimatorProperty, IBattle
     private bool myIsOneClick = false;
     private double myTimer = 0;
 
-    
+    //타겟 저장 변수 선언
+    Transform myTarget;
 
     //public SkillIcon mySkillicon;
 
@@ -47,6 +48,11 @@ public class Player : AnimatorProperty, IBattle
     // Update is called once per frame
     void Update()
     {
+        if (FieldOfView.visibleTargets.Count > 0) 
+        {
+            Transform myTarget = FieldOfView.visibleTargets[0]; // 실시간 타겟 저장
+        }
+        
         //if (ChatSystem.Instance.IsActive) return;
 
         desireDir.x = Input.GetAxis("Horizontal");
@@ -125,27 +131,24 @@ public class Player : AnimatorProperty, IBattle
 
     public void Skil_1()
     {
-        //Transform Target = FieldOfView.visibleTargets[0];
-        StartCoroutine(rush(10.0f));
+        StartCoroutine(rush(10.0f, 10.0f));
     }
 
-    IEnumerator rush(float s)
+    IEnumerator rush(float dirSpeed, float moveSpeed)
     {
-        Transform Target = FieldOfView.visibleTargets[0];
         while (!myAnim.GetBool("myState"))
         {
-            Vector3 myTDir = FieldOfView.visibleTargets[0].position - transform.position;
-            float myTDist = myTDir.magnitude;
-            //myTDir.Normalize;
+            if (!myTarget) yield break; // 타겟이 비어있으면 하지 빠져나감
+            Vector3 myTDir = FieldOfView.visibleTargets[0].position - transform.position; // 타겟과의 거리 계산
+            float myTDist = myTDir.magnitude; // 
             float delta = 0.0f;
-            float rushSpeed = 10.0f;
 
-            if (Target != null)
+            if (myTarget != null)
             {
             
-                delta = s * Time.deltaTime;
-                if (delta > myTDist) delta = myTDist;
-                transform.Translate(myTDir * delta, Space.World);
+                delta = moveSpeed * Time.deltaTime; //프레임당 이동 거리?
+                if (delta > myTDist) delta = myTDist; // 넘어가지 않게 하기 위해 델타값 변경
+                transform.Translate(myTDir * delta, Space.World); // 실제 이동
             }
             else
             {
@@ -154,7 +157,7 @@ public class Player : AnimatorProperty, IBattle
             float angle = Vector3.Angle(transform.forward, myTDir);
             float rotDir = Vector3.Dot(transform.right, myTDir) < 0.0f ? -1.0f : 1.0f;
 
-            delta = rushSpeed * Time.deltaTime;
+            delta = dirSpeed * Time.deltaTime;
             if (delta > angle) delta = angle;
 
             transform.Rotate(Vector3.up * delta * rotDir);

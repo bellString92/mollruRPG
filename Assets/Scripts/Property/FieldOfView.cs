@@ -15,7 +15,7 @@ public class FieldOfView : MonoBehaviour
 
     // Target mask에 ray hit된 transform을 보관하는 리스트
     public static List<Transform> visibleTargets = new List<Transform>();
-    public List<Transform> visibleTargets1 = visibleTargets;
+    public List<Transform> visibleTargetsView = visibleTargets;
 
     private void Awake()
     {
