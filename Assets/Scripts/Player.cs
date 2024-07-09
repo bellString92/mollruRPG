@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-
+using UnityEngine.UIElements;
 
 public class Player : AnimatorProperty, IBattle
 {
@@ -112,7 +112,8 @@ public class Player : AnimatorProperty, IBattle
         {
             myAnim.SetBool("Run", true);
         }
-
+        
+        //상호작용키
         if (isNearButton && Input.GetKeyDown(KeyCode.F))
         {
             currentButton.OnButtonPress();
@@ -143,7 +144,9 @@ public class Player : AnimatorProperty, IBattle
     {   
         while (!myAnim.GetBool("myState"))
         {
+            
             if (!myTarget) yield break; // 타겟이 비어있으면 하지 빠져나감
+            Debug.Log("플레이어 작동중");
             Vector3 myTDir = myTarget.transform.position - transform.position; // 타겟과의 거리 계산
             float myTDist = myTDir.magnitude; // 
             float delta = 0.0f;
@@ -153,7 +156,7 @@ public class Player : AnimatorProperty, IBattle
             
                 delta = moveSpeed * Time.deltaTime; //프레임당 이동 거리?
                 if (delta > myTDist) delta = myTDist; // 넘어가지 않게 하기 위해 델타값 변경
-                transform.Translate(myTDir * delta, Space.World); // 실제 이동
+                //transform.Translate(myTDir * delta, Space.World); // 실제 이동
             }
             else
             {
