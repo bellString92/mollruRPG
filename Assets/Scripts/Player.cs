@@ -52,6 +52,11 @@ public class Player : AnimatorProperty, IBattle
         {
             myTarget = FieldOfView.visibleTargets[0]; // 실시간 타겟 저장
         }
+        else
+        {
+            myTarget = null;
+        }
+
         
         //if (ChatSystem.Instance.IsActive) return;
 
@@ -129,13 +134,13 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
-    public void Skil_1()
+    public void Skill_Movement()
     {
-        StartCoroutine(rush(10.0f, 10.0f));
+        StartCoroutine(SkillMovement(10.0f, 10.0f));
     }
 
-    IEnumerator rush(float dirSpeed, float moveSpeed)
-    {
+    IEnumerator SkillMovement(float dirSpeed, float moveSpeed)
+    {   
         while (!myAnim.GetBool("myState"))
         {
             if (!myTarget) yield break; // 타겟이 비어있으면 하지 빠져나감

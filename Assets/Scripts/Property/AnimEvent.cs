@@ -9,7 +9,8 @@ public class AnimEvent : MonoBehaviour
     public UnityEvent deadAct;
     public UnityEvent moveAct;
     public UnityEvent stopAct;
-    public UnityEvent skillAct;
+    public UnityEvent skillDamageAct;
+    public UnityEvent SkillMovementAct;
     public UnityEvent skillStartAct;
     public UnityEvent skillEndAct;
     public UnityEvent comboCheckStartAct;
@@ -34,9 +35,13 @@ public class AnimEvent : MonoBehaviour
         stopAct?.Invoke();
     }    
 
-    public void OnSkill()
+    public void OnSkilldamage()
     {
-        skillAct?.Invoke();
+        skillDamageAct?.Invoke();
+    }
+    public void OnSkillMovement()
+    {
+        SkillMovementAct?.Invoke();
     }
 
     public void OnSkillStart()
