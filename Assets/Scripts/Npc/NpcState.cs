@@ -7,6 +7,8 @@ public class NpcState : AnimatorProperty
     public enum State { Create, Nomal, Reco }
     public State mystate = State.Create;
     public Transform myTarget;
+    public NpcUI myJob;
+    
 
     void ChangeState(State s)
     {
@@ -42,7 +44,10 @@ public class NpcState : AnimatorProperty
                 break;
             case State.Reco:
                 {
-                   
+                    if (FieldOfView.visibleTargets.Count > 0 && Input.GetKeyDown(KeyCode.F))
+                    {
+                        myJob.gameObject.SetActive(true);
+                    }
                 }
                 break;
         }
@@ -56,6 +61,7 @@ public class NpcState : AnimatorProperty
     public void OnNomal()
     {
         myTarget= null;
+        myJob.gameObject.SetActive(false);
         ChangeState(State.Nomal);
     }
 
@@ -83,6 +89,9 @@ public class NpcState : AnimatorProperty
             yield return null;
         }
     }
+    void OpenWindow()
+    {
 
+    }
 
 }
