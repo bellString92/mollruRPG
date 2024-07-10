@@ -73,7 +73,7 @@ public class Player : AnimatorProperty, IBattle
             myAnim.SetTrigger("Roll");
         }
 
-        if (myAnim.GetBool("myState") && Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0)) //myAnim.GetBool("myState") && Input.GetMouseButton(0))
         {
             myAnim.SetTrigger("OnAttack");
         }
@@ -112,7 +112,16 @@ public class Player : AnimatorProperty, IBattle
         {
             myAnim.SetBool("Run", true);
         }
-        
+
+        if (myAnim.GetBool("myState") && Input.GetKey(KeyCode.Q))
+        {
+            myAnim.SetTrigger("lateralMove");
+            myAnim.SetBool("myState", false);
+        }
+
+       
+
+
         //상호작용키
         if (isNearButton && Input.GetKeyDown(KeyCode.F))
         {
@@ -146,7 +155,6 @@ public class Player : AnimatorProperty, IBattle
         {
             
             if (!myTarget) yield break; // 타겟이 비어있으면 하지 빠져나감
-            Debug.Log("플레이어 작동중");
             Vector3 myTDir = myTarget.transform.position - transform.position; // 타겟과의 거리 계산
             float myTDist = myTDir.magnitude; // 
             float delta = 0.0f;
@@ -199,7 +207,7 @@ public class Player : AnimatorProperty, IBattle
     public void ComboCheckEnd()
     {
         IsComboCheck = false;
-        myAnim.SetBool("IsCombo", true);
+        //myAnim.SetBool("IsCombo", true);
     }
 
     public void SkillStart()

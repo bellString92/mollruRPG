@@ -44,7 +44,6 @@ public class FieldOfView : MonoBehaviour
 
         for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
-            Debug.Log("111");
             Transform target = targetsInViewRadius[i].transform;
             Vector3 dirToTarget = (target.position - transform.position).normalized;
 
@@ -52,13 +51,11 @@ public class FieldOfView : MonoBehaviour
             dirToTarget.y = 0;
             if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
             {
-                Debug.Log("222");
                 float dstToTarget = Vector3.Distance(transform.position, target.transform.position);
 
                 // 타겟으로 가는 레이캐스트에 obstacleMask가 걸리지 않으면 visibleTargets에 Add
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                 {
-                    Debug.Log("333");
                     visibleTargets.Add(target);
                 }
                 Debug.DrawLine(transform.position, target.position);
