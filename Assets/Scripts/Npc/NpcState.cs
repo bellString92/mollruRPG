@@ -44,7 +44,7 @@ public class NpcState : AnimatorProperty
                 break;
             case State.Reco:
                 {
-                    if (FieldOfView.visibleTargets.Count > 0 && Input.GetKeyDown(KeyCode.F))
+                    if (FieldOfView.visibleTargets[0].transform == transform  && Input.GetKeyDown(KeyCode.F))
                     {
                         myJob.gameObject.SetActive(true);
                     }
