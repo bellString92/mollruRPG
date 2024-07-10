@@ -7,9 +7,9 @@ using UnityEngine.UIElements;
 
 public class Player : AnimatorProperty, IBattle
 {
-    private bool isNearButton = false;
+    private bool isNearButton, isNearChest = false;
     private ButtonController currentButton;
-
+    private ChestController currentChest;
     public UnityEvent<float> changeHpAct;
     public BattleStat myStat;
     public LayerMask enemyMask;
@@ -127,7 +127,10 @@ public class Player : AnimatorProperty, IBattle
         {
             currentButton.OnButtonPress();
         }
-
+        if (currentChest != null && isNearChest && Input.GetKeyDown(KeyCode.F))
+        {
+            currentChest.OpenChest();
+        }
 
     }
 
@@ -227,6 +230,11 @@ public class Player : AnimatorProperty, IBattle
             isNearButton = true;
             currentButton = other.gameObject.GetComponent<ButtonController>();
         }
+        if (other.gameObject.CompareTag("Chest"))
+        {
+            isNearChest = true;
+            currentChest = other.gameObject.GetComponent<ChestController>();
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -235,6 +243,11 @@ public class Player : AnimatorProperty, IBattle
         {
             isNearButton = false;
             currentButton = null;
+        }
+        if (other.gameObject.CompareTag("Chest"))
+        {
+            isNearChest = false;
+            currentChest = null;
         }
     }
 }

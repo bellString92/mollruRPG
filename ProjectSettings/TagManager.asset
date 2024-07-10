@@ -6,6 +6,7 @@ TagManager:
   tags:
   - door
   - Button
+  - Chest
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Object
   - Button
   - NPC
-  - 
+  - Chest
   - 
   - 
   - 
