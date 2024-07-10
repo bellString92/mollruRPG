@@ -57,6 +57,7 @@ public class FieldOfView : MonoBehaviour
                 {
                     visibleTargets.Add(target);
                 }
+                Debug.DrawLine(transform.position, target.position);
             }
         }
     }
