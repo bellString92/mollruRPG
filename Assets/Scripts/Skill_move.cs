@@ -49,7 +49,7 @@ public class Skill_move : StateMachineBehaviour
             delta = myFrame * Time.deltaTime; //프레임당 이동 거리?
             
             if (delta > myTDist) delta = myTDist; // 넘어가지 않게 하기 위해 델타값 변경
-            animator.transform.Translate(myTDir * delta, Space.World); // 실제 이동
+            animator.transform.parent.Translate(myTDir * delta, Space.World); // 실제 이동
         }
         else
         {
