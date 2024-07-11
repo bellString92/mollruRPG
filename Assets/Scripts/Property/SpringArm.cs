@@ -24,6 +24,8 @@ public class SpringArm : CameraProperty
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.LeftAlt)) return;
+
         //if (EventSystem.current.IsPointerOverGameObject()) return;
 
         float x = Input.GetAxis("Mouse X");
