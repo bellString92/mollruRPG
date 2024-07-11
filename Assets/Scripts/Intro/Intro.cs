@@ -11,7 +11,6 @@ public class Intro : MonoBehaviour
     public TMPro.TMP_Text myStart;
     private IEnumerator introCor = null;
     private IEnumerator startCor = null;
-    public int nextSceneIdx;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +28,7 @@ public class Intro : MonoBehaviour
         {
             introCor = null;
             startCor = null;
-            SceneChange.Instance.OnSceneChange(nextSceneIdx);
+            SceneChange.OnSceneChange("MollRuRPGScene");
         }
     }
 

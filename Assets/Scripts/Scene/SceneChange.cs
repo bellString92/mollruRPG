@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneChange : MonoBehaviour
+public static class SceneChange
 {
-    public static SceneChange Instance { get; private set; }
-    private void Awake()
+    public static void OnSceneChange(string nextScene = "Intro")
     {
-        Instance = this;
-    }
-
-    public void OnSceneChange(int nextSceneIdx = 0)
-    {
-        SceneManager.LoadScene(nextSceneIdx);
+        PlayerPrefs.SetString("nextScene", nextScene);
+        SceneManager.LoadScene("Loading");
     }
 }
