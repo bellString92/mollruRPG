@@ -9,6 +9,9 @@ public class NpcState : AnimatorProperty
     public Transform myTarget;
     public NpcUI myJob;
     
+    Vector3 startPos;
+    Quaternion startRot;
+    float moveduration = 1.0f;
 
     void ChangeState(State s)
     {
@@ -18,13 +21,15 @@ public class NpcState : AnimatorProperty
         {
             case State.Create:
                 break;
-            case State.Nomal:
+            case State.Nomal:// 매번 Nomal로 돌아오면 처음 배치했던 방향으로 되돌아간다
                 {
-
+                    StopAllCoroutines();
+                    StartCoroutine(RetrunbeforReco());
                 }
                 break;
-            case State.Reco:
+            case State.Reco:// 플레이어를 인식했으면 플레이어 방향으로 고개를 돌린다
                 {
+                    StopAllCoroutines();
                     myAnim.SetTrigger("OnGesture");
                     StartCoroutine(LookPlayer());
                 }
@@ -72,7 +77,9 @@ public class NpcState : AnimatorProperty
     // Start is called before the first frame update
     void Start()
     {
-        
+        startPos = transform.position;
+        startRot = transform.rotation;
+        ChangeState(State.Nomal);
     }
 
     // Update is called once per frame
@@ -92,9 +99,20 @@ public class NpcState : AnimatorProperty
             yield return null;
         }
     }
-    void OpenWindow()
+    IEnumerator RetrunbeforReco()
     {
-
+        Vector3 curPos = transform.position;
+        Quaternion curRot = transform.rotation;
+        float elapsedTime = 0.0f;
+        while (elapsedTime < moveduration)
+        {
+            transform.position = Vector3.Lerp(curPos, startPos, elapsedTime / moveduration);
+            transform.rotation = Quaternion.Slerp(curRot, startRot, elapsedTime / moveduration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = startPos;
+        transform.rotation = startRot;
     }
 
 }
