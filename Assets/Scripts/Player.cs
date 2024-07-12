@@ -72,7 +72,7 @@ public class Player : AnimatorProperty, IBattle
         {
             myAnim.SetTrigger("Roll");
         }
-        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) // Ui와 상호 작용중일때 마우스입력 제한
         {
             if (Input.GetMouseButton(0)) //myAnim.GetBool("myState") && Input.GetMouseButton(0))
             {

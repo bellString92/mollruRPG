@@ -7,7 +7,9 @@ public class NpcState : AnimatorProperty
     public enum State { Create, Nomal, Reco }
     public State mystate = State.Create;
     public Transform myTarget;
-    public NpcUI myJob;
+
+    public GameObject myJob; // 각 npc가 담당할 Ui를 프리펩으로 만들고 바인딩
+    public GameObject doMyJob; // 상호작용을 여러번해 중복 생성 되지않도록 이미 상호작용중 이라면 생성한 object를 저장해서 관리
     
     Vector3 startPos;
     Quaternion startRot;
@@ -53,7 +55,10 @@ public class NpcState : AnimatorProperty
                     {
                         if (FieldOfView.visibleTargets[0].transform == transform && Input.GetKeyDown(KeyCode.F))
                         {
-                            myJob.gameObject.SetActive(true);
+                            if(UIManager.Instance != null && doMyJob == null)
+                            {
+                                doMyJob = UIManager.Instance.ShowUI(myJob);
+                            }
                         }
                     }
                 }
@@ -69,7 +74,7 @@ public class NpcState : AnimatorProperty
     public void OnNomal()
     {
         myTarget= null;
-        myJob.gameObject.SetActive(false);
+        StopMyJob();
         ChangeState(State.Nomal);
     }
 
@@ -88,7 +93,7 @@ public class NpcState : AnimatorProperty
         StateProcess();
     }
 
-    IEnumerator LookPlayer()
+    IEnumerator LookPlayer() // 인식범위에 들어오면 플레이어를 향해 돌아봄
     {
         while(myTarget!= null)
         {
@@ -99,7 +104,7 @@ public class NpcState : AnimatorProperty
             yield return null;
         }
     }
-    IEnumerator RetrunbeforReco()
+    IEnumerator RetrunbeforReco() // 인식범위를 벗어나면 처음 보고있던 방향으로 돌아감
     {
         Vector3 curPos = transform.position;
         Quaternion curRot = transform.rotation;
@@ -113,6 +118,14 @@ public class NpcState : AnimatorProperty
         }
         transform.position = startPos;
         transform.rotation = startRot;
+    }
+    public void StopMyJob() // npc가 자신이 생성한 상호작용 ui종료
+    {
+        if(doMyJob != null)
+        {
+            Destroy(doMyJob);
+            doMyJob = null;
+        }
     }
 
 }
