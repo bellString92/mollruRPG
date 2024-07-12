@@ -58,8 +58,8 @@ public class Player : AnimatorProperty, IBattle
         }
 
         
-        //if (ChatSystem.Instance.IsActive) return;
-
+        
+        // 이동
         desireDir.x = Input.GetAxis("Horizontal");
         desireDir.y = Input.GetAxis("Vertical");
 
@@ -68,6 +68,7 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetFloat("x", inputDir.x);
         myAnim.SetFloat("y", inputDir.y);
 
+<<<<<<< Updated upstream
         if (Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Roll");
@@ -86,6 +87,9 @@ public class Player : AnimatorProperty, IBattle
         }
 
         // 더블 클릭 체크
+=======
+        // 달리기 체크
+>>>>>>> Stashed changes
         if (myIsOneClick && ((Time.time - myTimer) > myDoubleClickSecond))
         {
             myIsOneClick = false;
@@ -105,21 +109,56 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            myAnim.SetBool("Run", false);
-        }
-
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
             myAnim.SetBool("Run", true);
         }
 
-        if (myAnim.GetBool("myState") && Input.GetKey(KeyCode.Q))
+        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            myAnim.SetBool("Run", false);
+        }
+        // 달리기 체크 끝
+
+        // 구르기
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            myAnim.SetTrigger("Roll");
+        }
+
+        // 횡이동 Q (왼쪽) 오른쪽 미현구현
+        if (Input.GetKey(KeyCode.Q))
         {
             myAnim.SetTrigger("lateralMove");
             myAnim.SetBool("myState", false);
         }
+
+        //기본공격 좌클
+        if (!myAnim.GetBool("IsCombo") && Input.GetMouseButton(0)) //myAnim.GetBool("myState") && Input.GetMouseButton(0))
+        {
+            myAnim.SetTrigger("OnAttack");
+        }
+        
+        //스킬 1
+        if (!myAnim.GetBool("IsSkill") && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            myAnim.SetTrigger("Skill_1");
+        }
+
+        //스킬 2
+        if (!myAnim.GetBool("IsSkill") && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            myAnim.SetTrigger("Skill_2");
+        }
+
+        
+
+
+        
+
+        
+
+        
 
        
 
@@ -132,6 +171,11 @@ public class Player : AnimatorProperty, IBattle
         if (currentChest != null && isNearChest && Input.GetKeyDown(KeyCode.F))
         {
             currentChest.OpenChest();
+        }
+        // 연계 스킬 키
+        if (!myAnim.GetBool("IsLink") && Input.GetKeyDown(KeyCode.F))
+        {
+            myAnim.SetTrigger("LinkSkill");
         }
 
     }
@@ -196,13 +240,13 @@ public class Player : AnimatorProperty, IBattle
 
     IEnumerator ComboCheck()
     {
-        myAnim.SetBool("IsCombo", true);
+        myAnim.SetBool("IsCombo", false);
         IsComboCheck = true;
         while (IsComboCheck)
         {
             if (Input.GetMouseButton(0))
             {
-                myAnim.SetBool("IsCombo", false);
+                //myAnim.SetBool("IsCombo", true);
                 IsComboCheck = false;
             }
             yield return null;
@@ -215,12 +259,13 @@ public class Player : AnimatorProperty, IBattle
         //myAnim.SetBool("IsCombo", true);
     }
 
-    public void SkillStart()
+    public void SkillCheckStart()
     {
-        myAnim.SetBool("myState", false);
+        myAnim.SetBool("IsCombo", false);
+        myAnim.SetBool("LinkSkill", false);
     }
 
-    public void SkillEnd()
+    public void SkillCheckEnd()
     {
         myAnim.ResetTrigger("OnAttack");
         myAnim.SetBool("myState", true);
