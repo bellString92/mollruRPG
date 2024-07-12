@@ -48,17 +48,16 @@ public class Player : AnimatorProperty, IBattle
     // Update is called once per frame
     void Update()
     {
+        // 실시간 타겟 저장
         if (FieldOfView.visibleTargets.Count > 0) 
         {
-            myTarget = FieldOfView.visibleTargets[0]; // 실시간 타겟 저장
+            myTarget = FieldOfView.visibleTargets[0]; 
         }
         else
         {
             myTarget = null;
         }
 
-        
-        
         // 이동
         desireDir.x = Input.GetAxis("Horizontal");
         desireDir.y = Input.GetAxis("Vertical");
@@ -68,33 +67,7 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetFloat("x", inputDir.x);
         myAnim.SetFloat("y", inputDir.y);
 
-<<<<<<< Updated upstream
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            myAnim.SetTrigger("Roll");
-        }
-        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) // Ui와 상호 작용중일때 마우스입력 제한
-        {
-            if (Input.GetMouseButton(0)) //myAnim.GetBool("myState") && Input.GetMouseButton(0))
-            {
-                myAnim.SetTrigger("OnAttack");
-            }
-        }        
-        
-        if (myAnim.GetBool("myState") && Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            myAnim.SetTrigger("Skill_1");
-        }
-
-        // 더블 클릭 체크
-=======
-        // 달리기 체크
->>>>>>> Stashed changes
-        if (myIsOneClick && ((Time.time - myTimer) > myDoubleClickSecond))
-        {
-            myIsOneClick = false;
-        }
-
+        //W+W달리기
         if (Input.GetKeyDown(KeyCode.W))
         {
             if (!myIsOneClick)
@@ -109,59 +82,32 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
+        //W+LShift 달리기
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
             myAnim.SetBool("Run", true);
         }
 
+        //달리기 해제
         if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.LeftShift))
         {
             myAnim.SetBool("Run", false);
         }
-        // 달리기 체크 끝
 
-        // 구르기
+        //구르기
         if (Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Roll");
         }
 
-        // 횡이동 Q (왼쪽) 오른쪽 미현구현
-        if (Input.GetKey(KeyCode.Q))
+        // Ui와 상호 작용중일때 마우스입력 제한
+        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
-            myAnim.SetTrigger("lateralMove");
-            myAnim.SetBool("myState", false);
+            if (Input.GetMouseButton(0)) //myAnim.GetBool("myState") && Input.GetMouseButton(0))
+            {
+                myAnim.SetTrigger("OnAttack");
+            }
         }
-
-        //기본공격 좌클
-        if (!myAnim.GetBool("IsCombo") && Input.GetMouseButton(0)) //myAnim.GetBool("myState") && Input.GetMouseButton(0))
-        {
-            myAnim.SetTrigger("OnAttack");
-        }
-        
-        //스킬 1
-        if (!myAnim.GetBool("IsSkill") && Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            myAnim.SetTrigger("Skill_1");
-        }
-
-        //스킬 2
-        if (!myAnim.GetBool("IsSkill") && Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            myAnim.SetTrigger("Skill_2");
-        }
-
-        
-
-
-        
-
-        
-
-        
-
-       
-
 
         //상호작용키
         if (isNearButton && Input.GetKeyDown(KeyCode.F))
@@ -176,6 +122,45 @@ public class Player : AnimatorProperty, IBattle
         if (!myAnim.GetBool("IsLink") && Input.GetKeyDown(KeyCode.F))
         {
             myAnim.SetTrigger("LinkSkill");
+        }
+
+
+
+
+
+        if (myIsOneClick && ((Time.time - myTimer) > myDoubleClickSecond))
+        {
+            myIsOneClick = false;
+        }
+
+        
+        
+        
+        
+
+        //기본공격 좌클
+        if (!myAnim.GetBool("IsCombo") && Input.GetMouseButton(0))
+        {
+            myAnim.SetTrigger("OnAttack");
+        }
+        
+        // 스킬 Q (이동기)
+        if (Input.GetKey(KeyCode.Q))
+        {
+            myAnim.SetTrigger("lateralMove");
+            myAnim.SetBool("myState", false);
+        }
+
+        //스킬 1
+        if (!myAnim.GetBool("IsSkill") && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            myAnim.SetTrigger("Skill_1");
+        }
+
+        //스킬 2
+        if (!myAnim.GetBool("IsSkill") && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            myAnim.SetTrigger("Skill_2");
         }
 
     }
