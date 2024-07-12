@@ -123,7 +123,7 @@ public class Player : AnimatorProperty, IBattle
 
 
 
-
+        // 사용처 주석 요망
         if (myIsOneClick && ((Time.time - myTimer) > myDoubleClickSecond))
         {
             myIsOneClick = false;
@@ -258,6 +258,7 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetBool("IsSkill_2", false);
     }
 
+    //사용처 주석 요망
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))
@@ -272,6 +273,7 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
+    //사용처 주석 요망
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))
