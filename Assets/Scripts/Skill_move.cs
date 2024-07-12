@@ -7,12 +7,15 @@ public class Skill_move : StateMachineBehaviour
 {
     Transform myTarget;
     bool myTargeton;
-    float myFrame; 
+    float myFrame;
+    Vector3 myForward;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        
+        myForward = animator.transform.forward;
+
+
         if (FieldOfView.visibleTargets.Count > 0)
         {
             myTargeton = true;
@@ -26,6 +29,9 @@ public class Skill_move : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks    
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        animator.transform.forward = myForward;
+
+
         // 타겟 저장 시스템
         if (myTargeton && FieldOfView.visibleTargets.Count > 0) // 타겟이 있으면 트랜스폼 저장
         {
@@ -55,22 +61,13 @@ public class Skill_move : StateMachineBehaviour
         {
             return;
         }
-
-        //회전
-        float angle = Vector3.Angle(animator.transform.forward, myTDir);
-        float rotDir = Vector3.Dot(animator.transform.right, myTDir) < 0.0f ? -1.0f : 1.0f;
-
-        delta = 10.0f * Time.deltaTime;
-        if (delta > angle) delta = angle;
-
-        animator.transform.Rotate(Vector3.up * delta * rotDir);
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+                animator.transform.localRotation = Quaternion.identity;
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
