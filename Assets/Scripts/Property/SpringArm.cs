@@ -26,7 +26,7 @@ public class SpringArm : CameraProperty
     {
         if (Input.GetKey(KeyCode.LeftAlt)) return;
 
-        //if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
         float x = Input.GetAxis("Mouse X");
         transform.parent.Rotate(Vector3.up * x * rotSpeed);

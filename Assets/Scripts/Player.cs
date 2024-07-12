@@ -72,11 +72,13 @@ public class Player : AnimatorProperty, IBattle
         {
             myAnim.SetTrigger("Roll");
         }
-
-        if (Input.GetMouseButton(0)) //myAnim.GetBool("myState") && Input.GetMouseButton(0))
+        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
-            myAnim.SetTrigger("OnAttack");
-        }
+            if (Input.GetMouseButton(0)) //myAnim.GetBool("myState") && Input.GetMouseButton(0))
+            {
+                myAnim.SetTrigger("OnAttack");
+            }
+        }        
         
         if (myAnim.GetBool("myState") && Input.GetKeyDown(KeyCode.Alpha1))
         {
