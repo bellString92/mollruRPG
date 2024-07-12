@@ -5671,108 +5671,88 @@ PrefabInstance:
       value: -4.3625817
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: attackAct.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: skillCheckEndAct.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: skillEndAct.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: AttackCheckEndAct.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: skillStartAct.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: SkillMovementAct.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: comboCheckEndAct.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: comboCheckStartAct.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: AttackCheckStartAct.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: skillCheckStartAct.m_PersistentCalls.m_Calls.Array.size
+      propertyPath: skillCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: attackAct.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      propertyPath: AttackCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: attackAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: skillCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1561145815}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: attackAct.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: attackAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnAttack
-      objectReference: {fileID: 0}
-    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: comboCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: skillCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: comboCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: AttackCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1561145815}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: skillCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: AttackCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: AttackCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1561145815}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: comboCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      propertyPath: skillCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: skillCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      propertyPath: AttackCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: comboCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ComboCheckStart
+      propertyPath: skillCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SkillCheckEnd
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: skillCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SkillCheckStart
+      propertyPath: AttackCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SkillCheckEnd
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: attackAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      propertyPath: AttackCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: AttackCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AttackCheckStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: skillCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Player, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: comboCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      propertyPath: AttackCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Player, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: skillCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      propertyPath: AttackCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Player, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: attackAct.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: skillCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: comboCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: AttackCheckEndAct.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1743204099586419901, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: skillCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: AttackCheckStartAct.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 1821493200566013315, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 73.21734
       objectReference: {fileID: 0}
     - target: {fileID: 1821493200566013315, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -5890,14 +5870,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -23.220915
       objectReference: {fileID: 0}
-    - target: {fileID: 3741278184048714632, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: targetMask.m_Bits
-      value: 4224
-      objectReference: {fileID: 0}
-    - target: {fileID: 3741278184048714632, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: obstacleMask.m_Bits
-      value: 1568
-      objectReference: {fileID: 0}
     - target: {fileID: 4304878685476846073, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 54.258694
@@ -5969,10 +5941,6 @@ PrefabInstance:
     - target: {fileID: 4671647547992567985, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 15.162379
-      objectReference: {fileID: 0}
-    - target: {fileID: 4732459668371891794, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 39.134552
       objectReference: {fileID: 0}
     - target: {fileID: 4732459668371891794, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -6241,10 +6209,6 @@ PrefabInstance:
     - target: {fileID: 8003556489393925619, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -172.52496
-      objectReference: {fileID: 0}
-    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: enemyMask.m_Bits
-      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 8963072750934982380, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

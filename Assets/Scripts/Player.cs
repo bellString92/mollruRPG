@@ -103,7 +103,7 @@ public class Player : AnimatorProperty, IBattle
         // Ui와 상호 작용중일때 마우스입력 제한
         if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
-            if (Input.GetMouseButton(0)) //myAnim.GetBool("myState") && Input.GetMouseButton(0))
+            if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0)) 
             {
                 myAnim.SetTrigger("OnAttack");
             }
@@ -118,11 +118,7 @@ public class Player : AnimatorProperty, IBattle
         {
             currentChest.OpenChest();
         }
-        // 연계 스킬 키
-        if (!myAnim.GetBool("IsLink") && Input.GetKeyDown(KeyCode.F))
-        {
-            myAnim.SetTrigger("LinkSkill");
-        }
+        
 
 
 
@@ -139,30 +135,39 @@ public class Player : AnimatorProperty, IBattle
         
 
         //기본공격 좌클
-        if (!myAnim.GetBool("IsCombo") && Input.GetMouseButton(0))
+        if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
         {
             myAnim.SetTrigger("OnAttack");
         }
-        
+        /*
         // 스킬 Q (이동기)
-        if (Input.GetKey(KeyCode.Q))
+        if (!myAnim.GetBool("lateralMove") && Input.GetKey(KeyCode.Q))
         {
-            myAnim.SetTrigger("lateralMove");
-            myAnim.SetBool("myState", false);
+            myAnim.SetBool("lateralMove", true);
+            myAnim.SetTrigger("Skill_Q");
         }
-
+        */
+        // 연계 스킬 키
+        if (!myAnim.GetBool("IsSkill_F") && Input.GetKeyDown(KeyCode.F))
+        {
+            myAnim.SetBool("IsSkill_F", true);
+            myAnim.SetTrigger("OnSkill_F");
+        }
+        
         //스킬 1
-        if (!myAnim.GetBool("IsSkill") && Input.GetKeyDown(KeyCode.Alpha1))
+        if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            myAnim.SetTrigger("Skill_1");
+            myAnim.SetBool("IsSkill_1", true);
+            myAnim.SetTrigger("OnSkill_1");
         }
-
+        
         //스킬 2
-        if (!myAnim.GetBool("IsSkill") && Input.GetKeyDown(KeyCode.Alpha2))
+        if (!myAnim.GetBool("IsSkill_2") && Input.GetKeyDown(KeyCode.Alpha2))
         {
-            myAnim.SetTrigger("Skill_2");
+            myAnim.SetBool("IsSkill_2", true);
+            myAnim.SetTrigger("OnSkill_2");
         }
-
+        
     }
 
     public void OnAttack()
@@ -217,28 +222,27 @@ public class Player : AnimatorProperty, IBattle
     }
 
 
-    public void ComboCheckStart()
+    public void AttackCheckStart()
     {
-        myAnim.ResetTrigger("OnAttack");
-        StartCoroutine(ComboCheck());
+        StartCoroutine(AttackCheck());
     }
 
-    IEnumerator ComboCheck()
+    IEnumerator AttackCheck()
     {
-        myAnim.SetBool("IsCombo", false);
+        myAnim.SetBool("IsSkill_2", false);
+        myAnim.SetBool("IsAttack", false);
         IsComboCheck = true;
         while (IsComboCheck)
         {
             if (Input.GetMouseButton(0))
             {
-                //myAnim.SetBool("IsCombo", true);
                 IsComboCheck = false;
             }
             yield return null;
         }
     }
 
-    public void ComboCheckEnd()
+    public void AttackCheckEnd()
     {
         IsComboCheck = false;
         //myAnim.SetBool("IsCombo", true);
@@ -246,15 +250,14 @@ public class Player : AnimatorProperty, IBattle
 
     public void SkillCheckStart()
     {
-        myAnim.SetBool("IsCombo", false);
-        myAnim.SetBool("LinkSkill", false);
+        myAnim.SetBool("IsAttack", false);
     }
 
     public void SkillCheckEnd()
     {
-        myAnim.ResetTrigger("OnAttack");
-        myAnim.SetBool("myState", true);
+        myAnim.SetBool("IsSkill_2", false);
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))
