@@ -258,7 +258,7 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetBool("IsSkill_2", false);
     }
 
-    //클라이더 충돌 체크
+    //유저가 버튼, 상자 근처에 있는지 클라이더 충돌 체크
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))
@@ -273,7 +273,7 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
-    //클라이더 충돌 해제확인
+    //유저가 버튼, 상자 근처에서 벗어날때 클라이더 충돌 해제확인
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))
