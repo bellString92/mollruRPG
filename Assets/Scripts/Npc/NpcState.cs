@@ -57,7 +57,7 @@ public class NpcState : AnimatorProperty
                         {
                             if(UIManager.Instance != null && doMyJob == null)
                             {
-                                doMyJob = UIManager.Instance.ShowUI(myJob);
+                                doMyJob = UIManager.Instance.ShowUI(myJob);// 중복생성 방지를 위한 domyjob저장 ShowUI는 정상작동
                             }
                         }
                     }

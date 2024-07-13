@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public GameObject ShowUI(GameObject uiPrefab) 
+    public GameObject ShowUI(GameObject uiPrefab) // 호출한 npc가 가지고있는 프리펩 ui생성
     { 
         if (canvas != null) 
         { 
