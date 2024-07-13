@@ -258,7 +258,7 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetBool("IsSkill_2", false);
     }
 
-    //사용처 주석 요망
+    //클라이더 충돌 체크
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))
@@ -273,7 +273,7 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
-    //사용처 주석 요망
+    //클라이더 충돌 해제확인
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))
