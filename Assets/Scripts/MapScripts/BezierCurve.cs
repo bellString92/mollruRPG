@@ -9,7 +9,7 @@ public class BezierCurve : MonoBehaviour
     public GameObject target;
     public float activationDistance = 3.0f;
     private bool isJumping = false;
-    private bool hasJumped = false;
+    //private bool hasJumped = false;
     private float progress = 0.0f;
 
     public Vector3 P1;
@@ -63,7 +63,7 @@ public class BezierCurve : MonoBehaviour
             {
                 player.transform.SetParent(null);
                 isJumping = false;
-                hasJumped = true;
+                //hasJumped = true;
                 progress = 0.0f;
             }
         }
