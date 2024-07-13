@@ -13,6 +13,7 @@ public class Player : AnimatorProperty, IBattle
     public UnityEvent<float> changeHpAct;
     public BattleStat myStat;
     public LayerMask enemyMask;
+    Vector3 TGDir;
     Vector2 inputDir = Vector2.zero;
     Vector2 desireDir = Vector2.zero;
 
@@ -51,12 +52,15 @@ public class Player : AnimatorProperty, IBattle
         // 실시간 타겟 저장
         if (FieldOfView.visibleTargets.Count > 0) 
         {
-            myTarget = FieldOfView.visibleTargets[0]; 
+            myTarget = FieldOfView.visibleTargets[0];
+            TGDir = transform.position - myTarget.position;
         }
         else
         {
             myTarget = null;
         }
+
+        //타겟과 나의 거리
 
         // 이동
         desireDir.x = Input.GetAxis("Horizontal");
@@ -141,12 +145,19 @@ public class Player : AnimatorProperty, IBattle
         }
         
         // 스킬 Q (이동기)
-        if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q))
+        if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q) && TGDir.magnitude < 3)
         {
             myAnim.SetBool("IsSkill_Q", true);
             myAnim.SetTrigger("OnSkill_Q");
         }
-        
+
+        // 스킬 E (이동기)
+        if (!myAnim.GetBool("IsSkill_E") && Input.GetKey(KeyCode.E) && TGDir.magnitude < 3)
+        {
+            myAnim.SetBool("IsSkill_E", true);
+            myAnim.SetTrigger("OnSkill_E");
+        }
+
         // 연계 스킬 키
         if (!myAnim.GetBool("IsSkill_F") && Input.GetKeyDown(KeyCode.F))
         {
@@ -258,7 +269,7 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetBool("IsSkill_2", false);
     }
 
-    //유저가 버튼, 상자 근처에 있는지 클라이더 충돌 체크
+    // 던전 문과 상자 제어하기 위한 클라이더
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))
@@ -273,7 +284,7 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
-    //유저가 버튼, 상자 근처에서 벗어날때 클라이더 충돌 해제확인
+    // 던전 문과 상자 제어하기 위한 클라이더
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))

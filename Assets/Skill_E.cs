@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skill_Q : StateMachineBehaviour
+public class Skill_E : StateMachineBehaviour
 {
     Vector3 myPos;              // 나의 위치 저장용
     Transform myTarget;         // 목표 저장용
@@ -32,7 +32,7 @@ public class Skill_Q : StateMachineBehaviour
 
         Vector3 positionTarget = myTarget.position;                 // myTarget의 위치값
         Quaternion rotationTarget = myTarget.rotation;              // myTarget의 회전값
-        Vector3 offset = rotationTarget * Vector3.right * distance; // 90도 옆의 방향
+        Vector3 offset = rotationTarget * Vector3.left * distance; // 90도 옆의 방향
 
         targetPosition = positionTarget + offset;           // 목표 위치를 계산
         initialized = true;
@@ -45,7 +45,7 @@ public class Skill_Q : StateMachineBehaviour
         {
             myPos = Vector3.Lerp(myPos, targetPosition, Time.deltaTime * moveSpeed); // 목표 위치로 이동
             animator.transform.parent.position = myPos; // 나의 위치를 갱신
-            animator.transform.parent.LookAt(myTarget.transform);
+            animator.transform.parent.LookAt(myTarget.transform); // 타겟을 바라봄
         }
 
     }
@@ -53,7 +53,7 @@ public class Skill_Q : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool("IsSkill_Q", false);
+        animator.SetBool("IsSkill_E", false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
