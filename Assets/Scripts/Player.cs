@@ -139,14 +139,14 @@ public class Player : AnimatorProperty, IBattle
         {
             myAnim.SetTrigger("OnAttack");
         }
-        /*
+        
         // 스킬 Q (이동기)
-        if (!myAnim.GetBool("lateralMove") && Input.GetKey(KeyCode.Q))
+        if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q))
         {
-            myAnim.SetBool("lateralMove", true);
-            myAnim.SetTrigger("Skill_Q");
+            myAnim.SetBool("IsSkill_Q", true);
+            myAnim.SetTrigger("OnSkill_Q");
         }
-        */
+        
         // 연계 스킬 키
         if (!myAnim.GetBool("IsSkill_F") && Input.GetKeyDown(KeyCode.F))
         {
