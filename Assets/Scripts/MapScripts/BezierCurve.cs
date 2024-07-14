@@ -41,14 +41,25 @@ public class BezierCurve : MonoBehaviour
 
     private void Update()
     {
-        /*if (animator == null || isJumping)
+        if (animator == null)
         {
-            return; // Animator가 없거나 점프 중일 때는 다른 동작을 하지 않도록 합니다.
-        }*/
+            Debug.LogError("Animator not assigned or found.");
+            return;
+        }
+
+
+        Transform currentTarget = FieldOfView.Instance.GetCurrentTarget();
+        if (currentTarget != null)
+        {
+            target = currentTarget.gameObject;
+        }
 
         float distanceToTarget = Vector3.Distance(player.transform.position, target.transform.position);
 
-        if (distanceToTarget <= activationDistance && Input.GetKeyDown(KeyCode.F) && !isJumping)
+        //현재 애니메이션 상태 정보를 가져옴
+        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (distanceToTarget <= activationDistance && Input.GetKeyDown(KeyCode.F) && !isJumping && currentState.IsName("Move"))
         {
             isJumping = true;
             player.transform.SetParent(transform);
@@ -56,32 +67,6 @@ public class BezierCurve : MonoBehaviour
         }
 
         if (isJumping)
-        {
-            if (progress < 1.0f)
-            {
-                Vector3 currentPos;
-                // 계산된 위치를 플레이어의 위치로 설정
-                currentPos = BezierTest(P1, P2, P3, P4, progress);
-                player.transform.position = currentPos;
-                Vector3 nextPos = BezierTest(P1, P2, P3, P4, progress + 0.01f);
-                Vector3 direction = (nextPos - currentPos).normalized;
-                // 이동 방향에 맞춰 플레이어의 회전 설정
-                Quaternion currentRotation = player.transform.rotation;
-                player.transform.rotation = Quaternion.LookRotation(direction);
-                player.transform.rotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);
-
-                progress += Time.deltaTime; // 점프 속도 제어
-            }
-            else
-            {
-                // 점프가 끝나면 부모 설정 해제
-                player.transform.SetParent(null);
-                isJumping = false;
-                progress = 0.0f;
-            }
-        }
-
-        /*if (isJumping)
         {
             if (progress < 1.0f)
             {
@@ -102,10 +87,10 @@ public class BezierCurve : MonoBehaviour
 
                 player.transform.position = currentPos;
 
-                // 기존 Y 회전 값 유지하면서 이동 방향만 바라보게 설정
+                // 이동 방향을 유지하면서 기존의 회전 값 유지
                 Quaternion currentRotation = player.transform.rotation;
                 player.transform.rotation = Quaternion.LookRotation(direction);
-                player.transform.rotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);
+                player.transform.rotation = Quaternion.Euler(currentRotation.eulerAngles.x, player.transform.rotation.eulerAngles.y, currentRotation.eulerAngles.z);
 
                 progress += Time.deltaTime; // 점프 속도 제어
             }
@@ -115,7 +100,7 @@ public class BezierCurve : MonoBehaviour
                 isJumping = false;
                 progress = 0.0f;
             }
-        }*/
+        }
     }
 
     public Vector3 BezierTest(Vector3 P1, Vector3 P2, Vector3 P3, Vector3 P4, float t)

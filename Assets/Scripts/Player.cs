@@ -131,8 +131,6 @@ public class Player : AnimatorProperty, IBattle
         {
             currentChest.OpenChest();
         }
-        
-
 
 
 

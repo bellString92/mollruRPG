@@ -62,6 +62,15 @@ public class FieldOfView : MonoBehaviour
             }
         }
     }
+    // 현재 시야 내에 점프포탈의 타겟이 있는지 확인
+    public Transform GetCurrentTarget()
+    {
+        if (visibleTargets.Count > 0)
+        {
+            return visibleTargets[0];
+        }
+        return null;
+    }
 
     // y축 오일러 각을 3차원 방향 벡터로 변환한다.
     // 원본과 구현이 살짝 다름에 주의. 결과는 같다.
