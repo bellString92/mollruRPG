@@ -28,6 +28,8 @@ public class Intro : MonoBehaviour
         {
             introCor = null;
             startCor = null;
+            PlayerPrefs.SetString("nextSceneText", "¸¶À»");
+            PlayerPrefs.SetString("nextSceneImage", "MollRu_Town");
             SceneChange.OnSceneChange("MollRuRPGScene");
         }
     }

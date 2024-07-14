@@ -5,6 +5,8 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     public string nextScene = "Intro";
+    public string nextSceneText = "·Îµù Áß";
+    public string nextSceneImage = "Dungeon";
     public LayerMask targetMask;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,8 @@ public class Portal : MonoBehaviour
     {
         if ((1 << other.gameObject.layer & targetMask) != 0)
         {
+            PlayerPrefs.SetString("nextSceneText", nextSceneText);
+            PlayerPrefs.SetString("nextSceneImage", nextSceneImage);
             SceneChange.OnSceneChange(nextScene);
         }
     }
