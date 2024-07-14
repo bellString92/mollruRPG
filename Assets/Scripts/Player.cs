@@ -123,7 +123,7 @@ public class Player : AnimatorProperty, IBattle
         }
 
         //상호작용키
-        if (isNearButton && Input.GetKeyDown(KeyCode.F))
+        if ((myTarget != null) && isNearButton && Input.GetKeyDown(KeyCode.F))
         {
             currentButton.OnButtonPress();
         }

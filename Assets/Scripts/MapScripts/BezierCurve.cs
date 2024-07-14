@@ -5,11 +5,11 @@ using UnityEditor;
 
 public class BezierCurve : MonoBehaviour
 {
-    public GameObject player;
+    public GameObject player; // Player 오브젝트 참조
+    public GameObject avatar; // Player의 자식 오브젝트인 아바타 오브젝트 참조
     public GameObject target;
     public float activationDistance = 3.0f;
     private bool isJumping = false;
-    //private bool hasJumped = false;
     private float progress = 0.0f;
 
     public Vector3 P1;
@@ -23,50 +23,99 @@ public class BezierCurve : MonoBehaviour
 
     private Animator animator;
 
-    /*private void Start()
+    private void Start()
     {
-        animator = player.GetComponent<Animator>();
-        if (animator == null)
+        if (avatar != null)
         {
-            Debug.LogError("Animator component not found on player object.");
+            animator = avatar.GetComponent<Animator>();
+            if (animator == null)
+            {
+                Debug.LogError("Animator component not found on Avatar object.");
+            }
         }
-    }*/
+        else
+        {
+            Debug.LogError("Avatar object is not assigned.");
+        }
+    }
 
     private void Update()
     {
+        /*if (animator == null || isJumping)
+        {
+            return; // Animator가 없거나 점프 중일 때는 다른 동작을 하지 않도록 합니다.
+        }*/
+
         float distanceToTarget = Vector3.Distance(player.transform.position, target.transform.position);
 
         if (distanceToTarget <= activationDistance && Input.GetKeyDown(KeyCode.F) && !isJumping)
         {
             isJumping = true;
             player.transform.SetParent(transform);
-            animator.SetTrigger("Jump");// 점프 애니메이션 시작
+            animator.SetTrigger("Jump"); // 점프 애니메이션 시작
         }
 
         if (isJumping)
         {
             if (progress < 1.0f)
             {
+                Vector3 currentPos;
+                // 계산된 위치를 플레이어의 위치로 설정
+                currentPos = BezierTest(P1, P2, P3, P4, progress);
+                player.transform.position = currentPos;
+                Vector3 nextPos = BezierTest(P1, P2, P3, P4, progress + 0.01f);
+                Vector3 direction = (nextPos - currentPos).normalized;
+                // 이동 방향에 맞춰 플레이어의 회전 설정
+                Quaternion currentRotation = player.transform.rotation;
+                player.transform.rotation = Quaternion.LookRotation(direction);
+                player.transform.rotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);
+
+                progress += Time.deltaTime; // 점프 속도 제어
+            }
+            else
+            {
+                // 점프가 끝나면 부모 설정 해제
+                player.transform.SetParent(null);
+                isJumping = false;
+                progress = 0.0f;
+            }
+        }
+
+        /*if (isJumping)
+        {
+            if (progress < 1.0f)
+            {
+                Vector3 currentPos;
                 if (progress < jumpStart || progress > jumpEnd)
                 {
-                    player.transform.position = BezierTest(P1, P2, P3, P4, progress);
+                    currentPos = BezierTest(P1, P2, P3, P4, progress);
                 }
                 else
                 {
                     float jumpProgress = (progress - jumpStart) / (jumpEnd - jumpStart);
                     Vector3 groundPosition = BezierTest(P1, P2, P3, P4, progress);
-                    player.transform.position = groundPosition + Vector3.up * Mathf.Sin(Mathf.PI * jumpProgress) * jumpHeight;
+                    currentPos = groundPosition + Vector3.up * Mathf.Sin(Mathf.PI * jumpProgress) * jumpHeight;
                 }
-                progress += Time.deltaTime; //점프 속도 조정
+
+                Vector3 nextPos = BezierTest(P1, P2, P3, P4, progress + 0.01f);
+                Vector3 direction = (nextPos - currentPos).normalized;
+
+                player.transform.position = currentPos;
+
+                // 기존 Y 회전 값 유지하면서 이동 방향만 바라보게 설정
+                Quaternion currentRotation = player.transform.rotation;
+                player.transform.rotation = Quaternion.LookRotation(direction);
+                player.transform.rotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);
+
+                progress += Time.deltaTime; // 점프 속도 제어
             }
             else
             {
                 player.transform.SetParent(null);
                 isJumping = false;
-                //hasJumped = true;
                 progress = 0.0f;
             }
-        }
+        }*/
     }
 
     public Vector3 BezierTest(Vector3 P1, Vector3 P2, Vector3 P3, Vector3 P4, float t)
