@@ -4149,16 +4149,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d8e3b71d3d0e5419be643a787e1808, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 914353995}
+  player: {fileID: 1309714372}
+  avatar: {fileID: 914353995}
   target: {fileID: 391007312}
   activationDistance: 5
   P1: {x: -48, y: 0, z: 70}
   P2: {x: -48, y: 6, z: 70}
   P3: {x: -48, y: 12, z: 84}
   P4: {x: -48, y: 6, z: 84}
-  jumpStart: 0.3
-  jumpEnd: 0.7
-  jumpHeight: 2
+  jumpStart: 1
+  jumpEnd: 1.4
+  jumpHeight: 3
 --- !u!1001 &392073022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16097,6 +16098,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5ee2fc821d38d54e9c7d788e755c750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1309714372 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7861211204230361259, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+  m_PrefabInstance: {fileID: 1278668607}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1314561124
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21249,6 +21255,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextScene: MollRuRPGScene
+  nextSceneText: "\uB85C\uB529 \uC911"
+  nextSceneImage: Dungeon
   targetMask:
     serializedVersion: 2
     m_Bits: 64
