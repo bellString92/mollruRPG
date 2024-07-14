@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum ItemType
+public enum ItemType // 아이템 분류 장비,소비,재료
 {
     equipItem,
     consumItem,
@@ -11,11 +11,12 @@ public enum ItemType
 }
 
 public abstract class ItemKind : ScriptableObject
-{
+{ // 아이템에 들어갈 내용 이름,아이템 종류, 아이템 이미지, 아이템 설명
     public string itemName;
     public ItemType itemType;
     public Sprite itemIcon;
     public string description;
 
-    public abstract void Use(BattleStat myStat);
+    // abstract를 활용해 각 아이템을 use시 다른 기능을 구현되도록 함 override로 새로써 기능을 구현
+    public abstract void Use(BattleStat myStat); 
 }
