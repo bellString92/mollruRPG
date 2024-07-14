@@ -28,9 +28,9 @@ public class Intro : MonoBehaviour
         {
             introCor = null;
             startCor = null;
-            PlayerPrefs.SetString("nextSceneText", "마을");
-            PlayerPrefs.SetString("nextSceneImage", "MollRu_Town");
-            SceneChange.OnSceneChange("MollRuRPGScene");
+            PlayerPrefs.SetString("nextSceneText", "로딩 중");
+            PlayerPrefs.SetString("nextSceneImage", "Dungeon");
+            SceneChange.OnSceneChange("CharaterSelect");
         }
     }
 
