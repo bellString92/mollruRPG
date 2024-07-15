@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Unity.VisualScripting;
+using UnityEngine.Pool;
 
-public class BezierCurve : MonoBehaviour
+public class BezierCurve : AnimatorProperty
 {
-    public GameObject player; // Player 오브젝트 참조
-    public GameObject avatar; // Player의 자식 오브젝트인 아바타 오브젝트 참조
-    public GameObject target;
+    public GameObject player, avatar, target; //오브젝트 참조
+    public DoorController linkedDoor;
+    //public GameObject avatar; // Player의 자식 오브젝트인 아바타 오브젝트 참조
+    //public GameObject target;
     public float activationDistance = 3.0f;
     private bool isJumping = false;
     private float progress = 0.0f;
@@ -99,6 +102,16 @@ public class BezierCurve : MonoBehaviour
                 player.transform.SetParent(null);
                 isJumping = false;
                 progress = 0.0f;
+
+                //gameObject.SetActive(false);
+                Destroy(gameObject, 2);
+
+                if (linkedDoor != null)
+                {
+                    linkedDoor.DungeonDoorClose();
+                }
+
+
             }
         }
     }

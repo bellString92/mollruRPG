@@ -18,4 +18,11 @@ public class DoorController : AnimatorProperty
             animator.SetTrigger("IsOpen");
         }
     }
+    public void DungeonDoorClose()
+    {
+        //if (animator != null)
+        //{
+            animator.SetTrigger("DungeonDoorClose");
+        //}
+    }
 }
