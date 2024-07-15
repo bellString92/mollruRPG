@@ -7,6 +7,7 @@ TagManager:
   - door
   - Button
   - Chest
+  - Portal
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Button
   - NPC
   - Chest
-  - 
+  - Portal
   - 
   - 
   - 

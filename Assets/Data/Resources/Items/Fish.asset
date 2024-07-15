@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8756d66819215d40b9dd7df1a74a5b6, type: 3}
   m_Name: Fish
   m_EditorClassIdentifier: 
-  itemName: fish
+  itemName: Fish
   itemType: 4
   itemIcon: {fileID: 21300000, guid: b416145d20baa364598d07e1740ae2fb, type: 3}
-  description: "\uC5B4\uB514\uC5D0 \uC4F0\uB294\uC9C0 \uC54C\uC218\uC5C6\uB294 \uC0DD\uC120"
+  description: "\uC8FC\uBCC0\uC5D0\uC11C \uD754\uD788 \uC7A1\uD788\uB294 \uC0DD\uC120"
   price: 1
+  resellprice: 0
   itemID: 5

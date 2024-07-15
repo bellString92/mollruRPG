@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Unity.VisualScripting;
-using UnityEngine.Pool;
 
 public class BezierCurve : AnimatorProperty
 {
-    public GameObject player, avatar, target; //오브젝트 참조
+    public GameObject player; //오브젝트 참조
     public DoorController linkedDoor;
-    //public GameObject avatar; // Player의 자식 오브젝트인 아바타 오브젝트 참조
-    //public GameObject target;
+    public GameObject avatar; // Player의 자식 오브젝트인 아바타 오브젝트 참조
+    public GameObject target;
     public float activationDistance = 3.0f;
     private bool isJumping = false;
     private float progress = 0.0f;
@@ -25,6 +23,11 @@ public class BezierCurve : AnimatorProperty
     public float jumpHeight = 2.0f;
 
     private Animator animator;
+
+    private float interactionTime = 1.0f; // Required time to hold F to interact
+    private float holdTime = 0.0f; // Time F has been held down
+
+    private Transform savedTarget;
 
     private void Start()
     {
@@ -49,24 +52,51 @@ public class BezierCurve : AnimatorProperty
             Debug.LogError("Animator not assigned or found.");
             return;
         }
-
-
-        Transform currentTarget = FieldOfView.Instance.GetCurrentTarget();
-        if (currentTarget != null)
+        if (!isJumping)
         {
-            target = currentTarget.gameObject;
+
+            Transform currentPortal = FieldOfView.Instance.GetCurrentPortal();
+
+            if (currentPortal != null)
+            {
+                target = currentPortal.gameObject;
+            }
+            else
+            {
+                target = null;
+            }
         }
+        if (target == null && savedTarget == null) return;
 
         float distanceToTarget = Vector3.Distance(player.transform.position, target.transform.position);
-
+        
         //현재 애니메이션 상태 정보를 가져옴
         AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (distanceToTarget <= activationDistance && Input.GetKeyDown(KeyCode.F) && !isJumping && currentState.IsName("Move"))
+        /*if (distanceToTarget <= activationDistance && Input.GetKeyDown(KeyCode.F) && !isJumping && currentState.IsName("Move"))
         {
             isJumping = true;
             player.transform.SetParent(transform);
             animator.SetTrigger("Jump"); // 점프 애니메이션 시작
+        }*/
+        if (distanceToTarget <= activationDistance && !isJumping && currentState.IsName("Move"))
+        {
+            if (Input.GetKey(KeyCode.F))
+            {
+                holdTime += Time.deltaTime;
+                if (holdTime >= interactionTime)
+                {
+                    isJumping = true;
+                    player.transform.SetParent(transform);
+                    animator.SetTrigger("Jump"); // 점프 애니메이션 시작
+                    savedTarget = target.transform; //타겟 저장
+                    holdTime = 0.0f;
+                }
+            }
+            else
+            {
+                holdTime = 0.0f;
+            }
         }
 
         if (isJumping)
@@ -102,8 +132,9 @@ public class BezierCurve : AnimatorProperty
                 player.transform.SetParent(null);
                 isJumping = false;
                 progress = 0.0f;
-
+                animator.ResetTrigger("Jump");
                 //gameObject.SetActive(false);
+                savedTarget = null; // 점프 종료 후 타겟 해제
                 Destroy(gameObject, 2);
 
                 if (linkedDoor != null)
@@ -156,3 +187,5 @@ public class BezierCurveEditor : Editor
         }
     }
 }
+
+
