@@ -45,7 +45,7 @@ public class Skill_Q : StateMachineBehaviour
         {
             myPos = Vector3.Lerp(myPos, targetPosition, Time.deltaTime * moveSpeed); // 목표 위치로 이동
             animator.transform.parent.position = myPos; // 나의 위치를 갱신
-            animator.transform.parent.LookAt(myTarget.transform);
+            animator.transform.parent.LookAt(myTarget.transform); //  타겟을 바라봄
         }
 
     }

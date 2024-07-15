@@ -165,6 +165,21 @@ public class Player : AnimatorProperty, IBattle
             myAnim.SetTrigger("OnSkill_E");
         }
 
+        // 스킬 S (이동기)
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            if (!myIsOneClick)
+            {
+                myTimer = Time.time;
+                myIsOneClick = true;
+            }
+            else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
+            {
+                myIsOneClick = false;
+                myAnim.SetTrigger("OnSkill_S");
+            }
+        }
+
         // 연계 스킬 키
         if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
         {
@@ -185,7 +200,14 @@ public class Player : AnimatorProperty, IBattle
             myAnim.SetBool("IsSkill_2", true);
             myAnim.SetTrigger("OnSkill_2");
         }
-        
+
+        //스킬 3
+        if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            myAnim.SetBool("IsSkill_3", true);
+            myAnim.SetTrigger("OnSkill_2");
+        }
+
     }
 
     public void OnAttack()
