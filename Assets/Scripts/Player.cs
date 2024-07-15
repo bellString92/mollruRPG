@@ -166,10 +166,10 @@ public class Player : AnimatorProperty, IBattle
         }
 
         // 연계 스킬 키
-        if (!myAnim.GetBool("IsSkill_F") && Input.GetKeyDown(KeyCode.F))
+        if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
         {
-            myAnim.SetBool("IsSkill_F", true);
-            myAnim.SetTrigger("OnSkill_F");
+            myAnim.SetBool("IsSkill_F1", true);
+            myAnim.SetTrigger("OnSkill_F1");
         }
         
         //스킬 1
