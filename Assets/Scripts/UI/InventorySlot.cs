@@ -31,6 +31,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild
             eventData.pointerDrag.GetComponent<IGetParent>().myParent.GetComponent<ISetChild>().SetChild(null);
         }
 
+        if (myChild = null) return;
         myChild = eventData.pointerDrag;
         myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
     }

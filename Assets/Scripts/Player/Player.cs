@@ -293,7 +293,6 @@ public class Player : AnimatorProperty, IBattle
     public void AttackCheckEnd()
     {
         IsComboCheck = false;
-        //myAnim.SetBool("IsCombo", true);
     }
 
     public void SkillCheckStart()
