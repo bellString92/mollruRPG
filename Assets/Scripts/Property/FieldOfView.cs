@@ -83,4 +83,17 @@ public class FieldOfView : MonoBehaviour
 
         return new Vector3(Mathf.Cos((-angleDegrees + 90) * Mathf.Deg2Rad), 0, Mathf.Sin((-angleDegrees + 90) * Mathf.Deg2Rad));
     }
+
+    // 현재 타겟된 포탈을 반환하는 메서드 추가
+    public Transform GetCurrentPortal()
+    {
+        foreach (Transform target in visibleTargets)
+        {
+            if (target.CompareTag("Portal"))
+            {
+                return target;
+            }
+        }
+        return null;
+    }
 }
