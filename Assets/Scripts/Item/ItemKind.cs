@@ -5,7 +5,10 @@ using UnityEngine;
 
 public enum ItemType // 아이템 분류 장비,소비,재료
 {
-    equipItem,
+
+    weaponItem,
+    armorItem,
+    acceItem,
     consumItem,
     materialItem
 }
@@ -16,6 +19,9 @@ public abstract class ItemKind : ScriptableObject
     public ItemType itemType;
     public Sprite itemIcon;
     public string description;
+    public int price;  // 아이템 가격
+    public int resellprice; // 판매 가격
+    public int itemID; // 아이템 ID
 
     // abstract를 활용해 각 아이템을 use시 다른 기능을 구현되도록 함 override로 새로써 기능을 구현
     public abstract void Use(BattleStat myStat); 
