@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New ConsumItem", menuName = "Items/ConsumItem")]// create창에서 아이템을 생성시키게 할수있는 코드
+[CreateAssetMenu(fileName = "New ConsumItem", menuName = "Items/ConsumItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드
 public class ConsumItem : ItemKind
 {
     public float healAmount;
