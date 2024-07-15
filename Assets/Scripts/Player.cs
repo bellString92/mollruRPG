@@ -180,7 +180,7 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
-        // 연계 스킬 키
+        // 스킬 F1
         if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
         {
             myAnim.SetBool("IsSkill_F1", true);
@@ -205,7 +205,14 @@ public class Player : AnimatorProperty, IBattle
         if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
         {
             myAnim.SetBool("IsSkill_3", true);
-            myAnim.SetTrigger("OnSkill_2");
+            myAnim.SetTrigger("OnSkill_3");
+        }
+
+        //스킬 4
+        if (!myAnim.GetBool("IsSkill_4") && Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            myAnim.SetBool("IsSkill_4", true);
+            myAnim.SetTrigger("OnSkill_4");
         }
 
     }
@@ -295,7 +302,10 @@ public class Player : AnimatorProperty, IBattle
 
     public void SkillCheckEnd()
     {
+        myAnim.SetBool("IsSkill_1", false);
         myAnim.SetBool("IsSkill_2", false);
+        myAnim.SetBool("IsSkill_3", false);
+        myAnim.SetBool("IsSkill_4", false);
     }
 
     // 던전 문과 상자 제어하기 위한 클라이더
