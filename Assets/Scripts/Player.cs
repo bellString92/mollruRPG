@@ -49,6 +49,7 @@ public class Player : AnimatorProperty, IBattle
     // Update is called once per frame
     void Update()
     {
+        /*
         // 付快胶 见辫贸府 矫累
         GameObject go = GameObject.Find("MouseHide");
         if (go == null)
@@ -57,7 +58,7 @@ public class Player : AnimatorProperty, IBattle
             go.AddComponent<MouseHide>();
         }
         // 付快胶 见辫贸府 场
-
+        */
         // 角矫埃 鸥百 历厘
         if (FieldOfView.visibleTargets.Count > 0) 
         {

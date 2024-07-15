@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ImageProperty : MonoBehaviour
 {
     Image img = null;
-    protected Image myimg
+    protected Image myImage
     {
         get
         {
