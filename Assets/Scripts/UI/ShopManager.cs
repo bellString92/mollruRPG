@@ -14,7 +14,6 @@ public class ShopManager : MonoBehaviour
     public TMP_Text itemInfoTextPrefab;// 아이템 정보를 표시할 TextMeshPro 프리팹
     public ScrollRect scrollView;
     public Transform content;
-    public TMP_Text infoText; // 스크롤뷰에 표시될 정보 TextMeshPro
 
     void Awake()
     {
@@ -55,9 +54,8 @@ public class ShopManager : MonoBehaviour
         }
         // 새로운 아이템 정보 텍스트 생성
         TMP_Text newText = Instantiate(itemInfoTextPrefab, content);
-        infoText = newText;
 
-        infoText.text = $"Name: {itemInfo.itemName}\n" +
+        newText.text = $"Name: {itemInfo.itemName}\n" +
                           $"Type: {itemInfo.itemType}\n" +
                           $"Description: {itemInfo.description}\n" +
                           $"Price: {itemInfo.price}";
@@ -66,19 +64,19 @@ public class ShopManager : MonoBehaviour
         switch (itemInfo.itemType)
         {
             case ItemType.weaponItem:
-                DisplayWeaponInfo(itemInfo as WeaponItem);
+                DisplayWeaponInfo(itemInfo as WeaponItem, newText);
                 break;
             case ItemType.armorItem:
-                DisplayArmorInfo(itemInfo as ArmorItem);
+                DisplayArmorInfo(itemInfo as ArmorItem, newText);
                 break;
             case ItemType.acceItem:
-                DisplayAccessoryInfo(itemInfo as AcceItem);
+                DisplayAccessoryInfo(itemInfo as AcceItem, newText);
                 break;
             case ItemType.consumItem:
-                DisplayConsumableInfo(itemInfo as ConsumItem);
+                DisplayConsumableInfo(itemInfo as ConsumItem, newText);
                 break;
             case ItemType.materialItem:
-                DisplayMaterialInfo(itemInfo as MaterialItem);
+                DisplayMaterialInfo(itemInfo as MaterialItem, newText);
                 break;
             default:
                 Debug.LogWarning("Unknown ItemType: " + itemInfo.itemType);
@@ -88,7 +86,7 @@ public class ShopManager : MonoBehaviour
     }
 
     // 각 ItemType에 따른 추가 정보 표시 함수들
-    private void DisplayWeaponInfo(WeaponItem weaponInfo)
+    private void DisplayWeaponInfo(WeaponItem weaponInfo, TMP_Text infoText)
     {
         if (weaponInfo != null)
         {
@@ -96,7 +94,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    private void DisplayArmorInfo(ArmorItem armorInfo)
+    private void DisplayArmorInfo(ArmorItem armorInfo, TMP_Text infoText)
     {
         if (armorInfo != null)
         {
@@ -104,7 +102,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    private void DisplayAccessoryInfo(AcceItem acceInfo)
+    private void DisplayAccessoryInfo(AcceItem acceInfo, TMP_Text infoText)
     {
         if (acceInfo != null)
         {
@@ -113,7 +111,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    private void DisplayConsumableInfo(ConsumItem ConsumInfo)
+    private void DisplayConsumableInfo(ConsumItem ConsumInfo, TMP_Text infoText)
     {
         if(ConsumInfo != null)
         {
@@ -121,7 +119,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    private void DisplayMaterialInfo(MaterialItem MaterialInfo)
+    private void DisplayMaterialInfo(MaterialItem MaterialInfo, TMP_Text infoText)
     {
 
     }
