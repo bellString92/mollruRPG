@@ -9,7 +9,9 @@ public class NpcState : AnimatorProperty
     public Transform myTarget;
 
     public GameObject myJob; // 각 npc가 담당할 Ui를 프리펩으로 만들고 바인딩
-    public GameObject doMyJob; // 상호작용을 여러번해 중복 생성 되지않도록 이미 상호작용중 이라면 생성한 object를 저장해서 관리
+    private GameObject doMyJob; // 상호작용을 여러번해 중복 생성 되지않도록 이미 상호작용중 이라면 생성한 object를 저장해서 관리
+
+    public Inventory urInventory;
     
     Vector3 startPos;
     Quaternion startRot;
@@ -51,13 +53,14 @@ public class NpcState : AnimatorProperty
                 break;
             case State.Reco:
                 {
-                    if (FieldOfView.visibleMonster.Count > 0 && FieldOfView.visibleMonster[0] != null)
+                    if (FieldOfView.visibleNPC.Count > 0 && FieldOfView.visibleNPC[0] != null)
                     {
-                        if (FieldOfView.visibleMonster[0].transform == transform && Input.GetKeyDown(KeyCode.F))
+                        if (FieldOfView.visibleNPC[0].transform == transform && Input.GetKeyDown(KeyCode.F))
                         {
                             if(UIManager.Instance != null && doMyJob == null)
                             {
                                 doMyJob = UIManager.Instance.ShowUI(myJob);// 중복생성 방지를 위한 domyjob저장 ShowUI는 정상작동
+                                urInventory.gameObject.SetActive(true);
                             }
                         }
                     }

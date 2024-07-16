@@ -942,6 +942,7 @@ MonoBehaviour:
   itemInfoTextPrefab: {fileID: 7383747217809032080, guid: 49318ed42ffa9d94ba038e010e2eda45, type: 3}
   scrollView: {fileID: 5121797909091672822}
   content: {fileID: 8071418400375951028}
+  myInven: {fileID: 0}
 --- !u!222 &3351625981375765295
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1540,7 +1541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &43538072406354340
 RectTransform:
   m_ObjectHideFlags: 0
