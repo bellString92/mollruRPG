@@ -15,6 +15,9 @@ public class ShopManager : MonoBehaviour
     public ScrollRect scrollView;
     public Transform content;
 
+    public ItemKind curItem = null;// 현재 선택중인 아이템 정보를 저장할 변수
+    public GameObject marterialObject;
+
 
     void Awake()
     {
@@ -42,8 +45,20 @@ public class ShopManager : MonoBehaviour
         if (itemInfo != null)
         {
             DisplayItemInfo(itemInfo);
+            curItem = itemInfo;
+        }
+        
+    }
+
+    public void OnAddNewItemInInventory()
+    {
+        // AssemblyManager의 CreateItem 호출하여 아이템 생성
+        if (curItem != null)
+        {
+            Inventory.Instance.CreateItem(curItem, marterialObject);
         }
     }
+
 
     // 아이템 정보를 TextMeshPro에 표시하는 함수
     private void DisplayItemInfo(ItemKind itemInfo)

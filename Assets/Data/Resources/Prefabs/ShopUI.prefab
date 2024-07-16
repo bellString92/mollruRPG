@@ -424,9 +424,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ShopSlot, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 8925841601143171855}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: OnAddNewItemInInventory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -942,7 +942,8 @@ MonoBehaviour:
   itemInfoTextPrefab: {fileID: 7383747217809032080, guid: 49318ed42ffa9d94ba038e010e2eda45, type: 3}
   scrollView: {fileID: 5121797909091672822}
   content: {fileID: 8071418400375951028}
-  myInven: {fileID: 0}
+  curItem: {fileID: 0}
+  marterialObject: {fileID: 7243017173895090917, guid: d58aa2f076559414d828703f8bb88c53, type: 3}
 --- !u!222 &3351625981375765295
 CanvasRenderer:
   m_ObjectHideFlags: 0
