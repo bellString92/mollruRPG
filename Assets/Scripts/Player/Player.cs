@@ -11,6 +11,7 @@ public class Player : AnimatorProperty, IBattle
     private ButtonController currentButton;
     private ChestController currentChest;
     public UnityEvent<float> changeHpAct;
+    public UnityEvent<float> changeMpAct;
     public BattleStat myStat;
     public LayerMask enemyMask;
     Vector3 TGDir;
