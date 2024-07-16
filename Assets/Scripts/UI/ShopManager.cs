@@ -15,6 +15,7 @@ public class ShopManager : MonoBehaviour
     public ScrollRect scrollView;
     public Transform content;
 
+
     void Awake()
     {
         if (Instance == null)
