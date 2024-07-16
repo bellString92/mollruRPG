@@ -26,7 +26,7 @@ public class CharacterSelect : MonoBehaviour
 
     public void OnCreateSelectSlotClick(int num)
     {
-        if (GameObject.Find($"Paladin{num}") == null)
+        if (GameObject.Find($"Paladin{num}") == null && GameObject.Find($"Maria{num}") == null)
             CreateNickName(PopupType.CREATE, num);
         else
         {
@@ -61,6 +61,15 @@ public class CharacterSelect : MonoBehaviour
             paladin.transform.localRotation = Quaternion.identity;
         }
 
+        if (GameObject.Find($"Maria{num}") == null)
+        {
+            GameObject maria = Instantiate(Resources.Load("Prefabs/Maria") as GameObject);
+            maria.name = $"Maria{num}";
+            maria.transform.SetParent(selSlot.transform);
+            maria.transform.localPosition = Vector3.zero;
+            maria.transform.localRotation = Quaternion.identity;
+        }
+
         if (!"".Equals(nickName))
         {
             GameObject.Find($"NickName{num}").transform.GetChild(0).gameObject.SetActive(true);
@@ -91,6 +100,7 @@ public class CharacterSelect : MonoBehaviour
             }
         }
         Destroy(GameObject.Find($"Paladin{num}"));
+        Destroy(GameObject.Find($"Maria{num}"));
 
         GameObject.Find($"NickName{num}").transform.GetChild(0).gameObject.SetActive(false);
 
