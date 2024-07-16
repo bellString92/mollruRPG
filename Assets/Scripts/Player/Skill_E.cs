@@ -16,9 +16,9 @@ public class Skill_E : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         //Å¸°Ù ÀúÀå
-        if (FieldOfView.visibleTargets.Count > 0)
+        if (FieldOfView.visibleMonster.Count > 0)
         {
-            myTarget = FieldOfView.visibleTargets[0];
+            myTarget = FieldOfView.visibleMonster[0];
         }
         else
         {

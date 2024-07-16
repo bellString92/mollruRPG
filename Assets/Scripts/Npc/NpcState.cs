@@ -51,9 +51,9 @@ public class NpcState : AnimatorProperty
                 break;
             case State.Reco:
                 {
-                    if (FieldOfView.visibleTargets.Count > 0 && FieldOfView.visibleTargets[0] != null)
+                    if (FieldOfView.visibleMonster.Count > 0 && FieldOfView.visibleMonster[0] != null)
                     {
-                        if (FieldOfView.visibleTargets[0].transform == transform && Input.GetKeyDown(KeyCode.F))
+                        if (FieldOfView.visibleMonster[0].transform == transform && Input.GetKeyDown(KeyCode.F))
                         {
                             if(UIManager.Instance != null && doMyJob == null)
                             {

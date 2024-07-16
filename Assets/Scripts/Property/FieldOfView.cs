@@ -14,8 +14,13 @@ public class FieldOfView : MonoBehaviour
     public LayerMask targetMask, obstacleMask;
 
     // Target mask에 ray hit된 transform을 보관하는 리스트
-    public static List<Transform> visibleTargets = new List<Transform>();
-    public List<Transform> visibleTargetsView = visibleTargets;
+    public static List<Transform> visibleMonster = new List<Transform>();
+    public static List<Transform> visibleNPC = new List<Transform>();
+    public static List<Transform> visibleETC = new List<Transform>();
+
+    public List<Transform> visibleMonsterView = visibleMonster;
+    public List<Transform> visibleNPCView = visibleNPC;
+    public List<Transform> visibleETCView = visibleETC;
 
     private void Awake()
     {
@@ -32,13 +37,17 @@ public class FieldOfView : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(delay);
-            FindVisibleTargets();
+            FindvisibleMonster();
         }
     }
 
-    void FindVisibleTargets()
+    void FindvisibleMonster()
     {
-        visibleTargets.Clear();
+        visibleMonster.Clear(); //내용물 초기화
+        visibleNPC.Clear();
+        visibleETC.Clear();
+
+
         // viewRadius를 반지름으로 한 원 영역 내 targetMask 레이어인 콜라이더를 모두 가져옴
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
@@ -53,21 +62,33 @@ public class FieldOfView : MonoBehaviour
             {
                 float dstToTarget = Vector3.Distance(transform.position, target.transform.position);
 
-                // 타겟으로 가는 레이캐스트에 obstacleMask가 걸리지 않으면 visibleTargets에 Add
+                // 타겟으로 가는 레이캐스트에 obstacleMask가 걸리지 않으면 visibleMonster에 Add
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                 {
-                    visibleTargets.Add(target);
+                    if (target.CompareTag("Enemy"))
+                    {
+                        visibleMonster.Add(target);
+                    }
+                    else if (target.CompareTag("NPC"))
+                    {
+                        visibleNPC.Add(target);
+                    }
+                    else
+                    {
+                        visibleETC.Add(target);
+                    }
                 }
-                Debug.DrawLine(transform.position, target.position);
             }
         }
     }
+
+    
     // 현재 시야 내에 점프포탈의 타겟이 있는지 확인
     public Transform GetCurrentTarget()
     {
-        if (visibleTargets.Count > 0)
+        if (visibleMonster.Count > 0)
         {
-            return visibleTargets[0];
+            return visibleMonster[0];
         }
         return null;
     }
@@ -87,7 +108,7 @@ public class FieldOfView : MonoBehaviour
     // 현재 타겟된 포탈을 반환하는 메서드 추가
     public Transform GetCurrentPortal()
     {
-        foreach (Transform target in visibleTargets)
+        foreach (Transform target in visibleMonster)
         {
             if (target.CompareTag("Portal"))
             {
@@ -96,4 +117,5 @@ public class FieldOfView : MonoBehaviour
         }
         return null;
     }
+    
 }

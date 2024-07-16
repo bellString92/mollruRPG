@@ -60,9 +60,9 @@ public class Player : AnimatorProperty, IBattle
         // 付快胶 见辫贸府 场
         */
         // 角矫埃 鸥百 历厘
-        if (FieldOfView.visibleTargets.Count > 0) 
+        if (FieldOfView.visibleMonster.Count > 0) 
         {
-            myTarget = FieldOfView.visibleTargets[0];
+            myTarget = FieldOfView.visibleMonster[0];
             TGDir = transform.position - myTarget.position;
         }
         else

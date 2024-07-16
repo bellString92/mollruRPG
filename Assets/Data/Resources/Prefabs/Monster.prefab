@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8626463264264953478}
   m_Layer: 7
   m_Name: Monster
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
   myTarget: {fileID: 0}
   myBattleStat:
     AttackDelay: 2
-    AttackRange: 1
+    AttackRange: 2
     AttackPoint: 10
     maxHealPoint: 100
     curHealPoint: 100
@@ -973,12 +973,18 @@ MonoBehaviour:
   stopAct:
     m_PersistentCalls:
       m_Calls: []
-  skillAct:
+  skillDamageAct:
     m_PersistentCalls:
       m_Calls: []
-  comboCheckStartAct:
+  skillCheckStartAct:
     m_PersistentCalls:
       m_Calls: []
-  comboCheckEndAct:
+  skillCheckEndAct:
+    m_PersistentCalls:
+      m_Calls: []
+  AttackCheckStartAct:
+    m_PersistentCalls:
+      m_Calls: []
+  AttackCheckEndAct:
     m_PersistentCalls:
       m_Calls: []

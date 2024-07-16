@@ -13,9 +13,9 @@ public class Skill_1 : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // 타겟 저장 시스템
-        if (FieldOfView.visibleTargets.Count > 0)
+        if (FieldOfView.visibleMonster.Count > 0)
         {
-            myTarget = FieldOfView.visibleTargets[0];
+            myTarget = FieldOfView.visibleMonster[0];
         }
         else  // 타겟이 없으면 트랜스폼 초기화 및 탈출
         {

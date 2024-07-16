@@ -8,6 +8,8 @@ TagManager:
   - Button
   - Chest
   - Portal
+  - Enemy
+  - NPC
   layers:
   - Default
   - TransparentFX
