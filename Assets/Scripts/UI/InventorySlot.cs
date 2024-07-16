@@ -17,7 +17,7 @@ interface ISetChild
 }
 
 
-public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild
+public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerClickHandler
 {
     public GameObject myChild = null;
     public void OnDrop(PointerEventData eventData)
@@ -35,11 +35,24 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild
         myChild = eventData.pointerDrag;
         myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
     }
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        ShopManager.Instance.SetDestroySlotItem(this); // 클릭으로 마우스 이벤트가 끝났을때 이슬롯을 선택해 아이템 삭제하기위해 정보 전달
+    }
 
     public void SetChild(GameObject newChild)
     {
         myChild = newChild;
     }
+    public void DestroyChild() // 마이차일드 비우기
+    {
+        if (myChild != null)
+        {
+            Destroy(myChild);
+            myChild = null;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {

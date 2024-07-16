@@ -18,7 +18,7 @@ public class ShopManager : MonoBehaviour
     public ItemKind curItem = null;// 현재 선택중인 아이템 정보를 저장할 변수
     public GameObject marterialObject;
 
-
+    private InventorySlot lastClickedSlot = null;
     void Awake()
     {
         if (Instance == null)
@@ -58,6 +58,20 @@ public class ShopManager : MonoBehaviour
             Inventory.Instance.CreateItem(curItem, marterialObject);
         }
     }
+
+    public void SetDestroySlotItem(InventorySlot slot) // 판ㅁ매 버튼 클릭시 비울 슬롯을 전달받는 곳
+    {
+        lastClickedSlot = slot;
+    }
+    public void OnDestroyInventorySlotItem() // 판매 버튼을 누르면 호출
+    {
+        if (lastClickedSlot != null)
+        {
+            lastClickedSlot.DestroyChild();
+            lastClickedSlot = null;
+        }
+    }
+
 
 
     // 아이템 정보를 TextMeshPro에 표시하는 함수
