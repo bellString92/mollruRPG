@@ -571,7 +571,7 @@ MonoBehaviour:
   mystate: 0
   myTarget: {fileID: 0}
   myJob: {fileID: 2935131679916556212, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
-  doMyJob: {fileID: 0}
+  urInventory: {fileID: 2142534193}
 --- !u!4 &1516780713
 Transform:
   m_ObjectHideFlags: 0
@@ -722,6 +722,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &1707732871 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1412619045028733574, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
+  m_PrefabInstance: {fileID: 7522811798840120042}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1925174864
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,6 +1415,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2875031136332228294, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
+      propertyPath: content
+      value: 
+      objectReference: {fileID: 1707732871}
     - target: {fileID: 2930613241273544005, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
       propertyPath: m_Name
       value: Inventory
@@ -1753,6 +1762,14 @@ PrefabInstance:
     - target: {fileID: 7012050573834029394, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7226044668828954415, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -148.18988
+      objectReference: {fileID: 0}
+    - target: {fileID: 7226044668828954415, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 12.990814
       objectReference: {fileID: 0}
     - target: {fileID: 7994811991332661271, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
       propertyPath: m_AnchorMax.y
