@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using Unity.VisualScripting;
 
 public class ShopSlot : MonoBehaviour
 {
@@ -26,16 +24,5 @@ public class ShopSlot : MonoBehaviour
     {
        
         ShopManager.Instance.OnSlotClicked(item);
-    }
-
-    // IPointerClickHandler 인터페이스 구현
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log("눌림");
-        OnClickSlot();
-    }
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        Debug.Log("마우스 인식함");
     }
 }
