@@ -17,7 +17,7 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 8e859c149e0cd814ea9acc8581953bd6, type: 3}
   description: "\uB8E8\uBE44\uAC00 \uBC15\uD600\uC788\uB294 \uBAA9\uAC78\uC774"
   price: 150
-  resellprice: 0
+  resellprice: 120
   itemID: 3
   attackBoost: 50
   maxHealBoost: 50
