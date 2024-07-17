@@ -28,8 +28,6 @@ public class Portal : MonoBehaviour
         {
             PlayerPrefs.SetString("nextSceneText", nextSceneText);
             PlayerPrefs.SetString("nextSceneImage", nextSceneImage);
-            Debug.Log(curScene.name);
-            SceneManager.UnloadSceneAsync(curScene.name);
             SceneChange.OnSceneChange(nextScene);
         }
     }
