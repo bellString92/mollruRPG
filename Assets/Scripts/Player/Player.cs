@@ -47,6 +47,20 @@ public class Player : AnimatorProperty, IBattle
         
     }
 
+    public void ExpSystem()
+    {
+        myStat.maxExperiencePoint = myStat.myLvevel * 10;
+    }
+
+    public void LevelSystem()
+    {
+        if (myStat.curExperiencePoint >= myStat.maxExperiencePoint)
+        {
+            myStat.myLvevel++;
+        }
+    }
+
+
     // Update is called once per frame
     void Update()
     {

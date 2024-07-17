@@ -21,11 +21,16 @@ interface IBattle : IDamage, ILive
 [System.Serializable]
 public struct BattleStat
 {
-    public float AttackDelay;
-    public float AttackRange;
     public float AttackPoint;
+    public float AttackRange;
+    public float AttackDelay;
     public float maxHealPoint;
     public float curHealPoint;
+    public float maxMagicPoint;
+    public float curMagicPoint;
+    public int myLvevel;
+    public float maxExperiencePoint;
+    public float curExperiencePoint;
 
     public float GetHpValue()
     {

@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class Enemy : BattleSystem
-{    
-
+{
     public enum State
     {
         Create, Normal, Battle, Death
