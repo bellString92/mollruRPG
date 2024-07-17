@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Portal : MonoBehaviour
 {
@@ -8,10 +9,11 @@ public class Portal : MonoBehaviour
     public string nextSceneText = "·Îµù Áß";
     public string nextSceneImage = "Dungeon";
     public LayerMask targetMask;
+    private Scene curScene;
     // Start is called before the first frame update
     void Start()
     {
-        
+        curScene = SceneManager.GetActiveScene();
     }
 
     // Update is called once per frame
@@ -26,6 +28,8 @@ public class Portal : MonoBehaviour
         {
             PlayerPrefs.SetString("nextSceneText", nextSceneText);
             PlayerPrefs.SetString("nextSceneImage", nextSceneImage);
+            Debug.Log(curScene.name);
+            SceneManager.UnloadSceneAsync(curScene.name);
             SceneChange.OnSceneChange(nextScene);
         }
     }

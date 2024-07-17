@@ -1,9 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,7 +21,10 @@ public class CharacterSelect : MonoBehaviour
     public void OnCreateSelectSlotClick(int num)
     {
         if (GameObject.Find($"Paladin{num}") == null && GameObject.Find($"Maria{num}") == null)
+        {
+            startNum = num;
             CreateNickName(PopupType.CREATE, num);
+        }
         else
         {
             string nickName = GameObject.Find($"NickName{num}").transform.GetComponentInChildren<TMPro.TMP_Text>().text;
@@ -121,7 +118,7 @@ public class CharacterSelect : MonoBehaviour
         PlayerPrefs.SetString("nickName", _nickName);
         SceneChange.OnSceneChange("MollRuRPGScene");
     }
-
+    
     private void CreateNickName(PopupType type, int num)
     {
         GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(true);
@@ -129,7 +126,8 @@ public class CharacterSelect : MonoBehaviour
 
         textPopup.transform.GetChild(1).GetComponentInChildren<TMPro.TMP_Text>().text = "닉네임 설정";
         textPopup.transform.GetChild(3).GetComponentInChildren<TMPro.TMP_Text>().text = "확인";
-        textPopup.transform.GetComponentInChildren<Button>().onClick.AddListener(() => {
+        textPopup.transform.GetComponentInChildren<Button>().onClick.AddListener(() =>
+        {
             string nickName = textPopup.transform.GetChild(2).GetComponentInChildren<TMPro.TMP_InputField>().text;
             string result = NickNameCheck(nickName);
             if ("".Equals(result))
@@ -145,7 +143,7 @@ public class CharacterSelect : MonoBehaviour
                 textPopup.transform.GetChild(2).GetChild(1).transform.gameObject.SetActive(true);
             }
         });
-        
+
         textPopup.transform.SetParent(GameObject.Find("NickName").transform);
         textPopup.transform.localPosition = Vector3.zero;
         textPopup.SetActive(true);
@@ -170,7 +168,7 @@ public class CharacterSelect : MonoBehaviour
         }
 
         return "";
-        
+
     }
 
     private void CreatePopup(PopupType type, int num = 0, string nickName = "")
@@ -180,7 +178,8 @@ public class CharacterSelect : MonoBehaviour
         TMPro.TMP_Text[] texts = popup.transform.GetComponentsInChildren<TMPro.TMP_Text>();
 
         Button[] btns = popup.transform.GetComponentsInChildren<Button>();
-        btns[0].onClick.AddListener(() => {
+        btns[0].onClick.AddListener(() =>
+        {
             Destroy(popup);
             GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
         });
@@ -188,7 +187,8 @@ public class CharacterSelect : MonoBehaviour
         {
             case PopupType.CREATE:
                 texts[0].text = "생성 하시겠습니까?";
-                btns[1].onClick.AddListener(() => {
+                btns[1].onClick.AddListener(() =>
+                {
                     OnCreateSelectSlotClickOk(num, nickName);
                     Destroy(popup);
                     GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
@@ -196,7 +196,8 @@ public class CharacterSelect : MonoBehaviour
                 break;
             case PopupType.DELETE:
                 texts[0].text = "삭제 하시겠습니까?";
-                btns[1].onClick.AddListener(() => {
+                btns[1].onClick.AddListener(() =>
+                {
                     OnDeleteSlotClickOk(num); Destroy(popup);
                     GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
                 });
@@ -205,14 +206,17 @@ public class CharacterSelect : MonoBehaviour
                 if (num == 0)
                 {
                     texts[0].text = "캐릭터를 선택해주세요.";
-                    btns[1].onClick.AddListener(() => {
+                    btns[1].onClick.AddListener(() =>
+                    {
                         Destroy(popup);
                         GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
                     });
-                } else
+                }
+                else
                 {
-                    texts[0].text = "게임 시작하시겠습니까?";
-                    btns[1].onClick.AddListener(() => {
+                    texts[0].text = "게임을 시작하시겠습니까?";
+                    btns[1].onClick.AddListener(() =>
+                    {
                         GameStartOk(num);
                         Destroy(popup);
                         GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
