@@ -1342,7 +1342,7 @@ MonoBehaviour:
   myLevel: {fileID: 1174578680}
   myExp: {fileID: 1030317371}
   maxExp: 0
-  minExp: 0
+  curExp: 0
   PercentExp: 0
 --- !u!1 &1634054795
 GameObject:
@@ -1665,6 +1665,10 @@ PrefabInstance:
     - target: {fileID: 7861211204230361259, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: myStat.curExperiencePoint
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: myStat.maxExperiencePoint
