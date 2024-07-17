@@ -237,8 +237,6 @@ public class Player : AnimatorProperty, IBattle
 
     public void OnAttack()
     {
-        myBody = gameObject;
-
         Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 0.5f, 0.5f, enemyMask);
         foreach(Collider col in list)
         {

@@ -6,7 +6,6 @@ using UnityEngine.Events;
 public class Enemy : BattleSystem
 {
     public float myExp = 100;
-    public GameObject RIP;
 
     public enum State
     {
@@ -48,6 +47,7 @@ public class Enemy : BattleSystem
                 FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
                 break;
             case State.Death:
+                giveExp(myExp);
                 StopAllCoroutines();
                 deadAct?.Invoke();
                 break;
@@ -94,9 +94,9 @@ public class Enemy : BattleSystem
         StateProcess();
     }
 
-    public void giveExp()
+    public void giveExp(float exp)
     {
-        
+        OnGiveExp(myExp);
     }
 
 

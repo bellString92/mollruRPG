@@ -83,6 +83,15 @@ public class BattleSystem : AIMovement, IBattle
         }
     }
 
+    protected void OnGiveExp(float exp)
+    {
+        if (!myAnim.GetBool("IsDead"))
+        {
+            myAnim.SetBool("IsDead", true);
+            myTarget.GetComponent<Player>().myStat.curExperiencePoint += exp;
+        }
+    }
+
     protected void BattleUpdate()
     {
         if (myAnim.GetBool("IsAttacking") == false)
