@@ -10,6 +10,7 @@ public class NpcState : AnimatorProperty
 
     public GameObject myJob; // 각 npc가 담당할 Ui를 프리펩으로 만들고 바인딩
     private GameObject doMyJob; // 상호작용을 여러번해 중복 생성 되지않도록 이미 상호작용중 이라면 생성한 object를 저장해서 관리
+    private bool doingmyjob = false; 
 
     public Inventory urInventory;
     
@@ -61,9 +62,18 @@ public class NpcState : AnimatorProperty
                             {
                                 doMyJob = UIManager.Instance.ShowUI(myJob);// 중복생성 방지를 위한 domyjob저장 ShowUI는 정상작동
                                 urInventory.gameObject.SetActive(true);
+                                doingmyjob = true;
                             }
                         }
                     }
+                    if (doingmyjob == true) 
+                    {
+                        if (doMyJob == null)
+                        {
+                            urInventory.gameObject.SetActive(false);
+                            doingmyjob= false;
+                        }
+                    }                    
                 }
                 break;
         }
@@ -128,6 +138,7 @@ public class NpcState : AnimatorProperty
         {
             Destroy(doMyJob);
             doMyJob = null;
+            urInventory.gameObject.SetActive(false);
         }
     }
 
