@@ -9,6 +9,7 @@ public class AnimEvent : MonoBehaviour
     public UnityEvent deadAct;
     public UnityEvent moveAct;
     public UnityEvent stopAct;
+    public UnityEvent takeExpAct;
     public UnityEvent skillDamageAct;
     public UnityEvent skillCheckStartAct;
     public UnityEvent skillCheckEndAct;
@@ -33,6 +34,11 @@ public class AnimEvent : MonoBehaviour
     {
         stopAct?.Invoke();
     }    
+
+    public void OntakeExp()
+    {
+        takeExpAct?.Invoke();
+    }
 
     public void OnSkilldamage()
     {

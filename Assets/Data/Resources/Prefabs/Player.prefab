@@ -383,16 +383,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeHpAct:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
+        m_MethodName: OnChangeHP
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  changeMpAct:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
+        m_MethodName: OnChangeMP
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   myStat:
-    AttackDelay: 2
-    AttackRange: 2
     AttackPoint: 35
+    AttackRange: 2
+    AttackDelay: 2
     maxHealPoint: 100
     curHealPoint: 100
+    maxMagicPoint: 100
+    curMagicPoint: 100
+    myLvevel: 1
+    maxExperiencePoint: 100
+    curExperiencePoint: 8
   enemyMask:
     serializedVersion: 2
     m_Bits: 128
+  myBody: {fileID: 0}
   myDoubleClickSecond: 0.25
 --- !u!114 &3741278184048714632
 MonoBehaviour:
@@ -414,7 +447,9 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1568
-  visibleTargetsView: []
+  visibleMonsterView: []
+  visibleNPCView: []
+  visibleETCView: []
 --- !u!136 &7128628249166682499
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1245,6 +1280,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   stopAct:
+    m_PersistentCalls:
+      m_Calls: []
+  takeExpAct:
     m_PersistentCalls:
       m_Calls: []
   skillDamageAct:

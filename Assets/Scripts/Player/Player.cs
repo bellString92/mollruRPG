@@ -17,6 +17,8 @@ public class Player : AnimatorProperty, IBattle
     Vector3 TGDir;
     Vector2 inputDir = Vector2.zero;
     Vector2 desireDir = Vector2.zero;
+    public GameObject myBody;
+
 
     bool IsComboCheck = false;
 
@@ -149,13 +151,13 @@ public class Player : AnimatorProperty, IBattle
         }
 
 
-
+        /*
         // 사용처 주석 요망
         if (myIsOneClick && ((Time.time - myTimer) > myDoubleClickSecond))
         {
             myIsOneClick = false;
         }
-
+        */
         
         
         
@@ -235,6 +237,8 @@ public class Player : AnimatorProperty, IBattle
 
     public void OnAttack()
     {
+        myBody = gameObject;
+
         Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 0.5f, 0.5f, enemyMask);
         foreach(Collider col in list)
         {
