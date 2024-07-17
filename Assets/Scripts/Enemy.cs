@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class Enemy : BattleSystem
 {
+    public float myExp = 100;
+    public GameObject RIP;
+
     public enum State
     {
         Create, Normal, Battle, Death
@@ -90,6 +93,12 @@ public class Enemy : BattleSystem
     {
         StateProcess();
     }
+
+    public void giveExp()
+    {
+        
+    }
+
 
     public void OnBattle(Transform target)
     {
