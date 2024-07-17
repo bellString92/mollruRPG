@@ -19,4 +19,6 @@ MonoBehaviour:
   price: 80
   resellprice: 64
   itemID: 1
+  maxStack: 1
+  quantity: 1
   attackBoost: 100

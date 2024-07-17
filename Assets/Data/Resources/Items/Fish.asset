@@ -19,3 +19,5 @@ MonoBehaviour:
   price: 1
   resellprice: 0
   itemID: 5
+  maxStack: 999
+  quantity: 1

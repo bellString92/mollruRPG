@@ -10,6 +10,11 @@ public class WeaponItem : ItemKind
     private void OnEnable()
     {
         itemType = ItemType.weaponItem;
+        maxStack = 1;
+    }
+    public WeaponItem(WeaponItem original) : base(original)
+    {
+        attackBoost = original.attackBoost;
     }
 
     public override void Use(BattleStat myStat) //사용시 player의 능력치에 영향을 주는 코드

@@ -10,6 +10,11 @@ public class ArmorItem : ItemKind
     private void OnEnable()
     {
         itemType = ItemType.armorItem;
+        maxStack = 1;
+    }
+    public ArmorItem(ArmorItem original) : base(original)
+    {
+        maxHealBoost = original.maxHealBoost;
     }
 
     public override void Use(BattleStat myStat) //사용시 player의 능력치에 영향을 주는 코드

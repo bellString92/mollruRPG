@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -9,6 +10,10 @@ public class UIManager : MonoBehaviour
     public Canvas canvas;
     public Inventory myInven;
 
+    public GameObject itemQuantityCheckPrefab; // Quantity를 표시할 프리팹
+    private GameObject currentQuantityUI = null;
+    private ItemKind itemWithPendingQuantity = null;
+    private System.Action quantityConfirmCallback;
 
     private void Awake()
     {
@@ -43,7 +48,30 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public GameObject ShowUI(GameObject uiPrefab) // 호출한 npc가 가지고있는 프리펩 ui생성
+    public void OpenQuantityUI(ItemKind item, System.Action onConfirm)
+    {
+        // 기존에 열린 UI가 있으면 닫기
+        if (currentQuantityUI != null)
+        {
+            CloseTopUi();
+        }
+
+        itemWithPendingQuantity = item;
+        quantityConfirmCallback = onConfirm;
+
+        // Quantity UI를 생성하여 표시
+        currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
+
+        // UI에 아이템 정보 표시
+        TMP_Text quantityText = currentQuantityUI.GetComponentInChildren<TMP_Text>();
+        if (quantityText != null)
+        {
+            quantityText.text = $"Current Quantity: {item.quantity}\nSet new quantity:";
+        }
+    }
+
+
+    public GameObject ShowUI(GameObject uiPrefab) // 호출자가 가지고있는 프리펩 ui생성
     { 
         if (canvas != null) 
         { 
@@ -57,4 +85,6 @@ public class UIManager : MonoBehaviour
             return null;
         } 
     }
+
+
 }

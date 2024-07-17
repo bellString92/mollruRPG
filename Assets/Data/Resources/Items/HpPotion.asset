@@ -19,4 +19,6 @@ MonoBehaviour:
   price: 10
   resellprice: 8
   itemID: 4
+  maxStack: 99
+  quantity: 1
   healAmount: 100

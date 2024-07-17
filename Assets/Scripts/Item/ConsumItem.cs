@@ -10,14 +10,23 @@ public class ConsumItem : ItemKind
     private void OnEnable()
     {
         itemType = ItemType.consumItem;
+        maxStack= 99;
+    }
+    public ConsumItem(ConsumItem original) : base(original)
+    {
+        
     }
 
     public override void Use(BattleStat myStat) //사용시 player의 능력치에 영향을 주는 코드
     {
-        myStat.curHealPoint += healAmount;
-        if (myStat.curHealPoint > myStat.maxHealPoint)
+        if (quantity > 0)
         {
-            myStat.curHealPoint = myStat.maxHealPoint;
-        }
+            myStat.curHealPoint += healAmount;
+            if (myStat.curHealPoint > myStat.maxHealPoint)
+            {
+                myStat.curHealPoint = myStat.maxHealPoint;
+            }
+            quantity--; // 사용 후 갯수 감소
+        }        
     }
 }

@@ -52,14 +52,30 @@ public class ShopManager : MonoBehaviour
 
     public void OnAddNewItemInInventory()
     {
+        ItemKind copiedItem = Instantiate(curItem); // 원본 아이템 데이터를 보존하기위한 정보복사
+
+
         // AssemblyManager의 CreateItem 호출하여 아이템 생성
         if (curItem != null)
         {
-            Inventory.Instance.CreateItem(curItem, marterialObject);
+            if (copiedItem.itemType == ItemType.consumItem || copiedItem.itemType == ItemType.materialItem)
+            {
+                // UI를 통해 quantity 수정 가능하도록 설정
+                UIManager.Instance.OpenQuantityUI(copiedItem, () =>
+                {
+                    // 사용자가 버튼을 누르면 호출되는 콜백
+                    Inventory.Instance.CreateItem(copiedItem, marterialObject);
+                });
+            }
+            else
+            {
+                // 아이템 타입이 consumItem 또는 materialItem이 아닌 경우 바로 인벤토리에 추가
+                Inventory.Instance.CreateItem(copiedItem, marterialObject);
+            }
         }
     }
 
-    public void SetDestroySlotItem(InventorySlot slot) // 판ㅁ매 버튼 클릭시 비울 슬롯을 전달받는 곳
+    public void SetDestroySlotItem(InventorySlot slot) // 판매 버튼 클릭시 비울 슬롯을 전달받는 곳
     {
         lastClickedSlot = slot;
     }

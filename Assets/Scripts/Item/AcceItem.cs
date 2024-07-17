@@ -11,6 +11,13 @@ public class AcceItem : ItemKind
     private void OnEnable()
     {
         itemType = ItemType.acceItem;
+        maxStack = 1;
+    }
+
+    public AcceItem(AcceItem original) : base(original)
+    {
+        attackBoost = original.attackBoost;
+        maxHealBoost = original.maxHealBoost;
     }
 
     public override void Use(BattleStat myStat) //사용시 player의 능력치에 영향을 주는 코드

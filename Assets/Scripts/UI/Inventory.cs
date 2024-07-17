@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Inventory : MonoBehaviour
 {
@@ -47,13 +48,18 @@ public class Inventory : MonoBehaviour
                     if (iconImage != null && newItemKind.itemIcon != null)
                     {
                         iconImage.sprite = newItemKind.itemIcon;
-                    }                  
-
+                    }
+                    
                     // 슬롯에 아이템 배치
                     inventorySlot.SetChild(newItem);
                     newItem.transform.SetParent(slot);
 
-                    Debug.Log($"Created item: {newItemKind.itemName} in slot {slot.name} with independent data");
+                    //아이템 갯수 표시
+                    TextMeshProUGUI quantityText = newItem.GetComponentInChildren<TextMeshProUGUI>();
+                    if (quantityText != null)
+                    {
+                        quantityText.text = newItemKind.quantity.ToString();
+                    }
 
                     // 위치와 크기 설정
                     // RectTransform 초기화
