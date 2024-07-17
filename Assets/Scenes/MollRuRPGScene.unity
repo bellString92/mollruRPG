@@ -2664,7 +2664,7 @@ GameObject:
   - component: {fileID: 1621557945}
   - component: {fileID: 1621557944}
   m_Layer: 9
-  m_Name: Cube
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3803,9 +3803,9 @@ SceneRoots:
   - {fileID: 1925174866}
   - {fileID: 789845157}
   - {fileID: 822945683}
-  - {fileID: 8590503816301618552}
-  - {fileID: 5041076239084895749}
   - {fileID: 1621557947}
   - {fileID: 1516780713}
-  - {fileID: 2091543678}
+  - {fileID: 8590503816301618552}
+  - {fileID: 5041076239084895749}
   - {fileID: 1377853765}
+  - {fileID: 2091543678}

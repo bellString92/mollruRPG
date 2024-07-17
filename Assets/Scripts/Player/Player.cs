@@ -183,7 +183,7 @@ public class Player : AnimatorProperty, IBattle
             myAnim.SetTrigger("OnSkill_E");
         }
 
-        // 스킬 S (이동기)
+        // 스킬 SS (이동기)
         if (Input.GetKeyDown(KeyCode.S))
         {
             if (!myIsOneClick)
