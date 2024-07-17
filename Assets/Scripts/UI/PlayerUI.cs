@@ -33,12 +33,13 @@ public class PlayerUI : MonoBehaviour
     {
         maxExp = myBody.GetComponent<Player>().myStat.maxExperiencePoint;
         minExp = myBody.GetComponent<Player>().myStat.curExperiencePoint;
-        PercentExp = maxExp % minExp;
+        PercentExp = minExp / maxExp;
     }
 
     public void OnExp()
     {
-        myExp.text = PercentExp.ToString("0.000%");
+        OnAddExp();
+        myExp.text = PercentExp.ToString("0.00"+"%");
     }
 
     // Start is called before the first frame update
