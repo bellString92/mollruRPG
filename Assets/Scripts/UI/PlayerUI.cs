@@ -11,6 +11,9 @@ public class PlayerUI : MonoBehaviour
     public Slider mpBar;
     public TMPro.TMP_Text myLevel;
     public TMPro.TMP_Text myExp;
+    public float maxExp;
+    public float minExp;
+    public float PercentExp;
 
     public void OnChangeHP(float v)
     {
@@ -23,24 +26,30 @@ public class PlayerUI : MonoBehaviour
 
     public void OnLevel()
     {
-       // myLevel.text = myBody.GetComponent<Player>().
+        myLevel.text = myBody.GetComponent<Player>().myStat.myLvevel.ToString();
     }
 
+    public void OnAddExp()
+    {
+        maxExp = myBody.GetComponent<Player>().myStat.maxExperiencePoint;
+        minExp = myBody.GetComponent<Player>().myStat.curExperiencePoint;
+        PercentExp = maxExp % minExp;
+    }
 
+    public void OnExp()
+    {
+        myExp.text = PercentExp.ToString("0.000%");
+    }
 
     // Start is called before the first frame update
     void Start()
     {
       
     }
-
+    
     void Update()
     {
-
+        OnLevel();
+        OnExp();
     }
-   
-     
-
-    
-
 }

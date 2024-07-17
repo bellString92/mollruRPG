@@ -1309,6 +1309,9 @@ MonoBehaviour:
   mpBar: {fileID: 1323507844}
   myLevel: {fileID: 1174578680}
   myExp: {fileID: 1030317371}
+  maxExp: 0
+  minExp: 0
+  PercentExp: 0
 --- !u!1 &1634054795
 GameObject:
   m_ObjectHideFlags: 0
