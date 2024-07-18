@@ -2610,7 +2610,7 @@ MonoBehaviour:
   mystate: 0
   myTarget: {fileID: 0}
   myJob: {fileID: 2935131679916556212, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
-  urInventory: {fileID: 0}
+  urInventory: {fileID: 734004145}
 --- !u!4 &1516780713
 Transform:
   m_ObjectHideFlags: 0

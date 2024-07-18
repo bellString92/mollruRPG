@@ -12,8 +12,6 @@ public class Inventory : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
-        else
-            Destroy(gameObject); // 중복 생성 방지
     }
 
     public Transform content; // 슬롯들을 자식으로 가지고 있는 부모 Transform
