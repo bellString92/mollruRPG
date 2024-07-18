@@ -3486,7 +3486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 2091543677}
   myInven: {fileID: 734004145}
-  itemQuantityCheckPrefab: {fileID: 0}
+  itemQuantityCheckPrefab: {fileID: 5051053142764502814, guid: 571051b0e8a38d943817952326418748, type: 3}
 --- !u!1 &2110555652
 GameObject:
   m_ObjectHideFlags: 0
@@ -3740,6 +3740,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: myBody
+      value: 
+      objectReference: {fileID: 462939867}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.size
       value: 1
