@@ -37,7 +37,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        ShopManager.Instance.SetDestroySlotItem(this); // 클릭으로 마우스 이벤트가 끝났을때 이슬롯을 선택해 아이템 삭제하기위해 정보 전달
+        if (myChild != null)
+        {
+            ShopManager.Instance.SetDestroySlotItem(this); // 클릭으로 마우스 이벤트가 끝났을때 이슬롯을 선택해 아이템 삭제하기위해 정보 전달
+        }
     }
 
     public void SetChild(GameObject newChild)

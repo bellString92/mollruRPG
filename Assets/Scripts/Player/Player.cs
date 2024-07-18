@@ -66,19 +66,6 @@ public class Player : AnimatorProperty, IBattle
     // Update is called once per frame
     void Update()
     {
-        
-        // 마우스 숨김처리 시작
-        GameObject go = GameObject.Find("MouseHide");
-        if (go == null)
-        {
-            go = new GameObject("MouseHide");
-            go.AddComponent<MouseHide>();
-        }
-        // 마우스 숨김처리 끝
-
-        // 마우스 보이면 움직임 막기
-        if (!MouseHide.Instance.mouseHide) return;
-
         // 실시간 타겟 저장
         if (FieldOfView.visibleMonster.Count > 0) 
         {
@@ -90,8 +77,6 @@ public class Player : AnimatorProperty, IBattle
             myTarget = null;
         }
 
-        //타겟과 나의 거리
-
         // 이동
         desireDir.x = Input.GetAxis("Horizontal");
         desireDir.y = Input.GetAxis("Vertical");
@@ -101,7 +86,7 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetFloat("x", inputDir.x);
         myAnim.SetFloat("y", inputDir.y);
 
-        //W+W달리기
+        // W+W 달리기
         if (Input.GetKeyDown(KeyCode.W))
         {
             if (!myIsOneClick)
@@ -116,19 +101,19 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
-        //W+LShift 달리기
+        // W+LShift 달리기
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
             myAnim.SetBool("Run", true);
         }
 
-        //달리기 해제
+        // 달리기 해제
         if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.LeftShift))
         {
             myAnim.SetBool("Run", false);
         }
 
-        //구르기
+        // 구르기
         if (Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Roll");
@@ -143,7 +128,7 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
-        //상호작용키
+        // 상호작용키
         if ((myTarget != null) && isNearButton && Input.GetKeyDown(KeyCode.F))
         {
             currentButton.OnButtonPress();
@@ -153,20 +138,7 @@ public class Player : AnimatorProperty, IBattle
             currentChest.OpenChest();
         }
 
-
-        /*
-        // 사용처 주석 요망
-        if (myIsOneClick && ((Time.time - myTimer) > myDoubleClickSecond))
-        {
-            myIsOneClick = false;
-        }
-        */
-        
-        
-        
-        
-
-        //기본공격 좌클
+        // 기본공격 좌클
         if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
         {
             myAnim.SetTrigger("OnAttack");
@@ -208,28 +180,28 @@ public class Player : AnimatorProperty, IBattle
             myAnim.SetTrigger("OnSkill_F1");
         }
         
-        //스킬 1
+        // 스킬 1
         if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
         {
             myAnim.SetBool("IsSkill_1", true);
             myAnim.SetTrigger("OnSkill_1");
         }
         
-        //스킬 2
+        // 스킬 2
         if (!myAnim.GetBool("IsSkill_2") && Input.GetKeyDown(KeyCode.Alpha2))
         {
             myAnim.SetBool("IsSkill_2", true);
             myAnim.SetTrigger("OnSkill_2");
         }
 
-        //스킬 3
+        // 스킬 3
         if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
         {
             myAnim.SetBool("IsSkill_3", true);
             myAnim.SetTrigger("OnSkill_3");
         }
 
-        //스킬 4
+        // 스킬 4
         if (!myAnim.GetBool("IsSkill_4") && Input.GetKeyDown(KeyCode.Alpha4))
         {
             myAnim.SetBool("IsSkill_4", true);
@@ -260,7 +232,6 @@ public class Player : AnimatorProperty, IBattle
     {   
         while (!myAnim.GetBool("myState"))
         {
-            
             if (!myTarget) yield break; // 타겟이 비어있으면 하지 빠져나감
             Vector3 myTDir = myTarget.transform.position - transform.position; // 타겟과의 거리 계산
             float myTDist = myTDir.magnitude; // 

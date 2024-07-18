@@ -24,23 +24,14 @@ public class SpringArm : CameraProperty
     // Update is called once per frame
     void Update()
     {
-        if (!MouseHide.Instance.mouseHide) return;
-
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;// Ui와 상호 작용중일때 입력 제한
-
         float x = Input.GetAxis("Mouse X");
         transform.parent.Rotate(Vector3.up * x * rotSpeed);
         float y = -Input.GetAxis("Mouse Y");
-        
-        //curRot.x += y;
-        //if (curRot.x > rotRange.y) curRot.x = rotRange.y;
-        //if (curRot.x < rotRange.x) curRot.x = rotRange.x;
+
         curRot.x = Mathf.Clamp(curRot.x + y * rotSpeed, rotRange.x, rotRange.y);
         transform.localRotation = Quaternion.Euler(curRot);
-        //transform.Rotate(Vector3.right * y * rotSpeed);
 
-        desireDist = Mathf.Clamp(desireDist - Input.GetAxis("Mouse ScrollWheel") * zoomSpeed, 
-            zoomRange.x, zoomRange.y);
+        desireDist = Mathf.Clamp(desireDist - Input.GetAxis("Mouse ScrollWheel") * zoomSpeed, zoomRange.x, zoomRange.y);
 
         camDist = Mathf.Lerp(camDist, desireDist, Time.deltaTime * 5.0f);
         

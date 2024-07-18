@@ -36,9 +36,6 @@ public class UIManager : MonoBehaviour
         //인벤토리 상호작용
         if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
         {
-            if (myInven.gameObject.activeSelf)
-                MouseHide.Instance.StartMouseHide();
-            else MouseHide.Instance.StartMouseView();
             myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
         }
     }
