@@ -24,8 +24,7 @@ public class SpringArm : CameraProperty
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(MouseHide.Instance.mouseHide);
-        if (MouseHide.Instance.mouseHide) return;
+        if (!MouseHide.Instance.mouseHide) return;
 
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;// Ui와 상호 작용중일때 입력 제한
 
