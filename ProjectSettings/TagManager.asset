@@ -10,6 +10,11 @@ TagManager:
   - Portal
   - Enemy
   - NPC
+  - WeaponItem
+  - ArmorItem
+  - AccessoryItem
+  - ConsumItem
+  - MaterialItem
   layers:
   - Default
   - TransparentFX
