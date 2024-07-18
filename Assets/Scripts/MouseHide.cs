@@ -7,6 +7,12 @@ public class MouseHide : MonoBehaviour
 {
     private Coroutine mouseHideCor = null;
     private Coroutine mouseViewCor = null;
+    public bool mouseHide { get; private set; }
+    public static MouseHide Instance = null;
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -17,17 +23,22 @@ public class MouseHide : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
-            StopMouseCor(mouseHideCor);
-            mouseViewCor = StartCoroutine(MouseViewCor());
+            if (mouseHide)
+            {
+                StopMouseCor(mouseHideCor);
+                mouseViewCor = StartCoroutine(MouseViewCor());
+                mouseHide = false;
+            }
+            else
+            {
+                StopMouseCor(mouseViewCor);
+                mouseHideCor = StartCoroutine(MouseHideCor());
+                mouseHide = true;
+            }
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftAlt))
-        {
-            StopMouseCor(mouseViewCor);
-            mouseHideCor = StartCoroutine(MouseHideCor());
-        }
     }
 
     void StopMouseCor(Coroutine cor)
