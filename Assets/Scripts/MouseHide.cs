@@ -17,7 +17,7 @@ public class MouseHide : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mouseHideCor = StartCoroutine(MouseHideCor());
+        StartMouseHide();
     }
 
     // Update is called once per frame
@@ -27,18 +27,28 @@ public class MouseHide : MonoBehaviour
         {
             if (mouseHide)
             {
-                StopMouseCor(mouseHideCor);
-                mouseViewCor = StartCoroutine(MouseViewCor());
-                mouseHide = false;
+                StartMouseView();
             }
             else
             {
-                StopMouseCor(mouseViewCor);
-                mouseHideCor = StartCoroutine(MouseHideCor());
-                mouseHide = true;
+                StartMouseHide();
             }
         }
 
+    }
+
+    public void StartMouseHide()
+    {
+        StopMouseCor(mouseViewCor);
+        mouseHideCor = StartCoroutine(MouseHideCor());
+        mouseHide = true;
+    }
+
+    public void StartMouseView()
+    {
+        StopMouseCor(mouseHideCor);
+        mouseViewCor = StartCoroutine(MouseViewCor());
+        mouseHide = false;
     }
 
     void StopMouseCor(Coroutine cor)

@@ -75,7 +75,10 @@ public class Player : AnimatorProperty, IBattle
             go.AddComponent<MouseHide>();
         }
         // 마우스 숨김처리 끝
-        
+
+        // 마우스 보이면 움직임 막기
+        if (!MouseHide.Instance.mouseHide) return;
+
         // 실시간 타겟 저장
         if (FieldOfView.visibleMonster.Count > 0) 
         {
