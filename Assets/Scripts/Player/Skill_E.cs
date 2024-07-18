@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Skill_E : StateMachineBehaviour
 {
-    Vector3 myPos;              // ³ªÀÇ À§Ä¡ ÀúÀå¿ë
-    Transform myTarget;         // ¸ñÇ¥ ÀúÀå¿ë
-    float moveSpeed = 2.0f;     // ÀÌµ¿ ¼Óµµ
-    float distance = 3.0f;      // Å¸°Ù°úÀÇ °Å¸®
+    Vector3 myPos;              // ë‚˜ì˜ ìœ„ì¹˜ ì €ì¥ìš©
+    Transform myTarget;         // ëª©í‘œ ì €ì¥ìš©
+    float moveSpeed = 2.0f;     // ì´ë™ ì†ë„
+    float distance = 3.0f;      // íƒ€ê²Ÿê³¼ì˜ ê±°ë¦¬
 
     private Vector3 targetPosition;
     private bool initialized = false;
@@ -15,7 +15,7 @@ public class Skill_E : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //Å¸°Ù ÀúÀå
+        //íƒ€ê²Ÿ ì €ì¥
         if (FieldOfView.visibleMonster.Count > 0)
         {
             myTarget = FieldOfView.visibleMonster[0];
@@ -25,16 +25,16 @@ public class Skill_E : StateMachineBehaviour
             myTarget = null;
             return;
         }
-        //³ªÀÇ À§Ä¡ ÀúÀå
+        //ë‚˜ì˜ ìœ„ì¹˜ ì €ì¥
         myPos = animator.transform.parent.position;
 
 
 
-        Vector3 positionTarget = myTarget.position;                 // myTargetÀÇ À§Ä¡°ª
-        Quaternion rotationTarget = myTarget.rotation;              // myTargetÀÇ È¸Àü°ª
-        Vector3 offset = rotationTarget * Vector3.left * distance; // 90µµ ¿·ÀÇ ¹æÇâ
+        Vector3 positionTarget = myTarget.position;                 // myTargetì˜ ìœ„ì¹˜ê°’
+        Quaternion rotationTarget = myTarget.rotation;              // myTargetì˜ íšŒì „ê°’
+        Vector3 offset = rotationTarget * Vector3.left * distance; // 90ë„ ì˜†ì˜ ë°©í–¥
 
-        targetPosition = positionTarget + offset;           // ¸ñÇ¥ À§Ä¡¸¦ °è»ê
+        targetPosition = positionTarget + offset;           // ëª©í‘œ ìœ„ì¹˜ë¥¼ ê³„ì‚°
         initialized = true;
     }
 
@@ -43,9 +43,9 @@ public class Skill_E : StateMachineBehaviour
     {
         if (initialized)
         {
-            myPos = Vector3.Lerp(myPos, targetPosition, Time.deltaTime * moveSpeed); // ¸ñÇ¥ À§Ä¡·Î ÀÌµ¿
-            animator.transform.parent.position = myPos; // ³ªÀÇ À§Ä¡¸¦ °»½Å
-            animator.transform.parent.LookAt(myTarget.transform); // Å¸°ÙÀ» ¹Ù¶óº½
+            myPos = Vector3.Lerp(myPos, targetPosition, Time.deltaTime * moveSpeed); // ëª©í‘œ ìœ„ì¹˜ë¡œ ì´ë™
+            animator.transform.parent.position = myPos; // ë‚˜ì˜ ìœ„ì¹˜ë¥¼ ê°±ì‹ 
+            animator.transform.parent.LookAt(myTarget.transform); // íƒ€ê²Ÿì„ ë°”ë¼ë´„
         }
 
     }

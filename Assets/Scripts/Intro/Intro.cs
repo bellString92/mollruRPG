@@ -28,19 +28,19 @@ public class Intro : MonoBehaviour
         {
             introCor = null;
             startCor = null;
-            PlayerPrefs.SetString("nextSceneText", "·Îµù Áß");
+            PlayerPrefs.SetString("nextSceneText", "ë¡œë”© ì¤‘");
             PlayerPrefs.SetString("nextSceneImage", "Dungeon");
             SceneChange.OnSceneChange("CharaterSelect");
         }
     }
 
     /// <summary>
-    /// title : °ÔÀÓÅ¸ÀÌÆ²
-    /// waitTime : Å¸ÀÌÆ² ³ª¿À±âÀü ´ë±â½Ã°£
-    /// titleWordTime : Å¸ÀÌÆ² ±ÛÀÚ Å¸ÀÌÇÎ ¼Óµµ
-    /// startTime : ÇÏ´Ü ±ÛÀÚ Åõ¸íµµ ¼Óµµ
-    /// dot : Á¡ °¹¼ö
-    /// dotTime : Á¡ ¼Óµµ
+    /// title : ê²Œì„íƒ€ì´í‹€
+    /// waitTime : íƒ€ì´í‹€ ë‚˜ì˜¤ê¸°ì „ ëŒ€ê¸°ì‹œê°„
+    /// titleWordTime : íƒ€ì´í‹€ ê¸€ì íƒ€ì´í•‘ ì†ë„
+    /// startTime : í•˜ë‹¨ ê¸€ì íˆ¬ëª…ë„ ì†ë„
+    /// dot : ì  ê°¯ìˆ˜
+    /// dotTime : ì  ì†ë„
     /// </summary>
     IEnumerator IntroCor(string title, float waitTime, float titleWordTime, float startTime, int dot, float dotTime)
     {

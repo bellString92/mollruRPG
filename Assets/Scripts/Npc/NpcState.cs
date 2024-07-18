@@ -8,8 +8,8 @@ public class NpcState : AnimatorProperty
     public State mystate = State.Create;
     public Transform myTarget;
 
-    public GameObject myJob; // °¢ npc°¡ ´ã´çÇÒ Ui¸¦ ÇÁ¸®ÆéÀ¸·Î ¸¸µé°í ¹ÙÀÎµù
-    private GameObject doMyJob; // »óÈ£ÀÛ¿ëÀ» ¿©·¯¹øÇØ Áßº¹ »ı¼º µÇÁö¾Êµµ·Ï ÀÌ¹Ì »óÈ£ÀÛ¿ëÁß ÀÌ¶ó¸é »ı¼ºÇÑ object¸¦ ÀúÀåÇØ¼­ °ü¸®
+    public GameObject myJob; // ê° npcê°€ ë‹´ë‹¹í•  Uië¥¼ í”„ë¦¬í©ìœ¼ë¡œ ë§Œë“¤ê³  ë°”ì¸ë”©
+    private GameObject doMyJob; // ìƒí˜¸ì‘ìš©ì„ ì—¬ëŸ¬ë²ˆí•´ ì¤‘ë³µ ìƒì„± ë˜ì§€ì•Šë„ë¡ ì´ë¯¸ ìƒí˜¸ì‘ìš©ì¤‘ ì´ë¼ë©´ ìƒì„±í•œ objectë¥¼ ì €ì¥í•´ì„œ ê´€ë¦¬
     private bool doingmyjob = false; 
 
     public Inventory urInventory;
@@ -26,13 +26,13 @@ public class NpcState : AnimatorProperty
         {
             case State.Create:
                 break;
-            case State.Nomal:// ¸Å¹ø Nomal·Î µ¹¾Æ¿À¸é Ã³À½ ¹èÄ¡Çß´ø ¹æÇâÀ¸·Î µÇµ¹¾Æ°£´Ù
+            case State.Nomal:// ë§¤ë²ˆ Nomalë¡œ ëŒì•„ì˜¤ë©´ ì²˜ìŒ ë°°ì¹˜í–ˆë˜ ë°©í–¥ìœ¼ë¡œ ë˜ëŒì•„ê°„ë‹¤
                 {
                     StopAllCoroutines();
                     StartCoroutine(RetrunbeforReco());
                 }
                 break;
-            case State.Reco:// ÇÃ·¹ÀÌ¾î¸¦ ÀÎ½ÄÇßÀ¸¸é ÇÃ·¹ÀÌ¾î ¹æÇâÀ¸·Î °í°³¸¦ µ¹¸°´Ù
+            case State.Reco:// í”Œë ˆì´ì–´ë¥¼ ì¸ì‹í–ˆìœ¼ë©´ í”Œë ˆì´ì–´ ë°©í–¥ìœ¼ë¡œ ê³ ê°œë¥¼ ëŒë¦°ë‹¤
                 {
                     StopAllCoroutines();
                     myAnim.SetTrigger("OnGesture");
@@ -60,7 +60,7 @@ public class NpcState : AnimatorProperty
                         {
                             if(UIManager.Instance != null && doMyJob == null)
                             {
-                                doMyJob = UIManager.Instance.ShowUI(myJob);// Áßº¹»ı¼º ¹æÁö¸¦ À§ÇÑ domyjobÀúÀå ShowUI´Â Á¤»óÀÛµ¿
+                                doMyJob = UIManager.Instance.ShowUI(myJob);// ì¤‘ë³µìƒì„± ë°©ì§€ë¥¼ ìœ„í•œ domyjobì €ì¥ ShowUIëŠ” ì •ìƒì‘ë™
                                 urInventory.gameObject.SetActive(true);
                                 doingmyjob = true;
                             }
@@ -106,7 +106,7 @@ public class NpcState : AnimatorProperty
         StateProcess();
     }
 
-    IEnumerator LookPlayer() // ÀÎ½Ä¹üÀ§¿¡ µé¾î¿À¸é ÇÃ·¹ÀÌ¾î¸¦ ÇâÇØ µ¹¾Æº½
+    IEnumerator LookPlayer() // ì¸ì‹ë²”ìœ„ì— ë“¤ì–´ì˜¤ë©´ í”Œë ˆì´ì–´ë¥¼ í–¥í•´ ëŒì•„ë´„
     {
         while(myTarget!= null)
         {
@@ -117,7 +117,7 @@ public class NpcState : AnimatorProperty
             yield return null;
         }
     }
-    IEnumerator RetrunbeforReco() // ÀÎ½Ä¹üÀ§¸¦ ¹ş¾î³ª¸é Ã³À½ º¸°íÀÖ´ø ¹æÇâÀ¸·Î µ¹¾Æ°¨
+    IEnumerator RetrunbeforReco() // ì¸ì‹ë²”ìœ„ë¥¼ ë²—ì–´ë‚˜ë©´ ì²˜ìŒ ë³´ê³ ìˆë˜ ë°©í–¥ìœ¼ë¡œ ëŒì•„ê°
     {
         Vector3 curPos = transform.position;
         Quaternion curRot = transform.rotation;
@@ -132,7 +132,7 @@ public class NpcState : AnimatorProperty
         transform.position = startPos;
         transform.rotation = startRot;
     }
-    public void StopMyJob() // npc°¡ ÀÚ½ÅÀÌ »ı¼ºÇÑ »óÈ£ÀÛ¿ë uiÁ¾·á
+    public void StopMyJob() // npcê°€ ìì‹ ì´ ìƒì„±í•œ ìƒí˜¸ì‘ìš© uiì¢…ë£Œ
     {
         if(doMyJob != null)
         {

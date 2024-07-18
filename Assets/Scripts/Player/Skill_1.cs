@@ -12,12 +12,12 @@ public class Skill_1 : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // Å¸°Ù ÀúÀå ½Ã½ºÅÛ
+        // íƒ€ê²Ÿ ì €ì¥ ì‹œìŠ¤í…œ
         if (FieldOfView.visibleMonster.Count > 0)
         {
             myTarget = FieldOfView.visibleMonster[0];
         }
-        else  // Å¸°ÙÀÌ ¾øÀ¸¸é Æ®·£½ºÆû ÃÊ±âÈ­ ¹× Å»Ãâ
+        else  // íƒ€ê²Ÿì´ ì—†ìœ¼ë©´ íŠ¸ëœìŠ¤í¼ ì´ˆê¸°í™” ë° íƒˆì¶œ
         {
             myTarget = null;
             return;
@@ -31,20 +31,20 @@ public class Skill_1 : StateMachineBehaviour
         animator.SetBool("IsSkill_1", true);
         
 
-        //¾Ö´Ï¸ŞÀÌ¼Ç °Å¸® Á¶Àı
+        //ì• ë‹ˆë©”ì´ì…˜ ê±°ë¦¬ ì¡°ì ˆ
         if (myTarget)
         {
-            Vector3 myTDir = myTarget.position - animator.transform.position; // Å¸°Ù°úÀÇ °Å¸® °è»ê
+            Vector3 myTDir = myTarget.position - animator.transform.position; // íƒ€ê²Ÿê³¼ì˜ ê±°ë¦¬ ê³„ì‚°
             float myTDist = myTDir.magnitude; // ??
-            Vector3 targetPosition = myTarget.position + myTarget.forward * 2.0f; // ´ë»óÀÇ ¹æÇâ °è»ê (¾Õ)
-            myFrame = stateInfo.length; // ³²Àº ÇÁ·¹ÀÓ °è»ê?
-            float delta = moveSpeed * myFrame * Time.deltaTime; //ÇÁ·¹ÀÓ´ç ÀÌµ¿ °Å¸®?
+            Vector3 targetPosition = myTarget.position + myTarget.forward * 2.0f; // ëŒ€ìƒì˜ ë°©í–¥ ê³„ì‚° (ì•)
+            myFrame = stateInfo.length; // ë‚¨ì€ í”„ë ˆì„ ê³„ì‚°?
+            float delta = moveSpeed * myFrame * Time.deltaTime; //í”„ë ˆì„ë‹¹ ì´ë™ ê±°ë¦¬?
 
-            if (delta > myTDist) delta = myTDist; // ³Ñ¾î°¡Áö ¾Ê°Ô ÇÏ±â À§ÇØ µ¨Å¸°ª º¯°æ
+            if (delta > myTDist) delta = myTDist; // ë„˜ì–´ê°€ì§€ ì•Šê²Œ í•˜ê¸° ìœ„í•´ ë¸íƒ€ê°’ ë³€ê²½
 
-            animator.transform.parent.position = Vector3.Lerp(animator.transform.parent.position, targetPosition, delta); // ½ÇÁ¦ ÀÌµ¿
+            animator.transform.parent.position = Vector3.Lerp(animator.transform.parent.position, targetPosition, delta); // ì‹¤ì œ ì´ë™
 
-            animator.transform.forward = (myTarget.position - animator.transform.position).normalized; // ³ªÀÇ ¹æÇâÀ» Ç×»ó Å¸°ÙÀ¸·Î °íÁ¤
+            animator.transform.forward = (myTarget.position - animator.transform.position).normalized; // ë‚˜ì˜ ë°©í–¥ì„ í•­ìƒ íƒ€ê²Ÿìœ¼ë¡œ ê³ ì •
         }
     }
 

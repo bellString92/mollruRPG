@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class NickName : MonoBehaviour
 {
     public GameObject Cam;
@@ -12,7 +13,7 @@ public class NickName : MonoBehaviour
     void Start()
     {
         string nickName = PlayerPrefs.GetString("nickName");
-        if ("".Equals(nickName)) nickName = "´Ð³×ÀÓ";
+        if ("".Equals(nickName)) nickName = "ë‹‰ë„¤ìž„";
         gameObject.GetComponent<TMPro.TMP_Text>().text = nickName;
         gameObject.GetComponent<TMPro.TMP_Text>().outlineColor = Color.white;
         gameObject.GetComponent<TMPro.TMP_Text>().outlineWidth = 0.05f;

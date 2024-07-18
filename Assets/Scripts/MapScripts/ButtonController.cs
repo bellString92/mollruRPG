@@ -5,7 +5,7 @@ using UnityEngine;
 public class ButtonController : MonoBehaviour
 {
     private Animator animator;
-    public DoorController linkedDoor; // ¹öÆ°°ú ¿¬°áµÈ ¹®
+    public DoorController linkedDoor; // ë²„íŠ¼ê³¼ ì—°ê²°ëœ ë¬¸
 
     void Start()
     {

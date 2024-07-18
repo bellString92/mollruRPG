@@ -5,9 +5,9 @@ using UnityEditor;
 
 public class BezierCurve : AnimatorProperty
 {
-    public GameObject player; //¿ÀºêÁ§Æ® ÂüÁ¶
+    public GameObject player; //ì˜¤ë¸Œì íŠ¸ ì°¸ì¡°
     public DoorController linkedDoor;
-    public GameObject avatar; // PlayerÀÇ ÀÚ½Ä ¿ÀºêÁ§Æ®ÀÎ ¾Æ¹ÙÅ¸ ¿ÀºêÁ§Æ® ÂüÁ¶
+    public GameObject avatar; // Playerì˜ ìì‹ ì˜¤ë¸Œì íŠ¸ì¸ ì•„ë°”íƒ€ ì˜¤ë¸Œì íŠ¸ ì°¸ì¡°
     public GameObject target;
     public float activationDistance = 3.0f;
     private bool isJumping = false;
@@ -70,14 +70,14 @@ public class BezierCurve : AnimatorProperty
 
         float distanceToTarget = Vector3.Distance(player.transform.position, target.transform.position);
         
-        //ÇöÀç ¾Ö´Ï¸ŞÀÌ¼Ç »óÅÂ Á¤º¸¸¦ °¡Á®¿È
+        //í˜„ì¬ ì• ë‹ˆë©”ì´ì…˜ ìƒíƒœ ì •ë³´ë¥¼ ê°€ì ¸ì˜´
         AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
 
         /*if (distanceToTarget <= activationDistance && Input.GetKeyDown(KeyCode.F) && !isJumping && currentState.IsName("Move"))
         {
             isJumping = true;
             player.transform.SetParent(transform);
-            animator.SetTrigger("Jump"); // Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÃÀÛ
+            animator.SetTrigger("Jump"); // ì í”„ ì• ë‹ˆë©”ì´ì…˜ ì‹œì‘
         }*/
         if (distanceToTarget <= activationDistance && !isJumping && currentState.IsName("Move"))
         {
@@ -88,8 +88,8 @@ public class BezierCurve : AnimatorProperty
                 {
                     isJumping = true;
                     player.transform.SetParent(transform);
-                    animator.SetTrigger("Jump"); // Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÃÀÛ
-                    savedTarget = target.transform; //Å¸°Ù ÀúÀå
+                    animator.SetTrigger("Jump"); // ì í”„ ì• ë‹ˆë©”ì´ì…˜ ì‹œì‘
+                    savedTarget = target.transform; //íƒ€ê²Ÿ ì €ì¥
                     holdTime = 0.0f;
                 }
             }
@@ -120,12 +120,12 @@ public class BezierCurve : AnimatorProperty
 
                 player.transform.position = currentPos;
 
-                // ÀÌµ¿ ¹æÇâÀ» À¯ÁöÇÏ¸é¼­ ±âÁ¸ÀÇ È¸Àü °ª À¯Áö
+                // ì´ë™ ë°©í–¥ì„ ìœ ì§€í•˜ë©´ì„œ ê¸°ì¡´ì˜ íšŒì „ ê°’ ìœ ì§€
                 Quaternion currentRotation = player.transform.rotation;
                 player.transform.rotation = Quaternion.LookRotation(direction);
                 player.transform.rotation = Quaternion.Euler(currentRotation.eulerAngles.x, player.transform.rotation.eulerAngles.y, currentRotation.eulerAngles.z);
 
-                progress += Time.deltaTime; // Á¡ÇÁ ¼Óµµ Á¦¾î
+                progress += Time.deltaTime; // ì í”„ ì†ë„ ì œì–´
             }
             else
             {
@@ -134,7 +134,7 @@ public class BezierCurve : AnimatorProperty
                 progress = 0.0f;
                 animator.ResetTrigger("Jump");
                 //gameObject.SetActive(false);
-                savedTarget = null; // Á¡ÇÁ Á¾·á ÈÄ Å¸°Ù ÇØÁ¦
+                savedTarget = null; // ì í”„ ì¢…ë£Œ í›„ íƒ€ê²Ÿ í•´ì œ
                 Destroy(gameObject, 2);
 
                 if (linkedDoor != null)

@@ -19,7 +19,7 @@ public class MouseHide : MonoBehaviour
     {
         StartMouseHide();
     }
-
+    
     // Update is called once per frame
     void Update()
     {

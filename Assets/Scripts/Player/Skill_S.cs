@@ -5,7 +5,7 @@ using UnityEngine;
 public class Skill_S : StateMachineBehaviour
 {
     private Vector3 targetPosition;
-    private float moveSpeed = 5.0f; // ¿òÁ÷ÀÓÀÇ ¼Óµµ¸¦ Á¶ÀıÇÒ ¼ö ÀÖ½À´Ï´Ù.
+    private float moveSpeed = 5.0f; // ì›€ì§ì„ì˜ ì†ë„ë¥¼ ì¡°ì ˆí•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -19,7 +19,7 @@ public class Skill_S : StateMachineBehaviour
         Transform transform = animator.transform.parent;
 
 
-        // ÇöÀç À§Ä¡¿¡¼­ ¸ñÇ¥ À§Ä¡·Î ºÎµå·´°Ô ÀÌµ¿
+        // í˜„ì¬ ìœ„ì¹˜ì—ì„œ ëª©í‘œ ìœ„ì¹˜ë¡œ ë¶€ë“œëŸ½ê²Œ ì´ë™
         transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }
 

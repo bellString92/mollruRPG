@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class ShopSlot : MonoBehaviour
 {
-    public Image icon; // ¾ÆÀÌÅÛ ¾ÆÀÌÄÜÀ» Ç¥½ÃÇÒ Image
-    public ItemKind item; // ÇØ´ç ½½·Ô¿¡ µé¾îÀÖ´Â ¾ÆÀÌÅÛ Á¤º¸
+    public Image icon; // ì•„ì´í…œ ì•„ì´ì½˜ì„ í‘œì‹œí•  Image
+    public ItemKind item; // í•´ë‹¹ ìŠ¬ë¡¯ì— ë“¤ì–´ìˆëŠ” ì•„ì´í…œ ì •ë³´
 
-    // ½½·Ô ÃÊ±âÈ­ ÇÔ¼ö
+    // ìŠ¬ë¡¯ ì´ˆê¸°í™” í•¨ìˆ˜
     public void InitializeSlot(ItemKind newItem)
     {
         item = newItem;
@@ -19,7 +19,7 @@ public class ShopSlot : MonoBehaviour
         }
     }
 
-    // ½½·Ô Å¬¸¯ ÀÌº¥Æ® Ã³¸® ÇÔ¼ö
+    // ìŠ¬ë¡¯ í´ë¦­ ì´ë²¤íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
     public void OnClickSlot()
     {
        

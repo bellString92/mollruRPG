@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New MaterialItem", menuName = "Items/MaterialItem")]// Asset/createÃ¢¿¡¼­ ¾ÆÀÌÅÛÀ» »ý¼º½ÃÅ°°Ô ÇÒ¼öÀÖ´Â ÄÚµå
+[CreateAssetMenu(fileName = "New MaterialItem", menuName = "Items/MaterialItem")]// Asset/createì°½ì—ì„œ ì•„ì´í…œì„ ìƒì„±ì‹œí‚¤ê²Œ í• ìˆ˜ìžˆëŠ” ì½”ë“œ
 public class MaterialItem : ItemKind
 {
     private void OnEnable()
@@ -19,8 +19,8 @@ public class MaterialItem : ItemKind
     {
         if (quantity > 0)
         {
-            // Àç·á ¾ÆÀÌÅÛÀº ´É·ÂÄ¡¿¡ ¿µÇâÀ» ÁÖÁö ¾Ê½À´Ï´Ù.
-            quantity--; // »ç¿ë ÈÄ °¹¼ö °¨¼Ò
+            // ìž¬ë£Œ ì•„ì´í…œì€ ëŠ¥ë ¥ì¹˜ì— ì˜í–¥ì„ ì£¼ì§€ ì•ŠìŠµë‹ˆë‹¤.
+            quantity--; // ì‚¬ìš© í›„ ê°¯ìˆ˜ ê°ì†Œ
         }
     }
 }

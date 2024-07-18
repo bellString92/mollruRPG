@@ -48,7 +48,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
     {
         myChild = newChild;
     }
-    public void DestroyChild() // ¸¶ÀÌÂ÷ÀÏµå ºñ¿ì±â
+    public void DestroyChild() // ë§ˆì´ì°¨ì¼ë“œ ë¹„ìš°ê¸°
     {
         if (myChild != null)
         {

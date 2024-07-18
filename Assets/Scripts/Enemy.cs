@@ -99,7 +99,7 @@ public class Enemy : BattleSystem
     {
         OnGiveExp(myExp);
     }
-
+    
 
     public void OnBattle(Transform target)
     {

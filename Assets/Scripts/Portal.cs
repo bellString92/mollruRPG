@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Portal : MonoBehaviour
 {
     public string nextScene = "Intro";
-    public string nextSceneText = "·Îµù Áß";
+    public string nextSceneText = "ë¡œë”© ì¤‘";
     public string nextSceneImage = "Dungeon";
     public LayerMask targetMask;
     private Scene curScene;

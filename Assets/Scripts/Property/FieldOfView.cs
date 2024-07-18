@@ -6,14 +6,14 @@ public class FieldOfView : MonoBehaviour
 {
     public static FieldOfView Instance = null;
 
-    // ½Ã¾ß ¿µ¿ªÀÇ ¹İÁö¸§°ú ½Ã¾ß °¢µµ
+    // ì‹œì•¼ ì˜ì—­ì˜ ë°˜ì§€ë¦„ê³¼ ì‹œì•¼ ê°ë„
     public float viewRadius; [Range(0, 360)]
     public float viewAngle;
 
-    // ¸¶½ºÅ© 2Á¾
+    // ë§ˆìŠ¤í¬ 2ì¢…
     public LayerMask targetMask, obstacleMask;
 
-    // Target mask¿¡ ray hitµÈ transformÀ» º¸°üÇÏ´Â ¸®½ºÆ®
+    // Target maskì— ray hitëœ transformì„ ë³´ê´€í•˜ëŠ” ë¦¬ìŠ¤íŠ¸
     public static List<Transform> visibleMonster = new List<Transform>();
     public static List<Transform> visibleNPC = new List<Transform>();
     public static List<Transform> visibleETC = new List<Transform>();
@@ -29,7 +29,7 @@ public class FieldOfView : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(FindTargetsWithDelay(0.2f)); // 0.2ÃÊ °£°İÀ¸·Î ÄÚ·çÆ¾ È£Ãâ
+        StartCoroutine(FindTargetsWithDelay(0.2f)); // 0.2ì´ˆ ê°„ê²©ìœ¼ë¡œ ì½”ë£¨í‹´ í˜¸ì¶œ
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
@@ -43,12 +43,12 @@ public class FieldOfView : MonoBehaviour
 
     void FindvisibleMonster()
     {
-        visibleMonster.Clear(); //³»¿ë¹° ÃÊ±âÈ­
+        visibleMonster.Clear(); //ë‚´ìš©ë¬¼ ì´ˆê¸°í™”
         visibleNPC.Clear();
         visibleETC.Clear();
 
 
-        // viewRadius¸¦ ¹İÁö¸§À¸·Î ÇÑ ¿ø ¿µ¿ª ³» targetMask ·¹ÀÌ¾îÀÎ Äİ¶óÀÌ´õ¸¦ ¸ğµÎ °¡Á®¿È
+        // viewRadiusë¥¼ ë°˜ì§€ë¦„ìœ¼ë¡œ í•œ ì› ì˜ì—­ ë‚´ targetMask ë ˆì´ì–´ì¸ ì½œë¼ì´ë”ë¥¼ ëª¨ë‘ ê°€ì ¸ì˜´
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
         for (int i = 0; i < targetsInViewRadius.Length; i++)
@@ -56,13 +56,13 @@ public class FieldOfView : MonoBehaviour
             Transform target = targetsInViewRadius[i].transform;
             Vector3 dirToTarget = (target.position - transform.position).normalized;
 
-            // ÇÃ·¹ÀÌ¾î¿Í forward¿Í targetÀÌ ÀÌ·ç´Â °¢ÀÌ ¼³Á¤ÇÑ °¢µµ ³»¶ó¸é
+            // í”Œë ˆì´ì–´ì™€ forwardì™€ targetì´ ì´ë£¨ëŠ” ê°ì´ ì„¤ì •í•œ ê°ë„ ë‚´ë¼ë©´
             dirToTarget.y = 0;
             if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
             {
                 float dstToTarget = Vector3.Distance(transform.position, target.transform.position);
 
-                // Å¸°ÙÀ¸·Î °¡´Â ·¹ÀÌÄ³½ºÆ®¿¡ obstacleMask°¡ °É¸®Áö ¾ÊÀ¸¸é visibleMonster¿¡ Add
+                // íƒ€ê²Ÿìœ¼ë¡œ ê°€ëŠ” ë ˆì´ìºìŠ¤íŠ¸ì— obstacleMaskê°€ ê±¸ë¦¬ì§€ ì•Šìœ¼ë©´ visibleMonsterì— Add
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                 {
                     if (target.CompareTag("Enemy"))
@@ -83,7 +83,7 @@ public class FieldOfView : MonoBehaviour
     }
 
     
-    // ÇöÀç ½Ã¾ß ³»¿¡ Á¡ÇÁÆ÷Å»ÀÇ Å¸°ÙÀÌ ÀÖ´ÂÁö È®ÀÎ
+    // í˜„ì¬ ì‹œì•¼ ë‚´ì— ì í”„í¬íƒˆì˜ íƒ€ê²Ÿì´ ìˆëŠ”ì§€ í™•ì¸
     public Transform GetCurrentTarget()
     {
         if (visibleMonster.Count > 0)
@@ -93,8 +93,8 @@ public class FieldOfView : MonoBehaviour
         return null;
     }
 
-    // yÃà ¿ÀÀÏ·¯ °¢À» 3Â÷¿ø ¹æÇâ º¤ÅÍ·Î º¯È¯ÇÑ´Ù.
-    // ¿øº»°ú ±¸ÇöÀÌ »ìÂ¦ ´Ù¸§¿¡ ÁÖÀÇ. °á°ú´Â °°´Ù.
+    // yì¶• ì˜¤ì¼ëŸ¬ ê°ì„ 3ì°¨ì› ë°©í–¥ ë²¡í„°ë¡œ ë³€í™˜í•œë‹¤.
+    // ì›ë³¸ê³¼ êµ¬í˜„ì´ ì‚´ì§ ë‹¤ë¦„ì— ì£¼ì˜. ê²°ê³¼ëŠ” ê°™ë‹¤.
     public Vector3 DirFromAngle(float angleDegrees, bool angleIsGlobal)
     {
         if (!angleIsGlobal)
@@ -105,7 +105,7 @@ public class FieldOfView : MonoBehaviour
         return new Vector3(Mathf.Cos((-angleDegrees + 90) * Mathf.Deg2Rad), 0, Mathf.Sin((-angleDegrees + 90) * Mathf.Deg2Rad));
     }
 
-    // ÇöÀç Å¸°ÙµÈ Æ÷Å»À» ¹İÈ¯ÇÏ´Â ¸Ş¼­µå Ãß°¡
+    // í˜„ì¬ íƒ€ê²Ÿëœ í¬íƒˆì„ ë°˜í™˜í•˜ëŠ” ë©”ì„œë“œ ì¶”ê°€
     public Transform GetCurrentPortal()
     {
         foreach (Transform target in visibleMonster)

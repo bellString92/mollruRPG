@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum ItemType // ¾ÆÀÌÅÛ ºĞ·ù Àåºñ,¼Òºñ,Àç·á
+public enum ItemType // ì•„ì´í…œ ë¶„ë¥˜ ì¥ë¹„,ì†Œë¹„,ì¬ë£Œ
 {
 
     weaponItem,
@@ -14,14 +14,14 @@ public enum ItemType // ¾ÆÀÌÅÛ ºĞ·ù Àåºñ,¼Òºñ,Àç·á
 }
 
 public abstract class ItemKind : ScriptableObject
-{ // ¾ÆÀÌÅÛ¿¡ µé¾î°¥ ³»¿ë ÀÌ¸§,¾ÆÀÌÅÛ Á¾·ù, ¾ÆÀÌÅÛ ÀÌ¹ÌÁö, ¾ÆÀÌÅÛ ¼³¸í
+{ // ì•„ì´í…œì— ë“¤ì–´ê°ˆ ë‚´ìš© ì´ë¦„,ì•„ì´í…œ ì¢…ë¥˜, ì•„ì´í…œ ì´ë¯¸ì§€, ì•„ì´í…œ ì„¤ëª…
     public string itemName;
     public ItemType itemType;
     public Sprite itemIcon;
     public string description;
-    public int price;  // ¾ÆÀÌÅÛ °¡°İ
-    public int resellprice; // ÆÇ¸Å °¡°İ
-    public int itemID; // ¾ÆÀÌÅÛ ID
+    public int price;  // ì•„ì´í…œ ê°€ê²©
+    public int resellprice; // íŒë§¤ ê°€ê²©
+    public int itemID; // ì•„ì´í…œ ID
 
     public int maxStack;
     public int quantity;
@@ -36,6 +36,6 @@ public abstract class ItemKind : ScriptableObject
         quantity = original.quantity;
     }
 
-    // abstract¸¦ È°¿ëÇØ °¢ ¾ÆÀÌÅÛÀ» use½Ã ´Ù¸¥ ±â´ÉÀ» ±¸ÇöµÇµµ·Ï ÇÔ override·Î »õ·Î½á ±â´ÉÀ» ±¸Çö
+    // abstractë¥¼ í™œìš©í•´ ê° ì•„ì´í…œì„ useì‹œ ë‹¤ë¥¸ ê¸°ëŠ¥ì„ êµ¬í˜„ë˜ë„ë¡ í•¨ overrideë¡œ ìƒˆë¡œì¨ ê¸°ëŠ¥ì„ êµ¬í˜„
     public abstract void Use(BattleStat myStat); 
 }

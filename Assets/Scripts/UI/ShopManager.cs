@@ -9,13 +9,13 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance;
-    public ShopSlot[] slots; // »óÁ¡ ½½·Ô ¹è¿­
+    public ShopSlot[] slots; // ìƒì  ìŠ¬ë¡¯ ë°°ì—´
 
-    public TMP_Text itemInfoTextPrefab;// ¾ÆÀÌÅÛ Á¤º¸¸¦ Ç¥½ÃÇÒ TextMeshPro ÇÁ¸®ÆÕ
+    public TMP_Text itemInfoTextPrefab;// ì•„ì´í…œ ì •ë³´ë¥¼ í‘œì‹œí•  TextMeshPro í”„ë¦¬íŒ¹
     public ScrollRect scrollView;
     public Transform content;
 
-    public ItemKind curItem = null;// ÇöÀç ¼±ÅÃÁßÀÎ ¾ÆÀÌÅÛ Á¤º¸¸¦ ÀúÀåÇÒ º¯¼ö
+    public ItemKind curItem = null;// í˜„ì¬ ì„ íƒì¤‘ì¸ ì•„ì´í…œ ì •ë³´ë¥¼ ì €ì¥í•  ë³€ìˆ˜
     public GameObject marterialObject;
 
     private InventorySlot lastClickedSlot = null;
@@ -24,24 +24,24 @@ public class ShopManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else
-            Destroy(gameObject); // Áßº¹ »ı¼º ¹æÁö
+            Destroy(gameObject); // ì¤‘ë³µ ìƒì„± ë°©ì§€
     }
 
     void Start()
     {
-        // »óÁ¡ ÃÊ±âÈ­ ÇÔ¼ö È£Ãâ
+        // ìƒì  ì´ˆê¸°í™” í•¨ìˆ˜ í˜¸ì¶œ
         InitializeShop();
     }
     private void InitializeShop()
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            slots[i].InitializeSlot(slots[i].item); // °¢ ½½·ÔÀÇ ¾ÆÀÌÅÛ Á¤º¸¸¦ ÃÊ±âÈ­
+            slots[i].InitializeSlot(slots[i].item); // ê° ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ì •ë³´ë¥¼ ì´ˆê¸°í™”
         }
     }
     public void OnSlotClicked(ItemKind itemInfo)
     {
-        // ¾ÆÀÌÅÛ Á¤º¸¸¦ TextMeshPro¿¡ Ç¥½Ã
+        // ì•„ì´í…œ ì •ë³´ë¥¼ TextMeshProì— í‘œì‹œ
         if (itemInfo != null)
         {
             DisplayItemInfo(itemInfo);
@@ -52,34 +52,34 @@ public class ShopManager : MonoBehaviour
 
     public void OnAddNewItemInInventory()
     {
-        ItemKind copiedItem = Instantiate(curItem); // ¿øº» ¾ÆÀÌÅÛ µ¥ÀÌÅÍ¸¦ º¸Á¸ÇÏ±âÀ§ÇÑ Á¤º¸º¹»ç
+        ItemKind copiedItem = Instantiate(curItem); // ì›ë³¸ ì•„ì´í…œ ë°ì´í„°ë¥¼ ë³´ì¡´í•˜ê¸°ìœ„í•œ ì •ë³´ë³µì‚¬
 
 
-        // AssemblyManagerÀÇ CreateItem È£ÃâÇÏ¿© ¾ÆÀÌÅÛ »ı¼º
+        // AssemblyManagerì˜ CreateItem í˜¸ì¶œí•˜ì—¬ ì•„ì´í…œ ìƒì„±
         if (curItem != null)
         {
             if (copiedItem.itemType == ItemType.consumItem || copiedItem.itemType == ItemType.materialItem)
             {
-                // UI¸¦ ÅëÇØ quantity ¼öÁ¤ °¡´ÉÇÏµµ·Ï ¼³Á¤
+                // UIë¥¼ í†µí•´ quantity ìˆ˜ì • ê°€ëŠ¥í•˜ë„ë¡ ì„¤ì •
                 UIManager.Instance.OpenQuantityUI(copiedItem, () =>
                 {
-                    // »ç¿ëÀÚ°¡ ¹öÆ°À» ´©¸£¸é È£ÃâµÇ´Â Äİ¹é
+                    // ì‚¬ìš©ìê°€ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ í˜¸ì¶œë˜ëŠ” ì½œë°±
                     Inventory.Instance.CreateItem(copiedItem, marterialObject);
                 });
             }
             else
             {
-                // ¾ÆÀÌÅÛ Å¸ÀÔÀÌ consumItem ¶Ç´Â materialItemÀÌ ¾Æ´Ñ °æ¿ì ¹Ù·Î ÀÎº¥Åä¸®¿¡ Ãß°¡
+                // ì•„ì´í…œ íƒ€ì…ì´ consumItem ë˜ëŠ” materialItemì´ ì•„ë‹Œ ê²½ìš° ë°”ë¡œ ì¸ë²¤í† ë¦¬ì— ì¶”ê°€
                 Inventory.Instance.CreateItem(copiedItem, marterialObject);
             }
         }
     }
 
-    public void SetDestroySlotItem(InventorySlot slot) // ÆÇ¸Å ¹öÆ° Å¬¸¯½Ã ºñ¿ï ½½·ÔÀ» Àü´Ş¹Ş´Â °÷
+    public void SetDestroySlotItem(InventorySlot slot) // íŒë§¤ ë²„íŠ¼ í´ë¦­ì‹œ ë¹„ìš¸ ìŠ¬ë¡¯ì„ ì „ë‹¬ë°›ëŠ” ê³³
     {
         lastClickedSlot = slot;
     }
-    public void OnDestroyInventorySlotItem() // ÆÇ¸Å ¹öÆ°À» ´©¸£¸é È£Ãâ
+    public void OnDestroyInventorySlotItem() // íŒë§¤ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ í˜¸ì¶œ
     {
         if (lastClickedSlot != null)
         {
@@ -90,15 +90,15 @@ public class ShopManager : MonoBehaviour
 
 
 
-    // ¾ÆÀÌÅÛ Á¤º¸¸¦ TextMeshPro¿¡ Ç¥½ÃÇÏ´Â ÇÔ¼ö
+    // ì•„ì´í…œ ì •ë³´ë¥¼ TextMeshProì— í‘œì‹œí•˜ëŠ” í•¨ìˆ˜
     private void DisplayItemInfo(ItemKind itemInfo)
     {
-        // ±âÁ¸ÀÇ ½ºÅ©·Ñºä ÄÜÅÙÃ÷ ¸ğµÎ Á¦°Å
+        // ê¸°ì¡´ì˜ ìŠ¤í¬ë¡¤ë·° ì½˜í…ì¸  ëª¨ë‘ ì œê±°
         foreach (Transform child in content)
         {
             Destroy(child.gameObject);
         }
-        // »õ·Î¿î ¾ÆÀÌÅÛ Á¤º¸ ÅØ½ºÆ® »ı¼º
+        // ìƒˆë¡œìš´ ì•„ì´í…œ ì •ë³´ í…ìŠ¤íŠ¸ ìƒì„±
         TMP_Text newText = Instantiate(itemInfoTextPrefab, content);
 
         newText.text = $"Name: {itemInfo.itemName}\n" +
@@ -106,7 +106,7 @@ public class ShopManager : MonoBehaviour
                           $"Description: {itemInfo.description}\n" +
                           $"Price: {itemInfo.price}";
 
-        // Ãß°¡ÀûÀÎ Á¤º¸ Ç¥½Ã¸¦ À§ÇØ switch¹® »ç¿ë
+        // ì¶”ê°€ì ì¸ ì •ë³´ í‘œì‹œë¥¼ ìœ„í•´ switchë¬¸ ì‚¬ìš©
         switch (itemInfo.itemType)
         {
             case ItemType.weaponItem:
@@ -131,7 +131,7 @@ public class ShopManager : MonoBehaviour
 
     }
 
-    // °¢ ItemType¿¡ µû¸¥ Ãß°¡ Á¤º¸ Ç¥½Ã ÇÔ¼öµé
+    // ê° ItemTypeì— ë”°ë¥¸ ì¶”ê°€ ì •ë³´ í‘œì‹œ í•¨ìˆ˜ë“¤
     private void DisplayWeaponInfo(WeaponItem weaponInfo, TMP_Text infoText)
     {
         if (weaponInfo != null)

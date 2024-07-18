@@ -13,12 +13,12 @@ public class NpcUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)) // escÅ°·Î ´İ±â
+        if(Input.GetKeyDown(KeyCode.Escape)) // escí‚¤ë¡œ ë‹«ê¸°
         {
             closedTab();
         }
     }
-    public void closedTab() // ¹öÆ° Å¬¸¯½Ã È£ÃâÇØ Ã¢´İ±â
+    public void closedTab() // ë²„íŠ¼ í´ë¦­ì‹œ í˜¸ì¶œí•´ ì°½ë‹«ê¸°
     {
         transform.gameObject.SetActive(false);
     }

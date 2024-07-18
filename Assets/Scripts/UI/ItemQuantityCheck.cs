@@ -7,50 +7,50 @@ using UnityEngine.EventSystems;
 
 public class ItemQuantityCheck : MonoBehaviour
 {
-    public TMP_Text centerText; // Áß¾Ó ÅØ½ºÆ®¸¦ ³ªÅ¸³»´Â TextMesh Pro ¿ä¼Ò
-    public TMP_InputField inputField; // ÅØ½ºÆ® ÀÔ·ÂÀ» À§ÇÑ Input Field
-    public Image backgroundImage; // ¹è°æ ÀÌ¹ÌÁö
+    public TMP_Text centerText; // ì¤‘ì•™ í…ìŠ¤íŠ¸ë¥¼ ë‚˜íƒ€ë‚´ëŠ” TextMesh Pro ìš”ì†Œ
+    public TMP_InputField inputField; // í…ìŠ¤íŠ¸ ì…ë ¥ì„ ìœ„í•œ Input Field
+    public Image backgroundImage; // ë°°ê²½ ì´ë¯¸ì§€
 
-    private string lastValidText; // ¸¶Áö¸· À¯È¿ÇÑ ÅØ½ºÆ®¸¦ ÀúÀå
+    private string lastValidText; // ë§ˆì§€ë§‰ ìœ íš¨í•œ í…ìŠ¤íŠ¸ë¥¼ ì €ì¥
 
-    private System.Action confirmCallback; // ¹öÆ° Å¬¸¯ ½Ã ½ÇÇàÇÒ Äİ¹é ÇÔ¼ö
-    private ItemKind itemData; // ¾ÆÀÌÅÛ Á¤º¸ ÀúÀå
+    private System.Action confirmCallback; // ë²„íŠ¼ í´ë¦­ ì‹œ ì‹¤í–‰í•  ì½œë°± í•¨ìˆ˜
+    private ItemKind itemData; // ì•„ì´í…œ ì •ë³´ ì €ì¥
 
     public void Initialize(ItemKind item, System.Action onConfirm)
     {
-        itemData = item; // Àü´Ş¹ŞÀº ¾ÆÀÌÅÛ Á¤º¸
+        itemData = item; // ì „ë‹¬ë°›ì€ ì•„ì´í…œ ì •ë³´
 
-        centerText.text = itemData.quantity.ToString(); // ÃÊ±â°ª
+        centerText.text = itemData.quantity.ToString(); // ì´ˆê¸°ê°’
         inputField.text = centerText.text;
 
-        // Input Field¿Í Áß¾Ó ÅØ½ºÆ®¸¦ ¿¬µ¿ÇÕ´Ï´Ù.
+        // Input Fieldì™€ ì¤‘ì•™ í…ìŠ¤íŠ¸ë¥¼ ì—°ë™í•©ë‹ˆë‹¤.
         inputField.onEndEdit.AddListener(EndEditInputField);
-        inputField.onValueChanged.AddListener(ValidateInput); // ½Ç½Ã°£ ¾÷µ¥ÀÌÆ®
-        centerText.text = inputField.text; // ÃÊ±â ÅØ½ºÆ®¸¦ Input Field¿¡¼­ °¡Á®¿É´Ï´Ù.
+        inputField.onValueChanged.AddListener(ValidateInput); // ì‹¤ì‹œê°„ ì—…ë°ì´íŠ¸
+        centerText.text = inputField.text; // ì´ˆê¸° í…ìŠ¤íŠ¸ë¥¼ Input Fieldì—ì„œ ê°€ì ¸ì˜µë‹ˆë‹¤.
 
-        // Input Field¸¦ ¼û±â°í Áß¾Ó ÅØ½ºÆ®¸¦ Å¬¸¯ÇÒ ¶§¸¸ º¸ÀÌ°Ô ¼³Á¤ÇÕ´Ï´Ù.
+        // Input Fieldë¥¼ ìˆ¨ê¸°ê³  ì¤‘ì•™ í…ìŠ¤íŠ¸ë¥¼ í´ë¦­í•  ë•Œë§Œ ë³´ì´ê²Œ ì„¤ì •í•©ë‹ˆë‹¤.
         inputField.gameObject.SetActive(false);
         centerText.gameObject.SetActive(true);
 
-        // ¹è°æ ÀÌ¹ÌÁö¸¦ Å¬¸¯ÇÏ¸é Input Field°¡ º¸ÀÌµµ·Ï ¼³Á¤ÇÕ´Ï´Ù.
+        // ë°°ê²½ ì´ë¯¸ì§€ë¥¼ í´ë¦­í•˜ë©´ Input Fieldê°€ ë³´ì´ë„ë¡ ì„¤ì •í•©ë‹ˆë‹¤.
         backgroundImage.GetComponent<Button>().onClick.AddListener(ShowInputField);
 
-        // Input FieldÀÇ ÆùÆ® Å©±â¸¦ Áß¾Ó ÅØ½ºÆ®ÀÇ ÆùÆ® Å©±â¿Í µ¿ÀÏÇÏ°Ô ¼³Á¤ÇÕ´Ï´Ù.
+        // Input Fieldì˜ í°íŠ¸ í¬ê¸°ë¥¼ ì¤‘ì•™ í…ìŠ¤íŠ¸ì˜ í°íŠ¸ í¬ê¸°ì™€ ë™ì¼í•˜ê²Œ ì„¤ì •í•©ë‹ˆë‹¤.
         inputField.textComponent.fontSize = centerText.fontSize;
 
-        // ÃÊ±â À¯È¿ ÅØ½ºÆ® ¼³Á¤
+        // ì´ˆê¸° ìœ íš¨ í…ìŠ¤íŠ¸ ì„¤ì •
         lastValidText = centerText.text;
 
-        // Äİ¹é ÇÔ¼ö ¼³Á¤
+        // ì½œë°± í•¨ìˆ˜ ì„¤ì •
         confirmCallback = onConfirm;
     }
 
     private void Update()
     {
-        // ÀÔ·Â ÇÊµå°¡ È°¼ºÈ­µÈ »óÅÂ¿¡¼­¸¸ Ã³¸®
+        // ì…ë ¥ í•„ë“œê°€ í™œì„±í™”ëœ ìƒíƒœì—ì„œë§Œ ì²˜ë¦¬
         if (inputField.gameObject.activeSelf && inputField.isFocused)
         {
-            // ´Ù¸¥ °÷À» Å¬¸¯ÇÏ°Å³ª Enter Å°°¡ ´­·ÈÀ» ¶§ ÀÔ·Â Á¾·á
+            // ë‹¤ë¥¸ ê³³ì„ í´ë¦­í•˜ê±°ë‚˜ Enter í‚¤ê°€ ëˆŒë ¸ì„ ë•Œ ì…ë ¥ ì¢…ë£Œ
             if (Input.GetMouseButtonDown(0) && !IsPointerOverGameObject(inputField.gameObject))
             {
                 EndEditInputField(inputField.text);
@@ -64,10 +64,10 @@ public class ItemQuantityCheck : MonoBehaviour
 
     private void ShowInputField()
     {
-        inputField.text = centerText.text; // ÇöÀç ÅØ½ºÆ®¸¦ Input Field·Î º¹»ç
+        inputField.text = centerText.text; // í˜„ì¬ í…ìŠ¤íŠ¸ë¥¼ Input Fieldë¡œ ë³µì‚¬
         inputField.gameObject.SetActive(true);
         centerText.gameObject.SetActive(false);
-        inputField.ActivateInputField(); // Input Field¸¦ È°¼ºÈ­ÇÏ¿© Æ÷Ä¿½º ¼³Á¤
+        inputField.ActivateInputField(); // Input Fieldë¥¼ í™œì„±í™”í•˜ì—¬ í¬ì»¤ìŠ¤ ì„¤ì •
     }
 
     private void EndEditInputField(string newText)
@@ -75,16 +75,16 @@ public class ItemQuantityCheck : MonoBehaviour
         int newQuantity;
         if (int.TryParse(newText, out newQuantity))
         {
-            // ÀÔ·ÂµÈ °ªÀÌ maxStackÀ» ³Ñ¾î¼­Áö ¾Ê´ÂÁö È®ÀÎ
+            // ì…ë ¥ëœ ê°’ì´ maxStackì„ ë„˜ì–´ì„œì§€ ì•ŠëŠ”ì§€ í™•ì¸
             newQuantity = Mathf.Clamp(newQuantity, 1, itemData.maxStack);
 
             centerText.text = newQuantity.ToString();
-            itemData.quantity = newQuantity; // ¾ÆÀÌÅÛ µ¥ÀÌÅÍÀÇ quantity ¾÷µ¥ÀÌÆ®
-            lastValidText = centerText.text; // À¯È¿ÇÑ ÅØ½ºÆ®·Î ¾÷µ¥ÀÌÆ®
+            itemData.quantity = newQuantity; // ì•„ì´í…œ ë°ì´í„°ì˜ quantity ì—…ë°ì´íŠ¸
+            lastValidText = centerText.text; // ìœ íš¨í•œ í…ìŠ¤íŠ¸ë¡œ ì—…ë°ì´íŠ¸
         }
         else
         {
-            centerText.text = lastValidText; // À¯È¿ÇÏÁö ¾ÊÀ¸¸é ¸¶Áö¸· À¯È¿ ÅØ½ºÆ®·Î º¹±¸
+            centerText.text = lastValidText; // ìœ íš¨í•˜ì§€ ì•Šìœ¼ë©´ ë§ˆì§€ë§‰ ìœ íš¨ í…ìŠ¤íŠ¸ë¡œ ë³µêµ¬
         }
 
 
@@ -97,11 +97,11 @@ public class ItemQuantityCheck : MonoBehaviour
         int number;
         if (!int.TryParse(newText, out number))
         {
-            inputField.text = lastValidText; // À¯È¿ÇÏÁö ¾ÊÀ¸¸é ¸¶Áö¸· À¯È¿ ÅØ½ºÆ®·Î º¹±¸
+            inputField.text = lastValidText; // ìœ íš¨í•˜ì§€ ì•Šìœ¼ë©´ ë§ˆì§€ë§‰ ìœ íš¨ í…ìŠ¤íŠ¸ë¡œ ë³µêµ¬
         }
     }
 
-    private bool IsPointerOverGameObject(GameObject obj) //  Æ¯Á¤ À§Ä¡¿¡¸¸ ÀÛ¿ëÇÏµµ·Ï ÀçÁ¤ÀÇ
+    private bool IsPointerOverGameObject(GameObject obj) //  íŠ¹ì • ìœ„ì¹˜ì—ë§Œ ì‘ìš©í•˜ë„ë¡ ì¬ì •ì˜
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         eventData.position = Input.mousePosition;
@@ -120,7 +120,7 @@ public class ItemQuantityCheck : MonoBehaviour
 
 
 
-    // ¹öÆ°¿¡ ¿¬°áÇÒ ¸Ş¼­µå
+    // ë²„íŠ¼ì— ì—°ê²°í•  ë©”ì„œë“œ
     public void  OnPlusText()
     {
         int currentNumber;
@@ -128,8 +128,8 @@ public class ItemQuantityCheck : MonoBehaviour
         {
             currentNumber++;
             centerText.text = currentNumber.ToString();
-            inputField.text = centerText.text; // Input Field ¾÷µ¥ÀÌÆ®
-            lastValidText = centerText.text; // À¯È¿ÇÑ ÅØ½ºÆ®·Î ¾÷µ¥ÀÌÆ®
+            inputField.text = centerText.text; // Input Field ì—…ë°ì´íŠ¸
+            lastValidText = centerText.text; // ìœ íš¨í•œ í…ìŠ¤íŠ¸ë¡œ ì—…ë°ì´íŠ¸
         }
     }
 
@@ -140,8 +140,8 @@ public class ItemQuantityCheck : MonoBehaviour
         {
             currentNumber--;
             centerText.text = currentNumber.ToString();
-            inputField.text = centerText.text; // Input Field ¾÷µ¥ÀÌÆ®
-            lastValidText = centerText.text; // À¯È¿ÇÑ ÅØ½ºÆ®·Î ¾÷µ¥ÀÌÆ®
+            inputField.text = centerText.text; // Input Field ì—…ë°ì´íŠ¸
+            lastValidText = centerText.text; // ìœ íš¨í•œ í…ìŠ¤íŠ¸ë¡œ ì—…ë°ì´íŠ¸
         }
     }
 
@@ -152,13 +152,13 @@ public class ItemQuantityCheck : MonoBehaviour
 
     public void OnOkButton()
     {
-        // Confirm Äİ¹é È£Ãâ
+        // Confirm ì½œë°± í˜¸ì¶œ
         if (confirmCallback != null)
         {
             confirmCallback.Invoke();
         }
 
-        // UI ´İ±â
+        // UI ë‹«ê¸°
         UIManager.Instance.CloseTopUi();
     }
 }

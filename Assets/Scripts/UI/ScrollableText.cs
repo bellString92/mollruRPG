@@ -11,11 +11,11 @@ public class ScrollableText : MonoBehaviour
 
     void Start()
     {
-        // ScrollbarÀÇ °ªÀ» TextMeshProÀÇ ScrollRect verticalNormalizedPosition¿¡ ¹ÙÀÎµù
+        // Scrollbarì˜ ê°’ì„ TextMeshProì˜ ScrollRect verticalNormalizedPositionì— ë°”ì¸ë”©
         scrollbar.onValueChanged.AddListener(OnScrollbarValueChanged);
     }
 
-    // Scrollbar °ª º¯°æ ½Ã È£ÃâµÇ´Â ÇÔ¼ö
+    // Scrollbar ê°’ ë³€ê²½ ì‹œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     void OnScrollbarValueChanged(float value)
     {
         textMeshPro.rectTransform.anchoredPosition = new Vector2(

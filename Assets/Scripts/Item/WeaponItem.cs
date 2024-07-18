@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New WeaponItem", menuName = "Items/WeaponItem")]// Asset/createÃ¢¿¡¼­ ¾ÆÀÌÅÛÀ» »ı¼º½ÃÅ°°Ô ÇÒ¼öÀÖ´Â ÄÚµå
+[CreateAssetMenu(fileName = "New WeaponItem", menuName = "Items/WeaponItem")]// Asset/createì°½ì—ì„œ ì•„ì´í…œì„ ìƒì„±ì‹œí‚¤ê²Œ í• ìˆ˜ìˆëŠ” ì½”ë“œ
 public class WeaponItem : ItemKind
 {
     public float attackBoost;
@@ -17,7 +17,7 @@ public class WeaponItem : ItemKind
         attackBoost = original.attackBoost;
     }
 
-    public override void Use(BattleStat myStat) //»ç¿ë½Ã playerÀÇ ´É·ÂÄ¡¿¡ ¿µÇâÀ» ÁÖ´Â ÄÚµå
+    public override void Use(BattleStat myStat) //ì‚¬ìš©ì‹œ playerì˜ ëŠ¥ë ¥ì¹˜ì— ì˜í–¥ì„ ì£¼ëŠ” ì½”ë“œ
     {
         myStat.AttackPoint += attackBoost;
     }

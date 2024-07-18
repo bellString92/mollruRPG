@@ -19,7 +19,7 @@ public class Loading : MonoBehaviour
         string nextSceneText = PlayerPrefs.GetString("nextSceneText");
         string nextSceneImage = PlayerPrefs.GetString("nextSceneImage");
 
-        if ("".Equals(nextSceneText)) nextSceneText = "·Îµù Áß";
+        if ("".Equals(nextSceneText)) nextSceneText = "ë¡œë”© ì¤‘";
         if ("".Equals(nextSceneImage)) nextSceneImage = "Dungeon";
 
         _nextSceneText.text = nextSceneText;
