@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
-    private Stack<GameObject> uiStack= new Stack<GameObject>(); //매번 생성될 UI를 저장할 장소
+    private Stack<GameObject> uiStack = new Stack<GameObject>(); //매번 생성될 UI를 저장할 장소
     public Canvas canvas;
-    public Inventory myInven;
+    public GameObject myInven;
+    public GameObject mySkillWindow;
 
     public GameObject itemQuantityCheckPrefab; // Quantity를 표시할 프리팹
     private GameObject currentQuantityUI = null;
@@ -23,6 +25,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         myInven.gameObject.SetActive(false);
+        mySkillWindow.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -37,6 +40,19 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
         {
             myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (myInven.gameObject.activeSelf)
+            {
+                myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
+            }
+        }
+
+        // 스킬창 상호작용
+        if (Input.GetKeyDown(KeyCode.K)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
+        {
+            mySkillWindow.gameObject.SetActive(!mySkillWindow.gameObject.activeSelf);
         }
     }
     public void CloseTopUi() // 가장위에 존재하는 UI종료
@@ -80,6 +96,4 @@ public class UIManager : MonoBehaviour
             return null;
         } 
     }
-
-
 }
