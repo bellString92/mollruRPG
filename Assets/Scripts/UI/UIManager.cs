@@ -6,11 +6,11 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
-    private Stack<GameObject> uiStack= new Stack<GameObject>(); //¸Å¹ø »ı¼ºµÉ UI¸¦ ÀúÀåÇÒ Àå¼Ò
+    private Stack<GameObject> uiStack= new Stack<GameObject>(); //ë§¤ë²ˆ ìƒì„±ë  UIë¥¼ ì €ì¥í•  ì¥ì†Œ
     public Canvas canvas;
     public Inventory myInven;
-
-    public GameObject itemQuantityCheckPrefab; // Quantity¸¦ Ç¥½ÃÇÒ ÇÁ¸®ÆÕ
+    
+    public GameObject itemQuantityCheckPrefab; // Quantityë¥¼ í‘œì‹œí•  í”„ë¦¬íŒ¹
     private GameObject currentQuantityUI = null;
     private ItemKind itemWithPendingQuantity = null;
     private System.Action quantityConfirmCallback;
@@ -28,18 +28,18 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && uiStack.Count > 0) // esc·Î uiÁ¾·á ¸Å¼­µåÈ£Ãâ
+        if (Input.GetKeyDown(KeyCode.Escape) && uiStack.Count > 0) // escë¡œ uiì¢…ë£Œ ë§¤ì„œë“œí˜¸ì¶œ
         {
             CloseTopUi();
         }
 
-        //ÀÎº¥Åä¸® »óÈ£ÀÛ¿ë
-        if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  Ã¤ÆÃ »ı°åÀ»¶§ ¾µ°Í
+        //ì¸ë²¤í† ë¦¬ ìƒí˜¸ì‘ìš©
+        if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  ì±„íŒ… ìƒê²¼ì„ë•Œ ì“¸ê²ƒ
         {
             myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
         }
     }
-    public void CloseTopUi() // °¡ÀåÀ§¿¡ Á¸ÀçÇÏ´Â UIÁ¾·á
+    public void CloseTopUi() // ê°€ì¥ìœ„ì— ì¡´ì¬í•˜ëŠ” UIì¢…ë£Œ
     {
         if(uiStack.Count > 0)
         {
@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
 
     public void OpenQuantityUI(ItemKind item, System.Action onConfirm)
     {
-        // ±âÁ¸¿¡ ¿­¸° UI°¡ ÀÖÀ¸¸é ´İ±â
+        // ê¸°ì¡´ì— ì—´ë¦° UIê°€ ìˆìœ¼ë©´ ë‹«ê¸°
         if (currentQuantityUI != null)
         {
             CloseTopUi();
@@ -59,10 +59,10 @@ public class UIManager : MonoBehaviour
         itemWithPendingQuantity = item;
         quantityConfirmCallback = onConfirm;
 
-        // Quantity UI¸¦ »ı¼ºÇÏ¿© Ç¥½Ã
+        // Quantity UIë¥¼ ìƒì„±í•˜ì—¬ í‘œì‹œ
         currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
 
-        // UI¿¡ ¾ÆÀÌÅÛ Á¤º¸ Ç¥½Ã
+        // UIì— ì•„ì´í…œ ì •ë³´ í‘œì‹œ
         TMP_Text quantityText = currentQuantityUI.GetComponentInChildren<TMP_Text>();
         if (quantityText != null)
         {
@@ -71,7 +71,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public GameObject ShowUI(GameObject uiPrefab) // È£ÃâÀÚ°¡ °¡Áö°íÀÖ´Â ÇÁ¸®Æé ui»ı¼º
+    public GameObject ShowUI(GameObject uiPrefab) // í˜¸ì¶œìê°€ ê°€ì§€ê³ ìˆëŠ” í”„ë¦¬í© uiìƒì„±
     { 
         if (canvas != null) 
         { 
@@ -81,7 +81,7 @@ public class UIManager : MonoBehaviour
         } 
         else 
         { 
-            Debug.LogError("Canvas°¡ ¼³Á¤µÇÁö ¾ÊÀ½");
+            Debug.LogError("Canvasê°€ ì„¤ì •ë˜ì§€ ì•ŠìŒ");
             return null;
         } 
     }

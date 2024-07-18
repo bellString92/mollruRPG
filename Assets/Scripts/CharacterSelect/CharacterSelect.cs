@@ -3,12 +3,17 @@ using UnityEngine.UI;
 
 public class CharacterSelect : MonoBehaviour
 {
-    public int startNum = 0;
+    private int startNum = 0;
     private string _nickName = "";
     private void Start()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    private void Update()
+    {
+        
     }
 
     private enum PopupType
@@ -73,7 +78,7 @@ public class CharacterSelect : MonoBehaviour
             GameObject.Find($"NickName{num}").transform.GetComponentInChildren<TMPro.TMP_Text>().text = nickName;
         }
 
-        GameObject.Find("CreateSelectSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").GetComponentInChildren<TMPro.TMP_Text>().text = "ƒ≥∏Ø≈Õ º±≈√";
+        GameObject.Find("CreateSelectSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").GetComponentInChildren<TMPro.TMP_Text>().text = "Ï∫êÎ¶≠ÌÑ∞ ÏÑ†ÌÉù";
         GameObject.Find("DeleteSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").transform.gameObject.SetActive(true);
 
         startNum = num;
@@ -101,7 +106,7 @@ public class CharacterSelect : MonoBehaviour
 
         GameObject.Find($"NickName{num}").transform.GetChild(0).gameObject.SetActive(false);
 
-        GameObject.Find("CreateSelectSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").GetComponentInChildren<TMPro.TMP_Text>().text = "Ω≈±‘ƒ≥∏Ø≈Õ ª˝º∫";
+        GameObject.Find("CreateSelectSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").GetComponentInChildren<TMPro.TMP_Text>().text = "Ïã†Í∑úÏ∫êÎ¶≠ÌÑ∞ ÏÉùÏÑ±";
         GameObject.Find("DeleteSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").transform.gameObject.SetActive(false);
         if (num == startNum) startNum = 0;
     }
@@ -113,7 +118,7 @@ public class CharacterSelect : MonoBehaviour
 
     private void GameStartOk(int num)
     {
-        PlayerPrefs.SetString("nextSceneText", "∏∂¿ª");
+        PlayerPrefs.SetString("nextSceneText", "ÎßàÏùÑ");
         PlayerPrefs.SetString("nextSceneImage", "MollRu_Town");
         PlayerPrefs.SetString("nickName", _nickName);
         SceneChange.OnSceneChange("MollRuRPGScene");
@@ -124,8 +129,8 @@ public class CharacterSelect : MonoBehaviour
         GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(true);
         GameObject textPopup = Instantiate(Resources.Load("Prefabs/TextPopup") as GameObject);
 
-        textPopup.transform.GetChild(1).GetComponentInChildren<TMPro.TMP_Text>().text = "¥–≥◊¿” º≥¡§";
-        textPopup.transform.GetChild(3).GetComponentInChildren<TMPro.TMP_Text>().text = "»Æ¿Œ";
+        textPopup.transform.GetChild(1).GetComponentInChildren<TMPro.TMP_Text>().text = "ÎãâÎÑ§ÏûÑ ÏÑ§Ï†ï";
+        textPopup.transform.GetChild(3).GetComponentInChildren<TMPro.TMP_Text>().text = "ÌôïÏù∏";
         textPopup.transform.GetComponentInChildren<Button>().onClick.AddListener(() =>
         {
             string nickName = textPopup.transform.GetChild(2).GetComponentInChildren<TMPro.TMP_InputField>().text;
@@ -154,17 +159,17 @@ public class CharacterSelect : MonoBehaviour
     {
         if ("".Equals(nickName))
         {
-            return "¥–≥◊¿”¿ª ¿‘∑¬«ÿ¡÷ººø‰.";
+            return "ÎãâÎÑ§ÏûÑÏùÑ ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî.";
         }
 
         if (nickName.Length > 10)
         {
-            return "¥–≥◊¿”¿∫ √÷¥Î 10±€¿⁄ ¿‘¥œ¥Ÿ.";
+            return "ÎãâÎÑ§ÏûÑÏùÄ ÏµúÎåÄ 10Í∏ÄÏûê ÏûÖÎãàÎã§.";
         }
 
         if (nickName.Contains(" "))
         {
-            return "∂ÁæÓæ≤±‚¥¬ ∫“∞°¥…«’¥œ¥Ÿ.";
+            return "ÎùÑÏñ¥Ïì∞Í∏∞Îäî Î∂àÍ∞ÄÎä•Ìï©ÎãàÎã§.";
         }
 
         return "";
@@ -186,7 +191,7 @@ public class CharacterSelect : MonoBehaviour
         switch (type)
         {
             case PopupType.CREATE:
-                texts[0].text = "ª˝º∫ «œΩ√∞⁄Ω¿¥œ±Ó?";
+                texts[0].text = "ÏÉùÏÑ± ÌïòÏãúÍ≤†ÏäµÎãàÍπå?";
                 btns[1].onClick.AddListener(() =>
                 {
                     OnCreateSelectSlotClickOk(num, nickName);
@@ -195,7 +200,7 @@ public class CharacterSelect : MonoBehaviour
                 });
                 break;
             case PopupType.DELETE:
-                texts[0].text = "ªË¡¶ «œΩ√∞⁄Ω¿¥œ±Ó?";
+                texts[0].text = "ÏÇ≠Ï†ú ÌïòÏãúÍ≤†ÏäµÎãàÍπå?";
                 btns[1].onClick.AddListener(() =>
                 {
                     OnDeleteSlotClickOk(num); Destroy(popup);
@@ -205,7 +210,7 @@ public class CharacterSelect : MonoBehaviour
             case PopupType.START:
                 if (num == 0)
                 {
-                    texts[0].text = "ƒ≥∏Ø≈Õ∏¶ º±≈√«ÿ¡÷ººø‰.";
+                    texts[0].text = "Ï∫êÎ¶≠ÌÑ∞Î•º ÏÑ†ÌÉùÌï¥Ï£ºÏÑ∏Ïöî.";
                     btns[1].onClick.AddListener(() =>
                     {
                         Destroy(popup);
@@ -214,7 +219,7 @@ public class CharacterSelect : MonoBehaviour
                 }
                 else
                 {
-                    texts[0].text = "∞‘¿”¿ª Ω√¿€«œΩ√∞⁄Ω¿¥œ±Ó?";
+                    texts[0].text = "Í≤åÏûÑÏùÑ ÏãúÏûëÌïòÏãúÍ≤†ÏäµÎãàÍπå?";
                     btns[1].onClick.AddListener(() =>
                     {
                         GameStartOk(num);

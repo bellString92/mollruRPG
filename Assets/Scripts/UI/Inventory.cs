@@ -14,53 +14,53 @@ public class Inventory : MonoBehaviour
             Instance = this;
     }
 
-    public Transform content; // ½½·ÔµéÀ» ÀÚ½ÄÀ¸·Î °¡Áö°í ÀÖ´Â ºÎ¸ğ Transform
+    public Transform content; // ìŠ¬ë¡¯ë“¤ì„ ìì‹ìœ¼ë¡œ ê°€ì§€ê³  ìˆëŠ” ë¶€ëª¨ Transform
 
-    // ¾ÆÀÌÅÛÀ» »ı¼ºÇÏ´Â ¸Ş¼­µå
+    // ì•„ì´í…œì„ ìƒì„±í•˜ëŠ” ë©”ì„œë“œ
     public void CreateItem(ItemKind itemKind, GameObject itemPrefab)
     {
         if (itemKind != null && itemPrefab != null)
         {
-            // contentÀÇ ÀÚ½Ä ½½·ÔµéÀ» ¼øÈ¸
+            // contentì˜ ìì‹ ìŠ¬ë¡¯ë“¤ì„ ìˆœíšŒ
             foreach (Transform slot in content)
             {
                 InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
                 if (inventorySlot != null && inventorySlot.myChild == null)
                 {
-                    // ItemKind¸¦ º¹Á¦ÇÏ¿© »ç¿ë
+                    // ItemKindë¥¼ ë³µì œí•˜ì—¬ ì‚¬ìš©
                     ItemKind newItemKind = Instantiate(itemKind);
 
-                    // »õ·Î¿î °ÔÀÓ ¿ÀºêÁ§Æ® »ı¼º ¹× ¼³Á¤
+                    // ìƒˆë¡œìš´ ê²Œì„ ì˜¤ë¸Œì íŠ¸ ìƒì„± ë° ì„¤ì •
                     GameObject newItem = Instantiate(itemPrefab);
                     newItem.name = newItemKind.itemName;
 
-                    // »õ·Î¿î °ÔÀÓ ¿ÀºêÁ§Æ®¿¡ Drag ÄÄÆ÷³ÍÆ® Ãß°¡
+                    // ìƒˆë¡œìš´ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì— Drag ì»´í¬ë„ŒíŠ¸ ì¶”ê°€
                     newItem.AddComponent<Drag>();
 
-                    // »ı¼ºµÈ ¾ÆÀÌÅÛ¿¡ ItemComponent Ãß°¡ ¹× ¼³Á¤
+                    // ìƒì„±ëœ ì•„ì´í…œì— ItemComponent ì¶”ê°€ ë° ì„¤ì •
                     ItemComponent itemComponent = newItem.AddComponent<ItemComponent>();
                     itemComponent.itemKind = newItemKind;
 
-                    // ¾ÆÀÌÄÜ ¼³Á¤
+                    // ì•„ì´ì½˜ ì„¤ì •
                     Image iconImage = newItem.GetComponent<Image>();
                     if (iconImage != null && newItemKind.itemIcon != null)
                     {
                         iconImage.sprite = newItemKind.itemIcon;
                     }
                     
-                    // ½½·Ô¿¡ ¾ÆÀÌÅÛ ¹èÄ¡
+                    // ìŠ¬ë¡¯ì— ì•„ì´í…œ ë°°ì¹˜
                     inventorySlot.SetChild(newItem);
                     newItem.transform.SetParent(slot);
 
-                    //¾ÆÀÌÅÛ °¹¼ö Ç¥½Ã
+                    //ì•„ì´í…œ ê°¯ìˆ˜ í‘œì‹œ
                     TextMeshProUGUI quantityText = newItem.GetComponentInChildren<TextMeshProUGUI>();
                     if (quantityText != null)
                     {
                         quantityText.text = newItemKind.quantity.ToString();
                     }
 
-                    // À§Ä¡¿Í Å©±â ¼³Á¤
-                    // RectTransform ÃÊ±âÈ­
+                    // ìœ„ì¹˜ì™€ í¬ê¸° ì„¤ì •
+                    // RectTransform ì´ˆê¸°í™”
                     RectTransform rectTransform = newItem.GetComponent<RectTransform>();
                     if (rectTransform != null)
                     {
