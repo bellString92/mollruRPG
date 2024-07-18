@@ -421,7 +421,7 @@ MonoBehaviour:
     curMagicPoint: 100
     myLvevel: 1
     maxExperiencePoint: 100
-    curExperiencePoint: 8
+    curExperiencePoint: 100
   enemyMask:
     serializedVersion: 2
     m_Bits: 128
@@ -1245,7 +1245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crashMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 768
 --- !u!114 &1743204099586419901
 MonoBehaviour:
   m_ObjectHideFlags: 0

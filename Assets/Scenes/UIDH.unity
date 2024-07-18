@@ -1095,23 +1095,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2250820238863575259, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 223548183}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
---- !u!114 &130280757 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2875031136332228294, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
-  m_PrefabInstance: {fileID: 130280756}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecdcde4832691c242a41bf7ebb901049, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &184165149
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,81 +1172,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 184165149}
-  m_CullTransparentMesh: 1
---- !u!1 &223548182
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 223548183}
-  - component: {fileID: 223548185}
-  - component: {fileID: 223548184}
-  m_Layer: 5
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &223548183
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223548182}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 388243391}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -636.39404, y: -16.845703}
-  m_SizeDelta: {x: 2087.796, y: 1241.7656}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &223548184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223548182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &223548185
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223548182}
   m_CullTransparentMesh: 1
 --- !u!1 &241843325
 GameObject:
@@ -1997,38 +1908,6 @@ PrefabInstance:
     - target: {fileID: 4980345128072532735, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
       propertyPath: m_Name
       value: Monster
-      objectReference: {fileID: 0}
-    - target: {fileID: 8468134994725073932, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
-      propertyPath: myBattleStat.maxExperiencePoint
-      value: 1000000
-      objectReference: {fileID: 0}
-    - target: {fileID: 8468134994725073932, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
-      propertyPath: deadAct.m_PersistentCalls.m_Calls.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8468134994725073932, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
-      propertyPath: deadAct.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8468134994725073932, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
-      propertyPath: deadAct.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 2010191172}
-    - target: {fileID: 8468134994725073932, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
-      propertyPath: deadAct.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8468134994725073932, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
-      propertyPath: deadAct.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: set_enabled
-      objectReference: {fileID: 0}
-    - target: {fileID: 8468134994725073932, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
-      propertyPath: deadAct.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: UnityEngine.Collider, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 8468134994725073932, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
-      propertyPath: deadAct.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3162,6 +3041,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1468210807}
   m_CullTransparentMesh: 1
+--- !u!1 &1481305749 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2930613241273544005, guid: 8a5b4e344e5e54745a26b3cdf13c2966, type: 3}
+  m_PrefabInstance: {fileID: 130280756}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1499517370
 GameObject:
   m_ObjectHideFlags: 0
@@ -3942,7 +3826,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 1925416300}
-  myInven: {fileID: 130280757}
+  myInven: {fileID: 1481305749}
+  mySkillWindow: {fileID: 1677021490}
   itemQuantityCheckPrefab: {fileID: 0}
 --- !u!1 &1939022734
 GameObject:
@@ -4197,11 +4082,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1985741691}
   m_CullTransparentMesh: 1
---- !u!1 &2010191172 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4980345128072532735, guid: 80f170a9dcaeeb9449822c7139f77264, type: 3}
-  m_PrefabInstance: {fileID: 833931401}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2045247886
 GameObject:
   m_ObjectHideFlags: 0
@@ -4459,21 +4339,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7008988906505987934, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: crashMask.m_Bits
-      value: 768
-      objectReference: {fileID: 0}
     - target: {fileID: 7861211204230361259, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: myStat.curExperiencePoint
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: myStat.maxExperiencePoint
-      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target

@@ -77,13 +77,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4980345128072532735}
+        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   myTarget: {fileID: 0}
   myBattleStat:
-    AttackDelay: 2
-    AttackRange: 2
     AttackPoint: 10
+    AttackRange: 2
+    AttackDelay: 2
     maxHealPoint: 100
     curHealPoint: 100
+    maxMagicPoint: 0
+    curMagicPoint: 0
+    myLvevel: 0
+    maxExperiencePoint: 1000000
+    curExperiencePoint: 0
+  myExp: 100
   myState: 0
 --- !u!136 &8626463264264953478
 CapsuleCollider:
@@ -971,6 +989,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   stopAct:
+    m_PersistentCalls:
+      m_Calls: []
+  takeExpAct:
     m_PersistentCalls:
       m_Calls: []
   skillDamageAct:
