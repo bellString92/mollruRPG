@@ -12,7 +12,6 @@ public class UIManager : MonoBehaviour
     
     public GameObject itemQuantityCheckPrefab; // Quantity를 표시할 프리팹
     private GameObject currentQuantityUI = null;
-    private ItemKind itemWithPendingQuantity = null;
     private System.Action quantityConfirmCallback;
 
     private void Awake()

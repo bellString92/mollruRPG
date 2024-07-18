@@ -10,6 +10,7 @@ public class AcceItem : ItemKind
 
     private void OnEnable()
     {
+        itemTag = "AccessoryItem";
         itemType = ItemType.acceItem;
         maxStack = 1;
     }

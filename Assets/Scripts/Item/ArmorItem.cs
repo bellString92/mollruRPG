@@ -9,6 +9,7 @@ public class ArmorItem : ItemKind
 
     private void OnEnable()
     {
+        itemTag = "ArmorItem";
         itemType = ItemType.armorItem;
         maxStack = 1;
     }

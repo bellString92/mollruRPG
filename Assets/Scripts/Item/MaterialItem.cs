@@ -7,6 +7,7 @@ public class MaterialItem : ItemKind
 {
     private void OnEnable()
     {
+        itemTag = "MaterialItem";
         itemType = ItemType.materialItem;
         maxStack = 999;
     }

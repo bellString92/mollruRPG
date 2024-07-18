@@ -9,6 +9,7 @@ public class ConsumItem : ItemKind
 
     private void OnEnable()
     {
+        itemTag = "ConsumItem";
         itemType = ItemType.consumItem;
         maxStack= 99;
     }

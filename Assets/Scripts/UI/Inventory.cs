@@ -32,14 +32,15 @@ public class Inventory : MonoBehaviour
 
                     // 새로운 게임 오브젝트 생성 및 설정
                     GameObject newItem = Instantiate(itemPrefab);
+
+
                     newItem.name = newItemKind.itemName;
 
                     // 새로운 게임 오브젝트에 Drag 컴포넌트 추가
                     newItem.AddComponent<Drag>();
 
-                    // 생성된 아이템에 ItemComponent 추가 및 설정
-                    ItemComponent itemComponent = newItem.AddComponent<ItemComponent>();
-                    itemComponent.itemKind = newItemKind;
+                    // 태그 설정
+                    newItem.tag = newItemKind.itemTag;
 
                     // 아이콘 설정
                     Image iconImage = newItem.GetComponent<Image>();
