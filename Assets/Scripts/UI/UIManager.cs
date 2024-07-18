@@ -56,17 +56,12 @@ public class UIManager : MonoBehaviour
             CloseTopUi();
         }
 
-        itemWithPendingQuantity = item;
-        quantityConfirmCallback = onConfirm;
-
-        // Quantity UI를 생성하여 표시
+        // Quantity UI 열기
         currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
-
-        // UI에 아이템 정보 표시
-        TMP_Text quantityText = currentQuantityUI.GetComponentInChildren<TMP_Text>();
-        if (quantityText != null)
+        var quantityCheck = currentQuantityUI.GetComponent<ItemQuantityCheck>();
+        if (quantityCheck != null)
         {
-            quantityText.text = $"Current Quantity: {item.quantity}\nSet new quantity:";
+            quantityCheck.Initialize(item, onConfirm);
         }
     }
 

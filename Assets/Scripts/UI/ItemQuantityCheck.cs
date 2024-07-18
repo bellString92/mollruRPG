@@ -25,8 +25,7 @@ public class ItemQuantityCheck : MonoBehaviour
 
         // Input Field와 중앙 텍스트를 연동합니다.
         inputField.onEndEdit.AddListener(EndEditInputField);
-        inputField.onValueChanged.AddListener(ValidateInput); // 실시간 업데이트
-        centerText.text = inputField.text; // 초기 텍스트를 Input Field에서 가져옵니다.
+        inputField.onValueChanged.AddListener(ValidateInput); // 실시간 업데이트        
 
         // Input Field를 숨기고 중앙 텍스트를 클릭할 때만 보이게 설정합니다.
         inputField.gameObject.SetActive(false);
@@ -85,6 +84,7 @@ public class ItemQuantityCheck : MonoBehaviour
         else
         {
             centerText.text = lastValidText; // 유효하지 않으면 마지막 유효 텍스트로 복구
+            inputField.text = lastValidText;
         }
 
 
@@ -95,9 +95,19 @@ public class ItemQuantityCheck : MonoBehaviour
     private void ValidateInput(string newText)
     {
         int number;
-        if (!int.TryParse(newText, out number))
+        if (newText == "")
+        {
+            // 빈 문자열일 경우 유효하지 않은 입력으로 처리
+            inputField.text = "";
+            centerText.text = "";
+        }
+        else if (!int.TryParse(newText, out number))
         {
             inputField.text = lastValidText; // 유효하지 않으면 마지막 유효 텍스트로 복구
+        }
+        else
+        {
+            lastValidText = newText; // 유효한 경우 lastValidText를 업데이트
         }
     }
 
@@ -121,15 +131,16 @@ public class ItemQuantityCheck : MonoBehaviour
 
 
     // 버튼에 연결할 메서드
-    public void  OnPlusText()
+    public void OnPlusText()
     {
         int currentNumber;
         if (int.TryParse(centerText.text, out currentNumber))
         {
-            currentNumber++;
+            currentNumber = Mathf.Clamp(currentNumber + 1, 1, itemData.maxStack);
             centerText.text = currentNumber.ToString();
             inputField.text = centerText.text; // Input Field 업데이트
             lastValidText = centerText.text; // 유효한 텍스트로 업데이트
+            itemData.quantity = currentNumber; // itemData.quantity 업데이트
         }
     }
 
@@ -138,10 +149,11 @@ public class ItemQuantityCheck : MonoBehaviour
         int currentNumber;
         if (int.TryParse(centerText.text, out currentNumber))
         {
-            currentNumber--;
+            currentNumber = Mathf.Clamp(currentNumber - 1, 1, itemData.maxStack);
             centerText.text = currentNumber.ToString();
             inputField.text = centerText.text; // Input Field 업데이트
             lastValidText = centerText.text; // 유효한 텍스트로 업데이트
+            itemData.quantity = currentNumber; // itemData.quantity 업데이트
         }
     }
 
