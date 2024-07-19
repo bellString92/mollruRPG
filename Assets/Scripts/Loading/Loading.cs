@@ -30,6 +30,7 @@ public class Loading : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
     }
 
     IEnumerator LoadingCor()
@@ -37,7 +38,7 @@ public class Loading : MonoBehaviour
         string nextScene = PlayerPrefs.GetString("nextScene");
         if (nextScene == "")
         {
-            SceneManager.LoadScene("Intro");
+            SceneManager.LoadSceneAsync("Intro");
             yield break;
         }
         AsyncOperation ao = SceneManager.LoadSceneAsync(nextScene);
