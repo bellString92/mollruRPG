@@ -44,6 +44,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
             {
                 ShopManager.Instance.SetDestroySlotItem(this);
             }
+            else
+            {
+                ShopManager.Instance.SetDestroySlotItem(null);
+            }
         }
     }
 
