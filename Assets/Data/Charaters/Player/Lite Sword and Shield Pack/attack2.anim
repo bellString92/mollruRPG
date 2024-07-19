@@ -65280,7 +65280,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.93333334
-    functionName: OnAttackCheckStart
+    functionName: OnAllAct
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

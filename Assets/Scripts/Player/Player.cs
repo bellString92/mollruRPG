@@ -114,9 +114,10 @@ public class Player : AnimatorProperty, IBattle
         }
 
         // 구르기
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!myAnim.GetBool("IsRoll") && Input.GetKeyDown(KeyCode.Space)) 
         {
-            myAnim.SetTrigger("Roll");
+            myAnim.SetBool("IsRoll", true);
+            myAnim.SetTrigger("OnRoll");
         }
 
         // 상호작용키
@@ -134,6 +135,7 @@ public class Player : AnimatorProperty, IBattle
         {
             if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
             {
+                myAnim.SetBool("IsRoll", true);
                 myAnim.SetBool("IsAttack", true);
                 myAnim.SetTrigger("OnAttack");
             }
@@ -211,6 +213,55 @@ public class Player : AnimatorProperty, IBattle
         }
 
     }
+    public void AllAttackTrue()
+    {
+        myAnim.SetBool("IsAttack", true);
+    }
+
+    public void AllAttackFalse()
+    {
+        myAnim.SetBool("IsAttack", false);
+    }
+
+    public void AllSkillTrue()
+    {
+        myAnim.SetBool("IsRoll", true);
+        myAnim.SetBool("IsAttack", true);
+        myAnim.SetBool("IsSkill_Q", true);
+        myAnim.SetBool("IsSkill_E", true);
+        myAnim.SetBool("IsSkill_S", true);
+        myAnim.SetBool("IsSkill_Tab", true);
+        myAnim.SetBool("IsSkill_1", true);
+        myAnim.SetBool("IsSkill_2", true);
+        myAnim.SetBool("IsSkill_3", true);
+        myAnim.SetBool("IsSkill_4", true);
+        myAnim.SetBool("IsSkill_F1", false);
+        myAnim.SetBool("IsSkill_F2", false);
+    }
+
+    public void AllSkillFalse()
+    {
+        myAnim.SetBool("IsRoll", false);
+        myAnim.SetBool("IsAttack", false);
+        myAnim.SetBool("IsSkill_Q", false);
+        myAnim.SetBool("IsSkill_E", false);
+        myAnim.SetBool("IsSkill_S", false);
+        myAnim.SetBool("IsSkill_Tab", false);
+        myAnim.SetBool("IsSkill_1", false);
+        myAnim.SetBool("IsSkill_2", false);
+        myAnim.SetBool("IsSkill_3", false);
+        myAnim.SetBool("IsSkill_4", false);
+        myAnim.SetBool("IsSkill_F1", true);
+        myAnim.SetBool("IsSkill_F2", true);
+    }
+
+    public void SkillCheck()
+    {
+        if (myAnim.GetBool("IsSkill_F1"))
+        {
+            myAnim.SetTrigger("OnSkill_F1");
+        }
+    }
 
     public void OnAttack()
     {
@@ -223,78 +274,6 @@ public class Player : AnimatorProperty, IBattle
                 id.TakeDamage(myStat.AttackPoint);
             }
         }
-    }
-    /*
-    public void Skill_Movement()
-    {
-        StartCoroutine(SkillMovement(10.0f, 10.0f));
-    }
-    */
-    IEnumerator SkillMovement(float dirSpeed, float moveSpeed)
-    {   
-        while (!myAnim.GetBool("myState"))
-        {
-            if (!myTarget) yield break; // 타겟이 비어있으면 하지 빠져나감
-            Vector3 myTDir = myTarget.transform.position - transform.position; // 타겟과의 거리 계산
-            float myTDist = myTDir.magnitude; // 
-            float delta = 0.0f;
-
-            if (myTarget != null)
-            {
-            
-                delta = moveSpeed * Time.deltaTime; //프레임당 이동 거리?
-                if (delta > myTDist) delta = myTDist; // 넘어가지 않게 하기 위해 델타값 변경
-                //transform.Translate(myTDir * delta, Space.World); // 실제 이동
-            }
-            else
-            {
-                break;
-            }
-            float angle = Vector3.Angle(transform.forward, myTDir);
-            float rotDir = Vector3.Dot(transform.right, myTDir) < 0.0f ? -1.0f : 1.0f;
-
-            delta = dirSpeed * Time.deltaTime;
-            if (delta > angle) delta = angle;
-
-            transform.Rotate(Vector3.up * delta * rotDir);
-
-            yield return null;
-        }
-    }
-
-
-    public void AttackCheckStart()
-    {
-        myAnim.SetBool("IsAttack", false);//StartCoroutine(AttackCheck());
-    }
-    /*
-    IEnumerator AttackCheck()
-    {
-        myAnim.SetBool("IsAttack", false);
-        IsComboCheck = true;
-        while (IsComboCheck)
-        {
-            if (Input.GetMouseButton(0))
-            {
-                IsComboCheck = false;
-            }
-            yield return null;
-        }
-    }
-    
-    public void AttackCheckEnd()
-    {
-        IsComboCheck = false;
-    }
-    */
-    public void SkillCheckStart()
-    {
-        myAnim.SetBool("IsAttack", false);
-    }
-
-    public void SkillCheckEnd()
-    {
-
     }
 
     // 던전 문과 상자 제어하기 위한 클라이더
