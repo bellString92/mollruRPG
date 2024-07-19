@@ -11,6 +11,7 @@ public class Intro : MonoBehaviour
     public TMPro.TMP_Text myStart;
     private IEnumerator introCor = null;
     private IEnumerator startCor = null;
+    private IEnumerator startWaitCor = null;
 
     // Start is called before the first frame update
     void Start()
@@ -24,14 +25,23 @@ public class Intro : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKey && startCor != null)
+        if (Input.anyKeyDown)
         {
-            introCor = null;
-            startCor = null;
-            PlayerPrefs.SetString("nextSceneText", "로딩 중");
-            PlayerPrefs.SetString("nextSceneImage", "Dungeon");
-            SceneChange.OnSceneChange("CharaterSelect");
+            if (introCor != null) {
+                StopCoroutine(introCor);
+                introCor = null;
+                myTitle.text = "MollRu RPG";
+                startCor = StartCor(1.0f, 3, 0.5f);
+                StartCoroutine(startCor);
+            } else if (startWaitCor != null) {
+                introCor = null;
+                startCor = null;
+                PlayerPrefs.SetString("nextSceneText", "로딩 중");
+                PlayerPrefs.SetString("nextSceneImage", "Dungeon");
+                SceneChange.OnSceneChange("CharaterSelect");
+            }
         }
+
     }
 
     /// <summary>
@@ -52,6 +62,12 @@ public class Intro : MonoBehaviour
         }
         yield return new WaitForSeconds(waitTime);
 
+        startCor = StartCor(startTime, dot, dotTime);
+        StartCoroutine(startWaitCor);
+    }
+
+    IEnumerator StartCor(float startTime, int dot, float dotTime)
+    {
         float curTime = 0.0f;
         float colorA = 0.0f;
         Color color = myStart.color;
@@ -64,11 +80,11 @@ public class Intro : MonoBehaviour
             yield return null;
         }
 
-        startCor = StartCor(dot, dotTime);
-        StartCoroutine(startCor);
+        startWaitCor = StartWaitCor(dot, dotTime);
+        StartCoroutine(startWaitCor);
     }
 
-    IEnumerator StartCor(int dot, float dotTime)
+    IEnumerator StartWaitCor(int dot, float dotTime)
     {
         string oriStartTxt = myStart.text;
         string dotTxt = ".";
