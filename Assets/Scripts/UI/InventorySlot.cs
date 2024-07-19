@@ -38,9 +38,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
   
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (myChild != null)
+        if (ShopManager.Instance != null)
         {
-            ShopManager.Instance.SetDestroySlotItem(this);
+            if (myChild != null)
+            {
+                ShopManager.Instance.SetDestroySlotItem(this);
+            }
         }
     }
 
