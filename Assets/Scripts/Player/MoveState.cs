@@ -2,31 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attack : StateMachineBehaviour
+public class MoveState : StateMachineBehaviour
 {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        animator.SetBool("IsAttack", true);
-        animator.SetBool("IsSkill_2", true);
-    }
-
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
     //    
     //}
 
+    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        animator.SetBool("IsAttack", false);
+        animator.SetBool("IsSkill_Q", false);
+        animator.SetBool("IsSkill_E", false);
+        animator.SetBool("IsSkill_S", false);
+        animator.SetBool("IsSkill_1", false);
+        animator.SetBool("IsSkill_2", false);
+        animator.SetBool("IsSkill_3", false);
+        animator.SetBool("IsSkill_4", false);
+    }
+
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
-    //    animator.SetBool("IsAttack", false);
+    //    
     //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{  
-        // Implement code that processes and affects root motion
+    //{
+    //    // Implement code that processes and affects root motion
     //}
 
     // OnStateIK is called right after Animator.OnAnimatorIK()

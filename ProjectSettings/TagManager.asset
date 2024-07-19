@@ -15,6 +15,7 @@ TagManager:
   - AccessoryItem
   - ConsumItem
   - MaterialItem
+  - SKill_Icon
   layers:
   - Default
   - TransparentFX

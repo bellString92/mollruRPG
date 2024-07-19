@@ -79,6 +79,7 @@ public class ShopManager : MonoBehaviour
     {
         lastClickedSlot = slot;
     }
+
     public void OnDestroyInventorySlotItem() // 판매 버튼을 누르면 호출
     {
         if (lastClickedSlot != null)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class Skill_1 : StateMachineBehaviour
+public class Skill_Tab : StateMachineBehaviour
 {
     Transform myTarget;
     float myFrame;

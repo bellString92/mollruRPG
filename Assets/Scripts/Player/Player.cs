@@ -20,14 +20,14 @@ public class Player : AnimatorProperty, IBattle
     public GameObject myBody;
 
 
-    bool IsComboCheck = false;
+    //bool IsComboCheck = false;
 
-    // ´õºí Å¬¸¯ Ã¼Å©¿ë
+    // ë”ë¸” í´ë¦­ ì²´í¬ìš©
     public float myDoubleClickSecond = 0.25f;
     private bool myIsOneClick = false;
     private double myTimer = 0;
 
-    //Å¸°Ù ÀúÀå º¯¼ö ¼±¾ğ
+    //íƒ€ê²Ÿ ì €ì¥ ë³€ìˆ˜ ì„ ì–¸
     Transform myTarget;
 
     //public SkillIcon mySkillicon;
@@ -66,7 +66,7 @@ public class Player : AnimatorProperty, IBattle
     // Update is called once per frame
     void Update()
     {
-        // ½Ç½Ã°£ Å¸°Ù ÀúÀå
+        // ì‹¤ì‹œê°„ íƒ€ê²Ÿ ì €ì¥
         if (FieldOfView.visibleMonster.Count > 0) 
         {
             myTarget = FieldOfView.visibleMonster[0];
@@ -77,7 +77,7 @@ public class Player : AnimatorProperty, IBattle
             myTarget = null;
         }
 
-        // ÀÌµ¿
+        // ì´ë™
         desireDir.x = Input.GetAxis("Horizontal");
         desireDir.y = Input.GetAxis("Vertical");
 
@@ -86,7 +86,7 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetFloat("x", inputDir.x);
         myAnim.SetFloat("y", inputDir.y);
 
-        // W+W ´Ş¸®±â
+        // W+W ë‹¬ë¦¬ê¸°
         if (Input.GetKeyDown(KeyCode.W))
         {
             if (!myIsOneClick)
@@ -101,34 +101,25 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
-        // W+LShift ´Ş¸®±â
+        // W+LShift ë‹¬ë¦¬ê¸°
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
             myAnim.SetBool("Run", true);
         }
 
-        // ´Ş¸®±â ÇØÁ¦
+        // ë‹¬ë¦¬ê¸° í•´ì œ
         if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.LeftShift))
         {
             myAnim.SetBool("Run", false);
         }
 
-        // ±¸¸£±â
+        // êµ¬ë¥´ê¸°
         if (Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Roll");
         }
 
-        // Ui¿Í »óÈ£ ÀÛ¿ëÁßÀÏ¶§ ¸¶¿ì½ºÀÔ·Â Á¦ÇÑ
-        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-        {
-            if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0)) 
-            {
-                myAnim.SetTrigger("OnAttack");
-            }
-        }
-
-        // »óÈ£ÀÛ¿ëÅ°
+        // ìƒí˜¸ì‘ìš©í‚¤
         if ((myTarget != null) && isNearButton && Input.GetKeyDown(KeyCode.F))
         {
             currentButton.OnButtonPress();
@@ -138,27 +129,31 @@ public class Player : AnimatorProperty, IBattle
             currentChest.OpenChest();
         }
 
-        // ±âº»°ø°İ ÁÂÅ¬
-        if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
+        // ê¸°ë³¸ê³µê²© ì¢Œí´
+        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
-            myAnim.SetTrigger("OnAttack");
+            if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
+            {
+                myAnim.SetBool("IsAttack", true);
+                myAnim.SetTrigger("OnAttack");
+            }
         }
-        
-        // ½ºÅ³ Q (ÀÌµ¿±â)
+
+        // ìŠ¤í‚¬ Q (ì´ë™ê¸°)
         if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q) && TGDir.magnitude < 3)
         {
             myAnim.SetBool("IsSkill_Q", true);
             myAnim.SetTrigger("OnSkill_Q");
         }
 
-        // ½ºÅ³ E (ÀÌµ¿±â)
+        // ìŠ¤í‚¬ E (ì´ë™ê¸°)
         if (!myAnim.GetBool("IsSkill_E") && Input.GetKey(KeyCode.E) && TGDir.magnitude < 3)
         {
             myAnim.SetBool("IsSkill_E", true);
             myAnim.SetTrigger("OnSkill_E");
         }
 
-        // ½ºÅ³ SS (ÀÌµ¿±â)
+        // ìŠ¤í‚¬ SS (ì´ë™ê¸°)
         if (Input.GetKeyDown(KeyCode.S))
         {
             if (!myIsOneClick)
@@ -173,35 +168,42 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
-        // ½ºÅ³ F1
+        // ìŠ¤í‚¬ F1
         if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
         {
             myAnim.SetBool("IsSkill_F1", true);
             myAnim.SetTrigger("OnSkill_F1");
         }
-        
-        // ½ºÅ³ 1
+
+        // ìŠ¤í‚¬ 1
+        if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab))
+        {
+            myAnim.SetBool("IsSkill_Tab", true);
+            myAnim.SetTrigger("OnSkill_Tab");
+        }
+
+        // ìŠ¤í‚¬ 1
         if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
         {
             myAnim.SetBool("IsSkill_1", true);
             myAnim.SetTrigger("OnSkill_1");
         }
         
-        // ½ºÅ³ 2
+        // ìŠ¤í‚¬ 2
         if (!myAnim.GetBool("IsSkill_2") && Input.GetKeyDown(KeyCode.Alpha2))
         {
             myAnim.SetBool("IsSkill_2", true);
             myAnim.SetTrigger("OnSkill_2");
         }
 
-        // ½ºÅ³ 3
+        // ìŠ¤í‚¬ 3
         if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
         {
             myAnim.SetBool("IsSkill_3", true);
             myAnim.SetTrigger("OnSkill_3");
         }
 
-        // ½ºÅ³ 4
+        // ìŠ¤í‚¬ 4
         if (!myAnim.GetBool("IsSkill_4") && Input.GetKeyDown(KeyCode.Alpha4))
         {
             myAnim.SetBool("IsSkill_4", true);
@@ -222,27 +224,27 @@ public class Player : AnimatorProperty, IBattle
             }
         }
     }
-
+    /*
     public void Skill_Movement()
     {
         StartCoroutine(SkillMovement(10.0f, 10.0f));
     }
-
+    */
     IEnumerator SkillMovement(float dirSpeed, float moveSpeed)
     {   
         while (!myAnim.GetBool("myState"))
         {
-            if (!myTarget) yield break; // Å¸°ÙÀÌ ºñ¾îÀÖÀ¸¸é ÇÏÁö ºüÁ®³ª°¨
-            Vector3 myTDir = myTarget.transform.position - transform.position; // Å¸°Ù°úÀÇ °Å¸® °è»ê
+            if (!myTarget) yield break; // íƒ€ê²Ÿì´ ë¹„ì–´ìˆìœ¼ë©´ í•˜ì§€ ë¹ ì ¸ë‚˜ê°
+            Vector3 myTDir = myTarget.transform.position - transform.position; // íƒ€ê²Ÿê³¼ì˜ ê±°ë¦¬ ê³„ì‚°
             float myTDist = myTDir.magnitude; // 
             float delta = 0.0f;
 
             if (myTarget != null)
             {
             
-                delta = moveSpeed * Time.deltaTime; //ÇÁ·¹ÀÓ´ç ÀÌµ¿ °Å¸®?
-                if (delta > myTDist) delta = myTDist; // ³Ñ¾î°¡Áö ¾Ê°Ô ÇÏ±â À§ÇØ µ¨Å¸°ª º¯°æ
-                //transform.Translate(myTDir * delta, Space.World); // ½ÇÁ¦ ÀÌµ¿
+                delta = moveSpeed * Time.deltaTime; //í”„ë ˆì„ë‹¹ ì´ë™ ê±°ë¦¬?
+                if (delta > myTDist) delta = myTDist; // ë„˜ì–´ê°€ì§€ ì•Šê²Œ í•˜ê¸° ìœ„í•´ ë¸íƒ€ê°’ ë³€ê²½
+                //transform.Translate(myTDir * delta, Space.World); // ì‹¤ì œ ì´ë™
             }
             else
             {
@@ -263,12 +265,11 @@ public class Player : AnimatorProperty, IBattle
 
     public void AttackCheckStart()
     {
-        StartCoroutine(AttackCheck());
+        myAnim.SetBool("IsAttack", false);//StartCoroutine(AttackCheck());
     }
-
+    /*
     IEnumerator AttackCheck()
     {
-        myAnim.SetBool("IsSkill_2", false);
         myAnim.SetBool("IsAttack", false);
         IsComboCheck = true;
         while (IsComboCheck)
@@ -280,12 +281,12 @@ public class Player : AnimatorProperty, IBattle
             yield return null;
         }
     }
-
+    
     public void AttackCheckEnd()
     {
         IsComboCheck = false;
     }
-
+    */
     public void SkillCheckStart()
     {
         myAnim.SetBool("IsAttack", false);
@@ -293,13 +294,10 @@ public class Player : AnimatorProperty, IBattle
 
     public void SkillCheckEnd()
     {
-        myAnim.SetBool("IsSkill_1", false);
-        myAnim.SetBool("IsSkill_2", false);
-        myAnim.SetBool("IsSkill_3", false);
-        myAnim.SetBool("IsSkill_4", false);
+
     }
 
-    // ´øÀü ¹®°ú »óÀÚ Á¦¾îÇÏ±â À§ÇÑ Å¬¶óÀÌ´õ
+    // ë˜ì „ ë¬¸ê³¼ ìƒì ì œì–´í•˜ê¸° ìœ„í•œ í´ë¼ì´ë”
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))
@@ -314,7 +312,7 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
-    // ´øÀü ¹®°ú »óÀÚ Á¦¾îÇÏ±â À§ÇÑ Å¬¶óÀÌ´õ
+    // ë˜ì „ ë¬¸ê³¼ ìƒì ì œì–´í•˜ê¸° ìœ„í•œ í´ë¼ì´ë”
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Button"))

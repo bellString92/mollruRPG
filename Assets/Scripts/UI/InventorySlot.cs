@@ -16,7 +16,6 @@ interface ISetChild
     void SetChild(GameObject newChild);
 }
 
-
 public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerClickHandler
 {
     public GameObject myChild = null;
@@ -24,14 +23,17 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
     {
         if (myChild != null)
         {
-            myChild.GetComponent<ISwapParent>()?.SwapParent(eventData.pointerDrag.GetComponent<IGetParent>().myParent);
+            //if (myChild.tag == transform.tag)
+            //{
+                myChild.GetComponent<ISwapParent>()?.SwapParent(eventData.pointerDrag.GetComponent<IGetParent>().myParent);
+            //}
         }
         else
         {
             eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
         }
 
-        if (myChild = null) return;
+        if (myChild == null) return;
         myChild = eventData.pointerDrag;
         myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
     }
