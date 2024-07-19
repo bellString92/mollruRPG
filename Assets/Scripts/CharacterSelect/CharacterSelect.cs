@@ -5,16 +5,39 @@ public class CharacterSelect : MonoBehaviour
 {
     private int startNum = 0;
     private string _nickName = "";
+    public Transform createSelectSlot;
+    public Transform deleteSlot;
+    public Transform dropDown;
     private void Start()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        Screen.SetResolution(1920, 1080, true);
+
     }
 
     private void Update()
     {
-        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Vector3 pos = transform.GetChild(i).position;
+            Transform[] selSlots = createSelectSlot.GetComponentsInChildren<Transform>();
+            for (int j = 0; j < selSlots.Length; j++)
+            {
+                Vector3 vpos = selSlots[j].position;
+                vpos = Camera.main.WorldToScreenPoint(pos);
+                vpos.y -= 200.0f;
+                GameObject.Find($"Slot{i + 1}Btn").transform.position = vpos;
+            }
+        }
+
     }
+
+    public void OnChangeResolution()
+    {
+
+    }
+
 
     private enum PopupType
     {
