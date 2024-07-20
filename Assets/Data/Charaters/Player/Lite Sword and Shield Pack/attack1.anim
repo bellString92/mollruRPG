@@ -57803,14 +57803,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.6333333
-    functionName: OnAttack
+    functionName: OnDamage
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.8
-    functionName: OnAllAct
+  - time: 0.76666665
+    functionName: OnReSetCheck
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

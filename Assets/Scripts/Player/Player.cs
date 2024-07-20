@@ -130,28 +130,29 @@ public class Player : AnimatorProperty, IBattle
             currentChest.OpenChest();
         }
 
+       
+
         // 기본공격 좌클
         if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
             if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
             {
-                myAnim.SetBool("IsRoll", true);
-                myAnim.SetBool("IsAttack", true);
+                OnAllSkillTrue();
                 myAnim.SetTrigger("OnAttack");
             }
         }
-
+        
         // 스킬 Q (이동기)
         if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q) && TGDir.magnitude < 3)
         {
-            myAnim.SetBool("IsSkill_Q", true);
+            OnAllSkillTrue();
             myAnim.SetTrigger("OnSkill_Q");
         }
 
         // 스킬 E (이동기)
         if (!myAnim.GetBool("IsSkill_E") && Input.GetKey(KeyCode.E) && TGDir.magnitude < 3)
         {
-            myAnim.SetBool("IsSkill_E", true);
+            OnAllSkillTrue();
             myAnim.SetTrigger("OnSkill_E");
         }
 
@@ -171,59 +172,43 @@ public class Player : AnimatorProperty, IBattle
         }
 
         // 스킬 F1
-        if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
+        if (!myAnim.GetBool("IsSkill_F") && Input.GetKeyDown(KeyCode.F))
         {
-            myAnim.SetBool("IsSkill_F1", true);
-            myAnim.SetTrigger("OnSkill_F1");
+            OnAllSkillTrue();
+            myAnim.SetTrigger("OnSkill_F");
         }
 
         // 스킬 1
         if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab))
         {
-            myAnim.SetBool("IsSkill_Tab", true);
+            OnAllSkillTrue();
             myAnim.SetTrigger("OnSkill_Tab");
         }
 
         // 스킬 1
         if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            myAnim.SetBool("IsSkill_1", true);
+            OnAllSkillTrue();
             myAnim.SetTrigger("OnSkill_1");
         }
         
         // 스킬 2
-        if (!myAnim.GetBool("IsSkill_2") && Input.GetKeyDown(KeyCode.Alpha2))
+        if (!myAnim.GetBool("IsSkill_2") && Input.GetKey(KeyCode.Alpha2))
         {
-            myAnim.SetBool("IsSkill_2", true);
+            OnAllSkillTrue();
             myAnim.SetTrigger("OnSkill_2");
         }
 
         // 스킬 3
         if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
         {
-            myAnim.SetBool("IsSkill_3", true);
+            OnAllSkillTrue();
             myAnim.SetTrigger("OnSkill_3");
         }
 
-        // 스킬 4
-        if (!myAnim.GetBool("IsSkill_4") && Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            myAnim.SetBool("IsSkill_4", true);
-            myAnim.SetTrigger("OnSkill_4");
-        }
-
-    }
-    public void AllAttackTrue()
-    {
-        myAnim.SetBool("IsAttack", true);
     }
 
-    public void AllAttackFalse()
-    {
-        myAnim.SetBool("IsAttack", false);
-    }
-
-    public void AllSkillTrue()
+    public void OnAllSkillTrue()
     {
         myAnim.SetBool("IsRoll", true);
         myAnim.SetBool("IsAttack", true);
@@ -234,12 +219,10 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetBool("IsSkill_1", true);
         myAnim.SetBool("IsSkill_2", true);
         myAnim.SetBool("IsSkill_3", true);
-        myAnim.SetBool("IsSkill_4", true);
-        myAnim.SetBool("IsSkill_F1", false);
-        myAnim.SetBool("IsSkill_F2", false);
+        myAnim.SetBool("IsSkill_F", true);
     }
 
-    public void AllSkillFalse()
+    public void OnSkillReSet()
     {
         myAnim.SetBool("IsRoll", false);
         myAnim.SetBool("IsAttack", false);
@@ -250,20 +233,15 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetBool("IsSkill_1", false);
         myAnim.SetBool("IsSkill_2", false);
         myAnim.SetBool("IsSkill_3", false);
-        myAnim.SetBool("IsSkill_4", false);
-        myAnim.SetBool("IsSkill_F1", true);
-        myAnim.SetBool("IsSkill_F2", true);
+        myAnim.SetBool("IsSkill_F", true);
     }
 
-    public void SkillCheck()
+    public void OnComboCheck()
     {
-        if (myAnim.GetBool("IsSkill_F1"))
-        {
-            myAnim.SetTrigger("OnSkill_F1");
-        }
+        myAnim.SetBool("IsSkill_F", false);
     }
 
-    public void OnAttack()
+    public void OnDamage()
     {
         Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 0.5f, 0.5f, enemyMask);
         foreach(Collider col in list)
