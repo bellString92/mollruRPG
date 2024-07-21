@@ -97,5 +97,14 @@ public class UIManager : MonoBehaviour
         } 
     }
 
-
+    public string GetSellQuantityText()
+    {
+        // 현재 열려 있는 SellQuantityCheck UI에서 텍스트를 가져옴
+        SellQuantityCheck quantityCheckUI = FindObjectOfType<SellQuantityCheck>();
+        if (quantityCheckUI != null)
+        {
+            return quantityCheckUI.centerText.text;
+        }
+        return "0"; // 기본값
+    }
 }

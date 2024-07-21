@@ -16,6 +16,7 @@ public class ShopManager : MonoBehaviour
     public Transform content;
 
     public ItemKind curItem = null;// 현재 선택중인 아이템 정보를 저장할 변수
+    public ItemKind curItemforSell = null;
     public GameObject marterialObject;
 
     private InventorySlot lastClickedSlot = null;
@@ -50,6 +51,8 @@ public class ShopManager : MonoBehaviour
         
     }
 
+
+    // 구매
     public void OnAddNewItemInInventory()
     {
         ItemKind copiedItem = Instantiate(curItem); // 원본 아이템 데이터를 보존하기위한 정보복사
@@ -78,18 +81,60 @@ public class ShopManager : MonoBehaviour
     public void SetDestroySlotItem(InventorySlot slot) // 판매 버튼 클릭시 비울 슬롯을 전달받는 곳
     {
         lastClickedSlot = slot;
-    }
 
-    public void OnDestroyInventorySlotItem() // 판매 버튼을 누르면 호출
-    {
-        if (lastClickedSlot != null)
+        // 슬롯의 자식에서 ItemKind 정보를 가져오기
+        if (lastClickedSlot != null && lastClickedSlot.myChild != null)
         {
-            lastClickedSlot.DestroyChild();
-            lastClickedSlot = null;
+            SaveItemInfo saveItemInfo = lastClickedSlot.myChild.GetComponent<SaveItemInfo>();
+            if (saveItemInfo != null)
+            {
+                curItemforSell = saveItemInfo.itemKind; // 현재 선택된 아이템 정보를 저장
+            }
+        }
+        else
+        {
+            curItemforSell = null;
         }
     }
 
 
+    // 판매
+    public void OnDestroyInventorySlotItem() // 판매 버튼을 누르면 호출
+    {
+        if (lastClickedSlot != null)
+        {
+            if (curItemforSell.itemType == ItemType.consumItem || curItemforSell.itemType == ItemType.materialItem)
+            {
+                // UI를 통해 quantity 수정 가능하도록 설정
+                UIManager.Instance.OpenSellQuantityCheckUI(curItemforSell, () =>
+                {
+                    // 사용자가 버튼을 누르면 호출되는 콜백
+                    // UI에서 centerText의 값을 읽어와서 quantity를 감소시킴
+                    int quantityToDeduct = curItemforSell.quantity; // 기본적으로 현재 quantity를 사용
+                    if (int.TryParse(UIManager.Instance.GetSellQuantityText(), out int enteredQuantity))
+                    {
+                        quantityToDeduct = Mathf.Clamp(enteredQuantity, 0, curItemforSell.quantity); // 유효한 범위로 클램프
+                    }
+
+                    curItemforSell.quantity -= quantityToDeduct; // quantity 감소
+                    if (curItemforSell.quantity <= 0)
+                    {
+                        // quantity가 0 이하로 떨어지면 아이템을 제거
+                        lastClickedSlot.DestroyChild();
+                    }
+
+                    lastClickedSlot = null;
+                });
+            }
+            else
+            {
+                lastClickedSlot.DestroyChild();
+                lastClickedSlot = null;
+            }
+        }
+    }
+
+    // 아이템 정보 상점 표시
 
     // 아이템 정보를 TextMeshPro에 표시하는 함수
     private void DisplayItemInfo(ItemKind itemInfo)

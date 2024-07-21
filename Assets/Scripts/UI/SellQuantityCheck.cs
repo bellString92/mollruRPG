@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using UnityEngine.EventSystems;
 
 public class SellQuantityCheck : MonoBehaviour
@@ -21,6 +21,7 @@ public class SellQuantityCheck : MonoBehaviour
     public Button minusButton;
     public Button cancelButton;
     public Button okButton;
+
     public void Initialize(ItemKind item, System.Action onConfirm)
     {
         // 컴포넌트들을 동적으로 찾기
@@ -67,6 +68,24 @@ public class SellQuantityCheck : MonoBehaviour
         cancelButton.onClick.AddListener(OnCloseTopUI);
         okButton.onClick.AddListener(OnOkButton);
     }
+
+    private void Update()
+    {
+        // 입력 필드가 활성화된 상태에서만 처리
+        if (inputField.gameObject.activeSelf && inputField.isFocused)
+        {
+            // 다른 곳을 클릭하거나 Enter 키가 눌렸을 때 입력 종료
+            if (Input.GetMouseButtonDown(0) && !IsPointerOverGameObject(inputField.gameObject))
+            {
+                EndEditInputField(inputField.text);
+            }
+            else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                EndEditInputField(inputField.text);
+            }
+        }
+    }
+
     private void ShowInputField()
     {
         inputField.text = centerText.text; // 현재 텍스트를 Input Field로 복사
@@ -81,10 +100,9 @@ public class SellQuantityCheck : MonoBehaviour
         if (int.TryParse(newText, out newQuantity))
         {
             // 입력된 값이 maxStack을 넘어서지 않는지 확인
-            newQuantity = Mathf.Clamp(newQuantity, 1, itemData.maxStack);
+            newQuantity = Mathf.Clamp(newQuantity, 0, itemData.quantity);
 
             centerText.text = newQuantity.ToString();
-            itemData.quantity = newQuantity; // 아이템 데이터의 quantity 업데이트
             lastValidText = centerText.text; // 유효한 텍스트로 업데이트
         }
         else
@@ -92,7 +110,6 @@ public class SellQuantityCheck : MonoBehaviour
             centerText.text = lastValidText; // 유효하지 않으면 마지막 유효 텍스트로 복구
             inputField.text = lastValidText;
         }
-
 
         inputField.gameObject.SetActive(false);
         centerText.gameObject.SetActive(true);
@@ -117,7 +134,7 @@ public class SellQuantityCheck : MonoBehaviour
         }
     }
 
-    private bool IsPointerOverGameObject(GameObject obj) //  특정 위치에만 작용하도록 재정의
+    private bool IsPointerOverGameObject(GameObject obj)
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         eventData.position = Input.mousePosition;
@@ -133,20 +150,16 @@ public class SellQuantityCheck : MonoBehaviour
         return false;
     }
 
-
-
-
     // 버튼에 연결할 메서드
     public void OnPlusText()
     {
         int currentNumber;
         if (int.TryParse(centerText.text, out currentNumber))
         {
-            currentNumber = Mathf.Clamp(currentNumber + 1, 1, itemData.maxStack);
+            currentNumber = Mathf.Clamp(currentNumber + 1, 0, itemData.quantity);
             centerText.text = currentNumber.ToString();
             inputField.text = centerText.text; // Input Field 업데이트
             lastValidText = centerText.text; // 유효한 텍스트로 업데이트
-            itemData.quantity = currentNumber; // itemData.quantity 업데이트
         }
     }
 
@@ -155,11 +168,10 @@ public class SellQuantityCheck : MonoBehaviour
         int currentNumber;
         if (int.TryParse(centerText.text, out currentNumber))
         {
-            currentNumber = Mathf.Clamp(currentNumber - 1, 1, itemData.maxStack);
+            currentNumber = Mathf.Clamp(currentNumber - 1, 0, itemData.quantity);
             centerText.text = currentNumber.ToString();
             inputField.text = centerText.text; // Input Field 업데이트
             lastValidText = centerText.text; // 유효한 텍스트로 업데이트
-            itemData.quantity = currentNumber; // itemData.quantity 업데이트
         }
     }
 

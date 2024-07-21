@@ -39,6 +39,10 @@ public class Inventory : MonoBehaviour
                     // 새로운 게임 오브젝트에 Drag 컴포넌트 추가
                     newItem.AddComponent<Drag>();
 
+                    // 아이템의 ItemKind 정보를 불러오기를 쉽게하기위해 정보를 저장
+                    SaveItemInfo saveItemInfo = newItem.AddComponent<SaveItemInfo>();
+                    saveItemInfo.itemKind = newItemKind;
+
                     // 태그 설정
                     newItem.tag = newItemKind.itemTag;
 
@@ -73,6 +77,7 @@ public class Inventory : MonoBehaviour
                         rectTransform.localRotation = Quaternion.identity;
                         rectTransform.localScale = Vector3.one;
                     }
+
                     return;
 
                 }
