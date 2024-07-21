@@ -57,7 +57,8 @@ public class UIManager : MonoBehaviour
 
         // Quantity UI 열기
         currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
-        var quantityCheck = currentQuantityUI.GetComponent<ItemQuantityCheck>();
+
+        var quantityCheck = currentQuantityUI.AddComponent<ItemQuantityCheck>();
         if (quantityCheck != null)
         {
             quantityCheck.Initialize(item, onConfirm);

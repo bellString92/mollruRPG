@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 public class ItemQuantityCheck : MonoBehaviour
 {
+    public TMP_Text titleText; // 타이틀 텍스트를 나타내는 TextMesh Pro 요소
     public TMP_Text centerText; // 중앙 텍스트를 나타내는 TextMesh Pro 요소
     public TMP_InputField inputField; // 텍스트 입력을 위한 Input Field
     public Image backgroundImage; // 배경 이미지
@@ -16,9 +17,27 @@ public class ItemQuantityCheck : MonoBehaviour
     private System.Action confirmCallback; // 버튼 클릭 시 실행할 콜백 함수
     private ItemKind itemData; // 아이템 정보 저장
 
+    public Button plusButton;
+    public Button minusButton;
+    public Button cancelButton;
+    public Button okButton;
+
     public void Initialize(ItemKind item, System.Action onConfirm)
     {
+        // 컴포넌트들을 동적으로 찾기
+        titleText = transform.Find("BG/Titletext").GetComponent<TMP_Text>();
+        centerText = transform.Find("BG/QuantityBG/curText").GetComponent<TMP_Text>();
+        inputField = transform.Find("BG/QuantityBG/InputField (TMP)").GetComponent<TMP_InputField>();
+        backgroundImage = transform.Find("BG/QuantityBG").GetComponent<Image>();
+
+        plusButton = transform.Find("BG/Quantity++Button").GetComponent<Button>();
+        minusButton = transform.Find("BG/Quantity--Button").GetComponent<Button>();
+        cancelButton = transform.Find("BG/CancelButton").GetComponent<Button>();
+        okButton = transform.Find("BG/OKButton").GetComponent<Button>();
+
         itemData = item; // 전달받은 아이템 정보
+
+        titleText.text = "구매 수량";
 
         centerText.text = itemData.quantity.ToString(); // 초기값
         inputField.text = centerText.text;
@@ -42,6 +61,12 @@ public class ItemQuantityCheck : MonoBehaviour
 
         // 콜백 함수 설정
         confirmCallback = onConfirm;
+
+        // 버튼에 메서드 연결
+        plusButton.onClick.AddListener(OnPlusText);
+        minusButton.onClick.AddListener(OnMinusText);
+        cancelButton.onClick.AddListener(OnCloseTopUI);
+        okButton.onClick.AddListener(OnOkButton);
     }
 
     private void Update()
