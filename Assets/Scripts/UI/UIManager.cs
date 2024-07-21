@@ -64,7 +64,23 @@ public class UIManager : MonoBehaviour
             quantityCheck.Initialize(item, onConfirm);
         }
     }
+    public void OpenSellQuantityCheckUI(ItemKind item, System.Action onConfirm)
+    {
+        // 기존에 열린 UI가 있으면 닫기
+        if (currentQuantityUI != null)
+        {
+            CloseTopUi();
+        }
 
+        // Quantity UI 열기
+        currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
+
+        var quantityCheck = currentQuantityUI.AddComponent<SellQuantityCheck>();
+        if (quantityCheck != null)
+        {
+            quantityCheck.Initialize(item, onConfirm);
+        }
+    }
 
     public GameObject ShowUI(GameObject uiPrefab) // 호출자가 가지고있는 프리펩 ui생성
     { 

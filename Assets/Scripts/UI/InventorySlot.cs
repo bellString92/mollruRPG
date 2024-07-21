@@ -33,7 +33,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
             eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
         }
 
-        if (myChild == null) return;
+        //if (myChild == null) return; // 무슨 용도 였나요?? 이 부분이 문제되서 빈칸으로 드래그가 막혀있었습니다 필요없다면 지워주세요
         myChild = eventData.pointerDrag;
         myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
     }
