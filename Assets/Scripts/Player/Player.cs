@@ -5,20 +5,25 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class Player : AnimatorProperty, IBattle
 {
+    [SerializeField] private AnimEvent AnimEvent;
+
+
     private bool isNearButton, isNearChest = false;
     private ButtonController currentButton;
     private ChestController currentChest;
     public UnityEvent<float> changeHpAct;
     public UnityEvent<float> changeMpAct;
+    private float SkillDamage;
     public BattleStat myStat;
     public LayerMask enemyMask;
     Vector3 TGDir;
     Vector2 inputDir = Vector2.zero;
     Vector2 desireDir = Vector2.zero;
-    public GameObject myBody;
+    public GameObject myBody; // 어딘가에 쓰이긴 하는데 어디에 쓰이는질 모르겠네;;;
 
 
     //bool IsComboCheck = false;
@@ -29,7 +34,8 @@ public class Player : AnimatorProperty, IBattle
     private double myTimer = 0;
 
     //타겟 저장 변수 선언
-    public List<Transform> myTarget = new List<Transform>();
+    public List<Transform> myTargetmonster = new List<Transform>();
+    public List<Transform> myTarger = new List<Transform>();
 
     //public SkillIcon mySkillicon;
 
@@ -44,12 +50,12 @@ public class Player : AnimatorProperty, IBattle
         changeHpAct?.Invoke(myStat.GetHpValue());
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private bool Critical(float Cri)
     {
-        
+        float Critical = Random.Range(0f, 100f);
+        if (Critical < Cri) return true;
+        else return false;
     }
-
     public void ExpSystem()
     {
         myStat.maxExperiencePoint = myStat.myLvevel * 10;
@@ -62,18 +68,45 @@ public class Player : AnimatorProperty, IBattle
             myStat.myLvevel++;
         }
     }
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
 
     // Update is called once per frame
     void Update()
     {
-        myTarget.Clear();
-
+        myTargetmonster.Clear();       // 매번 초기화 해서 리스트에 아무것도 없이함
+        myTarger.Clear();
         // 타겟 저장 시스템
-        FieldOfView myMonster = GetComponent<FieldOfView>();
-        for (int i = 0; i < myMonster.visibleMonsterView.Count; i++)
+        FieldOfView myFOV = GetComponent<FieldOfView>();
+        if (myFOV.visibleMonsterView.Count > 0)
         {
-            myTarget.Add(myMonster.visibleMonsterView[i]);
+            for (int i = 0; i < myFOV.visibleMonsterView.Count; i++)
+            {
+                myTargetmonster.Add(myFOV.visibleMonsterView[i]);
+                float distance = Vector3.Distance(transform.position, myTargetmonster[0].position);        // 타겟과 나의 거리 구함, 추후 스킬과 연계하여 사용하기 위해 미리 제작
+            }
         }
+        if (myFOV.visibleNPCView.Count > 0)
+        {
+            for (int i = 0; i < myFOV.visibleNPCView.Count; i++)
+            {
+                myTarger.Add(myFOV.visibleNPCView[i]);
+            }
+        }
+        if (myFOV.visibleETCView.Count > 0)
+        {
+            for (int i = 0;i < myFOV.visibleETCView.Count; i++)
+            {
+                myTarger.Add(myFOV.visibleETCView[i]);
+            }
+        }
+
+
+
+
 
         // 이동
         desireDir.x = Input.GetAxis("Horizontal");
@@ -119,7 +152,7 @@ public class Player : AnimatorProperty, IBattle
         }
 
         // 상호작용키
-        if ((myTarget != null) && isNearButton && Input.GetKeyDown(KeyCode.F))
+        if ((myTarger != null) && isNearButton && Input.GetKeyDown(KeyCode.F))
         {
             currentButton.OnButtonPress();
         }
@@ -252,9 +285,52 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
-    public void OnSkill_2()
+    private void OnEnable()
     {
+        if (AnimEvent != null)
+        {
+            AnimEvent.skill_AttackAct.AddListener(OnSkillAttackReceived);
+        }
+    }
 
+    private void OnDisable()
+    {
+        if (AnimEvent != null)
+        {
+            AnimEvent.skill_AttackAct.RemoveListener(OnSkillAttackReceived);
+        }
+    }
+
+    private void OnSkillAttackReceived(float v)
+    {
+        SkillDamage = v;
+        OnSkillDamage(); // 이벤트를 통해 값을 받으면 OnSkillDamage 메서드를 호출합니다.
+    }
+
+    public void OnSkillDamage()
+    {
+        if (myTargetmonster.Count > 0)
+        {
+            float distance = Vector3.Distance(transform.position, myTargetmonster[0].position);        // 타겟과 나의 거리 구함
+            if (myStat.AttackRange > distance)          // 타겟과 나의 거리가 사거리보다 작을때 = 사거리안에 있을때
+            {
+                foreach (Transform target in myTargetmonster)      // 반복문 실행 
+                {
+                    IDamage id = target.GetComponent<IDamage>();    // 인터페이스 대미지 컴포넌트 가져옴
+                    if (id != null)
+                    {
+                        if (Critical(myStat.CriticalProbability))            // 치명타 확인
+                        {
+                            id.TakeDamage(SkillDamage * myStat.CriticalDamage);  // 치명타가 참일때 대미지에 치명타 피해량을 곱하여 피해를 입힘
+                        }
+                        else
+                        {
+                            id.TakeDamage(SkillDamage);                          // 치명타가 트루일때 대미지만큼의 피해를 입힘
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // 던전 문과 상자 제어하기 위한 클라이더

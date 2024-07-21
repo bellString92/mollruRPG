@@ -97,6 +97,7 @@ public class Enemy : BattleSystem
 
     public void giveExp(float exp)
     {
+        if (myTarget== null) return;
         OnGiveExp(myExp);
     }
     

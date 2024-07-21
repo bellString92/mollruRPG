@@ -24,6 +24,9 @@ public struct BattleStat
     public float AttackPoint;
     public float AttackRange;
     public float AttackDelay;
+    public float SkillDamege;
+    public float CriticalProbability;
+    public float CriticalDamage;
     public float maxHealPoint;
     public float curHealPoint;
     public float maxMagicPoint;

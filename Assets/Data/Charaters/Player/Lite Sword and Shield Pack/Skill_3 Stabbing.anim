@@ -60088,14 +60088,14 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.96666664
-    functionName: OnReSetCheck
+  - time: 0.6
+    functionName: OnSkill_Attack
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
+    floatParameter: 15
     intParameter: 0
     messageOptions: 0
-  - time: 1
+  - time: 0.6333333
     functionName: OnComboCheck
     data: 
     objectReferenceParameter: {fileID: 0}
