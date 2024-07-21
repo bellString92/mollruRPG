@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,7 +29,7 @@ public class Player : AnimatorProperty, IBattle
     private double myTimer = 0;
 
     //타겟 저장 변수 선언
-    Transform myTarget;
+    public List<Transform> myTarget = new List<Transform>();
 
     //public SkillIcon mySkillicon;
 
@@ -62,19 +63,16 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
-
     // Update is called once per frame
     void Update()
     {
-        // 실시간 타겟 저장
-        if (FieldOfView.visibleMonster.Count > 0) 
+        myTarget.Clear();
+
+        // 타겟 저장 시스템
+        FieldOfView myMonster = GetComponent<FieldOfView>();
+        for (int i = 0; i < myMonster.visibleMonsterView.Count; i++)
         {
-            myTarget = FieldOfView.visibleMonster[0];
-            TGDir = transform.position - myTarget.position;
-        }
-        else
-        {
-            myTarget = null;
+            myTarget.Add(myMonster.visibleMonsterView[i]);
         }
 
         // 이동
@@ -252,6 +250,11 @@ public class Player : AnimatorProperty, IBattle
                 id.TakeDamage(myStat.AttackPoint);
             }
         }
+    }
+
+    public void OnSkill_2()
+    {
+
     }
 
     // 던전 문과 상자 제어하기 위한 클라이더

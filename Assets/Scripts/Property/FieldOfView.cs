@@ -62,9 +62,10 @@ public class FieldOfView : MonoBehaviour
             {
                 float dstToTarget = Vector3.Distance(transform.position, target.transform.position);
 
-                // 타겟으로 가는 레이캐스트에 obstacleMask가 걸리지 않으면 visibleMonster에 Add
+                // 타겟으로 가는 레이캐스트에 obstacleMask가 걸리지 않으면
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                 {
+                    // 태그로 어떤 종류인지 구분하여 추가
                     if (target.CompareTag("Enemy"))
                     {
                         visibleMonster.Add(target);
