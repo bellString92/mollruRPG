@@ -33,6 +33,11 @@ public class SaveItemInfo : MonoBehaviour
     {
         if (quantityText != null)
         {
+            if (itemKind.quantity == 1)
+            {
+                quantityText.text = null;
+            }
+            else
             quantityText.text = itemKind.quantity.ToString();
         }
     }

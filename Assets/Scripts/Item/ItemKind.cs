@@ -37,7 +37,7 @@ public abstract class ItemKind : ScriptableObject
     public int quantity; // 현재 수량
 
     public Rarity rarity; // 아이템 레어등급
-    public int enhancementLevel; // 강화 수치
+    public int kaiLevel; // 강화 수치
 
     public ItemKind(ItemKind original)
     {
@@ -48,7 +48,7 @@ public abstract class ItemKind : ScriptableObject
         resellprice = original.resellprice;
         quantity = original.quantity;
         rarity = original.rarity;
-        enhancementLevel = original.enhancementLevel;
+        kaiLevel = original.kaiLevel;
     }
 
     // abstract를 활용해 각 아이템을 use시 다른 기능을 구현되도록 함 override로 새로써 기능을 구현
