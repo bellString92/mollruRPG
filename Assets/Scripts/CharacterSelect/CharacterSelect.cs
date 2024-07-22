@@ -1,259 +1,229 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using System.Collections;
+using UnityEngine.TextCore.Text;
 
 public class CharacterSelect : MonoBehaviour
 {
-    private int startNum = 0;
-    private string _nickName = "";
-    public Transform createSelectSlot;
-    public Transform deleteSlot;
-    public Transform dropDown;
+    private int selNum = 0;
+
+    public int slotCount = 3;
+    public Transform characterSlot = null;
+    public Transform createBtn = null;
+    public Transform nickName = null;
+    public Transform deleteBtn = null;
+    private GameObject[] characterSlotArr = null;
+    private GameObject[] createBtnArr = null;
+    private GameObject[] nickNameArr = null;
+    private GameObject[] deleteBtnArr = null;
+
+    public Transform popupParent = null;
+    public Transform dontTouch = null;
+
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Screen.SetResolution(1920, 1080, true);
 
-    }
+        characterSlotArr = new GameObject[slotCount];
+        createBtnArr = new GameObject[slotCount];
+        nickNameArr = new GameObject[slotCount];
+        deleteBtnArr = new GameObject[slotCount];
 
-    private void Update()
-    {
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < slotCount; i++)
         {
-            Vector3 pos = transform.GetChild(i).position;
-            Transform[] selSlots = createSelectSlot.GetComponentsInChildren<Transform>();
-            for (int j = 0; j < selSlots.Length; j++)
+            Vector3 oriViewportPoint = new Vector3(1.0f / (slotCount + 1) * (i + 1), 0.5f, 0);
+            Vector3 worldPoint = Camera.main.ViewportToWorldPoint(oriViewportPoint);
+            worldPoint.y = 0; worldPoint.z = 0;
+            Vector3 screenPoint = Camera.main.ViewportToScreenPoint(oriViewportPoint);
+
+            Vector3 changeViewportPoint = oriViewportPoint;
+
+
+            if (i == 0)
             {
-                Vector3 vpos = selSlots[j].position;
-                vpos = Camera.main.WorldToScreenPoint(pos);
-                vpos.y -= 200.0f;
-                GameObject.Find($"Slot{i + 1}Btn").transform.position = vpos;
-            }
-        }
-
-    }
-
-    public void OnChangeResolution()
-    {
-
-    }
-
-
-    private enum PopupType
-    {
-        CREATE,
-        DELETE,
-        START
-    }
-
-    public void OnCreateSelectSlotClick(int num)
-    {
-        if (GameObject.Find($"Paladin{num}") == null && GameObject.Find($"Maria{num}") == null)
-        {
-            startNum = num;
-            CreateNickName(PopupType.CREATE, num);
-        }
-        else
-        {
-            string nickName = GameObject.Find($"NickName{num}").transform.GetComponentInChildren<TMPro.TMP_Text>().text;
-            OnCreateSelectSlotClickOk(num, nickName);
-        }
-    }
-
-    private void OnCreateSelectSlotClickOk(int num, string nickName = "")
-    {
-        _nickName = nickName;
-        GameObject selSlot = GameObject.Find($"Slot{num}");
-        for (int i = 1; i <= 3; i++)
-        {
-            Transform slot = GameObject.Find($"Slot{i}").transform;
-            Transform t = slot.GetComponent<Transform>().Find("Magic circle").transform;
-            for (int j = 0; j < t.childCount; j++)
-            {
-                if (i == num)
-                    t.GetChild(j).gameObject.SetActive(true);
-                else
-                    t.GetChild(j).gameObject.SetActive(false);
-            }
-        }
-
-        if (GameObject.Find($"Paladin{num}") == null)
-        {
-            GameObject paladin = Instantiate(Resources.Load("Prefabs/Paladin") as GameObject);
-            paladin.name = $"Paladin{num}";
-            paladin.transform.SetParent(selSlot.transform);
-            paladin.transform.localPosition = Vector3.zero;
-            paladin.transform.localRotation = Quaternion.identity;
-        }
-
-        if (GameObject.Find($"Maria{num}") == null)
-        {
-            GameObject maria = Instantiate(Resources.Load("Prefabs/Maria") as GameObject);
-            maria.name = $"Maria{num}";
-            maria.transform.SetParent(selSlot.transform);
-            maria.transform.localPosition = Vector3.zero;
-            maria.transform.localRotation = Quaternion.identity;
-        }
-
-        if (!"".Equals(nickName))
-        {
-            GameObject.Find($"NickName{num}").transform.GetChild(0).gameObject.SetActive(true);
-            GameObject.Find($"NickName{num}").transform.GetComponentInChildren<TMPro.TMP_Text>().text = nickName;
-        }
-
-        GameObject.Find("CreateSelectSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").GetComponentInChildren<TMPro.TMP_Text>().text = "캐릭터 선택";
-        GameObject.Find("DeleteSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").transform.gameObject.SetActive(true);
-
-        startNum = num;
-    }
-
-    public void OnDeleteSlotClick(int num)
-    {
-        CreatePopup(PopupType.DELETE, num);
-    }
-
-    private void OnDeleteSlotClickOk(int num)
-    {
-        for (int i = 1; i <= 3; i++)
-        {
-            Transform slot = GameObject.Find($"Slot{i}").transform;
-            Transform t = slot.GetComponent<Transform>().Find("Magic circle").transform;
-            for (int j = 0; j < t.childCount; j++)
-            {
-                if (i == num)
-                    t.GetChild(j).gameObject.SetActive(false);
-            }
-        }
-        Destroy(GameObject.Find($"Paladin{num}"));
-        Destroy(GameObject.Find($"Maria{num}"));
-
-        GameObject.Find($"NickName{num}").transform.GetChild(0).gameObject.SetActive(false);
-
-        GameObject.Find("CreateSelectSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").GetComponentInChildren<TMPro.TMP_Text>().text = "신규캐릭터 생성";
-        GameObject.Find("DeleteSlot").transform.GetComponent<Transform>().Find($"Slot{num}Btn").transform.gameObject.SetActive(false);
-        if (num == startNum) startNum = 0;
-    }
-
-    public void GameStart()
-    {
-        CreatePopup(PopupType.START, startNum);
-    }
-
-    private void GameStartOk(int num)
-    {
-        PlayerPrefs.SetString("nextSceneText", "마을");
-        PlayerPrefs.SetString("nextSceneImage", "MollRu_Town");
-        PlayerPrefs.SetString("nickName", _nickName);
-        SceneChange.OnSceneChange("MollRuRPGScene");
-    }
-    
-    private void CreateNickName(PopupType type, int num)
-    {
-        GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(true);
-        GameObject textPopup = Instantiate(Resources.Load("Prefabs/TextPopup") as GameObject);
-
-        textPopup.transform.GetChild(1).GetComponentInChildren<TMPro.TMP_Text>().text = "닉네임 설정";
-        textPopup.transform.GetChild(3).GetComponentInChildren<TMPro.TMP_Text>().text = "확인";
-        textPopup.transform.GetComponentInChildren<Button>().onClick.AddListener(() =>
-        {
-            string nickName = textPopup.transform.GetChild(2).GetComponentInChildren<TMPro.TMP_InputField>().text;
-            string result = NickNameCheck(nickName);
-            if ("".Equals(result))
-            {
-                textPopup.transform.GetChild(2).GetChild(1).transform.gameObject.SetActive(false);
-                Destroy(textPopup);
-                GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
-                CreatePopup(type, num, nickName);
+                characterSlotArr[i] = characterSlot.GetChild(i).gameObject;
+                worldPoint.y = 0; worldPoint.z = 0;
+                characterSlotArr[i].transform.position = worldPoint;
+                changeViewportPoint.y = 0.2f;
+                screenPoint = Camera.main.ViewportToScreenPoint(changeViewportPoint);
+                createBtnArr[i] = createBtn.GetChild(i).gameObject;
+                createBtnArr[i].transform.position = screenPoint;
+                changeViewportPoint.y = 0.3f;
+                screenPoint = Camera.main.ViewportToScreenPoint(changeViewportPoint);
+                nickNameArr[i] = nickName.GetChild(i).gameObject;
+                nickNameArr[i].transform.position = screenPoint;
+                changeViewportPoint.y = 0.8f;
+                screenPoint = Camera.main.ViewportToScreenPoint(changeViewportPoint);
+                deleteBtnArr[i] = deleteBtn.GetChild(i).gameObject;
+                deleteBtnArr[i].transform.position = screenPoint;
             }
             else
             {
-                textPopup.transform.GetChild(2).GetChild(1).GetComponent<TMPro.TMP_Text>().text = result;
-                textPopup.transform.GetChild(2).GetChild(1).transform.gameObject.SetActive(true);
+                characterSlotArr[i] = Instantiate(characterSlotArr[0], characterSlot);
+                characterSlotArr[i].name = $"Slot{i + 1}";
+                characterSlotArr[i].transform.position = worldPoint;
+                createBtnArr[i] = Instantiate(createBtnArr[0], createBtn);
+                createBtnArr[i].name = $"CreateBtn{i + 1}";
+                changeViewportPoint.y = 0.2f;
+                screenPoint = Camera.main.ViewportToScreenPoint(changeViewportPoint);
+                createBtnArr[i].transform.position = screenPoint;
+                nickNameArr[i] = Instantiate(nickNameArr[0], nickName);
+                nickNameArr[i].name = $"NickName{i + 1}";
+                changeViewportPoint.y = 0.3f;
+                screenPoint = Camera.main.ViewportToScreenPoint(changeViewportPoint);
+                nickNameArr[i].transform.position = screenPoint;
+                deleteBtnArr[i] = Instantiate(deleteBtnArr[0], deleteBtn);
+                deleteBtnArr[i].name = $"DeleteBtn{i + 1}";
+                changeViewportPoint.y = 0.8f;
+                screenPoint = Camera.main.ViewportToScreenPoint(changeViewportPoint);
+                deleteBtnArr[i].transform.position = screenPoint;
             }
-        });
 
-        textPopup.transform.SetParent(GameObject.Find("NickName").transform);
-        textPopup.transform.localPosition = Vector3.zero;
-        textPopup.SetActive(true);
-
-    }
-
-    private string NickNameCheck(string nickName)
-    {
-        if ("".Equals(nickName))
-        {
-            return "닉네임을 입력해주세요.";
         }
-
-        if (nickName.Length > 10)
+        string jobSelect = PlayerPrefs.GetString("jobSelect");
+        GameObject character = null;
+        if (!"".Equals(jobSelect))
         {
-            return "닉네임은 최대 10글자 입니다.";
-        }
-
-        if (nickName.Contains(" "))
-        {
-            return "띄어쓰기는 불가능합니다.";
-        }
-
-        return "";
-
-    }
-
-    private void CreatePopup(PopupType type, int num = 0, string nickName = "")
-    {
-        GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(true);
-        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
-        TMPro.TMP_Text[] texts = popup.transform.GetComponentsInChildren<TMPro.TMP_Text>();
-
-        Button[] btns = popup.transform.GetComponentsInChildren<Button>();
-        btns[0].onClick.AddListener(() =>
-        {
-            Destroy(popup);
-            GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
-        });
-        switch (type)
-        {
-            case PopupType.CREATE:
-                texts[0].text = "생성 하시겠습니까?";
-                btns[1].onClick.AddListener(() =>
+            switch (jobSelect)
+            {
+                case "paladin_warrior":
+                case "paladin_magician":
+                    character = Instantiate(Resources.Load("Prefabs/Paladin") as GameObject);
+                    break;
+                case "maria_warrior":
+                case "maria_magician":
+                    character = Instantiate(Resources.Load("Prefabs/Maria") as GameObject);
+                    break;
+            }
+            int selNum = PlayerPrefs.GetInt("selNum");
+            character.transform.SetParent(characterSlotArr[selNum-1].transform);
+            character.transform.localPosition = Vector3.zero;
+            nickNameArr[selNum-1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = PlayerPrefs.GetString("nickName");
+            nickNameArr[selNum-1].transform.GetChild(0).gameObject.SetActive(true);
+            createBtnArr[selNum-1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "캐릭터 선택";
+            deleteBtnArr[selNum-1].gameObject.SetActive(true);
+            deleteBtnArr[selNum-1].GetComponent<Button>().onClick.AddListener(() =>
+            {
+                GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+                popup.name = "Popup";
+                popup.transform.SetParent(popupParent);
+                popup.transform.localPosition = Vector3.zero;
+                TMPro.TMP_Text[] texts = popup.GetComponentsInChildren<TMPro.TMP_Text>();
+                texts[0].text = "삭제하시겠습니까?";
+                texts[1].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    OnCreateSelectSlotClickOk(num, nickName);
+                    dontTouch.GetChild(0).gameObject.SetActive(false);
                     Destroy(popup);
-                    GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
                 });
-                break;
-            case PopupType.DELETE:
-                texts[0].text = "삭제 하시겠습니까?";
-                btns[1].onClick.AddListener(() =>
+                texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    OnDeleteSlotClickOk(num); Destroy(popup);
-                    GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
-                });
-                break;
-            case PopupType.START:
-                if (num == 0)
-                {
-                    texts[0].text = "캐릭터를 선택해주세요.";
-                    btns[1].onClick.AddListener(() =>
+                    nickNameArr[selNum-1].transform.GetChild(0).gameObject.SetActive(false);
+                    createBtnArr[selNum-1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "신규 캐릭터 생성";
+                    deleteBtnArr[selNum-1].gameObject.SetActive(false);
+                    Transform circles = transform.GetChild(selNum-1).GetChild(0);
+                    for (int j = 0; j < circles.childCount; j++)
                     {
-                        Destroy(popup);
-                        GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
-                    });
+                        circles.GetChild(j).gameObject.SetActive(false);
+                    }
+                    Destroy(character);
+                    dontTouch.GetChild(0).gameObject.SetActive(false);
+                    Destroy(popup);
+                    selNum = 0;
+                });
+                popup.SetActive(true);
+                dontTouch.GetChild(0).gameObject.SetActive(true);
+            });
+
+            PlayerPrefs.SetString("jobSelect", "");
+        }
+    }
+
+    public void OnCreateBtn(int num)
+    {
+        selNum = num + 1;
+        if (transform.GetChild(num).childCount == 1)
+        {
+            GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+            popup.name = "Popup";
+            popup.transform.SetParent(popupParent);
+            popup.transform.localPosition = Vector3.zero;
+            TMPro.TMP_Text[] texts = popup.GetComponentsInChildren<TMPro.TMP_Text>();
+            texts[0].text = "생성하시겠습니까?";
+            texts[1].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                dontTouch.GetChild(0).gameObject.SetActive(false);
+                Destroy(popup);
+            });
+            texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                PlayerPrefs.SetInt("selNum", selNum);
+                //SceneChange.OnSceneChange("Customize");
+                SceneManager.LoadSceneAsync("Customize");
+                dontTouch.GetChild(0).gameObject.SetActive(false);
+                Destroy(popup);
+            });
+            popup.SetActive(true);
+            dontTouch.GetChild(0).gameObject.SetActive(true);
+        }
+        else
+        {
+            int i = 0;
+            foreach (Transform t in transform)
+            {
+                if (i == num)
+                {
+                    Transform circles = transform.GetChild(i).GetChild(0);
+                    for (int j = 0; j < circles.childCount; j++)
+                    {
+                        circles.GetChild(j).gameObject.SetActive(true);
+                    }
                 }
                 else
                 {
-                    texts[0].text = "게임을 시작하시겠습니까?";
-                    btns[1].onClick.AddListener(() =>
+                    Transform circles = transform.GetChild(i).GetChild(0);
+                    for (int j = 0; j < circles.childCount; j++)
                     {
-                        GameStartOk(num);
-                        Destroy(popup);
-                        GameObject.Find("DontTouch").transform.GetChild(0).gameObject.SetActive(false);
-                    });
+                        circles.GetChild(j).gameObject.SetActive(false);
+                    }
                 }
-                break;
+                i++;
+            }
         }
-        popup.transform.SetParent(GameObject.Find("PopupParent").transform);
-        popup.transform.localPosition = Vector3.zero;
-        popup.SetActive(true);
     }
+
+    public void OnStartBtn()
+    {
+        if (selNum == 0)
+        {
+            GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+            popup.name = "Popup";
+            popup.transform.SetParent(popupParent);
+            popup.transform.localPosition = Vector3.zero;
+            TMPro.TMP_Text[] texts = popup.GetComponentsInChildren<TMPro.TMP_Text>();
+            texts[0].text = "캐릭터를 선택해주세요.";
+            texts[1].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                dontTouch.GetChild(0).gameObject.SetActive(false);
+                Destroy(popup);
+            });
+            texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                dontTouch.GetChild(0).gameObject.SetActive(false);
+                Destroy(popup);
+            });
+            popup.SetActive(true);
+            dontTouch.GetChild(0).gameObject.SetActive(true);
+        } else
+        {
+            SceneChange.OnSceneChange("MollRuRPGScene");
+        }
+
+    }
+
 }
