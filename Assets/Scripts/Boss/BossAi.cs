@@ -72,8 +72,8 @@ public class BossAI : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-        // Always look at the player
-        if (!isAttacking) // Only look at player if not attacking
+        // 항상 플레이어를 바라보게
+        if (!isAttacking) // 공격중에는 플레이어를 바라보지않게
         {
             LookAtPlayer();
         }
@@ -106,7 +106,7 @@ public class BossAI : MonoBehaviour
                 break;
 
             case CurrentState.Attack:
-                if (distanceToPlayer < attackRange)
+                if (distanceToPlayer <= attackRange)
                 {
                     StartCoroutine(Attack());
                 }
@@ -117,13 +117,13 @@ public class BossAI : MonoBehaviour
                 break;
 
             case CurrentState.Enraged:
-                if (distanceToPlayer < attackRange)
+                if (distanceToPlayer <= attackRange)
                 {
                     StartCoroutine(Attack());
                 }
                 else
                 {
-                    MoveIfInChaseAnimation(); // Optionally move towards player if enraged
+                    
                 }
                 break;
 
@@ -138,7 +138,7 @@ public class BossAI : MonoBehaviour
 
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f); // Adjust the speed as needed
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f); // 바라보는 속도
     }
 
     private void MoveIfInChaseAnimation()
@@ -161,7 +161,7 @@ public class BossAI : MonoBehaviour
 
     public IEnumerator Attack()
     {
-        isAttacking = true; // Stop looking at the player while attacking
+        isAttacking = true; 
         animator.SetBool("isMoving", false);
 
         int attackIndex = Random.Range(0, 3);
@@ -184,12 +184,12 @@ public class BossAI : MonoBehaviour
             timer = 0;
         }
 
-        // Wait until the attack animation is done
+        // 공격 애니메이션이 끝날때가지 기다림
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         float attackAnimationDuration = stateInfo.length;
         yield return new WaitForSeconds(attackAnimationDuration);
 
-        isAttacking = false; // Resume looking at the player
+        isAttacking = false; 
     }
 
     public void TakeDamage(int damage)
