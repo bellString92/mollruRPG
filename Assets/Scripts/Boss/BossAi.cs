@@ -10,7 +10,6 @@ public enum CurrentState { Sleep, Alert, Chase, Attack, Enraged, Dead }
 
 public class BossAI : MonoBehaviour
 {
-    // 공개 파라미터
     [Header("Game Settings")]
     public float moveSpeed;
     public float attackRange;
@@ -19,33 +18,52 @@ public class BossAI : MonoBehaviour
     public int maxHP;
     public CurrentState currentState;
     public Transform player;
-    //public Animator animator;
 
-
-    // 비공개 파라미터
     private int currentHealth;
     private Animator animator;
-    //private Transform player;
-    private Collider sphereCollider;
-    //private CurrentState currentState;
-    private bool hasWokenUp = false; // 한 번 깨어났는지를 추적
+    private Collider mainCollider;
+    private SphereCollider sleepCollider;
+    private GameObject sleepColliderObject;
+    private bool hasWokenUp = false;
     private float timer;
     private float delaytimer;
-    NavMeshAgent agent;
+    private NavMeshAgent agent;
+    private bool isAttacking = false;
 
+    void Awake()
+    {
+        sleepColliderObject = transform.Find("SleepCollider")?.gameObject;
+        if (sleepColliderObject != null)
+        {
+            sleepCollider = sleepColliderObject.GetComponent<SphereCollider>();
+        }
+    }
 
     void Start()
     {
+        if (sleepCollider == null)
+        {
+            Debug.LogError("SleepCollider not found. Please ensure there is a child object named 'SleepCollider' with a SphereCollider attached.");
+            return;
+        }
+
         currentHealth = maxHP;
-        animator = GetComponent<Animator>();
-        sphereCollider = GetComponent<Collider>();
+
+        animator = GetComponentInChildren<Animator>();
+        if (animator == null)
+        {
+            Debug.LogError("Animator component not found. Please ensure there is an Animator component on the Avatar object.");
+            return;
+        }
+
+        mainCollider = GetComponent<Collider>();
+        agent = GetComponent<NavMeshAgent>();
+
         currentState = CurrentState.Sleep;
         UpdateState(CurrentState.Sleep);
 
         timer = 0.0f;
         delaytimer = 2.0f;
-
-
     }
 
     void Update()
@@ -53,6 +71,12 @@ public class BossAI : MonoBehaviour
         if (player == null) return;
 
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+
+        // Always look at the player
+        if (!isAttacking) // Only look at player if not attacking
+        {
+            LookAtPlayer();
+        }
 
         switch (currentState)
         {
@@ -71,21 +95,20 @@ public class BossAI : MonoBehaviour
                 break;
 
             case CurrentState.Chase:
-                MoveTowardsPlayer();
                 if (distanceToPlayer <= attackRange)
                 {
                     UpdateState(CurrentState.Attack);
                 }
-                /*else if (distanceToPlayer >= wakeUpRange)
+                else
                 {
-                    UpdateState(CurrentState.Alert); // Sleep 상태로 돌아가지 않도록 Alert 상태로 전환
-                }*/
+                    MoveIfInChaseAnimation();
+                }
                 break;
 
             case CurrentState.Attack:
                 if (distanceToPlayer < attackRange)
                 {
-                    Attack();
+                    StartCoroutine(Attack());
                 }
                 else
                 {
@@ -96,16 +119,34 @@ public class BossAI : MonoBehaviour
             case CurrentState.Enraged:
                 if (distanceToPlayer < attackRange)
                 {
-                    Attack();
+                    StartCoroutine(Attack());
                 }
                 else
                 {
-                    MoveTowardsPlayer();
+                    MoveIfInChaseAnimation(); // Optionally move towards player if enraged
                 }
                 break;
 
-            case CurrentState.Dead:// 죽음 처리
+            case CurrentState.Dead:
                 break;
+        }
+    }
+
+    private void LookAtPlayer()
+    {
+        if (player == null) return;
+
+        Vector3 direction = (player.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f); // Adjust the speed as needed
+    }
+
+    private void MoveIfInChaseAnimation()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Chase"))
+        {
+            MoveTowardsPlayer();
         }
     }
 
@@ -118,10 +159,12 @@ public class BossAI : MonoBehaviour
         animator.SetBool("isMoving", true);
     }
 
-    public void Attack() //코루틴으로 변경해야함
+    public IEnumerator Attack()
     {
-        
-        int attackIndex = Random.Range(0, 3); // 0, 1, 2 중 무작위 선택
+        isAttacking = true; // Stop looking at the player while attacking
+        animator.SetBool("isMoving", false);
+
+        int attackIndex = Random.Range(0, 3);
         timer += Time.deltaTime;
 
         if (timer > delaytimer)
@@ -140,7 +183,13 @@ public class BossAI : MonoBehaviour
             }
             timer = 0;
         }
-        animator.SetBool("isMoving", false);
+
+        // Wait until the attack animation is done
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float attackAnimationDuration = stateInfo.length;
+        yield return new WaitForSeconds(attackAnimationDuration);
+
+        isAttacking = false; // Resume looking at the player
     }
 
     public void TakeDamage(int damage)
@@ -166,19 +215,23 @@ public class BossAI : MonoBehaviour
             case CurrentState.Sleep:
                 animator.SetBool("isSleeping", true);
                 animator.SetBool("isMoving", false);
+                if (sleepCollider != null) sleepCollider.enabled = true;
                 break;
+
             case CurrentState.Alert:
                 animator.SetBool("isSleeping", false);
                 animator.SetBool("isFind", true);
-                hasWokenUp = true; // 보스가 한 번 깨어났음을 표시
+                hasWokenUp = true;
+                if (sleepCollider != null) sleepCollider.enabled = false;
                 break;
+
             case CurrentState.Chase:
                 animator.SetBool("isMoving", true);
                 animator.SetBool("isSleeping", false);
                 break;
+
             case CurrentState.Attack:
-                Attack();
-                //animator.SetBool("Attack", true);
+                StartCoroutine(Attack());
                 animator.SetBool("isMoving", false);
                 break;
 
@@ -200,10 +253,9 @@ public class BossAI : MonoBehaviour
             player = other.transform;
             UpdateState(CurrentState.Alert);
 
-            // 스피어 콜라이더 비활성화
-            if (sphereCollider != null)
+            if (mainCollider != null)
             {
-                sphereCollider.enabled = false;
+                mainCollider.enabled = false;
             }
         }
     }
@@ -213,11 +265,11 @@ public class BossAI : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             player = null;
-            if (!hasWokenUp) // 깨어난 적이 없다면 수면 상태로 전환
+            if (!hasWokenUp)
             {
                 UpdateState(CurrentState.Sleep);
             }
-            else // 한 번 깨어났다면 Idle 상태로 유지
+            else
             {
                 UpdateState(CurrentState.Alert);
             }
