@@ -12,6 +12,15 @@ public enum ItemType // 아이템 분류 장비,소비,재료
     consumItem, // 소비 "
     materialItem // 재료 "
 }
+// 아이템 레어등급
+public enum Rarity
+{
+    Common,      // 일반
+    Uncommon,    // 고급
+    Rare,        // 희귀
+    Epic,        // 영웅
+    Legendary    // 전설
+}
 
 public abstract class ItemKind : ScriptableObject
 { // 아이템에 들어갈 내용 이름,아이템 종류, 아이템 이미지, 아이템 설명
@@ -27,6 +36,9 @@ public abstract class ItemKind : ScriptableObject
     public int maxStack; // 최대수량
     public int quantity; // 현재 수량
 
+    public Rarity rarity; // 아이템 레어등급
+    public int enhancementLevel; // 강화 수치
+
     public ItemKind(ItemKind original)
     {
         itemName = original.itemName;
@@ -35,6 +47,8 @@ public abstract class ItemKind : ScriptableObject
         price = original.price;
         resellprice = original.resellprice;
         quantity = original.quantity;
+        rarity = original.rarity;
+        enhancementLevel = original.enhancementLevel;
     }
 
     // abstract를 활용해 각 아이템을 use시 다른 기능을 구현되도록 함 override로 새로써 기능을 구현

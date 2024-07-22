@@ -63,6 +63,7 @@ public class UIManager : MonoBehaviour
         {
             quantityCheck.Initialize(item, onConfirm);
         }
+        uiStack.Push(currentQuantityUI);
     }
     public void OpenSellQuantityCheckUI(ItemKind item, System.Action onConfirm)
     {
@@ -80,6 +81,7 @@ public class UIManager : MonoBehaviour
         {
             quantityCheck.Initialize(item, onConfirm);
         }
+        uiStack.Push(currentQuantityUI);
     }
 
     public GameObject ShowUI(GameObject uiPrefab) // 호출자가 가지고있는 프리펩 ui생성

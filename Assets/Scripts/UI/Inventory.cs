@@ -7,6 +7,7 @@ using TMPro;
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
+    public GameObject NoEmptySlotPopup;
 
     void Awake()
     {
@@ -15,6 +16,7 @@ public class Inventory : MonoBehaviour
     }
 
     public Transform content; // 슬롯들을 자식으로 가지고 있는 부모 Transform
+
 
     // 아이템을 생성하는 메서드
     public void CreateItem(ItemKind itemKind, GameObject itemPrefab)
@@ -83,6 +85,8 @@ public class Inventory : MonoBehaviour
                 }
             }
             Debug.LogWarning("No empty slots available.");
+            UIManager.Instance.ShowUI(NoEmptySlotPopup);
+
         }
         else
         {
