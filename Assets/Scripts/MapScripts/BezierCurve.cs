@@ -52,9 +52,9 @@ public class BezierCurve : AnimatorProperty
             Debug.LogError("Animator not assigned or found.");
             return;
         }
-        if (!isJumping)
-        {
 
+        /*if (!isJumping)
+        {
             Transform currentPortal = FieldOfView.Instance.GetCurrentPortal();
 
             if (currentPortal != null)
@@ -65,31 +65,26 @@ public class BezierCurve : AnimatorProperty
             {
                 target = null;
             }
-        }
+        }*/
+
         if (target == null && savedTarget == null) return;
 
         float distanceToTarget = Vector3.Distance(player.transform.position, target.transform.position);
-        
-        //현재 애니메이션 상태 정보를 가져옴
+
+        // 현재 애니메이션 상태 정보를 가져옴
         AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-        /*if (distanceToTarget <= activationDistance && Input.GetKeyDown(KeyCode.F) && !isJumping && currentState.IsName("Move"))
-        {
-            isJumping = true;
-            player.transform.SetParent(transform);
-            animator.SetTrigger("Jump"); // 점프 애니메이션 시작
-        }*/
         if (distanceToTarget <= activationDistance && !isJumping && currentState.IsName("Move"))
         {
             if (Input.GetKey(KeyCode.F))
             {
-                holdTime += Time.deltaTime;
+               holdTime += Time.deltaTime;
                 if (holdTime >= interactionTime)
                 {
                     isJumping = true;
                     player.transform.SetParent(transform);
                     animator.SetTrigger("Jump"); // 점프 애니메이션 시작
-                    savedTarget = target.transform; //타겟 저장
+                    savedTarget = target.transform; // 타겟 저장
                     holdTime = 0.0f;
                 }
             }
@@ -133,7 +128,7 @@ public class BezierCurve : AnimatorProperty
                 isJumping = false;
                 progress = 0.0f;
                 animator.ResetTrigger("Jump");
-                //gameObject.SetActive(false);
+                // gameObject.SetActive(false);
                 savedTarget = null; // 점프 종료 후 타겟 해제
                 Destroy(gameObject, 2);
 
@@ -141,8 +136,6 @@ public class BezierCurve : AnimatorProperty
                 {
                     linkedDoor.DungeonDoorClose();
                 }
-
-
             }
         }
     }
