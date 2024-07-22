@@ -23,10 +23,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
     {
         if (myChild != null)
         {
-            //if (myChild.tag == transform.tag)
-            //{
-                myChild.GetComponent<ISwapParent>()?.SwapParent(eventData.pointerDrag.GetComponent<IGetParent>().myParent);
-            //}
+            myChild.GetComponent<ISwapParent>()?.SwapParent(eventData.pointerDrag.GetComponent<IGetParent>().myParent);
+
         }
         else
         {

@@ -5,28 +5,22 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
 
 public class Player : AnimatorProperty, IBattle
 {
-    [SerializeField] private AnimEvent AnimEvent;
-
-
     private bool isNearButton, isNearChest = false;
     private ButtonController currentButton;
     private ChestController currentChest;
     public UnityEvent<float> changeHpAct;
     public UnityEvent<float> changeMpAct;
-    private float SkillDamage;
     public BattleStat myStat;
     public LayerMask enemyMask;
     Vector3 TGDir;
     Vector2 inputDir = Vector2.zero;
     Vector2 desireDir = Vector2.zero;
     public GameObject myBody; // 어딘가에 쓰이긴 하는데 어디에 쓰이는질 모르겠네;;;
-
-
-    //bool IsComboCheck = false;
 
     // 더블 클릭 체크용
     public float myDoubleClickSecond = 0.25f;
@@ -79,6 +73,7 @@ public class Player : AnimatorProperty, IBattle
     {
         myTargetmonster.Clear();       // 매번 초기화 해서 리스트에 아무것도 없이함
         myTarger.Clear();
+
         // 타겟 저장 시스템
         FieldOfView myFOV = GetComponent<FieldOfView>();
         if (myFOV.visibleMonsterView.Count > 0)
@@ -103,10 +98,6 @@ public class Player : AnimatorProperty, IBattle
                 myTarger.Add(myFOV.visibleETCView[i]);
             }
         }
-
-
-
-
 
         // 이동
         desireDir.x = Input.GetAxis("Horizontal");
@@ -284,30 +275,8 @@ public class Player : AnimatorProperty, IBattle
             }
         }
     }
-
-    private void OnEnable()
-    {
-        if (AnimEvent != null)
-        {
-            AnimEvent.skill_AttackAct.AddListener(OnSkillAttackReceived);
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (AnimEvent != null)
-        {
-            AnimEvent.skill_AttackAct.RemoveListener(OnSkillAttackReceived);
-        }
-    }
-
-    private void OnSkillAttackReceived(float v)
-    {
-        SkillDamage = v;
-        OnSkillDamage(); // 이벤트를 통해 값을 받으면 OnSkillDamage 메서드를 호출합니다.
-    }
-
-    public void OnSkillDamage()
+    
+    public void OnSkillDamage(float v)
     {
         if (myTargetmonster.Count > 0)
         {
@@ -321,17 +290,18 @@ public class Player : AnimatorProperty, IBattle
                     {
                         if (Critical(myStat.CriticalProbability))            // 치명타 확인
                         {
-                            id.TakeDamage(SkillDamage * myStat.CriticalDamage);  // 치명타가 참일때 대미지에 치명타 피해량을 곱하여 피해를 입힘
+                            id.TakeDamage(v * myStat.CriticalDamage);  // 치명타가 참일때 대미지에 치명타 피해량을 곱하여 피해를 입힘
                         }
                         else
                         {
-                            id.TakeDamage(SkillDamage);                          // 치명타가 트루일때 대미지만큼의 피해를 입힘
+                            id.TakeDamage(v);                          // 치명타가 트루일때 대미지만큼의 피해를 입힘
                         }
                     }
                 }
             }
         }
     }
+
 
     // 던전 문과 상자 제어하기 위한 클라이더
     private void OnTriggerEnter(Collider other)
