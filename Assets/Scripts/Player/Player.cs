@@ -65,7 +65,21 @@ public class Player : AnimatorProperty, IBattle
     // Start is called before the first frame update
     void Start()
     {
+        string playCharacter = PlayerPrefs.GetString("playCharacter");
+        if ("".Equals(playCharacter)) playCharacter = "Paladin";
+        Animator[] characters = transform.GetComponentsInChildren<Animator>();
 
+        switch (playCharacter)
+        {
+            case "Paladin":
+                characters[0].gameObject.SetActive(true);
+                characters[1].gameObject.SetActive(false);
+                break;
+            case "Maria":
+                characters[0].gameObject.SetActive(false);
+                characters[1].gameObject.SetActive(true);
+                break;
+        }
     }
 
     // Update is called once per frame

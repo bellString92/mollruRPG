@@ -20,6 +20,7 @@ public class CharacterSelect : MonoBehaviour
     private GameObject[] createBtnArr = null;
     private GameObject[] nickNameArr = null;
     private GameObject[] deleteBtnArr = null;
+    private string[] playCharacters = null;
 
     public Transform popupParent = null;
     public Transform dontTouch = null;
@@ -34,6 +35,7 @@ public class CharacterSelect : MonoBehaviour
         createBtnArr = new GameObject[slotCount];
         nickNameArr = new GameObject[slotCount];
         deleteBtnArr = new GameObject[slotCount];
+        playCharacters = new string[slotCount];
 
         for (int i = 0; i < slotCount; i++)
         {
@@ -88,16 +90,19 @@ public class CharacterSelect : MonoBehaviour
         }
         string jobSelect = PlayerPrefs.GetString("jobSelect");
         GameObject character = null;
+        string playCharacter = "Paladin";
         if (!"".Equals(jobSelect))
         {
             switch (jobSelect)
             {
                 case "paladin_warrior":
                 case "paladin_magician":
+                    playCharacter = "Paladin";
                     character = Instantiate(Resources.Load("Prefabs/Paladin") as GameObject);
                     break;
                 case "maria_warrior":
                 case "maria_magician":
+                    playCharacter = "Maria";
                     character = Instantiate(Resources.Load("Prefabs/Maria") as GameObject);
                     break;
             }
@@ -134,12 +139,13 @@ public class CharacterSelect : MonoBehaviour
                     Destroy(character);
                     dontTouch.GetChild(0).gameObject.SetActive(false);
                     Destroy(popup);
+                    playCharacters[selNum-1] = "";
                     selNum = 0;
                 });
                 popup.SetActive(true);
                 dontTouch.GetChild(0).gameObject.SetActive(true);
             });
-
+            playCharacters[selNum-1] = playCharacter;
             PlayerPrefs.SetString("jobSelect", "");
         }
     }
@@ -183,6 +189,7 @@ public class CharacterSelect : MonoBehaviour
                     {
                         circles.GetChild(j).gameObject.SetActive(true);
                     }
+
                 }
                 else
                 {
@@ -221,9 +228,23 @@ public class CharacterSelect : MonoBehaviour
             dontTouch.GetChild(0).gameObject.SetActive(true);
         } else
         {
+            PlayerPrefs.SetString("playCharacter", playCharacters[selNum-1]);
             SceneChange.OnSceneChange("MollRuRPGScene");
         }
 
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButton(0)) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, LayerMask.NameToLayer("Player")))
+            {
+                int tmp = hit.transform.parent.GetSiblingIndex();
+                Debug.Log(tmp);
+                OnCreateBtn(tmp);
+            }
+        }
+    }
 }
