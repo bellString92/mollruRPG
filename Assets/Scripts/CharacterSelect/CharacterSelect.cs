@@ -234,17 +234,4 @@ public class CharacterSelect : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        if (Input.GetMouseButton(0)) {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, LayerMask.NameToLayer("Player")))
-            {
-                int tmp = hit.transform.parent.GetSiblingIndex();
-                Debug.Log(tmp);
-                OnCreateBtn(tmp);
-            }
-        }
-    }
 }
