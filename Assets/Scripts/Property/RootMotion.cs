@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class RootMotion : AnimatorProperty
 {
@@ -22,18 +23,19 @@ public class RootMotion : AnimatorProperty
 
     // Update is called once per frame
     void Update()
-    {        
-    }
+    { }
 
     private void FixedUpdate()
     {
-        Ray ray = new Ray(transform.parent.position, deltaPosition.normalized);
+        Ray ray = new Ray(transform.parent.position + (Vector3.up * 0.1f), deltaPosition.normalized);
         if (Physics.Raycast(ray, out RaycastHit hit, deltaPosition.magnitude, crashMask))
         {
+            Debug.DrawRay(ray.origin, ray.direction * hit.distance * 100, Color.green); // 충돌한 경우
             transform.parent.position += ray.direction * (hit.distance - radius);
         }
         else
         {
+            Debug.DrawRay(ray.origin, ray.direction * deltaPosition.magnitude * 100, Color.red); // 충돌하지 않은 경우
             transform.parent.position += deltaPosition;                        
         }
         transform.parent.rotation *= deltaRotation;
