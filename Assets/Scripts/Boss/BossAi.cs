@@ -29,6 +29,7 @@ public class BossAI : MonoBehaviour
     private float delaytimer;
     private NavMeshAgent agent;
     private bool isAttacking = false;
+    private bool isFirstAttack = true;
 
     void Awake()
     {
@@ -63,7 +64,7 @@ public class BossAI : MonoBehaviour
         UpdateState(CurrentState.Sleep);
 
         timer = 0.0f;
-        delaytimer = 2.0f;
+        delaytimer = 3.0f;
     }
 
     void Update()
@@ -135,6 +136,14 @@ public class BossAI : MonoBehaviour
     private void LookAtPlayer()
     {
         if (player == null) return;
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        // 공격 애니메이션 중에는 회전하지 않도록 설정
+        if (stateInfo.IsName("attack1") || stateInfo.IsName("attack2") || stateInfo.IsName("attack3"))
+        {
+            return;
+        }
 
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -231,7 +240,14 @@ public class BossAI : MonoBehaviour
                 break;
 
             case CurrentState.Attack:
-                StartCoroutine(Attack());
+                if (isFirstAttack)
+                {
+                    StartCoroutine(Attack(firstAttack: true));
+                }
+                else
+                {
+                    StartCoroutine(Attack(firstAttack: false));
+                }
                 animator.SetBool("isMoving", false);
                 break;
 
@@ -246,6 +262,46 @@ public class BossAI : MonoBehaviour
         }
     }
 
+    public IEnumerator Attack(bool firstAttack)
+    {
+        isAttacking = true;
+        animator.SetBool("isMoving", false);
+
+        if (firstAttack)
+        {
+            isFirstAttack = false;
+        }
+        else
+        {
+            timer += Time.deltaTime;
+            if (timer < delaytimer)
+            {
+                yield return new WaitForSeconds(delaytimer - timer);
+            }
+            timer = 0;
+        }
+
+        int attackIndex = Random.Range(0, 3);
+        switch (attackIndex)
+        {
+            case 0:
+                animator.SetTrigger("attack1");
+                break;
+            case 1:
+                animator.SetTrigger("attack2");
+                break;
+            case 2:
+                animator.SetTrigger("attack3");
+                break;
+        }
+
+        // 공격 애니메이션이 끝날 때까지 대기
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float attackAnimationDuration = stateInfo.length;
+        yield return new WaitForSeconds(attackAnimationDuration);
+
+        isAttacking = false;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
