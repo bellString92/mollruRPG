@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: NomalSword
   itemType: 0
+  itemTag: WeaponItem
   itemIcon: {fileID: 21300000, guid: a332f9cc2040f6042a04c65fa9e4a000, type: 3}
   description: "\uD3C9\uBC94\uD55C \uAC80"
   price: 80
@@ -21,4 +22,6 @@ MonoBehaviour:
   itemID: 1
   maxStack: 1
   quantity: 1
+  rarity: 0
+  kaiLevel: 0
   attackBoost: 100

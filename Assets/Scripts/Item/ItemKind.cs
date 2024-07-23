@@ -48,8 +48,56 @@ public abstract class ItemKind : ScriptableObject
         resellprice = original.resellprice;
         quantity = original.quantity;
         rarity = original.rarity;
-        kaiLevel = original.kaiLevel;
+        kaiLevel = Mathf.Min(original.kaiLevel, GetMaxKaiLevel(original.rarity));
     }
+
+    public int KaiLevel
+    {
+        get => kaiLevel;
+        set => kaiLevel = Mathf.Min(value, GetMaxKaiLevel(rarity));
+    }
+
+    // 아이템 등급에 따른 최대 강화 수치 반환
+    public int GetMaxKaiLevel(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common:
+                return 3;
+            case Rarity.Uncommon:
+                return 5;
+            case Rarity.Rare:
+                return 10;
+            case Rarity.Epic:
+                return 15;
+            case Rarity.Legendary:
+                return 20;
+            default:
+                return 0;
+        }
+    }
+    // 각 레어도에 따른 증가 수치 반환
+    public float[] GetIncrementValuesByRarity(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common:
+                return new float[] { 1.1f, 1.1f, 1.1f, 1.1f }; // 예시 값
+            case Rarity.Uncommon:
+                return new float[] { 1.1f, 1.1f, 1.1f, 1.12f }; // 예시 값
+            case Rarity.Rare:
+                return new float[] { 1.1f, 1.1f, 1.1f, 1.12f }; // 예시 값
+            case Rarity.Epic:
+                return new float[] { 1.1f, 1.1f, 1.11f, 1.13f }; // 예시 값
+            case Rarity.Legendary:
+                return new float[] { 1.1f, 1.1f, 1.12f, 1.15f }; // 예시 값
+            default:
+                return new float[] { 0.0f, 0.0f, 0.0f, 0.0f };
+        }
+    }
+
+
+
 
     // abstract를 활용해 각 아이템을 use시 다른 기능을 구현되도록 함 override로 새로써 기능을 구현
     public abstract void Use(BattleStat myStat); 
