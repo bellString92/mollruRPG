@@ -193,6 +193,12 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
+        // 더블 클릭 타이머 리셋
+        if (myIsOneClick && (Time.time - myTimer) >= myDoubleClickSecond)
+        {
+            myIsOneClick = false;
+        }
+
         // 스킬 F1
         if (!myAnim.GetBool("IsSkill_F") && Input.GetKeyDown(KeyCode.F))
         {
