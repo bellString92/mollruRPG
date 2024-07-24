@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8756d66819215d40b9dd7df1a74a5b6, type: 3}
   m_Name: Leather
   m_EditorClassIdentifier: 
-  itemName: 
-  itemType: 0
-  itemTag: 
+  itemName: Leather
+  itemType: 4
+  itemTag: MaterialItem
   itemIcon: {fileID: 21300000, guid: d5e8aa2980a2ca24fa00135774dc16d2, type: 3}
-  description: 
-  price: 0
-  resellprice: 0
-  itemID: 0
-  maxStack: 0
-  quantity: 0
+  description: "\uB3D9\uBB3C\uC758 \uAC00\uC8FD"
+  price: 5
+  resellprice: 4
+  itemID: 7
+  maxStack: 999
+  quantity: 1
   rarity: 0
   kaiLevel: 0

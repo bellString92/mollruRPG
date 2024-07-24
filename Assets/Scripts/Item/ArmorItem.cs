@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New ArmorItem", menuName = "Items/ArmorItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드
 public class ArmorItem : ItemKind
 {
     public float maxHealBoost;
+    public List<UpgradeRequirement> armorUpgradeRequirements;   // 갑옷 강화 요구사항 리스트
 
     private void OnEnable()
     {
@@ -23,6 +25,13 @@ public class ArmorItem : ItemKind
         float effectiveMaxHealBoost = CalculateEffectiveMaxHealBoost();
         myStat.maxHealPoint += maxHealBoost;
         myStat.curHealPoint += maxHealBoost;
+    }
+
+
+    // 갑옷 타입에 맞는 재료 요구사항 반환 메서드
+    public List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)
+    {
+        return armorUpgradeRequirements.FirstOrDefault(req => req.kaiLevel == level)?.materialRequirements;
     }
 
     // kaiLevel에 따른 최대 회복 증가 수치 계산

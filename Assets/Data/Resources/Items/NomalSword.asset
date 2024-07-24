@@ -25,3 +25,18 @@ MonoBehaviour:
   rarity: 0
   kaiLevel: 0
   attackBoost: 100
+  weaponUpgradeRequirements:
+  - kaiLevel: 1
+    materialRequirements:
+    - requiredItem: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
+      quantity: 1
+  - kaiLevel: 2
+    materialRequirements:
+    - requiredItem: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
+      quantity: 3
+  - kaiLevel: 3
+    materialRequirements:
+    - requiredItem: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
+      quantity: 5
+    - requiredItem: {fileID: 11400000, guid: 5ab28286a8ccfc54e922dbe284c2e5d7, type: 2}
+      quantity: 2

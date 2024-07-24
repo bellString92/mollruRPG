@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New WeaponItem", menuName = "Items/WeaponItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드
 public class WeaponItem : ItemKind
 {
     public float attackBoost;
+    public List<UpgradeRequirement> weaponUpgradeRequirements;  // 무기 강화 요구사항 리스트
 
     private void OnEnable()
     {
@@ -24,6 +26,11 @@ public class WeaponItem : ItemKind
         myStat.AttackPoint += attackBoost;
     }
 
+
+    public List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)
+    {
+        return weaponUpgradeRequirements.FirstOrDefault(req => req.kaiLevel == level)?.materialRequirements;
+    }
 
     // kaiLevel에 따른 attackBoost 증가 수치 계산
     public float CalculateEffectiveAttackBoost(int level = -1)
