@@ -31,7 +31,8 @@ public class Player : AnimatorProperty, IBattle
     public List<Transform> myTargetmonster = new List<Transform>();
     public List<Transform> myTarger = new List<Transform>();
 
-    //public SkillIcon mySkillicon;
+    public BuffManager BuffManager;
+
 
     public bool IsLive
     {
@@ -249,6 +250,13 @@ public class Player : AnimatorProperty, IBattle
         }
 
     }
+    
+    public void DamageBuff(float v, float t)
+    {
+        BuffSystem attackBuff = new DamageBuff(v, gameObject, t);
+        BuffManager.AddBuff(attackBuff);
+    }
+
 
     public void OnAllSkillTrue()
     {
