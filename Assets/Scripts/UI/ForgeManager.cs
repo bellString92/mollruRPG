@@ -8,6 +8,8 @@ public class ForgeUI : MonoBehaviour
     public TMP_Text itemInfoTextPrefab; // 아이템 정보를 표시할 TextMeshPro 프리팹
     public Transform scrollViewContent; // Scroll View의 Content Transform
 
+    public ForgeSlot forgeSlot; // 포지 슬롯 참조
+
     private void Awake()
     {
         Instance = this;
@@ -112,6 +114,19 @@ public class ForgeUI : MonoBehaviour
             else
             {
                 Debug.Log("최고 강화 등급입니다.");
+            }
+        }
+    }
+    private void OnDestroy()
+    {
+        if (forgeSlot != null && forgeSlot.myChild != null)
+        {
+            // 인벤토리로 아이템을 보내는 로직 구현
+            SaveItemInfo saveItemInfo = forgeSlot.myChild.GetComponent<SaveItemInfo>();
+            if (saveItemInfo != null)
+            {               
+                Inventory.Instance.CreateItem(saveItemInfo.itemKind, forgeSlot.myChild);
+                forgeSlot.myChild = null;
             }
         }
     }

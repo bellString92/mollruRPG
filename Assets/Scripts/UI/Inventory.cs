@@ -38,11 +38,18 @@ public class Inventory : MonoBehaviour
 
                     newItem.name = newItemKind.itemName;
 
-                    // 새로운 게임 오브젝트에 Drag 컴포넌트 추가
-                    newItem.AddComponent<Drag>();
+                    // 새로운 게임 오브젝트에 Drag 컴포넌트 추가 (이미 존재하지 않을 때만)
+                    if (newItem.GetComponent<Drag>() == null)
+                    {
+                        newItem.AddComponent<Drag>();
+                    }
 
-                    // 아이템의 ItemKind 정보를 불러오기를 쉽게하기위해 정보를 저장
-                    SaveItemInfo saveItemInfo = newItem.AddComponent<SaveItemInfo>();
+                    // 아이템의 ItemKind 정보를 불러오기를 쉽게하기 위해 정보를 저장 (이미 존재하지 않을 때만)
+                    SaveItemInfo saveItemInfo = newItem.GetComponent<SaveItemInfo>();
+                    if (saveItemInfo == null)
+                    {
+                        saveItemInfo = newItem.AddComponent<SaveItemInfo>();
+                    }
                     saveItemInfo.itemKind = newItemKind;
 
                     // 태그 설정

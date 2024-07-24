@@ -149,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemInfoTextPrefab: {fileID: 7383747217809032080, guid: 49318ed42ffa9d94ba038e010e2eda45, type: 3}
   scrollViewContent: {fileID: 3164666130878330883}
+  forgeSlot: {fileID: 6965434453102443457}
 --- !u!222 &5663933569745633415
 CanvasRenderer:
   m_ObjectHideFlags: 0
