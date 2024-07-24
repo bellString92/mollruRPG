@@ -4500,6 +4500,7 @@ MonoBehaviour:
   wakeUpRange: 20
   attackStateRange: 15
   maxHP: 500
+  currentHealth: 0
   currentState: 0
   player: {fileID: 1309714377}
 --- !u!95 &289462336
@@ -4540,7 +4541,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -33461,10 +33462,10 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 357031973}
   - {fileID: 289462333}
   - {fileID: 1345838117}
   - {fileID: 1201869165}
   - {fileID: 1278668607}
   - {fileID: 1714860906}
   - {fileID: 1582901288}
+  - {fileID: 357031973}

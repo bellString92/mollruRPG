@@ -4,7 +4,9 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-// 몬스터 회전 값 Movement에서 상속받아서 변경하기
+using UnityEngine.Events;
+// 애니메이션이 끝나고 나서 상태를 변경하게 수정해야함
+// Attack 상태를 구체화 (Chase상태에서 Attack상태로 갈때 너무 짧게 돌아옴)
 
 public enum CurrentState { Sleep, Alert, Chase, Attack, Enraged, Dead }
 
@@ -15,11 +17,12 @@ public class BossAI : MonoBehaviour
     public float attackRange;
     public float wakeUpRange;
     public float attackStateRange;
-    public int maxHP;
+    public float maxHP;
+    public float currentHealth;
     public CurrentState currentState;
     public Transform player;
 
-    private int currentHealth;
+    
     private Animator animator;
     private Collider mainCollider;
     private SphereCollider sleepCollider;
@@ -28,6 +31,7 @@ public class BossAI : MonoBehaviour
     private float timer;
     private float delaytimer;
     private NavMeshAgent agent;
+    private bool isChaseing = false; 
     private bool isAttacking = false;
     private bool isFirstAttack = true;
 
@@ -44,7 +48,7 @@ public class BossAI : MonoBehaviour
     {
         if (sleepCollider == null)
         {
-            Debug.LogError("SleepCollider not found. Please ensure there is a child object named 'SleepCollider' with a SphereCollider attached.");
+            //Debug.LogError("SleepCollider not found. Please ensure there is a child object named 'SleepCollider' with a SphereCollider attached.");
             return;
         }
 
@@ -52,8 +56,7 @@ public class BossAI : MonoBehaviour
 
         animator = GetComponentInChildren<Animator>();
         if (animator == null)
-        {
-            Debug.LogError("Animator component not found. Please ensure there is an Animator component on the Avatar object.");
+        { 
             return;
         }
 
@@ -64,17 +67,18 @@ public class BossAI : MonoBehaviour
         UpdateState(CurrentState.Sleep);
 
         timer = 0.0f;
-        delaytimer = 3.0f;
+        delaytimer = 4.0f;
     }
 
     void Update()
     {
+
         if (player == null) return;
 
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
         // 항상 플레이어를 바라보게
-        if (!isAttacking) // 공격중에는 플레이어를 바라보지않게
+        if (isChaseing == true && !isAttacking) // 공격중에는 플레이어를 바라보지않게
         {
             LookAtPlayer();
         }
@@ -99,6 +103,7 @@ public class BossAI : MonoBehaviour
                 if (distanceToPlayer <= attackRange)
                 {
                     UpdateState(CurrentState.Attack);
+                    isChaseing = false;
                 }
                 else
                 {
@@ -152,6 +157,8 @@ public class BossAI : MonoBehaviour
 
     private void MoveIfInChaseAnimation()
     {
+        isChaseing = true;
+        isAttacking = false;
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("Chase"))
         {
