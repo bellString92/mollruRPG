@@ -7,6 +7,7 @@ public class ForgeUI : MonoBehaviour
     public static ForgeUI Instance;
     public TMP_Text itemInfoTextPrefab; // 아이템 정보를 표시할 TextMeshPro 프리팹
     public Transform scrollViewContent; // Scroll View의 Content Transform
+    public TextMeshProUGUI LuckPercent; // 확률을 보여줄 TextMeshPro
 
     public ForgeSlot forgeSlot; // 포지 슬롯 참조
 
@@ -18,6 +19,9 @@ public class ForgeUI : MonoBehaviour
     // 아이템 정보를 표시하는 메서드
     public void DisplayItemInfo(SaveItemInfo saveItemInfo)
     {
+        // 현재 아이템의 강화 성공 확률 표시
+        UpdateLuckPercent(saveItemInfo.itemKind);
+
         // 기존의 스크롤뷰 콘텐츠 모두 제거
         foreach (Transform child in scrollViewContent)
         {
@@ -59,6 +63,7 @@ public class ForgeUI : MonoBehaviour
     // 무기 아이템 정보 표시
     void DisplayWeaponInfo(WeaponItem weaponInfo, TMP_Text infoText)
     {
+        
         if (weaponInfo != null)
         {
             int maxKaiLevel = weaponInfo.GetMaxKaiLevel(weaponInfo.rarity);
@@ -108,7 +113,16 @@ public class ForgeUI : MonoBehaviour
             // 최대 강화 수치 초과하지 않도록 체크
             if (itemInfo.kaiLevel < itemInfo.GetMaxKaiLevel(itemInfo.rarity))
             {
-                itemInfo.KaiLevel += 1; // 카이 레벨 증가
+                float successRate = itemInfo.GetUpgradeSuccessRate();
+                if (Random.value <= successRate) // Random.value는 0.0과 1.0 사이의 무작위 값을 반환
+                {
+                    itemInfo.KaiLevel += 1; // 카이 레벨 증가
+                    Debug.Log("강화 성공!");
+                }
+                else
+                {
+                    Debug.Log("강화 실패");
+                }
                 DisplayItemInfo(saveItemInfo); // 아이템 정보 갱신
             }
             else
@@ -117,6 +131,14 @@ public class ForgeUI : MonoBehaviour
             }
         }
     }
+
+    // 확률을 퍼센트로 변환하여 LuckPercent에 표시하는 메서드
+    private void UpdateLuckPercent(ItemKind itemInfo)
+    {
+        float successRate = itemInfo.GetUpgradeSuccessRate();
+        LuckPercent.text = $"성공 확률 : {successRate * 100}%";
+    }
+
     private void OnDestroy()
     {
         if (forgeSlot != null && forgeSlot.myChild != null)

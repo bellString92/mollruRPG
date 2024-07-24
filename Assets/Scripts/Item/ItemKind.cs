@@ -76,6 +76,40 @@ public abstract class ItemKind : ScriptableObject
                 return 0;
         }
     }
+
+    // 강화 단계, 레어도에 따라 강화 확률 반환
+    public float GetUpgradeSuccessRate()
+    {
+        switch (rarity)
+        {
+            case Rarity.Common:
+                if (kaiLevel < 2) return 1.0f;
+                if (kaiLevel < 3) return 0.9f;
+                break;
+            case Rarity.Uncommon:
+                if (kaiLevel < 3) return 1.0f;
+                if (kaiLevel < 5) return 0.8f;
+                break;
+            case Rarity.Rare:
+                if (kaiLevel < 5) return 0.8f;
+                if (kaiLevel < 8) return 0.7f;
+                if (kaiLevel < 10) return 0.6f;
+                break;
+            case Rarity.Epic:
+                if (kaiLevel < 5) return 0.8f;
+                if (kaiLevel < 10) return 0.65f;
+                if (kaiLevel < 15) return 0.5f;
+                break;
+            case Rarity.Legendary:
+                if (kaiLevel < 5) return 0.75f;
+                if (kaiLevel < 10) return 0.6f;
+                if (kaiLevel < 15) return 0.3f;
+                if (kaiLevel < 19) return 0.2f;
+                if (kaiLevel < 20) return 0.1f;
+                break;
+        }
+        return 0.0f; // 만약 범위가 아닌 경우 0%로 반환
+    }
     // 각 레어도에 따른 증가 수치 반환
     public float[] GetIncrementValuesByRarity(Rarity rarity)
     {
