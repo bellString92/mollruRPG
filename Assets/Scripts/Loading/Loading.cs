@@ -38,7 +38,7 @@ public class Loading : MonoBehaviour
         string nextScene = PlayerPrefs.GetString("nextScene");
         if (nextScene == "")
         {
-            SceneManager.LoadSceneAsync("Intro");
+            SceneManager.LoadSceneAsync(0);
             yield break;
         }
         AsyncOperation ao = SceneManager.LoadSceneAsync(nextScene);

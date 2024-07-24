@@ -6,6 +6,6 @@ public static class SceneChange
     public static void OnSceneChange(string nextScene = "Intro")
     {
         PlayerPrefs.SetString("nextScene", nextScene);
-        SceneManager.LoadSceneAsync("Loading");
+        SceneManager.LoadSceneAsync(1);
     }
 }

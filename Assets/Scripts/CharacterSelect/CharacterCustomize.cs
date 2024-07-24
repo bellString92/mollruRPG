@@ -146,7 +146,7 @@ public class CharacterCustomize : MonoBehaviour
                     PlayerPrefs.SetString("nickName", text);
                     Destroy(textPopup);
                     Destroy(popup);
-                    SceneManager.LoadSceneAsync("CharacterSelect");
+                    SceneManager.LoadSceneAsync(2);
                 });
                 popup.SetActive(true);
             }

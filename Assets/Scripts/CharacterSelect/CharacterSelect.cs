@@ -170,7 +170,7 @@ public class CharacterSelect : MonoBehaviour
             {
                 PlayerPrefs.SetInt("selNum", selNum);
                 //SceneChange.OnSceneChange("Customize");
-                SceneManager.LoadSceneAsync("Customize");
+                SceneManager.LoadSceneAsync(4);
                 dontTouch.GetChild(0).gameObject.SetActive(false);
                 Destroy(popup);
             });
