@@ -91,7 +91,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893937680943818436}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!1 &5408206023392173654
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +346,7 @@ GameObject:
   - component: {fileID: 8207155050545461663}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -386,8 +386,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Slider, UnityEngine.UI
-        m_MethodName: set_value
+        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
+        m_MethodName: OnChangeHP
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -401,8 +401,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Slider, UnityEngine.UI
-        m_MethodName: set_value
+        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
+        m_MethodName: OnChangeMP
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -429,12 +429,12 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 128
-  myBody: {fileID: 0}
+  myBody: {fileID: 7861211204230361259}
   myDoubleClickSecond: 0.25
   myTargetmonster: []
   myTarger: []
   BuffManager: {fileID: 0}
-  _myAni: {fileID: 0}
+  _myAni: {fileID: 2300922449658761366}
 --- !u!114 &3741278184048714632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,7 +451,7 @@ MonoBehaviour:
   viewAngle: 45
   targetMask:
     serializedVersion: 2
-    m_Bits: 4224
+    m_Bits: 26752
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1568
@@ -1467,6 +1467,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3347158427430266989}
   m_SourcePrefab: {fileID: 100100000, guid: a26d1668d8f9c014aa8696d714af777c, type: 3}
+--- !u!95 &2300922449658761366 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: a26d1668d8f9c014aa8696d714af777c, type: 3}
+  m_PrefabInstance: {fileID: 5657666200463830279}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4775355741301919830 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a26d1668d8f9c014aa8696d714af777c, type: 3}

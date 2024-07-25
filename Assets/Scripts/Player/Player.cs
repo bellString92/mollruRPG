@@ -10,31 +10,32 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Player : AnimatorProperty, IBattle
 {
-    private bool isNearButton, isNearChest = false;
-    private ButtonController currentButton;
-    private ChestController currentChest;
-    public UnityEvent<float> changeHpAct;
-    public UnityEvent<float> changeMpAct;
-    public BattleStat myStat;
-    public LayerMask enemyMask;
+    [Header("내 캐릭터 스탯"), Space(5)]
+    public BattleStat myStat;                               // 내 스탯
+    public UnityEvent<float> changeHpAct;                   // HP 바
+    public UnityEvent<float> changeMpAct;                   // HM 바
+    private bool isNearButton, isNearChest = false;         // ???
+    private ButtonController currentButton;                 // ??
+    private ChestController currentChest;                   // ??
     Vector3 TGDir;
     Vector2 inputDir = Vector2.zero;
     Vector2 desireDir = Vector2.zero;
-    public GameObject myBody; // 어딘가에 쓰이긴 하는데 어디에 쓰이는질 모르겠네;;;
+    // public GameObject myBody; // 어딘가에 쓰이긴 하는데 어디에 쓰이는질 모르겠네;;;
 
     // 더블 클릭 체크용
-    public float myDoubleClickSecond = 0.25f;
+    float myDoubleClickSecond = 0.25f;
     private bool myIsOneClick = false;
     private double myTimer = 0;
 
+    [Header("적 인식"), Space(5)]
     //타겟 저장 변수 선언
+    public LayerMask enemyMask;                             // 적 인식 마스크
     public List<Transform> myTargetmonster = new List<Transform>();
     public List<Transform> myTarger = new List<Transform>();
 
-    // 버프관련 변수    
-    public BuffManager BuffManager;
-
-    public Animator _myAni;
+    [Header("기타 변수"), Space(5)]
+    public BuffManager BuffManager;     // 버프 매니저 호출을 위한 변수
+    public Animator _myAni;             // 애니메이션 속도 제어를 위한 변수
 
 
     public bool IsLive
