@@ -27,9 +27,62 @@ public class WeaponItem : ItemKind
     }
 
 
-    public  List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)
+    public List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)
     {
-        return weaponUpgradeRequirements.FirstOrDefault(req => req.kaiLevel == level)?.materialRequirements;
+        if (level >= GetMaxKaiLevel(rarity)+1)
+        {
+            return null; // 최대 강화레벨에 도달했거나 초과하면 null 반환
+        }
+        List<MaterialRequirement> materialRequirements = new List<MaterialRequirement>();
+
+        foreach (var requirement in weaponUpgradeRequirements)
+        {
+            if (level >= requirement.startLevel && level <= requirement.endLevel)
+            {
+                int levelInRange = level - requirement.startLevel + 1;
+
+                foreach (var materialIncrement in requirement.materialIncrements)
+                {
+                    var existingRequirement = materialRequirements.FirstOrDefault(m => m.requiredItem == materialIncrement.material);
+                    if (existingRequirement != null)
+                    {
+                        existingRequirement.quantity += materialIncrement.increment * levelInRange;
+                    }
+                    else
+                    {
+                        materialRequirements.Add(new MaterialRequirement
+                        {
+                            requiredItem = materialIncrement.material,
+                            quantity = materialIncrement.increment * levelInRange
+                        });
+                    }
+                }
+                break;
+            }
+            else if (level > requirement.endLevel)
+            {
+                int levelsInThisRange = requirement.endLevel - requirement.startLevel + 1;
+
+                foreach (var materialIncrement in requirement.materialIncrements)
+                {
+                    var existingRequirement = materialRequirements.FirstOrDefault(m => m.requiredItem == materialIncrement.material);
+                    if (existingRequirement != null)
+                    {
+                        existingRequirement.quantity += materialIncrement.increment * levelsInThisRange;
+                    }
+                    else
+                    {
+                        materialRequirements.Add(new MaterialRequirement
+                        {
+                            requiredItem = materialIncrement.material,
+                            quantity = materialIncrement.increment * levelsInThisRange
+                        });
+                    }
+                }
+            }
+        }
+
+        return materialRequirements;
     }
 
     // kaiLevel에 따른 attackBoost 증가 수치 계산
