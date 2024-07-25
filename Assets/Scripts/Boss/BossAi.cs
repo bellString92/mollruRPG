@@ -6,6 +6,8 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 
 
 public enum State { Sleep, Alert, Battle, Enraged, Death }
@@ -17,7 +19,7 @@ public class BossAI : BattleSystem
     public State myState = State.Sleep;
     public Transform player;
 
-
+    private float distanceToPlayer;
     private bool hasWokenUp = false;
     private SphereCollider sleepCollider;
     private GameObject sleepColliderObject;
@@ -66,11 +68,13 @@ public class BossAI : BattleSystem
         {
             Debug.LogWarning("SleepCollider가 할당되지 않았습니다.");
         }
+
+        this.myBattleStat.curHealPoint = this.myBattleStat.maxHealPoint;
     }
 
     void Update()
     {
-        if (player == null) return;
+        //if (player == null) return;
 
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
@@ -78,6 +82,7 @@ public class BossAI : BattleSystem
 
         UpdateStateBasedOnDistance(distanceToPlayer);
         PerformActionBasedOnState();
+
     }
 
     void UpdateStateBasedOnDistance(float distanceToPlayer)
@@ -99,16 +104,16 @@ public class BossAI : BattleSystem
                 break;
 
             case State.Battle:
-                if (distanceToPlayer <= this.myBattleStat.AttackRange)
+                if (this.myBattleStat.curHealPoint <= this.myBattleStat.maxHealPoint / 2 && myState != State.Enraged)
                 {
-                    
+                    UpdateState(State.Enraged);
                 }
                 break;
 
             case State.Enraged:
-                if (distanceToPlayer <= this.myBattleStat.AttackRange)
+                if (this.myBattleStat.curHealPoint <= 0)
                 {
-                    
+                    UpdateState(State.Death);
                 }
                 break;
         }
@@ -129,9 +134,14 @@ public class BossAI : BattleSystem
             case State.Battle:
                 LookAtPlayer();
                 MoveIfInChaseAnimation();
+                if (this.myBattleStat.AttackRange / 2 < distanceToPlayer)
+                {
+
+                }
                 break;
 
             case State.Enraged:
+                LookAtPlayer();
                 MoveIfInChaseAnimation();
                 break;
 
@@ -165,12 +175,14 @@ public class BossAI : BattleSystem
 
             case State.Battle:
                 myAnim.SetBool("isMoving", true);
+                myAnim.SetTrigger("OnAttack");
                 // Battle 상태에서 추가 로직
                 break;
 
             case State.Enraged:
+                myAnim.SetBool("isMoving", true);
                 myAnim.SetBool("isEnraged", true);
-                moveSpeed *= 1.5f;
+                //moveSpeed *= 1.5f;
                 break;
 
             case State.Death:
