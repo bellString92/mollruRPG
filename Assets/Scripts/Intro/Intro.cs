@@ -38,7 +38,7 @@ public class Intro : MonoBehaviour
                 startCor = null;
                 PlayerPrefs.SetString("nextSceneText", "로딩 중");
                 PlayerPrefs.SetString("nextSceneImage", "Dungeon");
-                SceneChange.OnSceneChange("CharaterSelect");
+                SceneChange.OnSceneChange("2-1. CharacterSelect");
             }
         }
 

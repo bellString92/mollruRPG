@@ -95,14 +95,15 @@ public class CharacterSelect : MonoBehaviour
         string characterPath = $"{Application.dataPath}/Data/SaveData/Characters.dat";
 
         characters = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath);
-        GameObject character;
+        
         for (int i = 1; i <= slotCount; i++)
         {
-            Debug.Log($"i:{i}");
+            int selNumber = i;
+            GameObject character;
             if (characters == default) return;
-            if (characters.ContainsKey(i))
+            if (characters.ContainsKey(selNumber))
             {
-                string jobSelect = characters[i].JobSelect;
+                string jobSelect = characters[selNumber].JobSelect;
                 string playCharacter = "Paladin";
                 switch (jobSelect)
                 {
@@ -120,11 +121,12 @@ public class CharacterSelect : MonoBehaviour
                 }
                 character.transform.SetParent(characterSlotArr[i - 1].transform);
                 character.transform.localPosition = Vector3.zero;
-                nickNameArr[i - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = PlayerPrefs.GetString("nickName");
-                nickNameArr[i - 1].transform.GetChild(0).gameObject.SetActive(true);
-                createBtnArr[i - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "캐릭터 선택";
-                deleteBtnArr[i - 1].gameObject.SetActive(true);
-                deleteBtnArr[i - 1].GetComponent<Button>().onClick.AddListener(() =>
+                nickNameArr[selNumber - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = characters[selNumber].NickName;
+                nickNameArr[selNumber - 1].transform.GetChild(0).gameObject.SetActive(true);
+                createBtnArr[selNumber - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "캐릭터 선택";
+                deleteBtnArr[selNumber - 1].gameObject.SetActive(true);
+                
+                deleteBtnArr[selNumber - 1].GetComponent<Button>().onClick.AddListener(() =>
                 {
                     GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
                     popup.name = "Popup";
@@ -139,11 +141,10 @@ public class CharacterSelect : MonoBehaviour
                     });
                     texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
                     {
-                        Debug.Log($"i:{i}");
-                        nickNameArr[i - 1].transform.GetChild(0).gameObject.SetActive(false);
-                        createBtnArr[i - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "신규 캐릭터 생성";
-                        deleteBtnArr[i - 1].gameObject.SetActive(false);
-                        Transform circles = transform.GetChild(i - 1).GetChild(0);
+                        nickNameArr[selNumber - 1].transform.GetChild(0).gameObject.SetActive(false);
+                        createBtnArr[selNumber - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "신규 캐릭터 생성";
+                        deleteBtnArr[selNumber - 1].gameObject.SetActive(false);
+                        Transform circles = transform.GetChild(selNumber - 1).GetChild(0);
                         for (int j = 0; j < circles.childCount; j++)
                         {
                             circles.GetChild(j).gameObject.SetActive(false);
@@ -151,13 +152,14 @@ public class CharacterSelect : MonoBehaviour
                         Destroy(character);
                         dontTouch.GetChild(0).gameObject.SetActive(false);
                         Destroy(popup);
-                        playCharacters[i - 1] = "";
-                        selNum = 0;
+                        playCharacters[selNumber - 1] = "";
+                        characters.Remove(selNumber);
+                        FileManager.SaveToBinary(characterPath, characters);
                     });
                     popup.SetActive(true);
                     dontTouch.GetChild(0).gameObject.SetActive(true);
                 });
-                playCharacters[i - 1] = playCharacter;
+                playCharacters[selNumber - 1] = playCharacter;
                 PlayerPrefs.SetString("jobSelect", "");
             }
             
@@ -245,7 +247,7 @@ public class CharacterSelect : MonoBehaviour
         } else
         {
             PlayerPrefs.SetString("playCharacter", playCharacters[selNum-1]);
-            SceneChange.OnSceneChange("MollRuRPGScene");
+            SceneChange.OnSceneChange("3. Village");
         }
 
     }
