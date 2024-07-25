@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class ForgeUI : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class ForgeUI : MonoBehaviour
     public TMP_Text itemInfoTextPrefab; // 아이템 정보를 표시할 TextMeshPro 프리팹
     public Transform scrollViewContent; // Scroll View의 Content Transform
     public TextMeshProUGUI LuckPercent; // 확률을 보여줄 TextMeshPro
+    public MaterialRequirementDisplay materialRequirementDisplay; // 요구 재료를 표시할 영역 
 
     public ForgeSlot forgeSlot; // 포지 슬롯 참조
 
@@ -33,6 +35,8 @@ public class ForgeUI : MonoBehaviour
 
         // 새로운 아이템 정보 텍스트 생성
         TMP_Text newText = Instantiate(itemInfoTextPrefab, scrollViewContent);
+
+        materialRequirementDisplay.DisplayMaterialRequirements(itemInfo);
 
         if (itemInfo.kaiLevel != 0)
         {
@@ -109,25 +113,58 @@ public class ForgeUI : MonoBehaviour
         if (saveItemInfo != null)
         {
             ItemKind itemInfo = saveItemInfo.itemKind;
+            List<MaterialRequirement> materialRequirements = null; // 요구 재료 리스트 불러오기
 
-            // 최대 강화 수치 초과하지 않도록 체크
-            if (itemInfo.kaiLevel < itemInfo.GetMaxKaiLevel(itemInfo.rarity))
+            if (itemInfo is WeaponItem weaponItem) // 아이템 타입 검사후 맞는 리스트 가져오기
             {
-                float successRate = itemInfo.GetUpgradeSuccessRate();
-                if (Random.value <= successRate) // Random.value는 0.0과 1.0 사이의 무작위 값을 반환
+                materialRequirements = weaponItem.GetMaterialRequirementsForLevel(itemInfo.kaiLevel + 1);
+            }
+            else if (itemInfo is ArmorItem armorItem)
+            {
+                materialRequirements = armorItem.GetMaterialRequirementsForLevel(itemInfo.kaiLevel + 1);
+            }
+
+
+            if (materialRequirements != null)
+            {
+                bool hasAllMaterials = true; // 검사하기전 true로 초기화
+                foreach (var material in materialRequirements)// 인벤토리에서 요구 재료의 종류와 수량이 충분한지 검사
                 {
-                    itemInfo.KaiLevel += 1; // 카이 레벨 증가
-                    Debug.Log("강화 성공!");
+                    if (!Inventory.Instance.HasItem(material.requiredItem, material.quantity))
+                    {
+                        hasAllMaterials = false; // 충분하지 않으면 bool 값 변화
+                        break;
+                    }
+                }
+
+                // 모든 아이템이 존재하고, 최대 강화 수치 초과하지 않도록 체크
+                if (hasAllMaterials && itemInfo.kaiLevel < itemInfo.GetMaxKaiLevel(itemInfo.rarity))
+                {
+                    float successRate = itemInfo.GetUpgradeSuccessRate();
+
+                    if (Random.value <= successRate) // Random.value는 0.0과 1.0 사이의 무작위 값을 반환
+                    {
+                        itemInfo.KaiLevel += 1; // 강화 레벨 증가
+                        Debug.Log("강화 성공!");
+                    }
+                    else
+                    {
+                        Debug.Log("강화 실패");
+                    }
+                    foreach (var material in materialRequirements)
+                    {
+                        Inventory.Instance.RemoveItem(material.requiredItem, material.quantity);
+                    }
+                    DisplayItemInfo(saveItemInfo); // 아이템 정보 갱신
+                }
+                else if(hasAllMaterials == false)
+                {
+                    Debug.Log("재료가 부족합니다.");
                 }
                 else
                 {
-                    Debug.Log("강화 실패");
+                    Debug.Log("최고 강화 등급입니다.");
                 }
-                DisplayItemInfo(saveItemInfo); // 아이템 정보 갱신
-            }
-            else
-            {
-                Debug.Log("최고 강화 등급입니다.");
             }
         }
     }
@@ -143,7 +180,7 @@ public class ForgeUI : MonoBehaviour
     {
         if (forgeSlot != null && forgeSlot.myChild != null)
         {
-            // 인벤토리로 아이템을 보내는 로직 구현
+            // 창 종료 시점에 인벤토리로 아이템을 보내는 로직 구현
             SaveItemInfo saveItemInfo = forgeSlot.myChild.GetComponent<SaveItemInfo>();
             if (saveItemInfo != null)
             {               

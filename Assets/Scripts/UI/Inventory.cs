@@ -100,5 +100,63 @@ public class Inventory : MonoBehaviour
             Debug.LogWarning("Invalid item kind or item prefab.");
         }
     }
+
+
+    // 인벤토리에 특정 아이템과 수량이 있는지 확인하는 메서드
+    public bool HasItem(ItemKind itemKind, int quantity)
+    {
+        foreach (Transform slot in content)
+        {
+            InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
+            if (inventorySlot != null && inventorySlot.myChild != null)
+            {
+                SaveItemInfo saveItemInfo = inventorySlot.myChild.GetComponent<SaveItemInfo>();
+                if (saveItemInfo != null && saveItemInfo.itemKind.itemID == itemKind.itemID)
+                {
+                    if (saveItemInfo.itemKind.quantity >= quantity)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    // 인벤토리에서 특정 아이템과 수량을 제거하는 메서드
+    public void RemoveItem(ItemKind itemKind, int quantity)
+    {
+        foreach (Transform slot in content)
+        {
+            InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
+            if (inventorySlot != null && inventorySlot.myChild != null)
+            {
+                SaveItemInfo saveItemInfo = inventorySlot.myChild.GetComponent<SaveItemInfo>();
+                if (saveItemInfo != null && saveItemInfo.itemKind.itemID == itemKind.itemID)
+                {
+                    if (saveItemInfo.itemKind.quantity >= quantity)
+                    {
+                        saveItemInfo.itemKind.quantity -= quantity;
+
+                        // 아이템 수량 업데이트
+                        TextMeshProUGUI quantityText = saveItemInfo.GetComponentInChildren<TextMeshProUGUI>();
+                        if (quantityText != null)
+                        {
+                            quantityText.text = saveItemInfo.itemKind.quantity.ToString();
+                        }
+
+                        // 수량이 0이면 아이템 제거
+                        if (saveItemInfo.itemKind.quantity <= 0)
+                        {
+                            Destroy(saveItemInfo.gameObject);
+                        }
+
+                        return;
+                    }
+                }
+            }
+        }
+        Debug.LogWarning("Item not found or insufficient quantity.");
+    }
 }
 
