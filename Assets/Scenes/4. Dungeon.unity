@@ -4471,14 +4471,14 @@ Transform:
   m_GameObject: {fileID: 289462332}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 70}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 33, y: 0, z: 51}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1805480737}
   - {fileID: 1297721610}
   - {fileID: 1846309172}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 696768496}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &289462335
 MonoBehaviour:
@@ -4517,6 +4517,9 @@ MonoBehaviour:
   myExp: 1000
   myState: 0
   player: {fileID: 1309714377}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!95 &289462336
 Animator:
   serializedVersion: 5
@@ -4554,8 +4557,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 289462335}
-        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
-        m_MethodName: OnAttackTarget
+        m_TargetAssemblyTypeName: BossAI, Assembly-CSharp
+        m_MethodName: OnDamage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4582,7 +4585,19 @@ MonoBehaviour:
       m_Calls: []
   attackAct:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 289462335}
+        m_TargetAssemblyTypeName: BossAI, Assembly-CSharp
+        m_MethodName: OnDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   skill_AttackAct:
     m_PersistentCalls:
       m_Calls: []
@@ -4762,10 +4777,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4471028929682806964, guid: 56573eef1615e114898560d666b18e89, type: 3}
-      propertyPath: myBody
-      value: 
-      objectReference: {fileID: 1309714372}
     - target: {fileID: 5351416052418000313, guid: 56573eef1615e114898560d666b18e89, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4895,28 +4906,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56573eef1615e114898560d666b18e89, type: 3}
---- !u!114 &305698390 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4471028929682806964, guid: 56573eef1615e114898560d666b18e89, type: 3}
-  m_PrefabInstance: {fileID: 305698389}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 088a579303a9b1649a38f48c944d6e7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &305698391 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5421192223774236073, guid: 56573eef1615e114898560d666b18e89, type: 3}
-  m_PrefabInstance: {fileID: 305698389}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c59383e4b618702469856798ca681f76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &314845953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10517,6 +10506,7 @@ Transform:
   m_Children:
   - {fileID: 387973015}
   - {fileID: 1345838117}
+  - {fileID: 289462333}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!154 &696768497
@@ -13144,7 +13134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9545436, guid: 8252519d2c6fd014bb5f75765a8c4fda, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19277,6 +19267,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3741278184048714632, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: targetMask.m_Bits
+      value: 26752
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412260437139679331, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6902155283979075405, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.04
@@ -19317,22 +19315,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7128628249166682499, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7861211204230361259, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7861211204230361259, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: BuffManager
-      value: 
-      objectReference: {fileID: 305698391}
+      propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 305698390}
-    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
-      propertyPath: changeMpAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 305698390}
+      propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19827,7 +19829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   findAct:
     m_PersistentCalls:
       m_Calls:
@@ -33869,11 +33871,10 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 2029925701}
   - {fileID: 357031973}
-  - {fileID: 289462333}
   - {fileID: 66758798}
   - {fileID: 696768496}
   - {fileID: 1714860906}
-  - {fileID: 1278668607}
   - {fileID: 305698389}
+  - {fileID: 1278668607}
+  - {fileID: 2029925701}

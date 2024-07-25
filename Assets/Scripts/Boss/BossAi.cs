@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 
 
 public enum State { Sleep, Alert, Battle, Enraged, Death }
@@ -18,12 +17,12 @@ public class BossAI : BattleSystem
     public float myExp = 1000;
     public State myState = State.Sleep;
     public Transform player;
+    public LayerMask enemyMask;
 
     private float distanceToPlayer;
     private bool hasWokenUp = false;
     private SphereCollider sleepCollider;
     private GameObject sleepColliderObject;
-
 
     private void LookAtPlayer()
     {
@@ -64,25 +63,17 @@ public class BossAI : BattleSystem
     {
         UpdateState(State.Sleep);
 
-        if (sleepCollider == null)
-        {
-            Debug.LogWarning("SleepCollider가 할당되지 않았습니다.");
-        }
-
         this.myBattleStat.curHealPoint = this.myBattleStat.maxHealPoint;
     }
 
     void Update()
     {
-        //if (player == null) return;
-
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
         Debug.Log($"Distance to Player: {distanceToPlayer}");
 
         UpdateStateBasedOnDistance(distanceToPlayer);
         PerformActionBasedOnState();
-
     }
 
     void UpdateStateBasedOnDistance(float distanceToPlayer)
@@ -92,28 +83,28 @@ public class BossAI : BattleSystem
             case State.Sleep:
                 if (!hasWokenUp && distanceToPlayer < wakeUpRange)
                 {
-                    UpdateState(State.Alert);
+                    StartCoroutine(ChangeStateAfterAnimation(State.Alert));
                 }
                 break;
 
             case State.Alert:
                 if (distanceToPlayer <= this.myBattleStat.AttackRange)
                 {
-                    UpdateState(State.Battle);
+                    StartCoroutine(ChangeStateAfterAnimation(State.Battle));
                 }
                 break;
 
             case State.Battle:
                 if (this.myBattleStat.curHealPoint <= this.myBattleStat.maxHealPoint / 2 && myState != State.Enraged)
                 {
-                    UpdateState(State.Enraged);
+                    StartCoroutine(ChangeStateAfterAnimation(State.Enraged));
                 }
                 break;
 
             case State.Enraged:
                 if (this.myBattleStat.curHealPoint <= 0)
                 {
-                    UpdateState(State.Death);
+                    StartCoroutine(ChangeStateAfterAnimation(State.Death));
                 }
                 break;
         }
@@ -124,7 +115,7 @@ public class BossAI : BattleSystem
         switch (myState)
         {
             case State.Sleep:
-                
+
                 break;
 
             case State.Alert:
@@ -134,21 +125,29 @@ public class BossAI : BattleSystem
             case State.Battle:
                 LookAtPlayer();
                 MoveIfInChaseAnimation();
-                if (this.myBattleStat.AttackRange / 2 < distanceToPlayer)
-                {
-
-                }
+                StartCoroutine(BossAttack());
                 break;
 
             case State.Enraged:
                 LookAtPlayer();
                 MoveIfInChaseAnimation();
+                StartCoroutine(BossAttack());
                 break;
 
             case State.Death:
-                
+
                 break;
         }
+    }
+
+    IEnumerator ChangeStateAfterAnimation(State newState)
+    {
+        AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
+        float animationDuration = stateInfo.length;
+
+        yield return new WaitForSeconds(animationDuration);
+
+        UpdateState(newState);
     }
 
     void UpdateState(State newState)
@@ -215,9 +214,36 @@ public class BossAI : BattleSystem
         myTarget = null;
         UpdateState(State.Alert);
     }
-
-    /*public void IsFind()
+    public void OnDamage()
     {
-        
-    }*/
+        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 5.0f, 5.0f, enemyMask);
+        foreach (Collider col in list)
+        {
+            IDamage id = col.GetComponent<IDamage>();
+            if (id != null)
+            {
+                id.TakeDamage(this.myBattleStat.AttackPoint);
+            }
+        }
+    }
+
+    IEnumerator BossAttack()
+    {
+        string[] attackTriggers = { "attack1", "attack2", "attack3" };
+
+        while (true)
+        {
+            // 랜덤으로 하나의 트리거 선택
+            string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
+            myAnim.SetTrigger(chosenAttack);
+
+            // 선택한 트리거에 해당하는 애니메이션 길이 기다리기
+            AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
+            float attackAnimationDuration = stateInfo.length;
+            yield return new WaitForSeconds(attackAnimationDuration);
+
+            // 애니메이션 종료 후 3초 기다리기
+            yield return new WaitForSeconds(3.0f);
+        }
+    }
 }
