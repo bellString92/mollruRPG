@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
     private Stack<GameObject> uiStack= new Stack<GameObject>(); //매번 생성될 UI를 저장할 장소
     public Canvas canvas;
+    public GameObject UiForNPC; // npc가 ui를 불러올때 이곳에 생성시켜 그려지는 순서조정
     public Inventory myInven;
     
     public GameObject itemQuantityCheckPrefab; // Quantity를 표시할 프리팹
@@ -87,8 +88,9 @@ public class UIManager : MonoBehaviour
     public GameObject ShowUI(GameObject uiPrefab) // 호출자가 가지고있는 프리펩 ui생성
     { 
         if (canvas != null) 
-        { 
-            GameObject uiInstance = Instantiate(uiPrefab, canvas.transform); 
+        {
+            Transform parentTransform = UiForNPC != null ? UiForNPC.transform : canvas.transform;
+            GameObject uiInstance = Instantiate(uiPrefab, parentTransform); 
             uiStack.Push(uiInstance); 
             return uiInstance;
         } 

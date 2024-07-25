@@ -27,7 +27,7 @@ public class WeaponItem : ItemKind
     }
 
 
-    public List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)
+    public  List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)
     {
         return weaponUpgradeRequirements.FirstOrDefault(req => req.kaiLevel == level)?.materialRequirements;
     }

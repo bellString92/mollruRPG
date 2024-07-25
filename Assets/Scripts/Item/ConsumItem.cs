@@ -11,13 +11,12 @@ public class ConsumItem : ItemKind
     {
         itemTag = "ConsumItem";
         itemType = ItemType.consumItem;
-        maxStack= 99;
+        maxStack = 99;
     }
     public ConsumItem(ConsumItem original) : base(original)
     {
-        
-    }
 
+    }
     public override void Use(BattleStat myStat) //사용시 player의 능력치에 영향을 주는 코드
     {
         if (quantity > 0)

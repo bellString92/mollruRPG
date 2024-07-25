@@ -29,7 +29,7 @@ public class ArmorItem : ItemKind
 
 
     // 갑옷 타입에 맞는 재료 요구사항 반환 메서드
-    public List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)
+    public  List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)
     {
         return armorUpgradeRequirements.FirstOrDefault(req => req.kaiLevel == level)?.materialRequirements;
     }
