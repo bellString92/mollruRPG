@@ -48,6 +48,8 @@ public class BattleSystem : AIMovement, IBattle
     public BattleStat myBattleStat;
     protected float playTime;
 
+
+  
     public bool IsLive
     {
         get => myBattleStat.curHealPoint > 0.0f;
@@ -110,3 +112,4 @@ public class BattleSystem : AIMovement, IBattle
         }
     }
 }
+
