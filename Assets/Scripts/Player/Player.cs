@@ -31,7 +31,10 @@ public class Player : AnimatorProperty, IBattle
     public List<Transform> myTargetmonster = new List<Transform>();
     public List<Transform> myTarger = new List<Transform>();
 
+    // 버프관련 변수    
     public BuffManager BuffManager;
+
+    public Animator _myAni;
 
 
     public bool IsLive
@@ -81,6 +84,8 @@ public class Player : AnimatorProperty, IBattle
                 characters[1].gameObject.SetActive(true);
                 break;
         }
+
+        _myAni = transform.GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -122,6 +127,9 @@ public class Player : AnimatorProperty, IBattle
 
         myAnim.SetFloat("x", inputDir.x);
         myAnim.SetFloat("y", inputDir.y);
+
+        // 이동속도 버프를 위한 코드
+        OnAnimatorMove();
 
         // W+W 달리기
         if (Input.GetKeyDown(KeyCode.W))
@@ -167,13 +175,12 @@ public class Player : AnimatorProperty, IBattle
             currentChest.OpenChest();
         }
 
-       
-
         // 기본공격 좌클
         if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
             if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
             {
+                AllBuff(1, 5, BuffType.Damage);
                 OnAllSkillTrue();
                 myAnim.SetTrigger("OnAttack");
             }
@@ -205,6 +212,7 @@ public class Player : AnimatorProperty, IBattle
             {
                 myIsOneClick = false;
                 myAnim.SetTrigger("OnSkill_S");
+                AllBuff(1.5f,10, BuffType.MoveSpeed);
             }
         }
 
@@ -250,13 +258,28 @@ public class Player : AnimatorProperty, IBattle
         }
 
     }
-    
-    public void DamageBuff(float v, float t)
+
+    public void AllBuff(float v, float t, BuffType b)
     {
-        BuffSystem attackBuff = new DamageBuff(v, gameObject, t);
+        BuffSystem attackBuff = new DamageBuff(v, gameObject, t, b);
         BuffManager.AddBuff(attackBuff);
     }
 
+    // 이동속도 버프용
+    void OnAnimatorMove()
+    {
+        if (_myAni)
+        {
+            // 루트 모션에서 추출된 deltaPosition을 가져옵니다.
+            Vector3 rootMotion = _myAni.deltaPosition;
+
+            // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
+            Vector3 scaledMotion = rootMotion * myStat.moveSpeed;
+
+            // transform.position을 업데이트하여 캐릭터를 이동시킵니다.
+            transform.position += scaledMotion;
+        }
+    }
 
     public void OnAllSkillTrue()
     {

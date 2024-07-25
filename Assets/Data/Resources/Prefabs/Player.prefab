@@ -416,6 +416,7 @@ MonoBehaviour:
     AttackPoint: 10
     AttackRange: 2
     AttackDelay: 2
+    moveSpeed: 0
     CriticalProbability: 10
     CriticalDamage: 1.5
     maxHealPoint: 100
@@ -432,6 +433,8 @@ MonoBehaviour:
   myDoubleClickSecond: 0.25
   myTargetmonster: []
   myTarger: []
+  BuffManager: {fileID: 0}
+  _myAni: {fileID: 0}
 --- !u!114 &3741278184048714632
 MonoBehaviour:
   m_ObjectHideFlags: 0
