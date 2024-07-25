@@ -164,6 +164,7 @@ public class Player : AnimatorProperty, IBattle
         {
             myAnim.SetBool("IsRoll", true);
             myAnim.SetTrigger("OnRoll");
+            AllBuff(1.5f, 10, BuffType.MoveSpeed);
         }
 
         // 상호작용키
@@ -181,7 +182,6 @@ public class Player : AnimatorProperty, IBattle
         {
             if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
             {
-                AllBuff(1, 5, BuffType.Damage);
                 OnAllSkillTrue();
                 myAnim.SetTrigger("OnAttack");
             }
@@ -192,6 +192,7 @@ public class Player : AnimatorProperty, IBattle
         {
             OnAllSkillTrue();
             myAnim.SetTrigger("OnSkill_Q");
+            AllBuff(1.5f, 10, BuffType.MoveSpeed);
         }
 
         // 스킬 E (이동기)
@@ -199,6 +200,7 @@ public class Player : AnimatorProperty, IBattle
         {
             OnAllSkillTrue();
             myAnim.SetTrigger("OnSkill_E");
+            AllBuff(1.5f, 10, BuffType.MoveSpeed);
         }
 
         // 스킬 SS (이동기)
@@ -230,7 +232,7 @@ public class Player : AnimatorProperty, IBattle
             myAnim.SetTrigger("OnSkill_F");
         }
 
-        // 스킬 1
+        // 스킬 Tab
         if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab))
         {
             OnAllSkillTrue();
@@ -242,8 +244,9 @@ public class Player : AnimatorProperty, IBattle
         {
             OnAllSkillTrue();
             myAnim.SetTrigger("OnSkill_1");
+            AllBuff(10.0f, 5.0f, BuffType.Defense);
         }
-        
+
         // 스킬 2
         if (!myAnim.GetBool("IsSkill_2") && Input.GetKey(KeyCode.Alpha2))
         {
@@ -260,6 +263,7 @@ public class Player : AnimatorProperty, IBattle
 
     }
 
+    // 버프 추가 매서드
     public void AllBuff(float v, float t, BuffType b)
     {
         BuffSystem attackBuff = new DamageBuff(v, gameObject, t, b);
@@ -271,14 +275,9 @@ public class Player : AnimatorProperty, IBattle
     {
         if (_myAni)
         {
-            // 루트 모션에서 추출된 deltaPosition을 가져옵니다.
-            Vector3 rootMotion = _myAni.deltaPosition;
-
-            // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
-            Vector3 scaledMotion = rootMotion * myStat.moveSpeed;
-
-            // transform.position을 업데이트하여 캐릭터를 이동시킵니다.
-            transform.position += scaledMotion;
+            Vector3 rootMotion = _myAni.deltaPosition;                      // 루트 모션에서 추출된 deltaPosition을 가져옵니다.
+            Vector3 scaledMotion = rootMotion * myStat.moveSpeed;           // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
+            transform.position += scaledMotion;                             // transform.position을 업데이트하여 캐릭터를 이동시킵니다.
         }
     }
 

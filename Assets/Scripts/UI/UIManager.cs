@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public Canvas canvas;
     public GameObject UiForNPC; // npc가 ui를 불러올때 이곳에 생성시켜 그려지는 순서조정
     public Inventory myInven;
+    public GameObject mySkill;
     
     public GameObject itemQuantityCheckPrefab; // Quantity를 표시할 프리팹
     private GameObject currentQuantityUI = null;
@@ -37,6 +38,11 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
         {
             myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            mySkill.gameObject.SetActive(!mySkill.gameObject.activeSelf);
         }
     }
     public void CloseTopUi() // 가장위에 존재하는 UI종료
