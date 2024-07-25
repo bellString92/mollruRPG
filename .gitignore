@@ -71,3 +71,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
+
+# 세이브파일
+# 세이브파일은 각자 컴퓨터에 저장되는 파일로 깃에 올리지 않음
+/[Aa]ssets/[Dd]ata/[Ss]aveData/*
