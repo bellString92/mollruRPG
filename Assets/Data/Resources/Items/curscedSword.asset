@@ -25,4 +25,39 @@ MonoBehaviour:
   rarity: 4
   kaiLevel: 0
   attackBoost: 500
-  weaponUpgradeRequirements: []
+  weaponUpgradeRequirements:
+  - startLevel: 1
+    endLevel: 5
+    materialIncrements:
+    - material: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
+      increment: 3
+  - startLevel: 6
+    endLevel: 10
+    materialIncrements:
+    - material: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
+      increment: 3
+    - material: {fileID: 11400000, guid: 5ab28286a8ccfc54e922dbe284c2e5d7, type: 2}
+      increment: 1
+  - startLevel: 11
+    endLevel: 15
+    materialIncrements:
+    - material: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
+      increment: 5
+    - material: {fileID: 11400000, guid: 5ab28286a8ccfc54e922dbe284c2e5d7, type: 2}
+      increment: 2
+  - startLevel: 16
+    endLevel: 19
+    materialIncrements:
+    - material: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
+      increment: 8
+    - material: {fileID: 11400000, guid: 5ab28286a8ccfc54e922dbe284c2e5d7, type: 2}
+      increment: 3
+  - startLevel: 20
+    endLevel: 20
+    materialIncrements:
+    - material: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
+      increment: 10
+    - material: {fileID: 11400000, guid: 5ab28286a8ccfc54e922dbe284c2e5d7, type: 2}
+      increment: 5
+    - material: {fileID: 11400000, guid: 159e5668574fa124692b8addf236757f, type: 2}
+      increment: 1
