@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.TextCore.Text;
+using System.Collections.Generic;
 
 public class CharacterSelect : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class CharacterSelect : MonoBehaviour
 
     public Transform popupParent = null;
     public Transform dontTouch = null;
+
+    private Dictionary<int, CharacterData> characters = null;
 
 
     private void Start()
@@ -88,65 +91,78 @@ public class CharacterSelect : MonoBehaviour
             }
 
         }
-        string jobSelect = PlayerPrefs.GetString("jobSelect");
-        GameObject character = null;
-        string playCharacter = "Paladin";
-        if (!"".Equals(jobSelect))
+
+        string characterPath = $"{Application.dataPath}/Data/SaveData/Characters.dat";
+
+        characters = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath);
+        GameObject character;
+        for (int i = 1; i <= slotCount; i++)
         {
-            switch (jobSelect)
+            Debug.Log($"i:{i}");
+            if (characters == default) return;
+            if (characters.ContainsKey(i))
             {
-                case "paladin_warrior":
-                case "paladin_magician":
-                    playCharacter = "Paladin";
-                    character = Instantiate(Resources.Load("Prefabs/Paladin") as GameObject);
-                    break;
-                case "maria_warrior":
-                case "maria_magician":
-                    playCharacter = "Maria";
-                    character = Instantiate(Resources.Load("Prefabs/Maria") as GameObject);
-                    break;
-            }
-            int selNum = PlayerPrefs.GetInt("selNum");
-            character.transform.SetParent(characterSlotArr[selNum-1].transform);
-            character.transform.localPosition = Vector3.zero;
-            nickNameArr[selNum-1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = PlayerPrefs.GetString("nickName");
-            nickNameArr[selNum-1].transform.GetChild(0).gameObject.SetActive(true);
-            createBtnArr[selNum-1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "캐릭터 선택";
-            deleteBtnArr[selNum-1].gameObject.SetActive(true);
-            deleteBtnArr[selNum-1].GetComponent<Button>().onClick.AddListener(() =>
-            {
-                GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
-                popup.name = "Popup";
-                popup.transform.SetParent(popupParent);
-                popup.transform.localPosition = Vector3.zero;
-                TMPro.TMP_Text[] texts = popup.GetComponentsInChildren<TMPro.TMP_Text>();
-                texts[0].text = "삭제하시겠습니까?";
-                texts[1].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
+                string jobSelect = characters[i].JobSelect;
+                string playCharacter = "Paladin";
+                switch (jobSelect)
                 {
-                    dontTouch.GetChild(0).gameObject.SetActive(false);
-                    Destroy(popup);
-                });
-                texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
+                    case "maria_warrior":
+                    case "maria_magician":
+                        playCharacter = "Maria";
+                        character = Instantiate(Resources.Load("Prefabs/Maria") as GameObject);
+                        break;
+                    case "paladin_warrior":
+                    case "paladin_magician":
+                    default:
+                        playCharacter = "Paladin";
+                        character = Instantiate(Resources.Load("Prefabs/Paladin") as GameObject);
+                        break;
+                }
+                character.transform.SetParent(characterSlotArr[i - 1].transform);
+                character.transform.localPosition = Vector3.zero;
+                nickNameArr[i - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = PlayerPrefs.GetString("nickName");
+                nickNameArr[i - 1].transform.GetChild(0).gameObject.SetActive(true);
+                createBtnArr[i - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "캐릭터 선택";
+                deleteBtnArr[i - 1].gameObject.SetActive(true);
+                deleteBtnArr[i - 1].GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    nickNameArr[selNum-1].transform.GetChild(0).gameObject.SetActive(false);
-                    createBtnArr[selNum-1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "신규 캐릭터 생성";
-                    deleteBtnArr[selNum-1].gameObject.SetActive(false);
-                    Transform circles = transform.GetChild(selNum-1).GetChild(0);
-                    for (int j = 0; j < circles.childCount; j++)
+                    GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+                    popup.name = "Popup";
+                    popup.transform.SetParent(popupParent);
+                    popup.transform.localPosition = Vector3.zero;
+                    TMPro.TMP_Text[] texts = popup.GetComponentsInChildren<TMPro.TMP_Text>();
+                    texts[0].text = "삭제하시겠습니까?";
+                    texts[1].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
                     {
-                        circles.GetChild(j).gameObject.SetActive(false);
-                    }
-                    Destroy(character);
-                    dontTouch.GetChild(0).gameObject.SetActive(false);
-                    Destroy(popup);
-                    playCharacters[selNum-1] = "";
-                    selNum = 0;
+                        dontTouch.GetChild(0).gameObject.SetActive(false);
+                        Destroy(popup);
+                    });
+                    texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        Debug.Log($"i:{i}");
+                        nickNameArr[i - 1].transform.GetChild(0).gameObject.SetActive(false);
+                        createBtnArr[i - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "신규 캐릭터 생성";
+                        deleteBtnArr[i - 1].gameObject.SetActive(false);
+                        Transform circles = transform.GetChild(i - 1).GetChild(0);
+                        for (int j = 0; j < circles.childCount; j++)
+                        {
+                            circles.GetChild(j).gameObject.SetActive(false);
+                        }
+                        Destroy(character);
+                        dontTouch.GetChild(0).gameObject.SetActive(false);
+                        Destroy(popup);
+                        playCharacters[i - 1] = "";
+                        selNum = 0;
+                    });
+                    popup.SetActive(true);
+                    dontTouch.GetChild(0).gameObject.SetActive(true);
                 });
-                popup.SetActive(true);
-                dontTouch.GetChild(0).gameObject.SetActive(true);
-            });
-            playCharacters[selNum-1] = playCharacter;
-            PlayerPrefs.SetString("jobSelect", "");
+                playCharacters[i - 1] = playCharacter;
+                PlayerPrefs.SetString("jobSelect", "");
+            }
+            
+            
+
         }
     }
 
@@ -170,7 +186,7 @@ public class CharacterSelect : MonoBehaviour
             {
                 PlayerPrefs.SetInt("selNum", selNum);
                 //SceneChange.OnSceneChange("Customize");
-                SceneManager.LoadSceneAsync(4);
+                SceneManager.LoadSceneAsync(3);
                 dontTouch.GetChild(0).gameObject.SetActive(false);
                 Destroy(popup);
             });

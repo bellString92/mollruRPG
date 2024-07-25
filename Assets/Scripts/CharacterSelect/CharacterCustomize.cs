@@ -122,8 +122,8 @@ public class CharacterCustomize : MonoBehaviour
 
         btn[1].onClick.AddListener(() =>
         {
-            string text = textPopup.GetComponentInChildren<TMPro.TMP_InputField>().text;
-            string chkText = NicknameCheck(text);
+            string nickName = textPopup.GetComponentInChildren<TMPro.TMP_InputField>().text;
+            string chkText = NicknameCheck(nickName);
             if (chkText == "")
             {
                 texts[3].gameObject.SetActive(false);
@@ -143,9 +143,20 @@ public class CharacterCustomize : MonoBehaviour
                 popupBtn[1].onClick.AddListener(() =>
                 {
                     PlayerPrefs.SetString("jobSelect", jobSelect);
-                    PlayerPrefs.SetString("nickName", text);
+                    PlayerPrefs.SetString("nickName", nickName);
                     Destroy(textPopup);
                     Destroy(popup);
+                    int selNum = PlayerPrefs.GetInt("selNum");
+
+                    CharacterData data = new CharacterData(selNum, jobSelect, nickName);
+                    string characterPath = $"{Application.dataPath}/Data/SaveData/Characters.dat";
+                    Dictionary<int, CharacterData> characters = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath);
+                    if (characters == default) characters = new Dictionary<int, CharacterData>();
+                    if (characters.ContainsKey(selNum))
+                        characters[selNum] = data;
+                    else
+                        characters.Add(selNum, data);
+                    FileManager.SaveToBinary(characterPath, characters);
                     SceneManager.LoadSceneAsync(2);
                 });
                 popup.SetActive(true);
