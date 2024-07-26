@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ForgeSlot : MonoBehaviour, IDropHandler
+public class ForgeSlot : MonoBehaviour, IDropHandler, ISetChild
 {
     public GameObject myChild = null;
     private SaveItemInfo ItemInfo; // SaveItemInfo 컴포넌트를 저장할 변수
@@ -66,6 +66,10 @@ public class ForgeSlot : MonoBehaviour, IDropHandler
         {
             Debug.LogWarning("No item dragged.");
         }
+    }
+    public void SetChild(GameObject newChild)
+    {
+        myChild = newChild;
     }
 
     public void OnIncreaseKaiLevelButtonClick()

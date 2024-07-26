@@ -3658,6 +3658,10 @@ PrefabInstance:
       propertyPath: m_FOVAxisMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3741278184048714632, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: targetMask.m_Bits
+      value: 30848
+      objectReference: {fileID: 0}
     - target: {fileID: 4304878685476846073, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.8808049
@@ -4883,6 +4887,7 @@ MonoBehaviour:
   canvas: {fileID: 1876715346}
   UiForNPC: {fileID: 1336349970}
   myInven: {fileID: 751321860}
+  mySkill: {fileID: 0}
   itemQuantityCheckPrefab: {fileID: 5051053142764502814, guid: 571051b0e8a38d943817952326418748, type: 3}
 --- !u!114 &1876715344
 MonoBehaviour:
