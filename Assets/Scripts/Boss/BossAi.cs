@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using System;
-using Unity.Mathematics;
+
+//Battle상태에도 이전 애니메이션이 끝나지 않았으면 플레이어 쳐다보는 것x
+//BossAttack이 들어갈때 다른 공격 트리거가 켜져있다면 대기
+
 
 
 public enum State { Sleep, Alert, Battle, Enraged, Death }
@@ -23,20 +25,20 @@ public class BossAI : BattleSystem
     private bool hasWokenUp = false;
     private SphereCollider sleepCollider;
     private GameObject sleepColliderObject;
-
+    
     private void LookAtPlayer()
     {
         if (player == null) return;
 
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f); // 바라보는 속도
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 4f); // 바라보는 속도
     }
 
     private void MoveIfInChaseAnimation()
     {
         AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Battle"))
+        if (stateInfo.IsName("Battle") || stateInfo.IsName("AttackWait"))
         {
             MoveTowardsPlayer();
         }
@@ -185,8 +187,10 @@ public class BossAI : BattleSystem
                 break;
 
             case State.Death:
-                myAnim.SetTrigger("die");
+                giveExp(myExp);
+                //myAnim.SetTrigger("die");
                 StopAllCoroutines();  // 죽을 때 모든 코루틴 정지
+                deadAct?.Invoke();
                 break;
         }
     }
@@ -226,26 +230,33 @@ public class BossAI : BattleSystem
             }
         }
     }
-
-
-
     IEnumerator BossAttack()
     {
         string[] attackTriggers = { "Attack1", "Attack2", "Attack3" };
-
-        while (true)
+        //if (this.myBattleStat.AttackRange < distanceToPlayer)
         {
-            // 랜덤으로 하나의 트리거 선택
-            string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
-            myAnim.SetTrigger(chosenAttack);
+            while (true)
+            {
+                // 랜덤으로 하나의 트리거 선택
+                string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
+                myAnim.SetTrigger(chosenAttack);
 
-            // 선택한 트리거에 해당하는 애니메이션 길이 기다리기
-            AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
-            float attackAnimationDuration = stateInfo.length;
-            yield return new WaitForSeconds(attackAnimationDuration);
+                // 선택한 트리거에 해당하는 애니메이션 길이 기다리기
+                AnimatorStateInfo stateInfo;
+                do
+                {
+                    stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
+                    yield return null;
+                } while (stateInfo.IsName(chosenAttack) == false);
 
-            // 애니메이션 종료 후 3초 기다리기
-            yield return new WaitForSeconds(3.0f);
+                // 애니메이션 재생 시간만큼 기다리기
+                float attackAnimationDuration = stateInfo.length;
+                yield return new WaitForSeconds(attackAnimationDuration);
+
+                // 애니메이션 종료 후 3초 기다리기
+                yield return new WaitForSeconds(3.0f);
+            }
         }
+        //yield return null;
     }
 }
