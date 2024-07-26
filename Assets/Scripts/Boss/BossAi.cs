@@ -70,7 +70,7 @@ public class BossAI : BattleSystem
     {
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-        Debug.Log($"Distance to Player: {distanceToPlayer}");
+        //Debug.Log($"Distance to Player: {distanceToPlayer}");
 
         UpdateStateBasedOnDistance(distanceToPlayer);
         PerformActionBasedOnState();
@@ -227,9 +227,11 @@ public class BossAI : BattleSystem
         }
     }
 
+
+
     IEnumerator BossAttack()
     {
-        string[] attackTriggers = { "attack1", "attack2", "attack3" };
+        string[] attackTriggers = { "Attack1", "Attack2", "Attack3" };
 
         while (true)
         {
