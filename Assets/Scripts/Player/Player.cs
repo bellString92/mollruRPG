@@ -332,7 +332,7 @@ public class Player : AnimatorProperty, IBattle
         if (myTargetmonster.Count > 0)
         {
             float distance = Vector3.Distance(transform.position, myTargetmonster[0].position);        // 타겟과 나의 거리 구함
-            if (myStat.AttackRange > distance)          // 타겟과 나의 거리가 사거리보다 작을때 = 사거리안에 있을때
+            if (/*myStat.AttackRange*/1000 > distance)          // 타겟과 나의 거리가 사거리보다 작을때 = 사거리안에 있을때
             {
                 foreach (Transform target in myTargetmonster)      // 반복문 실행 
                 {
