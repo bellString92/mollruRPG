@@ -19,6 +19,7 @@ interface ISetChild
 public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerClickHandler
 {
     public GameObject myChild = null;
+    public Player User;
     public void OnDrop(PointerEventData eventData)
     {
         if (myChild != null)
@@ -34,19 +35,35 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
         
         myChild = eventData.pointerDrag;
         myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
+
     }
   
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (ShopManager.Instance != null)
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
+            if (ShopManager.Instance != null)
+            {
+                if (myChild != null)
+                {
+                    ShopManager.Instance.SetDestroySlotItem(this);
+                }
+                else
+                {
+                    ShopManager.Instance.SetDestroySlotItem(null);
+                }
+            }
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // 우클릭 처리: use 실행
             if (myChild != null)
             {
-                ShopManager.Instance.SetDestroySlotItem(this);
-            }
-            else
-            {
-                ShopManager.Instance.SetDestroySlotItem(null);
+                myChild.GetComponent<SaveItemInfo>()?.itemKind.Use(User.myStat);
+                if (myChild.GetComponent<SaveItemInfo>()?.itemKind.quantity == 0)
+                {
+                    Destroy(myChild);
+                }
             }
         }
     }
@@ -71,6 +88,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
         if (child != null)
         {
             myChild = child.gameObject;
+        }
+        if (User == null)
+        {
+            User = Inventory.Instance.user;
         }
     }
 

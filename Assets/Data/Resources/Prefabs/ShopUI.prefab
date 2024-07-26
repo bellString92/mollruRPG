@@ -1436,7 +1436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 8381422147829064365}
-  item: {fileID: 0}
+  item: {fileID: 11400000, guid: abb5e4c169c0bc947a3b1bc138b59b57, type: 2}
 --- !u!222 &7823835697023240861
 CanvasRenderer:
   m_ObjectHideFlags: 0

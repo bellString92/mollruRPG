@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
     public GameObject NoEmptySlotPopup;
+    public Player user;
 
     void Awake()
     {

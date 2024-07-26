@@ -148,9 +148,9 @@ public class ShopManager : MonoBehaviour
         TMP_Text newText = Instantiate(itemInfoTextPrefab, content);
 
         newText.text = $"Name: {itemInfo.itemName}\n" +
-                          $"Type: {itemInfo.itemType}\n" +
-                          $"Description: {itemInfo.description}\n" +
-                          $"Price: {itemInfo.price}";
+                          $"Rarity: {itemInfo.rarity}\n" +
+                          $"Type: {itemInfo.itemType}\n";
+
 
         // 추가적인 정보 표시를 위해 switch문 사용
         switch (itemInfo.itemType)
@@ -174,7 +174,8 @@ public class ShopManager : MonoBehaviour
                 Debug.LogWarning("Unknown ItemType: " + itemInfo.itemType);
                 break;
         }
-
+        newText.text += $"\nDescription: {itemInfo.description}\n" +
+                        $"Price: {itemInfo.price}";
     }
 
     // 각 ItemType에 따른 추가 정보 표시 함수들
@@ -199,7 +200,7 @@ public class ShopManager : MonoBehaviour
         if (acceInfo != null)
         {
             infoText.text += $"\nattackBoost: {acceInfo.attackBoost}\n";
-            infoText.text += $"\nmaxHealBoost: {acceInfo.maxHealBoost}\n";
+            infoText.text += $"maxHealBoost: {acceInfo.maxHealBoost}\n";
         }
     }
 
@@ -207,7 +208,15 @@ public class ShopManager : MonoBehaviour
     {
         if(ConsumInfo != null)
         {
-            infoText.text += $"\nhealPoint: {ConsumInfo.healAmount}\n";
+            if (ConsumInfo.effectType == EffectType.HealEffect)
+            { 
+                infoText.text += $"\nhealPoint: {ConsumInfo.EffectPoint}\n"; 
+            }
+            else if (ConsumInfo.effectType == EffectType.AttackBoostEffect)
+            {
+                //infoText.text +=
+            }
+
         }
     }
 

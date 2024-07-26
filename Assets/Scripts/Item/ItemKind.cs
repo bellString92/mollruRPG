@@ -131,7 +131,6 @@ public abstract class ItemKind : ScriptableObject
         }
     }
 
-
     // abstract를 활용해 각 아이템을 use시 다른 기능을 구현되도록 함 override로 새로써 기능을 구현
-    public abstract void Use(BattleStat myStat); 
+    public abstract void Use(BattleStat myStat);
 }
