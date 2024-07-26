@@ -8,6 +8,7 @@ public class RootMotion : AnimatorProperty
     public LayerMask crashMask;
 
     Vector3 deltaPosition = Vector3.zero;
+    Vector3 DonwPosition = new Vector3(0, -1, 0);
     Quaternion deltaRotation = Quaternion.identity;
 
     float radius = 0.0f;
@@ -27,8 +28,8 @@ public class RootMotion : AnimatorProperty
 
     private void FixedUpdate()
     {
-        Ray ray = new Ray(transform.parent.position + (Vector3.up * 0.1f), deltaPosition.normalized);
-        if (Physics.Raycast(ray, out RaycastHit hit, deltaPosition.magnitude, crashMask))
+        Ray ray = new Ray(transform.parent.position + (Vector3.up * 0.1f), deltaPosition.normalized);           // 레이 생성
+        if (Physics.Raycast(ray, out RaycastHit hit, deltaPosition.magnitude, crashMask))                       // 레이 캐스트를 쏨
         {
             Debug.DrawRay(ray.origin, ray.direction * hit.distance * 100, Color.green); // 충돌한 경우
             transform.parent.position += ray.direction * (hit.distance - radius);
