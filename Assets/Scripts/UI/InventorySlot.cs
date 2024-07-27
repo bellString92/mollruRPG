@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -22,6 +23,57 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
     public Player User;
     public void OnDrop(PointerEventData eventData)
     {
+        var draggedItemInfo = eventData.pointerDrag.GetComponent<SaveItemInfo>();        
+        // 드래그 시작 슬롯의 InventorySlot 컴포넌트를 가져옵니다.
+        var startSlot = eventData.pointerDrag.GetComponentInParent<InventorySlot>();
+
+        if (myChild != null && draggedItemInfo != null)
+        {
+            if (draggedItemInfo.itemKind.maxStack > 1)
+            {
+                var myItemInfo = myChild?.GetComponent<SaveItemInfo>();
+                // 드래그한 아이템과 현재 슬롯의 아이템이 같은 종류인지 확인
+                if (myItemInfo != null && myItemInfo.itemKind.quantity != myItemInfo.itemKind.maxStack)
+                {
+                    if (myItemInfo.itemKind.itemID == draggedItemInfo.itemKind.itemID)
+                    {
+                        int totalQuantity = myItemInfo.itemKind.quantity + draggedItemInfo.itemKind.quantity;
+
+                        if (totalQuantity > myItemInfo.itemKind.maxStack)
+                        {
+                            int excessQuantity = totalQuantity - myItemInfo.itemKind.maxStack;
+
+                            // 슬롯 아이템 수량을 최대 스택 수량으로 설정
+                            myItemInfo.itemKind.quantity = myItemInfo.itemKind.maxStack;
+
+                            // 드래그된 아이템의 수량을 초과한 수량만큼 감소
+                            draggedItemInfo.itemKind.quantity = excessQuantity;
+
+                        }
+                        else
+                        {
+                            // 수량을 합친다
+                            myItemInfo.itemKind.quantity = totalQuantity;
+
+                            // 드래그 시작 슬롯의 myChild를 null로 설정한다.
+                            eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
+
+                            // 드래그된 아이템을 삭제한다
+                            Destroy(eventData.pointerDrag);
+                        }
+
+                        // 아이템 수량 업데이트
+                        TextMeshProUGUI quantityText = myItemInfo.GetComponentInChildren<TextMeshProUGUI>();
+                        if (quantityText != null)
+                        {
+                            quantityText.text = myItemInfo.itemKind.quantity.ToString();
+                        }
+
+                        return;// 기존의 코드 실행을 방지하고 여기서 메서드 종료
+                    }
+                }
+            }
+        }
         if (myChild != null)
         {
             myChild.GetComponent<ISwapParent>()?.SwapParent(eventData.pointerDrag.GetComponent<IGetParent>().myParent);
