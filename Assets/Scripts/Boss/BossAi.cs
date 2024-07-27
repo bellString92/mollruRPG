@@ -9,8 +9,6 @@ using UnityEngine.Events;
 //Battle상태에도 이전 애니메이션이 끝나지 않았으면 플레이어 쳐다보는 것x
 //BossAttack이 들어갈때 다른 공격 트리거가 켜져있다면 대기
 
-
-
 public enum State { Sleep, Alert, Battle, Enraged, Death }
 
 public class BossAI : BattleSystem
@@ -22,10 +20,11 @@ public class BossAI : BattleSystem
     public LayerMask enemyMask;
 
     private float distanceToPlayer;
-    private bool hasWokenUp = false;
+    private bool hasWokenUp = false; // 보스가 깨어났는지 여부
+    private bool isAttacking = false; // 공격이 진행 중인지 여부
     private SphereCollider sleepCollider;
     private GameObject sleepColliderObject;
-    
+
     private void LookAtPlayer()
     {
         if (player == null) return;
@@ -43,6 +42,7 @@ public class BossAI : BattleSystem
             MoveTowardsPlayer();
         }
     }
+
     public void MoveTowardsPlayer()
     {
         if (player == null) return;
@@ -64,16 +64,12 @@ public class BossAI : BattleSystem
     void Start()
     {
         UpdateState(State.Sleep);
-
         this.myBattleStat.curHealPoint = this.myBattleStat.maxHealPoint;
     }
 
     void Update()
     {
-        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
-
-        //Debug.Log($"Distance to Player: {distanceToPlayer}");
-
+        distanceToPlayer = Vector3.Distance(player.position, transform.position);
         UpdateStateBasedOnDistance(distanceToPlayer);
         PerformActionBasedOnState();
     }
@@ -90,7 +86,7 @@ public class BossAI : BattleSystem
                 break;
 
             case State.Alert:
-                if (distanceToPlayer <= this.myBattleStat.AttackRange)
+                if (distanceToPlayer <= this.myBattleStat.AttackRange && IsIdleAnimationComplete())
                 {
                     StartCoroutine(ChangeStateAfterAnimation(State.Battle));
                 }
@@ -117,7 +113,6 @@ public class BossAI : BattleSystem
         switch (myState)
         {
             case State.Sleep:
-
                 break;
 
             case State.Alert:
@@ -127,34 +122,43 @@ public class BossAI : BattleSystem
             case State.Battle:
                 LookAtPlayer();
                 MoveIfInChaseAnimation();
-                StartCoroutine(BossAttack());
+                if (!isAttacking)
+                {
+                    Attack();
+                }
                 break;
 
             case State.Enraged:
                 LookAtPlayer();
                 MoveIfInChaseAnimation();
-                StartCoroutine(BossAttack());
+                if (!isAttacking)
+                {
+                    Attack();
+                }
                 break;
 
             case State.Death:
-
                 break;
         }
+    }
+
+    bool IsIdleAnimationComplete()
+    {
+        AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
+        return !stateInfo.IsName("Idle") || stateInfo.normalizedTime >= 1f;
     }
 
     IEnumerator ChangeStateAfterAnimation(State newState)
     {
         AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
         float animationDuration = stateInfo.length;
-
         yield return new WaitForSeconds(animationDuration);
-
         UpdateState(newState);
     }
 
     void UpdateState(State newState)
     {
-        if (myState == newState) return;  // 중복 상태 업데이트 방지
+        if (myState == newState) return; // 중복 상태 업데이트 방지
 
         myState = newState;
 
@@ -164,7 +168,7 @@ public class BossAI : BattleSystem
                 myAnim.SetBool("isSleeping", true);
                 myAnim.SetBool("isMoving", false);
                 if (sleepCollider != null) sleepCollider.enabled = true;
-                hasWokenUp = false; // Sleep 상태로 전환할 때 hasWokenUp을 false로 초기화
+                hasWokenUp = false;
                 break;
 
             case State.Alert:
@@ -176,19 +180,15 @@ public class BossAI : BattleSystem
 
             case State.Battle:
                 myAnim.SetBool("isMoving", true);
-                myAnim.SetTrigger("OnAttack");
-                // Battle 상태에서 추가 로직
                 break;
 
             case State.Enraged:
                 myAnim.SetBool("isMoving", true);
                 myAnim.SetBool("isEnraged", true);
-                //moveSpeed *= 1.5f;
                 break;
 
             case State.Death:
                 giveExp(myExp);
-                //myAnim.SetTrigger("die");
                 StopAllCoroutines();  // 죽을 때 모든 코루틴 정지
                 deadAct?.Invoke();
                 break;
@@ -218,6 +218,14 @@ public class BossAI : BattleSystem
         myTarget = null;
         UpdateState(State.Alert);
     }
+
+    public void OnAttackAnimationEnd()
+    {
+        // Attack 애니메이션이 끝났을 때 호출되는 메서드
+        // 애니메이션이 끝난 후 대기 상태로 돌아가도록 설정
+        StartCoroutine(ResetAttack());
+    }
+
     public void OnDamage()
     {
         Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 5.0f, 5.0f, enemyMask);
@@ -230,33 +238,80 @@ public class BossAI : BattleSystem
             }
         }
     }
-    IEnumerator BossAttack()
+
+    void Attack()
     {
         string[] attackTriggers = { "Attack1", "Attack2", "Attack3" };
-        //if (this.myBattleStat.AttackRange < distanceToPlayer)
+        isAttacking = true;
+
+        string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
+        Debug.Log($"Setting attack trigger: {chosenAttack}");
+        myAnim.SetTrigger(chosenAttack);
+
+        // 애니메이터 상태를 강제로 확인하기 위한 디버그 로그 추가
+        Debug.Log($"Current animator state before coroutine: {myAnim.GetCurrentAnimatorStateInfo(0).IsName(chosenAttack)}");
+
+        // 공격 애니메이션이 끝날 때까지 기다립니다.
+        StartCoroutine(WaitForAttackAnimation(chosenAttack));
+    }
+
+    IEnumerator WaitForAttackAnimation(string attackTrigger)
+    {
+        Debug.Log("Starting WaitForAttackAnimation coroutine");
+
+        AnimatorStateInfo stateInfo;
+        float elapsedTime = 0f;
+        float timeout = 10f; // 타임아웃 시간 설정 (예: 10초)
+
+        while (true)
         {
-            while (true)
+            stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
+            Debug.Log($"Current state: {stateInfo.IsName(attackTrigger)}, normalizedTime: {stateInfo.normalizedTime}");
+
+            // 상태가 일치하고 normalizedTime이 1 이상인 경우 종료
+            if (stateInfo.IsName(attackTrigger) && stateInfo.normalizedTime >= 1f)
             {
-                // 랜덤으로 하나의 트리거 선택
-                string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
-                myAnim.SetTrigger(chosenAttack);
-
-                // 선택한 트리거에 해당하는 애니메이션 길이 기다리기
-                AnimatorStateInfo stateInfo;
-                do
-                {
-                    stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
-                    yield return null;
-                } while (stateInfo.IsName(chosenAttack) == false);
-
-                // 애니메이션 재생 시간만큼 기다리기
-                float attackAnimationDuration = stateInfo.length;
-                yield return new WaitForSeconds(attackAnimationDuration);
-
-                // 애니메이션 종료 후 3초 기다리기
-                yield return new WaitForSeconds(3.0f);
+                Debug.Log("Attack animation complete");
+                break;
             }
+
+            // 타임아웃 초과 시 종료
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime > timeout)
+            {
+                Debug.LogError("WaitForAttackAnimation timed out");
+                break;
+            }
+
+            yield return null;
         }
-        //yield return null;
+
+        // 모든 공격 트리거 초기화
+        foreach (string trigger in new string[] { "Attack1", "Attack2", "Attack3" })
+        {
+            myAnim.ResetTrigger(trigger);
+        }
+
+        // 애니메이션 종료 후 3초 기다리기
+        Debug.Log("Waiting for 3 seconds");
+        yield return new WaitForSeconds(3.0f);
+
+        // 공격 완료 플래그 해제
+        Debug.Log("Attack complete, setting isAttacking to false");
+        isAttacking = false;
+
+        // Alert 상태로 돌아가기
+        UpdateState(State.Alert);
+    }
+
+    IEnumerator ResetAttack()
+    {
+        Debug.Log("Starting ResetAttack coroutine");
+
+        // 공격 애니메이션이 끝난 후 Alert 상태로 돌아가기
+        yield return new WaitForSeconds(0.1f); // 짧은 대기 시간 후 상태 변경
+        UpdateState(State.Alert);
+
+        Debug.Log("ResetAttack coroutine complete");
     }
 }
