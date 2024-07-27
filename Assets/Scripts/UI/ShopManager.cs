@@ -224,4 +224,8 @@ public class ShopManager : MonoBehaviour
     {
 
     }
+    public void OnCloseShop()
+    {
+        UIManager.Instance.CloseTopUi();
+    }
 }

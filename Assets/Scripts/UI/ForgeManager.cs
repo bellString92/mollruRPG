@@ -176,6 +176,11 @@ public class ForgeUI : MonoBehaviour
         LuckPercent.text = $"성공 확률 : {successRate * 100}%";
     }
 
+    public void OnCloseForge()
+    {
+        UIManager.Instance.CloseTopUi();
+    }
+
     private void OnDestroy()
     {
         if (forgeSlot != null && forgeSlot.myChild != null)

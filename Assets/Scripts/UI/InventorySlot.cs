@@ -48,7 +48,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
 
                             // 드래그된 아이템의 수량을 초과한 수량만큼 감소
                             draggedItemInfo.itemKind.quantity = excessQuantity;
-
                         }
                         else
                         {
