@@ -129,9 +129,6 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetFloat("x", inputDir.x);
         myAnim.SetFloat("y", inputDir.y);
 
-        // 이동속도 버프를 위한 코드
-        OnAnimatorMove();
-
         // W+W 달리기
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -268,17 +265,6 @@ public class Player : AnimatorProperty, IBattle
     {
         BuffSystem attackBuff = new DamageBuff(v, gameObject, t, b);
         BuffManager.AddBuff(attackBuff);
-    }
-
-    // 이동속도 버프용
-    void OnAnimatorMove()
-    {
-        if (_myAni)
-        {
-            Vector3 rootMotion = _myAni.deltaPosition;                      // 루트 모션에서 추출된 deltaPosition을 가져옵니다.
-            Vector3 scaledMotion = rootMotion * myStat.moveSpeed;           // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
-            transform.position += scaledMotion;                             // transform.position을 업데이트하여 캐릭터를 이동시킵니다.
-        }
     }
 
     public void OnAllSkillTrue()

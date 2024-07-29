@@ -29,16 +29,23 @@ public class RootMotion : AnimatorProperty
     private void FixedUpdate()
     {
         Ray ray = new Ray(transform.parent.position + (Vector3.up * 0.1f), deltaPosition.normalized);           // 레이 생성
-        if (Physics.Raycast(ray, out RaycastHit hit, deltaPosition.magnitude, crashMask))                       // 레이 캐스트를 쏨
+        Physics.Raycast(ray, out RaycastHit hit, deltaPosition.magnitude, crashMask);
+        var angle = Vector3.Angle(Vector3.up, hit.normal);
+
+        if (angle > 45.0f)                       // 레이 캐스트를 쏨
         {
-            Debug.DrawRay(ray.origin, ray.direction * hit.distance * 100, Color.green); // 충돌한 경우
-            transform.parent.position += ray.direction * (hit.distance - radius);
+
+                Debug.Log("45보다 큼");
+                Debug.DrawRay(ray.origin, ray.direction * hit.distance * 100, Color.green); // 충돌한 경우
+                transform.parent.position += ray.direction * (hit.distance - radius);   
         }
         else
         {
-            Debug.DrawRay(ray.origin, ray.direction * deltaPosition.magnitude * 100, Color.red); // 충돌하지 않은 경우
-            transform.parent.position += deltaPosition;                        
+                Debug.Log("45보다 작음");
+                Debug.DrawRay(ray.origin, ray.direction * deltaPosition.magnitude * 100, Color.red); // 충돌하지 않은 경우
+                transform.parent.position += deltaPosition;
         }
+
         transform.parent.rotation *= deltaRotation;
         deltaPosition = Vector3.zero;
         deltaRotation = Quaternion.identity;
@@ -46,7 +53,12 @@ public class RootMotion : AnimatorProperty
 
     private void OnAnimatorMove()
     {
-        deltaPosition += myAnim.deltaPosition;
+        // 이동속도 버프용
+        Vector3 rootMotion = myAnim.deltaPosition;                                                      // 루트 모션에서 추출된 deltaPosition을 가져옵니다.
+        Vector3 scaledMotion = rootMotion * transform.parent.GetComponent<Player>().myStat.moveSpeed;   // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
+
+        deltaPosition += scaledMotion; //myAnim.deltaPosition;
         deltaRotation *= myAnim.deltaRotation;
     }
+    
 }
