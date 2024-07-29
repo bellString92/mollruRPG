@@ -35,13 +35,13 @@ public class RootMotion : AnimatorProperty
         if (angle > 45.0f)                       // 레이 캐스트를 쏨
         {
 
-                Debug.Log("45보다 큼");
+                //Debug.Log("45보다 큼");
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance * 100, Color.green); // 충돌한 경우
                 transform.parent.position += ray.direction * (hit.distance - radius);   
         }
         else
         {
-                Debug.Log("45보다 작음");
+                //Debug.Log("45보다 작음");
                 Debug.DrawRay(ray.origin, ray.direction * deltaPosition.magnitude * 100, Color.red); // 충돌하지 않은 경우
                 transform.parent.position += deltaPosition;
         }

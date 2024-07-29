@@ -7,9 +7,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 
 //Battle상태에도 이전 애니메이션이 끝나지 않았으면 플레이어 쳐다보는 것x
-//BossAttack이 들어갈때 다른 공격 트리거가 켜져있다면 대기
 
-public enum State { Sleep, Alert, Battle, Enraged, Death }
+public enum State { Sleep, Alert, Chase, Battle, Enraged, Death }
 
 public class BossAI : BattleSystem
 {
@@ -19,6 +18,8 @@ public class BossAI : BattleSystem
     public Transform player;
     public LayerMask enemyMask;
 
+    private int EnragedAttackCount = 0;
+    private int EnragedCount = 0;
     private float distanceToPlayer;
     private bool hasWokenUp = false; // 보스가 깨어났는지 여부
     private bool isAttacking = false; // 공격이 진행 중인지 여부
@@ -88,10 +89,26 @@ public class BossAI : BattleSystem
             case State.Alert:
                 if (distanceToPlayer <= this.myBattleStat.AttackRange && IsIdleAnimationComplete())
                 {
-                    StartCoroutine(ChangeStateAfterAnimation(State.Battle));
+                    StartCoroutine(ChangeStateAfterAnimation(State.Chase));
+                }
+                else if (distanceToPlayer <= this.myBattleStat.AttackRange * 1.5f && EnragedCount <= 1)
+                {
+
                 }
                 break;
-
+            case State.Chase:
+                if (distanceToPlayer <= this.myBattleStat.AttackRange && IsIdleAnimationComplete())
+                {
+                    if (this.myBattleStat.curHealPoint <= this.myBattleStat.maxHealPoint / 2)
+                    {
+                        StartCoroutine(ChangeStateAfterAnimation(State.Enraged));
+                    }
+                    else if(EnragedCount < 1)
+                    {
+                        StartCoroutine(ChangeStateAfterAnimation(State.Battle));
+                    }
+                }
+                break;
             case State.Battle:
                 if (this.myBattleStat.curHealPoint <= this.myBattleStat.maxHealPoint / 2 && myState != State.Enraged)
                 {
@@ -118,6 +135,10 @@ public class BossAI : BattleSystem
             case State.Alert:
                 LookAtPlayer();
                 break;
+            case State.Chase:
+                LookAtPlayer();
+                MoveIfInChaseAnimation();
+                break;
 
             case State.Battle:
                 LookAtPlayer();
@@ -131,6 +152,7 @@ public class BossAI : BattleSystem
             case State.Enraged:
                 LookAtPlayer();
                 MoveIfInChaseAnimation();
+                Enraged();
                 if (!isAttacking)
                 {
                     Attack();
@@ -138,6 +160,7 @@ public class BossAI : BattleSystem
                 break;
 
             case State.Death:
+                OnDeath();
                 break;
         }
     }
@@ -177,6 +200,10 @@ public class BossAI : BattleSystem
                 hasWokenUp = true;
                 if (sleepCollider != null) sleepCollider.enabled = false;
                 break;
+            case State.Chase:
+                myAnim.SetBool("isSleeping", false);
+                myAnim.SetBool("isFind", true);
+                break;
 
             case State.Battle:
                 myAnim.SetBool("isMoving", true);
@@ -192,6 +219,15 @@ public class BossAI : BattleSystem
                 StopAllCoroutines();  // 죽을 때 모든 코루틴 정지
                 deadAct?.Invoke();
                 break;
+        }
+    }
+    public void Enraged()
+    {
+        if (EnragedCount < 1)
+        {
+            this.myBattleStat.AttackPoint += 10;
+            this.myBattleStat.moveSpeed += 1;
+            EnragedCount++;
         }
     }
 
@@ -219,6 +255,11 @@ public class BossAI : BattleSystem
         UpdateState(State.Alert);
     }
 
+    public void OnDeath()
+    {
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+    }
+
     public void OnAttackAnimationEnd()
     {
         // Attack 애니메이션이 끝났을 때 호출되는 메서드
@@ -228,7 +269,7 @@ public class BossAI : BattleSystem
 
     public void OnDamage()
     {
-        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 5.0f, 5.0f, enemyMask);
+        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 1.0f, 5.0f, enemyMask);
         foreach (Collider col in list)
         {
             IDamage id = col.GetComponent<IDamage>();
@@ -241,18 +282,26 @@ public class BossAI : BattleSystem
 
     void Attack()
     {
-        string[] attackTriggers = { "Attack1", "Attack2", "Attack3" };
-        isAttacking = true;
+        if (this.myBattleStat.curHealPoint <= 200 && EnragedAttackCount < 1)
+        {
+            myAnim.SetTrigger("EnragedAttack");
+            EnragedAttackCount++;
+        }
+        else
+        {
+            string[] attackTriggers = { "Attack1", "Attack2", "Attack3" };
+            isAttacking = true;
 
-        string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
-        Debug.Log($"Setting attack trigger: {chosenAttack}");
-        myAnim.SetTrigger(chosenAttack);
+            string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
+            Debug.Log($"Setting attack trigger: {chosenAttack}");
+            myAnim.SetTrigger(chosenAttack);
 
-        // 애니메이터 상태를 강제로 확인하기 위한 디버그 로그 추가
-        Debug.Log($"Current animator state before coroutine: {myAnim.GetCurrentAnimatorStateInfo(0).IsName(chosenAttack)}");
+            // 애니메이터 상태를 강제로 확인하기 위한 디버그 로그 추가
+            Debug.Log($"Current animator state before coroutine: {myAnim.GetCurrentAnimatorStateInfo(0).IsName(chosenAttack)}");
 
-        // 공격 애니메이션이 끝날 때까지 기다립니다.
-        StartCoroutine(WaitForAttackAnimation(chosenAttack));
+            // 공격 애니메이션이 끝날 때까지 기다립니다.
+            StartCoroutine(WaitForAttackAnimation(chosenAttack));
+         }
     }
 
     IEnumerator WaitForAttackAnimation(string attackTrigger)
@@ -261,7 +310,7 @@ public class BossAI : BattleSystem
 
         AnimatorStateInfo stateInfo;
         float elapsedTime = 0f;
-        float timeout = 10f; // 타임아웃 시간 설정 (예: 10초)
+        float timeout = 5f; // 타임아웃 시간 설정
 
         while (true)
         {
@@ -293,15 +342,15 @@ public class BossAI : BattleSystem
         }
 
         // 애니메이션 종료 후 3초 기다리기
-        Debug.Log("Waiting for 3 seconds");
-        yield return new WaitForSeconds(3.0f);
+        //Debug.Log("Waiting for 3 seconds");
+        //yield return new WaitForSeconds(3.0f);
 
         // 공격 완료 플래그 해제
         Debug.Log("Attack complete, setting isAttacking to false");
         isAttacking = false;
 
-        // Alert 상태로 돌아가기
-        UpdateState(State.Alert);
+        // Chase 상태로 돌아가기
+        UpdateState(State.Chase);
     }
 
     IEnumerator ResetAttack()
