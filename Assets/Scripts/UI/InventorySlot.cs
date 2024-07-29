@@ -21,6 +21,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
 {
     public GameObject myChild = null;
     public Player User;
+    SaveItemInfo itemInfo;
     public void OnDrop(PointerEventData eventData)
     {
         var draggedItemInfo = eventData.pointerDrag.GetComponent<SaveItemInfo>();        
@@ -106,14 +107,24 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
             }
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
-        {
+        {           
             // 우클릭 처리: use 실행
             if (myChild != null)
             {
-                myChild.GetComponent<SaveItemInfo>()?.itemKind.Use(User.myStat);
-                if (myChild.GetComponent<SaveItemInfo>()?.itemKind.quantity == 0)
+                itemInfo = myChild?.GetComponent<SaveItemInfo>();
+                if (itemInfo.itemKind.itemType == ItemType.weaponItem || itemInfo.itemKind.itemType == ItemType.armorItem || itemInfo.itemKind.itemType == ItemType.acceItem)
                 {
-                    Destroy(myChild);
+                    PlayerStateUiManager stateManager = PlayerStateUiManager.Instance;
+                    stateManager.SetSlot(myChild, itemInfo.itemKind.itemType);
+                    myChild = null;
+                }
+                else if (itemInfo?.itemKind.itemType == ItemType.consumItem)
+                {
+                    itemInfo?.itemKind.Use(User.myStat);
+                    if (myChild.GetComponent<SaveItemInfo>()?.itemKind.quantity == 0)
+                    {
+                        Destroy(myChild);
+                    }
                 }
             }
         }

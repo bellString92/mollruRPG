@@ -101,8 +101,24 @@ public class Inventory : MonoBehaviour
             Debug.LogWarning("Invalid item kind or item prefab.");
         }
     }
-
-
+    public void AddItem(GameObject item)
+    {
+        if (item != null)
+        {
+            // content의 자식 슬롯들을 순회
+            foreach (Transform slot in content)
+            {
+                InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
+                if (inventorySlot != null && inventorySlot.myChild == null)
+                {
+                    item.transform.SetParent(slot);
+                    item.transform.localPosition = Vector2.zero;
+                    inventorySlot.SetChild(item);
+                    break;
+                }
+            }
+        }
+    }
     // 인벤토리에 특정 아이템과 수량이 있는지 확인하는 메서드
     public bool HasItem(ItemKind itemKind, int quantity)
     {
