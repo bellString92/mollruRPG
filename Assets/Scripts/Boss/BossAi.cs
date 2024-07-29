@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.Events;
-
-//Battle상태에도 이전 애니메이션이 끝나지 않았으면 플레이어 쳐다보는 것x
 
 public enum State { Sleep, Alert, Chase, Battle, Enraged, Death }
 
@@ -87,28 +84,30 @@ public class BossAI : BattleSystem
                 break;
 
             case State.Alert:
-                if (distanceToPlayer <= this.myBattleStat.AttackRange && IsIdleAnimationComplete())
+                if (distanceToPlayer <= this.myBattleStat.AttackRange)
                 {
-                    StartCoroutine(ChangeStateAfterAnimation(State.Chase));
+                    StartCoroutine(ChangeStateAfterIdleAnimation(State.Chase));
                 }
                 else if (distanceToPlayer <= this.myBattleStat.AttackRange * 1.5f && EnragedCount <= 1)
                 {
-
+                    // 추가 로직을 여기에 작성합니다.
                 }
                 break;
+
             case State.Chase:
-                if (distanceToPlayer <= this.myBattleStat.AttackRange && IsIdleAnimationComplete())
+                if (distanceToPlayer <= this.myBattleStat.AttackRange)
                 {
                     if (this.myBattleStat.curHealPoint <= this.myBattleStat.maxHealPoint / 2)
                     {
                         StartCoroutine(ChangeStateAfterAnimation(State.Enraged));
                     }
-                    else if(EnragedCount < 1)
+                    else if (EnragedCount < 1)
                     {
                         StartCoroutine(ChangeStateAfterAnimation(State.Battle));
                     }
                 }
                 break;
+
             case State.Battle:
                 if (this.myBattleStat.curHealPoint <= this.myBattleStat.maxHealPoint / 2 && myState != State.Enraged)
                 {
@@ -179,6 +178,21 @@ public class BossAI : BattleSystem
         UpdateState(newState);
     }
 
+    IEnumerator ChangeStateAfterIdleAnimation(State newState)
+    {
+        AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
+
+        // Idle 애니메이션이 아닐 때까지 기다립니다.
+        while (!stateInfo.IsName("Idle") || stateInfo.normalizedTime < 1f)
+        {
+            yield return null;
+            stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
+        }
+
+        // Idle 애니메이션이 완료된 후 상태를 변경합니다.
+        UpdateState(newState);
+    }
+
     void UpdateState(State newState)
     {
         if (myState == newState) return; // 중복 상태 업데이트 방지
@@ -221,6 +235,7 @@ public class BossAI : BattleSystem
                 break;
         }
     }
+
     public void Enraged()
     {
         if (EnragedCount < 1)
@@ -269,6 +284,11 @@ public class BossAI : BattleSystem
 
     public void OnDamage()
     {
+        if (myState != State.Chase && myState != State.Battle && myState != State.Enraged)
+        {
+            return; // Chase 상태 이전에는 데미지를 받지 않습니다.
+        }
+
         Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 1.0f, 5.0f, enemyMask);
         foreach (Collider col in list)
         {
@@ -301,7 +321,7 @@ public class BossAI : BattleSystem
 
             // 공격 애니메이션이 끝날 때까지 기다립니다.
             StartCoroutine(WaitForAttackAnimation(chosenAttack));
-         }
+        }
     }
 
     IEnumerator WaitForAttackAnimation(string attackTrigger)
@@ -340,10 +360,6 @@ public class BossAI : BattleSystem
         {
             myAnim.ResetTrigger(trigger);
         }
-
-        // 애니메이션 종료 후 3초 기다리기
-        //Debug.Log("Waiting for 3 seconds");
-        //yield return new WaitForSeconds(3.0f);
 
         // 공격 완료 플래그 해제
         Debug.Log("Attack complete, setting isAttacking to false");
