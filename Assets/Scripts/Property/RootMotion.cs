@@ -1,51 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class RootMotion : AnimatorProperty
 {
     public LayerMask crashMask;
 
     Vector3 deltaPosition = Vector3.zero;
-    Vector3 DonwPosition = new Vector3(0, -1, 0);
     Quaternion deltaRotation = Quaternion.identity;
 
     float radius = 0.0f;
+    Rigidbody rb;
+
     // Start is called before the first frame update
     void Start()
     {
         CapsuleCollider col = transform.parent.GetComponent<CapsuleCollider>();
-        if(col != null)
+        if (col != null)
         {
             radius = col.radius;
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    { }
+        Rigidbody rg = transform.parent.GetComponent<Rigidbody>();
+        if (rg != null)
+        {
+            rb = rg.GetComponent<Rigidbody>();
+        }
+    }
 
     private void FixedUpdate()
     {
-        Ray ray = new Ray(transform.parent.position + (Vector3.up * 0.1f), deltaPosition.normalized);           // 레이 생성
-        Physics.Raycast(ray, out RaycastHit hit, deltaPosition.magnitude, crashMask);
+        // 레이 생성 deltaPosition.normalized
+        Ray ray = new Ray(transform.parent.position + (Vector3.up * 0.1f), Vector3.down);
+
+        // 레이 캐스트
+        Physics.SphereCast(ray, radius, out RaycastHit hit, 2.0f, crashMask);
+
+        // 각도 구함
         var angle = Vector3.Angle(Vector3.up, hit.normal);
 
-        if (angle > 45.0f)                       // 레이 캐스트를 쏨
+        // 실제 이동
+        if (!Physics.SphereCast(ray, radius, out RaycastHit hitzz, 2.0f, crashMask))
         {
-
-                //Debug.Log("45보다 큼");
-                Debug.DrawRay(ray.origin, ray.direction * hit.distance * 100, Color.green); // 충돌한 경우
-                transform.parent.position += ray.direction * (hit.distance - radius);   
+            if (angle < 0.1f) { rb.velocity = deltaPosition; }
         }
-        else
-        {
-                //Debug.Log("45보다 작음");
-                Debug.DrawRay(ray.origin, ray.direction * deltaPosition.magnitude * 100, Color.red); // 충돌하지 않은 경우
-                transform.parent.position += deltaPosition;
-        }
+        Debug.DrawRay(transform.parent.position + (Vector3.up * 0.1f), Vector3.down * 2.0f, UnityEngine.Color.red, 1.0f);
 
+        // 초기화
         transform.parent.rotation *= deltaRotation;
         deltaPosition = Vector3.zero;
         deltaRotation = Quaternion.identity;
@@ -56,9 +59,9 @@ public class RootMotion : AnimatorProperty
         // 이동속도 버프용
         Vector3 rootMotion = myAnim.deltaPosition;                                                      // 루트 모션에서 추출된 deltaPosition을 가져옵니다.
         Vector3 scaledMotion = rootMotion * transform.parent.GetComponent<Player>().myStat.moveSpeed;   // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
+        Vector3 move = new Vector3(scaledMotion.x, -1.5f, scaledMotion.z);
 
-        deltaPosition += scaledMotion; //myAnim.deltaPosition;
+        deltaPosition += move;
         deltaRotation *= myAnim.deltaRotation;
     }
-    
 }
