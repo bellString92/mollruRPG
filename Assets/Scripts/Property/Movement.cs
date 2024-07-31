@@ -97,7 +97,7 @@ public class Movement : AnimatorProperty
         }
         if (coRotate != null)
         {
-            StopCoroutine(coRotate);
+           StopCoroutine(coRotate);
             coRotate = null;
         }
         myAnim.SetBool("IsMoving", false);

@@ -121,7 +121,7 @@ public class Enemy : BattleSystem
 
     IEnumerator DisApearing(float downSpeed)
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(4.0f);
         Vector3 dir = Vector3.down;
         float dist = 1.0f;
         while(dist > 0.0f)
