@@ -61,3 +61,10 @@ MonoBehaviour:
       increment: 5
     - material: {fileID: 11400000, guid: 159e5668574fa124692b8addf236757f, type: 2}
       increment: 1
+  effectList:
+  - effectType: 0
+    effectValue: -30
+  - effectType: 1
+    effectValue: 20
+  - effectType: 2
+    effectValue: 0.3

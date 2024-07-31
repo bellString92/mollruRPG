@@ -2,12 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+public enum ArmorEffectType
+{
+    AttackBoost,
+    CritChanceBoost,
+    CritDamageBoost,
+    SpeedBoost,
+    // 추가 효과 유형
+}
 
 [CreateAssetMenu(fileName = "New ArmorItem", menuName = "Items/ArmorItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드
 public class ArmorItem : ItemKind
 {
     public float maxHealBoost;
     public List<UpgradeRequirement> armorUpgradeRequirements;   // 갑옷 강화 요구사항 리스트
+
+    public List<ArmorEffectValueList> effectList; // 여러 효과 유형
 
     private void OnEnable()
     {
@@ -18,19 +28,22 @@ public class ArmorItem : ItemKind
     public ArmorItem(ArmorItem original) : base(original)
     {
         maxHealBoost = original.maxHealBoost;
+        effectList = new List<ArmorEffectValueList>(original.effectList);
     }
      
     public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
     {
         float effectiveMaxHealBoost = CalculateEffectiveMaxHealBoost();
-        user.myStat.maxHealPoint += maxHealBoost;
-        user.myStat.curHealPoint += maxHealBoost;
+        user.myStat.maxHealPoint += effectiveMaxHealBoost;
+        user.myStat.curHealPoint += effectiveMaxHealBoost;
+        ArmorEffect.ApplyEffects(user, this);
     }
     public override void TakeOff(Player user)
     {
         float effectiveMaxHealBoost = CalculateEffectiveMaxHealBoost();
-        user.myStat.maxHealPoint -= maxHealBoost;
-        user.myStat.curHealPoint -= maxHealBoost;
+        user.myStat.maxHealPoint -= effectiveMaxHealBoost;
+        user.myStat.curHealPoint -= effectiveMaxHealBoost;
+        ArmorEffect.RemoveEffects(user, this);
     }
 
 

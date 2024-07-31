@@ -26,12 +26,18 @@ MonoBehaviour:
   kaiLevel: 0
   maxHealBoost: 100
   armorUpgradeRequirements:
-  - startLevel: 0
-    endLevel: 0
-    materialIncrements: []
-  - startLevel: 0
-    endLevel: 0
-    materialIncrements: []
-  - startLevel: 0
-    endLevel: 0
-    materialIncrements: []
+  - startLevel: 1
+    endLevel: 2
+    materialIncrements:
+    - material: {fileID: 11400000, guid: 8a2272f978610fc4fa9f6c2374cb92d1, type: 2}
+      increment: 1
+  - startLevel: 3
+    endLevel: 3
+    materialIncrements:
+    - material: {fileID: 11400000, guid: 8a2272f978610fc4fa9f6c2374cb92d1, type: 2}
+      increment: 3
+    - material: {fileID: 11400000, guid: 5ab28286a8ccfc54e922dbe284c2e5d7, type: 2}
+      increment: 2
+  effectList:
+  - effectType: 3
+    effectValue: 1

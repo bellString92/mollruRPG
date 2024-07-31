@@ -2,11 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AcceEffectType
+{
+    AttackBoost,
+    MaxHealthBoost,
+    CritChanceBoost,
+    CritDamageBoost,
+    SpeedBoost,
+    // 추가 효과 유형
+}
+
 [CreateAssetMenu(fileName = "New AcceItem", menuName = "Items/AcceItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드
 public class AcceItem : ItemKind
 {
-    public float attackBoost;
-    public float maxHealBoost;
+    public List<AcceEffectValueList> effectList; // 여러 효과 유형
 
     private void OnEnable()
     {
@@ -17,21 +26,16 @@ public class AcceItem : ItemKind
 
     public AcceItem(AcceItem original) : base(original)
     {
-        attackBoost = original.attackBoost;
-        maxHealBoost = original.maxHealBoost;
+        effectList = new List<AcceEffectValueList>(original.effectList);
     }
 
     public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
     {
-        user.myStat.AttackPoint += attackBoost;
-        user.myStat.maxHealPoint += maxHealBoost;
-        user.myStat.curHealPoint += maxHealBoost;
+        AcceEffect.ApplyEffects(user, this);
     }
     public override void TakeOff(Player user)
     {
-        user.myStat.AttackPoint -= attackBoost;
-        user.myStat.maxHealPoint -= maxHealBoost;
-        user.myStat.curHealPoint -= maxHealBoost;
+        AcceEffect.RemoveEffects(user, this);
     }
 
 }

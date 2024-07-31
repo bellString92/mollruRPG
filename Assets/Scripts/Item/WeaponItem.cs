@@ -3,11 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum WeaponEffectType
+{
+    MaxHealthBoost,
+    CritChanceBoost,
+    CritDamageBoost,
+    SpeedBoost,
+    // 추가 효과 유형
+}
+
 [CreateAssetMenu(fileName = "New WeaponItem", menuName = "Items/WeaponItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드
 public class WeaponItem : ItemKind
 {
     public float attackBoost;
     public List<UpgradeRequirement> weaponUpgradeRequirements;  // 무기 강화 요구사항 리스트
+
+    public List<WeaponEffectValueList> effectList; // 여러 효과 유형
+
 
     private void OnEnable()
     {
@@ -18,17 +30,20 @@ public class WeaponItem : ItemKind
     public WeaponItem(WeaponItem original) : base(original)
     {
         attackBoost = original.attackBoost;
+        effectList = new List<WeaponEffectValueList>(original.effectList);
     }
 
     public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
     {
         float effectiveAttackBoost = CalculateEffectiveAttackBoost();
         user.myStat.AttackPoint += effectiveAttackBoost;
+        WeaponEffect.ApplyEffects(user, this);
     }
     public override void TakeOff(Player user)
     {
         float effectiveAttackBoost = CalculateEffectiveAttackBoost();
         user.myStat.AttackPoint -= effectiveAttackBoost;
+        WeaponEffect.RemoveEffects(user, this);
     }
 
     public List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)

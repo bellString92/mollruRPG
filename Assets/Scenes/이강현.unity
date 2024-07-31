@@ -4131,6 +4131,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1902997044}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: myStat.moveSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: myStat.curHealPoint
       value: 20
       objectReference: {fileID: 0}

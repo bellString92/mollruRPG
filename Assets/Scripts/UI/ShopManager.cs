@@ -199,8 +199,8 @@ public class ShopManager : MonoBehaviour
     {
         if (acceInfo != null)
         {
-            infoText.text += $"\nattackBoost: {acceInfo.attackBoost}\n";
-            infoText.text += $"maxHealBoost: {acceInfo.maxHealBoost}\n";
+            //infoText.text += $"\nattackBoost: {acceInfo.attackBoost}\n";
+            //infoText.text += $"maxHealBoost: {acceInfo.maxHealBoost}\n";
         }
     }
 
