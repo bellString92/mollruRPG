@@ -16,12 +16,15 @@ public class MaterialItem : ItemKind
 
     }
 
-    public override void Use(BattleStat myStat)
+    public override void Use(Player myStat)
     {
         if (quantity > 0)
         {
             // 재료 아이템은 능력치에 영향을 주지 않습니다.
             quantity--; // 사용 후 갯수 감소
         }
+    }
+    public override void TakeOff(Player myStat)
+    {
     }
 }

@@ -25,4 +25,5 @@ MonoBehaviour:
   rarity: 0
   kaiLevel: 0
   effectType: 0
-  EffectPoint: 100
+  EffectPoint: 30
+  EffectDuration: 0

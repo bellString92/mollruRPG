@@ -6,13 +6,31 @@ using UnityEngine.EventSystems;
 public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClickHandler
 {
     public GameObject myChild = null;
+    public GameObject curChild = null;
     private SaveItemInfo ItemInfo; // SaveItemInfo 컴포넌트를 저장할 변수
+    private Player user; 
 
     [SerializeField] private ItemType allowedItemType; // 인스펙터에서 설정할 수 있는 아이템 타입 변수
 
     public void SetChild(GameObject newChild)
     {
         myChild = newChild;
+    }
+
+    void Start()
+    {
+        IChildObject child = GetComponentInChildren<IChildObject>();
+        if (child != null)
+        {
+            myChild = child.gameObject;
+            curChild = myChild;
+            ItemInfo = myChild.GetComponent<SaveItemInfo>();
+        }
+        if (user == null)
+        {
+            user = PlayerStateUiManager.Instance.user;
+        }
+
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -27,13 +45,15 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
             {
                 var itemKind = draggedItemInfo.itemKind;
 
-                // 아이템 타입이 WeaponItem 또는 ArmorItem인지 확인합니다.
+                // 아이템 타입이 슬롯 타입과 같은 타입인지 확인.
                 if (itemKind.itemType == allowedItemType)
                 {
                     // 기존 아이템 처리
                     if (myChild != null)
                     {
                         myChild.GetComponent<ISwapParent>()?.SwapParent(draggedItem.GetComponent<IGetParent>().myParent);
+                        
+                        ItemInfo?.itemKind.TakeOff(user);// 기존 아이템 능력치 해제
                     }
                     else
                     {
@@ -41,9 +61,14 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
                     }
 
                     // 새 아이템 설정
+                    draggedItem.GetComponent<IChangeParent>()?.ChangeParent(transform);
                     myChild = draggedItem;
                     myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
                     ItemInfo = myChild.GetComponent<SaveItemInfo>();
+
+                    ItemInfo?.itemKind.Use(user); // 새 아이템 능력치 적용
+                    curChild = myChild;
+                  //  PlayerStateUiManager.Instance.UpdatePlayerStats();// 능력치 업데이트
                 }
                 else
                 {
@@ -64,30 +89,34 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            // 우클릭 처리: use 실행
+            ItemInfo = myChild.GetComponent<SaveItemInfo>();
+            // 우클릭 처리
             if (myChild != null)
             {
+                ItemInfo?.itemKind.TakeOff(user);
                 Inventory.Instance.AddItem(myChild);
                 myChild=null;
+                curChild = myChild;
+                // 능력치 업데이트
+              //  PlayerStateUiManager.Instance.UpdatePlayerStats();
             }
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        IChildObject child = GetComponentInChildren<IChildObject>();
-        if (child != null)
+    public void CheckAndTakeOffIfNeeded(GameObject draggedItem)
+    {     
+        if (myChild == null)
         {
-            myChild = child.gameObject;
-            ItemInfo = myChild.GetComponent<SaveItemInfo>();
+            ItemInfo = draggedItem.GetComponent<SaveItemInfo>();
+            ItemInfo?.itemKind.TakeOff(user);
+           // PlayerStateUiManager.Instance.UpdatePlayerStats();
         }
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        else if(curChild != myChild)
+        {
+            myChild.GetComponent<SaveItemInfo>().itemKind.Use(user);
+            curChild.GetComponent<SaveItemInfo>().itemKind.TakeOff(user);
+           // PlayerStateUiManager.Instance.UpdatePlayerStats();
+        }
+        curChild = myChild;
     }
 }

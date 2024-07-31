@@ -19,12 +19,18 @@ public class ArmorItem : ItemKind
     {
         maxHealBoost = original.maxHealBoost;
     }
-
-    public override void Use(BattleStat myStat) //사용시 player의 능력치에 영향을 주는 코드
+     
+    public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
     {
         float effectiveMaxHealBoost = CalculateEffectiveMaxHealBoost();
-        myStat.maxHealPoint += maxHealBoost;
-        myStat.curHealPoint += maxHealBoost;
+        user.myStat.maxHealPoint += maxHealBoost;
+        user.myStat.curHealPoint += maxHealBoost;
+    }
+    public override void TakeOff(Player user)
+    {
+        float effectiveMaxHealBoost = CalculateEffectiveMaxHealBoost();
+        user.myStat.maxHealPoint -= maxHealBoost;
+        user.myStat.curHealPoint -= maxHealBoost;
     }
 
 

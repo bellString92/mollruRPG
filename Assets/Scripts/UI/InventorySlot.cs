@@ -20,7 +20,7 @@ interface ISetChild
 public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerClickHandler
 {
     public GameObject myChild = null;
-    public Player User;
+    public Player user;
     SaveItemInfo itemInfo;
     public void OnDrop(PointerEventData eventData)
     {
@@ -96,14 +96,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
         {
             if (ShopManager.Instance != null)
             {
-                if (myChild != null)
-                {
-                    ShopManager.Instance.SetDestroySlotItem(this);
-                }
-                else
-                {
-                    ShopManager.Instance.SetDestroySlotItem(null);
-                }
+                ShopManager.Instance.SetDestroySlotItem(myChild != null ? this : null);
             }
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
@@ -120,8 +113,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
                 }
                 else if (itemInfo?.itemKind.itemType == ItemType.consumItem)
                 {
-                    itemInfo?.itemKind.Use(User.myStat);
-                    if (myChild.GetComponent<SaveItemInfo>()?.itemKind.quantity == 0)
+                    itemInfo?.itemKind.Use(user);
+                    if (itemInfo?.itemKind.quantity == 0)
                     {
                         Destroy(myChild);
                     }
@@ -151,9 +144,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
         {
             myChild = child.gameObject;
         }
-        if (User == null)
+        if (user == null)
         {
-            User = Inventory.Instance.user;
+            user = Inventory.Instance.user;
         }
     }
 

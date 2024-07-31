@@ -20,12 +20,16 @@ public class WeaponItem : ItemKind
         attackBoost = original.attackBoost;
     }
 
-    public override void Use(BattleStat myStat) //사용시 player의 능력치에 영향을 주는 코드
+    public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
     {
         float effectiveAttackBoost = CalculateEffectiveAttackBoost();
-        myStat.AttackPoint += attackBoost;
+        user.myStat.AttackPoint += effectiveAttackBoost;
     }
-
+    public override void TakeOff(Player user)
+    {
+        float effectiveAttackBoost = CalculateEffectiveAttackBoost();
+        user.myStat.AttackPoint -= effectiveAttackBoost;
+    }
 
     public List<MaterialRequirement> GetMaterialRequirementsForLevel(int level)
     {

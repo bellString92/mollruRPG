@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
- public delegate void UseEffect(BattleStat myStat, ConsumItem item);
+ public delegate void UseEffect(Player user, ConsumItem item);
 public enum EffectType
 {
     HealEffect,
@@ -30,16 +31,18 @@ public class ConsumItem : ItemKind
     public ConsumItem(ConsumItem original) : base(original)
     {
         this.useEffect = original.useEffect;
-        AssignEffect();
     }
-    public override void Use(BattleStat myStat) //사용시 player의 능력치에 영향을 주는 코드
+    public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
     {
         if (useEffect != null)
         {
-            useEffect(myStat, this);
+            useEffect(user, this);
         }
     }
-
+    public override void TakeOff(Player myStat)
+    {
+    
+    }
     public void AssignEffect()
     {
         switch (effectType)

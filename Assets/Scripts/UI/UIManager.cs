@@ -9,9 +9,13 @@ public class UIManager : MonoBehaviour
     private Stack<GameObject> uiStack= new Stack<GameObject>(); //매번 생성될 UI를 저장할 장소
     public Canvas canvas;
     public GameObject UiForNPC; // npc가 ui를 불러올때 이곳에 생성시켜 그려지는 순서조정
+
+    // player조작 ui
     public Inventory myInven;
     public GameObject mySkill;
-    
+    public PlayerStateUiManager myStateWindow;
+
+    // 상점에 필요한 요소
     public GameObject itemQuantityCheckPrefab; // Quantity를 표시할 프리팹
     private GameObject currentQuantityUI = null;
     private System.Action quantityConfirmCallback;
@@ -24,6 +28,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         myInven.gameObject.SetActive(false);
+        myStateWindow.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -38,6 +43,11 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
         {
             myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            myStateWindow.gameObject.SetActive(!myStateWindow.gameObject.activeSelf);
         }
 
         if (Input.GetKeyDown(KeyCode.K))
