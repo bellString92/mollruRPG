@@ -11,6 +11,14 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
     private Player user; 
 
     [SerializeField] private ItemType allowedItemType; // 인스펙터에서 설정할 수 있는 아이템 타입 변수
+    private ArmorType allowedArmorType; // 인스펙터에서 설정할 수 있는 방어구 타입 변수
+    private AcceType allowedAcceType; // 인스펙터에서 설정할 수 있는 방어구 타입 변수
+
+    // private에 보안수준을 유지하면서 접근할수있게함
+    public ItemType AllowedItemType { get => allowedItemType; set => allowedItemType = value; }
+    public ArmorType AllowedArmorType { get => allowedArmorType; set => allowedArmorType = value; }
+    public AcceType AllowedAcceType { get => allowedAcceType; set => allowedAcceType = value; }
+
 
     public void SetChild(GameObject newChild)
     {
@@ -44,15 +52,41 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
             if (draggedItemInfo != null)
             {
                 var itemKind = draggedItemInfo.itemKind;
+                bool isAllowed = false;
 
                 // 아이템 타입이 슬롯 타입과 같은 타입인지 확인.
                 if (itemKind.itemType == allowedItemType)
+                {
+                    if (itemKind is ArmorItem armorItem)
+                    {
+                        // 방어구 타입이 슬롯의 타입과 일치하는지 확인
+                        if(armorItem.armorType == allowedArmorType)
+                        {
+                            isAllowed = true;
+                        }
+                        else
+                        {
+                            isAllowed = false;
+                        }
+                    }
+                    else if( itemKind is AcceItem acceItem)
+                    {
+                        isAllowed = acceItem.AcceType == allowedAcceType;
+                    }
+                    else
+                    {
+                        isAllowed = true; // 방어구가 아닌 경우에는 무조건 허용
+                    }
+                }
+                
+
+                if (isAllowed)
                 {
                     // 기존 아이템 처리
                     if (myChild != null)
                     {
                         myChild.GetComponent<ISwapParent>()?.SwapParent(draggedItem.GetComponent<IGetParent>().myParent);
-                        
+
                         ItemInfo?.itemKind.TakeOff(user);// 기존 아이템 능력치 해제
                     }
                     else
@@ -68,7 +102,7 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
 
                     ItemInfo?.itemKind.Use(user); // 새 아이템 능력치 적용
                     curChild = myChild;
-                  //  PlayerStateUiManager.Instance.UpdatePlayerStats();// 능력치 업데이트
+                    //  PlayerStateUiManager.Instance.UpdatePlayerStats();// 능력치 업데이트
                 }
                 else
                 {

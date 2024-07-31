@@ -10,10 +10,19 @@ public enum ArmorEffectType
     SpeedBoost,
     // 추가 효과 유형
 }
+public enum ArmorType // 부위 세분화
+{
+    Head,
+    Chest,
+    Gloves,
+    Boots
+}
 
 [CreateAssetMenu(fileName = "New ArmorItem", menuName = "Items/ArmorItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드
 public class ArmorItem : ItemKind
 {
+    public ArmorType armorType; // 방어구 타입
+
     public float maxHealBoost;
     public List<UpgradeRequirement> armorUpgradeRequirements;   // 갑옷 강화 요구사항 리스트
 

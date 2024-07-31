@@ -11,10 +11,16 @@ public enum AcceEffectType
     SpeedBoost,
     // 추가 효과 유형
 }
+public enum AcceType // 부위 세분화
+{
+    Necklace,
+    Ring
+}
 
 [CreateAssetMenu(fileName = "New AcceItem", menuName = "Items/AcceItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드
 public class AcceItem : ItemKind
 {
+    public AcceType AcceType;
     public List<AcceEffectValueList> effectList; // 여러 효과 유형
 
     private void OnEnable()

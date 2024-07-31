@@ -24,6 +24,7 @@ MonoBehaviour:
   quantity: 1
   rarity: 0
   kaiLevel: 0
+  armorType: 1
   maxHealBoost: 100
   armorUpgradeRequirements:
   - startLevel: 1

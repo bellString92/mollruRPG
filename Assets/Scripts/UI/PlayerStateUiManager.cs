@@ -8,8 +8,13 @@ public class PlayerStateUiManager : MonoBehaviour
     public static PlayerStateUiManager Instance;
 
     public Transform weaponSlot;
-    public Transform armorSlot;
-    public Transform acceSlot;
+    public Transform headArmorSlot;
+    public Transform chestArmorSlot;
+    public Transform glovesArmorSlot;
+    public Transform bootsArmorSlot;
+    public Transform NecklaceSlot;
+    public Transform RingSlot;
+    public Transform SecondRingSlot;
     StateUiSlot slot;
 
     public Player user;
@@ -37,10 +42,53 @@ public class PlayerStateUiManager : MonoBehaviour
                 slotTransform = weaponSlot;
                 break;
             case ItemType.armorItem:
-                slotTransform = armorSlot;
+                var armorItem = item.GetComponent<SaveItemInfo>()?.itemKind as ArmorItem;
+                if (armorItem != null)
+                {
+                    switch (armorItem.armorType)
+                    {
+                        case ArmorType.Head:
+                            slotTransform = headArmorSlot;
+                            break;
+                        case ArmorType.Chest:
+                            slotTransform = chestArmorSlot;
+                            break;
+                        case ArmorType.Gloves:
+                            slotTransform = glovesArmorSlot;
+                            break;
+                        case ArmorType.Boots:
+                            slotTransform = bootsArmorSlot;
+                            break;
+                    }
+                }
                 break;
             case ItemType.acceItem:
-                slotTransform = acceSlot;
+                var acceItem = item.GetComponent<SaveItemInfo>()?.itemKind as AcceItem;
+                if (acceItem != null)
+                {
+                    switch (acceItem.AcceType)
+                    {
+                        case AcceType.Necklace:
+                            slotTransform = NecklaceSlot;
+                            break;
+                        case AcceType.Ring:
+                            // 반지 슬롯 중 빈 슬롯을 찾음
+                            if (RingSlot.GetComponent<StateUiSlot>()?.myChild == null)
+                            {
+                                slotTransform = RingSlot;
+                            }
+                            else if (SecondRingSlot.GetComponent<StateUiSlot>()?.myChild == null)
+                            {
+                                slotTransform = SecondRingSlot;
+                            }
+                            else
+                            {
+                                // 두 슬롯 모두 차있을 경우 첫 번째 슬롯으로 설정
+                                slotTransform = RingSlot;
+                            }
+                            break;
+                    }
+                }
                 break;
         }
 

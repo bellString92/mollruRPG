@@ -372,8 +372,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponSlot: {fileID: 4038404784945761878}
-  armorSlot: {fileID: 971158709640138684}
-  acceSlot: {fileID: 4344929458280510934}
+  headArmorSlot: {fileID: 1621443305408616627}
+  chestArmorSlot: {fileID: 971158709640138684}
+  glovesArmorSlot: {fileID: 3806091337286727304}
+  bootsArmorSlot: {fileID: 7282076069899217986}
+  NecklaceSlot: {fileID: 4344929458280510934}
+  RingSlot: {fileID: 2574328592061522037}
+  SecondRingSlot: {fileID: 1196151578401935480}
   user: {fileID: 0}
   showMyState: {fileID: 8695840473991547354}
 --- !u!1 &1862879785503201616
@@ -704,6 +709,7 @@ GameObject:
   - component: {fileID: 1196151578401935480}
   - component: {fileID: 4320947430547595264}
   - component: {fileID: 3315958178811235213}
+  - component: {fileID: 2603636134711591655}
   m_Layer: 5
   m_Name: RingSlot (1)
   m_TagString: Untagged
@@ -769,6 +775,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2.5
+--- !u!114 &2603636134711591655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2823339299708459735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2a68552644540489b96716611f02a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myChild: {fileID: 0}
+  curChild: {fileID: 0}
+  allowedItemType: 2
 --- !u!1 &3383649905797678181
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,6 +801,7 @@ GameObject:
   - component: {fileID: 3806091337286727304}
   - component: {fileID: 6540685710790078510}
   - component: {fileID: 4641006013330151954}
+  - component: {fileID: 2909472944970931639}
   m_Layer: 5
   m_Name: GloveSlot
   m_TagString: Untagged
@@ -845,6 +867,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2.5
+--- !u!114 &2909472944970931639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3383649905797678181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2a68552644540489b96716611f02a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myChild: {fileID: 0}
+  curChild: {fileID: 0}
+  allowedItemType: 1
 --- !u!1 &3393967797874086875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,8 +1131,9 @@ GameObject:
   - component: {fileID: 7282076069899217986}
   - component: {fileID: 7762290034073015610}
   - component: {fileID: 4640393021562817964}
+  - component: {fileID: 6312554531257219839}
   m_Layer: 5
-  m_Name: ShoesSlot
+  m_Name: BootsSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1159,6 +1197,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2.5
+--- !u!114 &6312554531257219839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4884921626440342968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2a68552644540489b96716611f02a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myChild: {fileID: 0}
+  curChild: {fileID: 0}
+  allowedItemType: 1
 --- !u!1 &6343840237237710726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,6 +1466,7 @@ GameObject:
   - component: {fileID: 1621443305408616627}
   - component: {fileID: 8113526739216727350}
   - component: {fileID: 7820382815692147935}
+  - component: {fileID: 5576609208757373272}
   m_Layer: 5
   m_Name: HelmetSlot
   m_TagString: Untagged
@@ -1478,6 +1532,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2.5
+--- !u!114 &5576609208757373272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6966044950948810985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2a68552644540489b96716611f02a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myChild: {fileID: 0}
+  curChild: {fileID: 0}
+  allowedItemType: 1
 --- !u!1 &7022610398932586120
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,6 +2000,7 @@ GameObject:
   - component: {fileID: 2574328592061522037}
   - component: {fileID: 2441939388985828080}
   - component: {fileID: 6777353204595215272}
+  - component: {fileID: 4290471771917874096}
   m_Layer: 5
   m_Name: RingSlot
   m_TagString: Untagged
@@ -1996,3 +2066,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2.5
+--- !u!114 &4290471771917874096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888240633157811502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2a68552644540489b96716611f02a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myChild: {fileID: 0}
+  curChild: {fileID: 0}
+  allowedItemType: 2
