@@ -33,7 +33,6 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
         {
             user = PlayerStateUiManager.Instance.user;
         }
-        Debug.Log($"allowedArmorType in Start: {allowedArmorType}");
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -52,17 +51,13 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
                 // 아이템 타입이 슬롯의 허용된 타입과 같은지 확인합니다.
                 if (itemKind.itemType == allowedItemType)
                 {
-                    Debug.Log($"Allowed Item Type: {allowedItemType}, Dragged Item Type: {itemKind.itemType}");
-
                     if (itemKind is ArmorItem armorItem)
                     {
                         isAllowed = armorItem.armorType == allowedArmorType;
-                        Debug.Log($"Allowed Armor Type: {allowedArmorType}, Dragged Armor Type: {armorItem.armorType}");
                     }
                     else if (itemKind is AcceItem acceItem)
                     {
                         isAllowed = acceItem.AcceType == allowedAcceType;
-                        Debug.Log($"Allowed Acce Type: {allowedAcceType}, Dragged Acce Type: {acceItem.AcceType}");
                     }
                     else
                     {
