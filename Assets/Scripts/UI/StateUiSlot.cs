@@ -11,13 +11,8 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
     private Player user; 
 
     [SerializeField] private ItemType allowedItemType; // 인스펙터에서 설정할 수 있는 아이템 타입 변수
-    private ArmorType allowedArmorType; // 인스펙터에서 설정할 수 있는 방어구 타입 변수
-    private AcceType allowedAcceType; // 인스펙터에서 설정할 수 있는 방어구 타입 변수
-
-    // private에 보안수준을 유지하면서 접근할수있게함
-    public ItemType AllowedItemType { get => allowedItemType; set => allowedItemType = value; }
-    public ArmorType AllowedArmorType { get => allowedArmorType; set => allowedArmorType = value; }
-    public AcceType AllowedAcceType { get => allowedAcceType; set => allowedAcceType = value; }
+    [SerializeField] private ArmorType allowedArmorType; // 인스펙터에서 설정할 수 있는 방어구 타입 변수
+    [SerializeField] private AcceType allowedAcceType; // 인스펙터에서 설정할 수 있는 방어구 타입 변수
 
 
     public void SetChild(GameObject newChild)
@@ -38,7 +33,7 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
         {
             user = PlayerStateUiManager.Instance.user;
         }
-
+        Debug.Log($"allowedArmorType in Start: {allowedArmorType}");
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -54,31 +49,27 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
                 var itemKind = draggedItemInfo.itemKind;
                 bool isAllowed = false;
 
-                // 아이템 타입이 슬롯 타입과 같은 타입인지 확인.
+                // 아이템 타입이 슬롯의 허용된 타입과 같은지 확인합니다.
                 if (itemKind.itemType == allowedItemType)
                 {
+                    Debug.Log($"Allowed Item Type: {allowedItemType}, Dragged Item Type: {itemKind.itemType}");
+
                     if (itemKind is ArmorItem armorItem)
                     {
-                        // 방어구 타입이 슬롯의 타입과 일치하는지 확인
-                        if(armorItem.armorType == allowedArmorType)
-                        {
-                            isAllowed = true;
-                        }
-                        else
-                        {
-                            isAllowed = false;
-                        }
+                        isAllowed = armorItem.armorType == allowedArmorType;
+                        Debug.Log($"Allowed Armor Type: {allowedArmorType}, Dragged Armor Type: {armorItem.armorType}");
                     }
-                    else if( itemKind is AcceItem acceItem)
+                    else if (itemKind is AcceItem acceItem)
                     {
                         isAllowed = acceItem.AcceType == allowedAcceType;
+                        Debug.Log($"Allowed Acce Type: {allowedAcceType}, Dragged Acce Type: {acceItem.AcceType}");
                     }
                     else
                     {
-                        isAllowed = true; // 방어구가 아닌 경우에는 무조건 허용
+                        isAllowed = true; // 기본적으로 허용
                     }
                 }
-                
+
 
                 if (isAllowed)
                 {
