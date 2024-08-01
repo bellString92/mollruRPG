@@ -67,6 +67,8 @@ public class Movement : AnimatorProperty
 
     IEnumerator Rotating(Vector3 dir)
     {
+        dir.y = 0.0f;
+        dir.Normalize();
         float rotAngle = Vector3.Angle(transform.forward, dir);
 
         float rotDir = 1.0f;
@@ -170,7 +172,8 @@ public class Movement : AnimatorProperty
 
                 transform.Translate(dir * delta, Space.World);
             }
-
+            dir.y = 0f;
+            dir.Normalize();
             float angle = Vector3.Angle(transform.forward, dir);
             float rotDir = Vector3.Dot(transform.right, dir) < 0.0f ? -1.0f : 1.0f;
 

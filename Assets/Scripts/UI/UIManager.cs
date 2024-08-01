@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         myInven.gameObject.SetActive(false);
-        myStateWindow.gameObject.SetActive(false);
+        //myStateWindow.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

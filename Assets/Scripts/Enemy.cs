@@ -48,8 +48,9 @@ public class Enemy : BattleSystem
                 break;
             case State.Death:
                 giveExp(myExp);
-                StopAllCoroutines();
                 deadAct?.Invoke();
+                StopAllCoroutines();
+                //deadAct?.Invoke();
                 break;
         }
     }    
@@ -116,12 +117,12 @@ public class Enemy : BattleSystem
     
     public void OnDisApear()
     {
-        StartCoroutine(DisApearing(0.3f));
+        StartCoroutine(DisApearing(2.0f));
     }
 
     IEnumerator DisApearing(float downSpeed)
     {
-        yield return new WaitForSeconds(4.0f);
+        yield return new WaitForSeconds(2.0f);
         Vector3 dir = Vector3.down;
         float dist = 1.0f;
         while(dist > 0.0f)
