@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8756d66819215d40b9dd7df1a74a5b6, type: 3}
+  m_Name: Key
+  m_EditorClassIdentifier: 
+  itemName: "\uCCA0 \uC5F4\uC1E0"
+  itemType: 4
+  itemTag: MaterialItem
+  itemIcon: {fileID: 21300000, guid: 68fba0368e8dc8842ad10756647eee14, type: 3}
+  description: "\uC5B4\uB518\uAC00\uC758 \uC7A0\uAE08 \uC7A5\uCE58\uB97C \uD574\uC81C\uD558\uAE30
+    \uC704\uD55C \uC5F4\uC1E0"
+  price: 30
+  resellprice: 24
+  itemID: 5005
+  maxStack: 999
+  quantity: 1
+  rarity: 0
+  kaiLevel: 0

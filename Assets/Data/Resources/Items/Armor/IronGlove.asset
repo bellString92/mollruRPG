@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9c423e112425cf42a7db39be74acb72, type: 3}
+  m_Name: IronGlove
+  m_EditorClassIdentifier: 
+  itemName: "\uCCA0 \uAE00\uB7EC\uBE0C"
+  itemType: 1
+  itemTag: ArmorItem
+  itemIcon: {fileID: 21300000, guid: abd035fb6332ca349b38f5a611127c07, type: 3}
+  description: "\uC704\uBCD1\uB4E4\uC758 \uC81C\uC2DD \uCCA0 \uAE00\uB7EC\uBE0C"
+  price: 30
+  resellprice: 24
+  itemID: 2003
+  maxStack: 1
+  quantity: 1
+  rarity: 0
+  kaiLevel: 0
+  armorType: 2
+  maxHealBoost: 20
+  armorUpgradeRequirements:
+  - startLevel: 1
+    endLevel: 2
+    materialIncrements:
+    - material: {fileID: 11400000, guid: 8a2272f978610fc4fa9f6c2374cb92d1, type: 2}
+      increment: 1
+  - startLevel: 3
+    endLevel: 3
+    materialIncrements:
+    - material: {fileID: 11400000, guid: 8a2272f978610fc4fa9f6c2374cb92d1, type: 2}
+      increment: 4
+    - material: {fileID: 11400000, guid: 6240809e3dce94c40a1387ef0c67070c, type: 2}
+      increment: 2
+  effectList:
+  - effectType: 0
+    effectValue: 30
