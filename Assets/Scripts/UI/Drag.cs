@@ -23,7 +23,7 @@ interface IGetParent
 
 public class Drag : DragAble, IChangeParent, IChildObject, ISwapParent, IGetParent
 {
-    public SlotType slotType = SlotType.Item;
+    public SlotType slotType = SlotType.UseItem;
     public bool destroyChk = false;
 
     public Transform myParent { get; private set; }
@@ -34,7 +34,7 @@ public class Drag : DragAble, IChangeParent, IChildObject, ISwapParent, IGetPare
         myParent = transform.parent;
         if (transform.parent.GetComponent<ItemSkillSlot>() == null)
         {
-            if (slotType.Equals(SlotType.Item))
+            if (slotType.Equals(SlotType.UseItem))
                 transform.SetParent(transform.parent.parent.parent.parent.parent.GetComponent<Inventory>().dragItem.transform);
             else if (slotType.Equals(SlotType.Skill))
                 transform.SetParent(transform.parent.parent.GetComponent<SkillSlot>().dragSkill.transform);

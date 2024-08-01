@@ -9,5 +9,7 @@ public enum Skill
 public class PlayerSkill : MonoBehaviour
 {
     public Skill skill;
-    public float CollTime;
+    public string skillTriggerName;
+    public float coolTime;
+    public Transform comboSkill = null;
 }

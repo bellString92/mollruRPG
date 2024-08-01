@@ -19,7 +19,7 @@ interface ISetChild
 
 public enum SlotType
 {
-    Item, Skill, SlotItem, SlotSkill
+    UseItem, Skill, SlotItem, SlotSkill, Item
 }
 
 public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerClickHandler
@@ -27,7 +27,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
     public GameObject myChild = null;
     public Player user;
     SaveItemInfo itemInfo;
-    public SlotType _slotType = SlotType.Item;
+    public SlotType _slotType = SlotType.UseItem;
     public void OnDrop(PointerEventData eventData)
     {
         if (_slotType.Equals(SlotType.Skill)) return;
@@ -156,7 +156,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
         {
             myChild = child.gameObject;
         }
-        if (user == null)
+        if (user == null && Inventory.Instance != null)
         {
             user = Inventory.Instance.user;
         }

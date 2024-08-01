@@ -8,27 +8,52 @@ using UnityEngine.UI;
 public class ItemSkillSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClickHandler
 {
     public GameObject myChild = null;
-    public SlotType slotType = SlotType.Item;
+    public SlotType slotType = SlotType.UseItem;
     public Transform dragItemSkill;
     
     public void OnDrop(PointerEventData eventData)
     {
         if (slotType.Equals(eventData.pointerDrag.GetComponent<Drag>().slotType) ||
-            (slotType.Equals(SlotType.SlotItem) && eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.Item)) ||
+            (slotType.Equals(SlotType.SlotItem) && eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.UseItem)) ||
             (slotType.Equals(SlotType.SlotSkill) && eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.Skill)))
         {
+            if (SkillController.Instance.coCool[transform.GetSiblingIndex()] != null) return;
             Transform slotItem;
+            Transform comboSkill = null;
             if (eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.SlotItem) ||
                 eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.SlotSkill))
             {
                 slotItem = eventData.pointerDrag.transform;
+                if (slotItem.GetComponent<PlayerSkill>() != null)
+                    comboSkill = slotItem.GetComponent<PlayerSkill>().comboSkill;
             }
             else
             {
                 slotItem = GameObject.Instantiate(eventData.pointerDrag.transform);
-                slotItem.name = slotType.ToString();
-                slotItem.GetComponent<Drag>().slotType = slotType.Equals(SlotType.Item) || slotType.Equals(SlotType.SlotItem) ? SlotType.SlotItem : SlotType.SlotSkill;
+                slotItem.name = eventData.pointerDrag.transform.name;
+                slotItem.GetComponent<Drag>().slotType = slotType.Equals(SlotType.UseItem) || slotType.Equals(SlotType.SlotItem) ? SlotType.SlotItem : SlotType.SlotSkill;
+                if (slotItem.GetComponent<PlayerSkill>() != null && slotItem.GetComponent<PlayerSkill>().comboSkill != null)
+                    comboSkill = GameObject.Instantiate(slotItem.GetComponent<PlayerSkill>().comboSkill);
             }
+
+            if (comboSkill != null)
+            {
+                comboSkill.name = slotItem.GetComponent<PlayerSkill>().comboSkill.name;
+                slotItem.GetComponent<PlayerSkill>().comboSkill = comboSkill;
+                comboSkill.gameObject.SetActive(false);
+                comboSkill.SetParent(slotItem);
+                RectTransform srt = comboSkill as RectTransform;
+                Vector2 sanchor = new Vector2(0, 0);
+                srt.anchorMin = sanchor;
+                sanchor.x = 1; sanchor.y = 1;
+                srt.anchorMax = sanchor;
+                sanchor.x = 0.5f; sanchor.y = 0.5f;
+                srt.pivot = sanchor;
+                sanchor.x = 0; sanchor.y = 0;
+                srt.offsetMin = sanchor;
+                srt.offsetMax = sanchor;
+            }
+
             slotItem.GetComponent<Image>().raycastTarget = true;
 
             slotItem.SetParent(transform);
@@ -59,14 +84,22 @@ public class ItemSkillSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
             else
             {
                 Destroy(myChild);
-                foreach (Transform obj in transform.parent)
+                //foreach (Transform obj in transform.parent)
+                int i = 0;
+                int e = transform.parent.childCount;
+                if (eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.SlotItem)
+                    || eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.UseItem)) e = 4;
+                if (eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.SlotSkill)
+                    || eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.Skill)) i = 4;
+
+                for (; i < e; i++)
                 {
-                    if (obj == transform) continue;
-                    if (obj.GetComponent<ItemSkillSlot>().slotType.Equals(SlotType.SlotSkill)) {
-                        if (obj.GetComponentInChildren<PlayerSkill>() == null) continue;
-                        if (obj.GetComponentInChildren<PlayerSkill>().skill.Equals(eventData.pointerDrag.GetComponent<PlayerSkill>().skill))
+                    if (transform.parent.GetChild(i) == transform) continue;
+                    if (transform.parent.GetChild(i).GetComponent<ItemSkillSlot>().slotType.Equals(SlotType.SlotSkill)) {
+                        if (transform.parent.GetChild(i).GetComponentInChildren<PlayerSkill>() == null) continue;
+                        if (transform.parent.GetChild(i).GetComponentInChildren<PlayerSkill>().skill.Equals(eventData.pointerDrag.GetComponent<PlayerSkill>().skill))
                         {
-                            Destroy(obj.GetComponentInChildren<PlayerSkill>().gameObject);
+                            Destroy(transform.parent.GetChild(i).GetComponentInChildren<PlayerSkill>().gameObject);
                         }
                     }
                 }
@@ -74,8 +107,18 @@ public class ItemSkillSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
 
             myChild = slotItem.gameObject;
             myChild.GetComponent<Drag>().destroyChk = false;
-            transform.parent.GetComponent<SkillController>().myImg[transform.GetSiblingIndex()] = myChild.GetComponentsInChildren<Image>()[1];
-            transform.parent.GetComponent<SkillController>().myLabel[transform.GetSiblingIndex()] = myChild.GetComponentsInChildren<TMPro.TMP_Text>()[0];
+            if (slotType.Equals(SlotType.Skill) || slotType.Equals(SlotType.SlotSkill))
+            {
+                transform.parent.GetComponent<SkillController>().myImg[transform.GetSiblingIndex()] = myChild.GetComponentsInChildren<Image>()[1];
+                transform.parent.GetComponent<SkillController>().myLabel[transform.GetSiblingIndex()] = myChild.GetComponentsInChildren<TMPro.TMP_Text>()[0];
+            }
+
+        }
+        else if ((slotType.Equals(SlotType.SlotItem) && eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.SlotSkill))
+            || (slotType.Equals(SlotType.SlotSkill) && eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.SlotItem)))
+        {
+
+            eventData.pointerDrag.transform.gameObject.GetComponent<Drag>().destroyChk = false;
         }
     }
 

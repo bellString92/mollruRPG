@@ -13,7 +13,9 @@ public class AnimEvent : MonoBehaviour
     public UnityEvent ComboAct;
     public UnityEvent attackAct;
     public UnityEvent<float> skill_AttackAct;
-  
+    public UnityEvent<Skill> onComboAct;
+    public UnityEvent<Skill> offComboAct;
+
 
 
     public void OnDamage()
@@ -56,4 +58,13 @@ public class AnimEvent : MonoBehaviour
         skill_AttackAct?.Invoke(v);
     }
 
+    public void OnCombo(Skill v)
+    {
+        onComboAct?.Invoke(v);
+    }
+
+    public void OffCombo(Skill v)
+    {
+        offComboAct?.Invoke(v);
+    }
 }
