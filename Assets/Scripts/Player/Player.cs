@@ -161,7 +161,7 @@ public class Player : AnimatorProperty, IBattle
         {
             myAnim.SetBool("IsRoll", true);
             myAnim.SetTrigger("OnRoll");
-            AllBuff(1.5f, 10, BuffType.MoveSpeed);
+            AllBuff(20f, 3.5f, BuffType.MoveSpeed);
         }
 
         // 상호작용키
@@ -187,14 +187,14 @@ public class Player : AnimatorProperty, IBattle
         if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q) && TGDir.magnitude < 3)
         {
             SkillAction("OnSkill_Q");
-            AllBuff(1.5f, 10, BuffType.MoveSpeed);
+            AllBuff(15f, 10, BuffType.MoveSpeed);
         }
 
         // 스킬 E (이동기)
         if (!myAnim.GetBool("IsSkill_E") && Input.GetKey(KeyCode.E) && TGDir.magnitude < 3)
         {
             SkillAction("OnSkill_E");
-            AllBuff(1.5f, 10, BuffType.MoveSpeed);
+            AllBuff(15f, 10, BuffType.MoveSpeed);
         }
 
         // 스킬 SS (이동기)

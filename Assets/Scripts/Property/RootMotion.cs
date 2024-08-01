@@ -41,15 +41,16 @@ public class RootMotion : AnimatorProperty
         // 각도 구함
         var angle = Vector3.Angle(Vector3.up, hit.normal);
 
+
         // 실제 이동
         if (!Physics.SphereCast(ray, radius, out RaycastHit hitzz, 2.0f, crashMask))
         {
-            if (angle < 0.1f) { rb.velocity = deltaPosition; }
+            if (angle < 60f) { rb.velocity = deltaPosition; }
         }
         Debug.DrawRay(transform.parent.position + (Vector3.up * 0.1f), Vector3.down * 2.0f, UnityEngine.Color.red, 1.0f);
+        transform.parent.rotation *= deltaRotation;
 
         // 초기화
-        transform.parent.rotation *= deltaRotation;
         deltaPosition = Vector3.zero;
         deltaRotation = Quaternion.identity;
     }
@@ -57,9 +58,8 @@ public class RootMotion : AnimatorProperty
     private void OnAnimatorMove()
     {
         // 이동속도 버프용
-        Vector3 rootMotion = myAnim.deltaPosition;                                                      // 루트 모션에서 추출된 deltaPosition을 가져옵니다.
-        Vector3 scaledMotion = rootMotion * transform.parent.GetComponent<Player>().myStat.moveSpeed;   // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
-        Vector3 move = new Vector3(scaledMotion.x, -1.5f, scaledMotion.z);
+        Vector3 scaledMotion = myAnim.deltaPosition * transform.parent.GetComponent<Player>().myStat.moveSpeed;   // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
+        Vector3 move = new Vector3(scaledMotion.x, -1.0f, scaledMotion.z);
 
         deltaPosition += move;
         deltaRotation *= myAnim.deltaRotation;

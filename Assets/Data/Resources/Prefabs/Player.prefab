@@ -361,8 +361,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5264329811699698412}
   - {fileID: 3736367151751537034}
@@ -382,6 +382,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2645294f7727cf141a396496b8beddee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myStat:
+    AttackPoint: 10
+    AttackRange: 2
+    AttackDelay: 2
+    moveSpeed: 100
+    CriticalProbability: 10
+    CriticalDamage: 1.5
+    maxHealPoint: 100
+    curHealPoint: 100
+    maxMagicPoint: 100
+    curMagicPoint: 100
+    myLvevel: 1
+    maxExperiencePoint: 100
+    curExperiencePoint: 80
   changeHpAct:
     m_PersistentCalls:
       m_Calls:
@@ -412,29 +426,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  myStat:
-    AttackPoint: 10
-    AttackRange: 2
-    AttackDelay: 2
-    moveSpeed: 0
-    CriticalProbability: 10
-    CriticalDamage: 1.5
-    maxHealPoint: 100
-    curHealPoint: 100
-    maxMagicPoint: 100
-    curMagicPoint: 100
-    myLvevel: 1
-    maxExperiencePoint: 100
-    curExperiencePoint: 80
   enemyMask:
     serializedVersion: 2
     m_Bits: 128
-  myBody: {fileID: 7861211204230361259}
-  myDoubleClickSecond: 0.25
   myTargetmonster: []
   myTarger: []
   BuffManager: {fileID: 0}
-  _myAni: {fileID: 2300922449658761366}
+  _myAni: {fileID: 0}
 --- !u!114 &3741278184048714632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,7 +449,7 @@ MonoBehaviour:
   viewAngle: 45
   targetMask:
     serializedVersion: 2
-    m_Bits: 26752
+    m_Bits: 30848
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1568
@@ -856,6 +854,10 @@ PrefabInstance:
     - target: {fileID: -8021001004253913084, guid: a26d1668d8f9c014aa8696d714af777c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -1.9264004
+      objectReference: {fileID: 0}
+    - target: {fileID: -7680254278892050146, guid: a26d1668d8f9c014aa8696d714af777c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 33.71
       objectReference: {fileID: 0}
     - target: {fileID: -7219772299731422950, guid: a26d1668d8f9c014aa8696d714af777c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1467,11 +1469,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3347158427430266989}
   m_SourcePrefab: {fileID: 100100000, guid: a26d1668d8f9c014aa8696d714af777c, type: 3}
---- !u!95 &2300922449658761366 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: a26d1668d8f9c014aa8696d714af777c, type: 3}
-  m_PrefabInstance: {fileID: 5657666200463830279}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4775355741301919830 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a26d1668d8f9c014aa8696d714af777c, type: 3}
