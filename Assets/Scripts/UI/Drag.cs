@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 interface IChangeParent
 {
@@ -21,20 +23,44 @@ interface IGetParent
 
 public class Drag : DragAble, IChangeParent, IChildObject, ISwapParent, IGetParent
 {
+    public SlotType slotType = SlotType.Item;
+    public bool destroyChk = false;
+
     public Transform myParent { get; private set; }
     public override void OnBeginDrag(PointerEventData eventData)
     {
         base.OnBeginDrag(eventData);
+        
         myParent = transform.parent;
-        transform.SetParent(transform.parent.parent);
+        if (transform.parent.GetComponent<ItemSkillSlot>() == null)
+        {
+            if (slotType.Equals(SlotType.Item))
+                transform.SetParent(transform.parent.parent.parent.parent.parent.GetComponent<Inventory>().dragItem.transform);
+            else if (slotType.Equals(SlotType.Skill))
+                transform.SetParent(transform.parent.parent.GetComponent<SkillSlot>().dragSkill.transform);
+        }
+        else
+        {
+            transform.SetParent(transform.parent.GetComponent<ItemSkillSlot>().dragItemSkill.transform);
+        }
+
+        if (slotType.Equals(SlotType.SlotItem) || slotType.Equals(SlotType.SlotSkill))
+            destroyChk = true;
         myImage.raycastTarget = false;
     }
 
     public override void OnEndDrag(PointerEventData eventData)
     {
-        transform.SetParent(myParent);
-        transform.localPosition = Vector2.zero;
-        myImage.raycastTarget = true;
+        if (destroyChk)
+        {
+            Destroy(transform.gameObject);
+        }
+        else
+        {
+            transform.SetParent(myParent);
+            transform.localPosition = Vector2.zero;
+            myImage.raycastTarget = true;
+        }
     }
 
     public void ChangeParent(Transform parent)
@@ -48,6 +74,7 @@ public class Drag : DragAble, IChangeParent, IChildObject, ISwapParent, IGetPare
         transform.SetParent(newParent);
         transform.localPosition = Vector2.zero;
     }
+
     // Start is called before the first frame update
     void Start()
     {

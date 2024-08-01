@@ -179,24 +179,21 @@ public class Player : AnimatorProperty, IBattle
         {
             if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
             {
-                OnAllSkillTrue();
-                myAnim.SetTrigger("OnAttack");
+                SkillAction("OnAttack");
             }
         }
         
         // 스킬 Q (이동기)
         if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q) && TGDir.magnitude < 3)
         {
-            OnAllSkillTrue();
-            myAnim.SetTrigger("OnSkill_Q");
+            SkillAction("OnSkill_Q");
             AllBuff(1.5f, 10, BuffType.MoveSpeed);
         }
 
         // 스킬 E (이동기)
         if (!myAnim.GetBool("IsSkill_E") && Input.GetKey(KeyCode.E) && TGDir.magnitude < 3)
         {
-            OnAllSkillTrue();
-            myAnim.SetTrigger("OnSkill_E");
+            SkillAction("OnSkill_E");
             AllBuff(1.5f, 10, BuffType.MoveSpeed);
         }
 
@@ -225,39 +222,40 @@ public class Player : AnimatorProperty, IBattle
         // 스킬 F1
         if (!myAnim.GetBool("IsSkill_F") && Input.GetKeyDown(KeyCode.F))
         {
-            OnAllSkillTrue();
-            myAnim.SetTrigger("OnSkill_F");
+            SkillAction("OnSkill_F");
         }
 
         // 스킬 Tab
         if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab))
         {
-            OnAllSkillTrue();
-            myAnim.SetTrigger("OnSkill_Tab");
+            SkillAction("OnSkill_Tab");
         }
 
         // 스킬 1
         if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            OnAllSkillTrue();
-            myAnim.SetTrigger("OnSkill_1");
+            SkillAction("OnSkill_1");
             AllBuff(10.0f, 5.0f, BuffType.Defense);
         }
 
         // 스킬 2
         if (!myAnim.GetBool("IsSkill_2") && Input.GetKey(KeyCode.Alpha2))
         {
-            OnAllSkillTrue();
-            myAnim.SetTrigger("OnSkill_2");
+            SkillAction("OnSkill_2");
         }
 
         // 스킬 3
         if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
         {
-            OnAllSkillTrue();
-            myAnim.SetTrigger("OnSkill_3");
+            SkillAction("OnSkill_3");
         }
 
+    }
+
+    private void SkillAction(string skillTriggerName)
+    {
+        OnAllSkillTrue();
+        myAnim.SetTrigger(skillTriggerName);
     }
 
     // 버프 추가 매서드

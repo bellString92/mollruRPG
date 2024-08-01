@@ -17,13 +17,21 @@ interface ISetChild
     void SetChild(GameObject newChild);
 }
 
+public enum SlotType
+{
+    Item, Skill, SlotItem, SlotSkill
+}
+
 public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerClickHandler
 {
     public GameObject myChild = null;
     public Player user;
     SaveItemInfo itemInfo;
+    public SlotType _slotType = SlotType.Item;
     public void OnDrop(PointerEventData eventData)
     {
+        if (_slotType.Equals(SlotType.Skill)) return;
+
         var draggedItemInfo = eventData.pointerDrag.GetComponent<SaveItemInfo>();        
         // 드래그 시작 슬롯의 InventorySlot 컴포넌트를 가져옵니다.
         var startSlot = eventData.pointerDrag.GetComponentInParent<InventorySlot>();

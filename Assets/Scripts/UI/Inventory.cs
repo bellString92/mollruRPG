@@ -9,6 +9,7 @@ public class Inventory : MonoBehaviour
     public static Inventory Instance;
     public GameObject NoEmptySlotPopup;
     public Player user;
+    public Transform dragItem;
 
     void Awake()
     {
