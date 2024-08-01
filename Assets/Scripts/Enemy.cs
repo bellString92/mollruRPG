@@ -7,6 +7,8 @@ public class Enemy : BattleSystem
 {
     public float myExp = 100;
 
+    private bool isDie = false;//몬스터의 사망 여부
+
     public enum State
     {
         Create, Normal, Battle, Death
@@ -47,10 +49,10 @@ public class Enemy : BattleSystem
                 FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
                 break;
             case State.Death:
+                GetComponent<Rigidbody>().useGravity = false;
                 giveExp(myExp);
                 deadAct?.Invoke();
                 StopAllCoroutines();
-                //deadAct?.Invoke();
                 break;
         }
     }    
@@ -88,6 +90,7 @@ public class Enemy : BattleSystem
     {
         startPos = transform.position;
         OnChangeState(State.Normal);
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -117,12 +120,13 @@ public class Enemy : BattleSystem
     
     public void OnDisApear()
     {
-        StartCoroutine(DisApearing(2.0f));
+        StartCoroutine(DisApearing(0.3f));
     }
 
     IEnumerator DisApearing(float downSpeed)
     {
-        yield return new WaitForSeconds(2.0f);
+        this.isDie = true;
+        yield return new WaitForSeconds(3.0f);
         Vector3 dir = Vector3.down;
         float dist = 1.0f;
         while(dist > 0.0f)
@@ -132,6 +136,10 @@ public class Enemy : BattleSystem
             dist -= delta;
             yield return null;
         }
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        this.myBattleStat.curHealPoint = 100;
+        this.isDie = false;
+        GetComponent<CapsuleCollider>().enabled = true;//몬스터 Collider 활성화
+        this.gameObject.SetActive(false);
     }
 }
