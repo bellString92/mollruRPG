@@ -127,6 +127,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
                         Destroy(myChild);
                     }
                 }
+                else
+                {
+                    Debug.Log("올바르지 않은 아이템 사용");
+                }
             }
         }
     }

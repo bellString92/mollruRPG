@@ -92,8 +92,8 @@ MonoBehaviour:
   myChild: {fileID: 0}
   curChild: {fileID: 0}
   allowedItemType: 0
-  allowedArmorType: 0
-  allowedAcceType: 0
+  allowedArmorType: 4
+  allowedAcceType: 2
 --- !u!1 &650079217352125945
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,7 +626,7 @@ MonoBehaviour:
   curChild: {fileID: 0}
   allowedItemType: 1
   allowedArmorType: 1
-  allowedAcceType: 0
+  allowedAcceType: 2
 --- !u!1 &2801882163908004568
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,7 +794,7 @@ MonoBehaviour:
   myChild: {fileID: 0}
   curChild: {fileID: 0}
   allowedItemType: 2
-  allowedArmorType: 0
+  allowedArmorType: 4
   allowedAcceType: 1
 --- !u!1 &3383649905797678181
 GameObject:
@@ -889,7 +889,7 @@ MonoBehaviour:
   curChild: {fileID: 0}
   allowedItemType: 1
   allowedArmorType: 2
-  allowedAcceType: 0
+  allowedAcceType: 2
 --- !u!1 &3393967797874086875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1221,7 +1221,7 @@ MonoBehaviour:
   curChild: {fileID: 0}
   allowedItemType: 1
   allowedArmorType: 3
-  allowedAcceType: 0
+  allowedAcceType: 2
 --- !u!1 &6343840237237710726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1465,7 +1465,7 @@ MonoBehaviour:
   myChild: {fileID: 0}
   curChild: {fileID: 0}
   allowedItemType: 2
-  allowedArmorType: 0
+  allowedArmorType: 4
   allowedAcceType: 0
 --- !u!1 &6966044950948810985
 GameObject:
@@ -1560,7 +1560,7 @@ MonoBehaviour:
   curChild: {fileID: 0}
   allowedItemType: 1
   allowedArmorType: 0
-  allowedAcceType: 0
+  allowedAcceType: 2
 --- !u!1 &7022610398932586120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2095,5 +2095,5 @@ MonoBehaviour:
   myChild: {fileID: 0}
   curChild: {fileID: 0}
   allowedItemType: 2
-  allowedArmorType: 0
+  allowedArmorType: 4
   allowedAcceType: 1

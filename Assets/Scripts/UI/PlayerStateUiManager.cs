@@ -59,6 +59,8 @@ public class PlayerStateUiManager : MonoBehaviour
                         case ArmorType.Boots:
                             slotTransform = bootsArmorSlot;
                             break;
+                        default:
+                            break;
                     }
                 }
                 break;
@@ -86,6 +88,8 @@ public class PlayerStateUiManager : MonoBehaviour
                                 // 두 슬롯 모두 차있을 경우 첫 번째 슬롯으로 설정
                                 slotTransform = RingSlot;
                             }
+                            break;
+                        default:
                             break;
                     }
                 }

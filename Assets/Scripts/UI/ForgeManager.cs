@@ -40,13 +40,13 @@ public class ForgeUI : MonoBehaviour
 
         if (itemInfo.kaiLevel != 0)
         {
-            newText.text = $"Name: {itemInfo.itemName} +{itemInfo.kaiLevel}\n";
+            newText.text = $"[ {itemInfo.itemName} +{itemInfo.kaiLevel} ]\n";
         }
         else
         {
-            newText.text = $"Name: {itemInfo.itemName} \n";
+            newText.text = $"[ {itemInfo.itemName} ]\n";
         }
-        newText.text += $"Description: {itemInfo.description}\n";
+        newText.text += $"[ {itemInfo.description} ]\n";
 
 
         // ItemType에 따른 추가 정보 표시
@@ -78,11 +78,11 @@ public class ForgeUI : MonoBehaviour
 
             if (weaponInfo.kaiLevel < maxKaiLevel)
             {
-                infoText.text += $"Attack Boost: {currentBoost} => {nextBoost}\n";
+                infoText.text += $"무기 공격력 : {currentBoost} => {nextBoost}\n";
             }
             else
             {
-                infoText.text += $"Attack Boost: {currentBoost} (최고 강화 등급입니다)\n";
+                infoText.text += $"무기 공격력 : {currentBoost} (최고 강화 등급입니다)\n";
             }
         }
     }
@@ -100,11 +100,11 @@ public class ForgeUI : MonoBehaviour
 
             if (armorInfo.kaiLevel < maxKaiLevel)
             {
-                infoText.text += $"Max Heal Boost: {currentBoost} => {nextBoost}\n";
+                infoText.text += $"방어구 체력: {currentBoost} => {nextBoost}\n";
             }
             else
             {
-                infoText.text += $"Max Heal Boost: {currentBoost} (최고 강화 등급입니다)\n";
+                infoText.text += $"방어구 체력: {currentBoost} (최고 강화 등급입니다)\n";
             }
         }
     }

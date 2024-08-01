@@ -14,7 +14,8 @@ public enum AcceEffectType
 public enum AcceType // 부위 세분화
 {
     Necklace,
-    Ring
+    Ring,
+    None
 }
 
 [CreateAssetMenu(fileName = "New AcceItem", menuName = "Items/AcceItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드

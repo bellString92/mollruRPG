@@ -147,9 +147,9 @@ public class ShopManager : MonoBehaviour
         // 새로운 아이템 정보 텍스트 생성
         TMP_Text newText = Instantiate(itemInfoTextPrefab, content);
 
-        newText.text = $"Name: {itemInfo.itemName}\n" +
-                          $"Rarity: {itemInfo.rarity}\n" +
-                          $"Type: {itemInfo.itemType}\n";
+        newText.text = $" [ {itemInfo.itemName} ]\n" +
+                          $"등급 : {itemInfo.rarity}\n" +
+                          $"분류 : {itemInfo.itemType}\n";
 
 
         // 추가적인 정보 표시를 위해 switch문 사용
@@ -174,8 +174,8 @@ public class ShopManager : MonoBehaviour
                 Debug.LogWarning("Unknown ItemType: " + itemInfo.itemType);
                 break;
         }
-        newText.text += $"\nDescription: {itemInfo.description}\n" +
-                        $"Price: {itemInfo.price}";
+        newText.text += $"[ {itemInfo.description} ]\n" +
+                        $"가격 : {itemInfo.price}";
     }
 
     // 각 ItemType에 따른 추가 정보 표시 함수들
@@ -183,7 +183,32 @@ public class ShopManager : MonoBehaviour
     {
         if (weaponInfo != null)
         {
-            infoText.text += $"\nattackBoost: {weaponInfo.attackBoost}\n";
+            // 기본적으로 모든 무기가 가지는 공격력 보너스 표시
+            infoText.text += $"무기 공격력 : {weaponInfo.attackBoost}\n";
+
+            // 효과 목록을 순회하여 설정된 효과만 표시
+            foreach (var effect in weaponInfo.effectList)
+            {
+                switch (effect.effectType)
+                {
+                    case WeaponEffectType.MaxHealthBoost:
+                        infoText.text += $"추가 체력 : {effect.effectValue}\n";
+                        break;
+                    case WeaponEffectType.CritChanceBoost:
+                        infoText.text += $"치명타 확률 : {effect.effectValue}\n";
+                        break;
+                    case WeaponEffectType.CritDamageBoost:
+                        infoText.text += $"치명타 대미지 : {effect.effectValue}\n";
+                        break;
+                    case WeaponEffectType.SpeedBoost:
+                        infoText.text += $"추가 속도 : {effect.effectValue}\n";
+                        break;
+                    // 추가적인 효과 
+                    default:
+                        infoText.text += $"Unknown Effect Type: {effect.effectType}\n";
+                        break;
+                }
+            }
         }
     }
 
@@ -191,7 +216,35 @@ public class ShopManager : MonoBehaviour
     {
         if (armorInfo != null)
         {
-            infoText.text += $"\nmaxHealBoost: {armorInfo.maxHealBoost}\n";
+            // 방어구 부위 정보 표시
+            infoText.text += $"부위: {armorInfo.armorType}\n";
+            // 기본적으로 모든 무기가 가지는 공격력 보너스 표시
+            infoText.text += $"방어구 체력 : {armorInfo.maxHealBoost}\n";
+
+            // 효과 목록을 순회하여 설정된 효과만 표시
+            foreach (var effect in armorInfo.effectList)
+            {
+                switch (effect.effectType)
+                {
+                    case ArmorEffectType.AttackBoost:
+                        infoText.text += $"추가 공격력: {effect.effectValue}\n";
+                        break;
+                    case ArmorEffectType.CritChanceBoost:
+                        infoText.text += $"치명타 확률 : {effect.effectValue}\n";
+                        break;
+                    case ArmorEffectType.CritDamageBoost:
+                        infoText.text += $"치명타 대미지 : {effect.effectValue}\n";
+                        break;
+                    case ArmorEffectType.SpeedBoost:
+                        infoText.text += $"추가 속도 : {effect.effectValue}\n";
+                        break;
+                    // 추가적인 효과 
+                    default:
+                        infoText.text += $"Unknown Effect Type: {effect.effectType}\n";
+                        break;
+                }
+            }
+
         }
     }
 
@@ -199,22 +252,47 @@ public class ShopManager : MonoBehaviour
     {
         if (acceInfo != null)
         {
-            //infoText.text += $"\nattackBoost: {acceInfo.attackBoost}\n";
-            //infoText.text += $"maxHealBoost: {acceInfo.maxHealBoost}\n";
+            // 방어구 부위 정보 표시
+            infoText.text += $"부위: {acceInfo.AcceType}\n";
+            foreach (var effect in acceInfo.effectList)
+            {
+                switch (effect.effectType)
+                {
+                    case AcceEffectType.AttackBoost:
+                        infoText.text += $"추가 공격력: {effect.effectValue}\n";
+                        break;
+                    case AcceEffectType.MaxHealthBoost:
+                        infoText.text += $"추가 체력: {effect.effectValue}\n";
+                        break;
+                    case AcceEffectType.CritChanceBoost:
+                        infoText.text += $"치명타 확률 : {effect.effectValue}\n";
+                        break;
+                    case AcceEffectType.CritDamageBoost:
+                        infoText.text += $"치명타 대미지 : {effect.effectValue}\n";
+                        break;
+                    case AcceEffectType.SpeedBoost:
+                        infoText.text += $"추가 속도 : {effect.effectValue}\n";
+                        break;
+                    // 추가적인 효과 
+                    default:
+                        infoText.text += $"Unknown Effect Type: {effect.effectType}\n";
+                        break;
+                }
+            }
         }
     }
 
-    private void DisplayConsumableInfo(ConsumItem ConsumInfo, TMP_Text infoText)
+    private void DisplayConsumableInfo(ConsumItem consumInfo, TMP_Text infoText)
     {
-        if(ConsumInfo != null)
+        if(consumInfo != null)
         {
-            if (ConsumInfo.effectType == EffectType.HealEffect)
-            { 
-                infoText.text += $"\nhealPoint: {ConsumInfo.EffectPoint}\n"; 
-            }
-            else if (ConsumInfo.effectType == EffectType.AttackBoostEffect)
+            if (consumInfo.effectType == EffectType.HealEffect && consumInfo.EffectPoint != 0)
             {
-                //infoText.text +=
+                infoText.text += $"회복량 : {consumInfo.EffectPoint}\n";
+            }
+            else if (consumInfo.effectType == EffectType.AttackBoostEffect && consumInfo.EffectPoint != 0)
+            {
+                infoText.text += $"공격력 증가 : {consumInfo.EffectPoint}\n";
             }
 
         }
