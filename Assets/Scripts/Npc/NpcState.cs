@@ -61,7 +61,7 @@ public class NpcState : AnimatorProperty
                             if(UIManager.Instance != null && doMyJob == null)
                             {
                                 doMyJob = UIManager.Instance.ShowUI(myJob);// 중복생성 방지를 위한 domyjob저장 ShowUI는 정상작동
-                                urInventory.gameObject.SetActive(true);
+                                urInventory?.gameObject.SetActive(true);
                                 doingmyjob = true;
                             }
                         }
@@ -70,7 +70,7 @@ public class NpcState : AnimatorProperty
                     {
                         if (doMyJob == null)
                         {
-                            urInventory.gameObject.SetActive(false);
+                            urInventory?.gameObject.SetActive(false);
                             doingmyjob= false;
                         }
                     }                    
@@ -138,7 +138,7 @@ public class NpcState : AnimatorProperty
         {
             Destroy(doMyJob);
             doMyJob = null;
-            urInventory.gameObject.SetActive(false);
+            urInventory?.gameObject.SetActive(false);
         }
     }
 

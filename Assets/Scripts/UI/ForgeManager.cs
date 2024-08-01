@@ -22,7 +22,7 @@ public class ForgeUI : MonoBehaviour
     public void DisplayItemInfo(SaveItemInfo saveItemInfo)
     {
         // 현재 아이템의 강화 성공 확률 표시
-        UpdateLuckPercent(saveItemInfo.itemKind);
+        UpdateLuckPercent(saveItemInfo.item);
 
         // 기존의 스크롤뷰 콘텐츠 모두 제거
         foreach (Transform child in scrollViewContent)
@@ -31,7 +31,7 @@ public class ForgeUI : MonoBehaviour
         }
 
         // SaveItemInfo에서 ItemKind 정보 가져오기
-        ItemKind itemInfo = saveItemInfo.itemKind;
+        ItemKind itemInfo = saveItemInfo.item;
 
         // 새로운 아이템 정보 텍스트 생성
         TMP_Text newText = Instantiate(itemInfoTextPrefab, scrollViewContent);
@@ -112,7 +112,7 @@ public class ForgeUI : MonoBehaviour
     {
         if (saveItemInfo != null)
         {
-            ItemKind itemInfo = saveItemInfo.itemKind;
+            ItemKind itemInfo = saveItemInfo.item;
             List<MaterialRequirement> materialRequirements = null; // 요구 재료 리스트 불러오기
 
             if (itemInfo is WeaponItem weaponItem) // 아이템 타입 검사후 맞는 리스트 가져오기
@@ -189,7 +189,7 @@ public class ForgeUI : MonoBehaviour
             SaveItemInfo saveItemInfo = forgeSlot.myChild.GetComponent<SaveItemInfo>();
             if (saveItemInfo != null)
             {               
-                Inventory.Instance.CreateItem(saveItemInfo.itemKind, forgeSlot.myChild);
+                Inventory.Instance.CreateItem(saveItemInfo.item, forgeSlot.myChild);
                 forgeSlot.myChild = null;
             }
         }

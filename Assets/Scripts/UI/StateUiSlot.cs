@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClickHandler
 {
+    public SlotType SlotType;
     public GameObject myChild = null;
     public GameObject curChild = null;
     private SaveItemInfo ItemInfo; // SaveItemInfo 컴포넌트를 저장할 변수
@@ -45,7 +46,7 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
             // 드래그된 아이템의 ItemInfo가 null이 아닌지 확인합니다.
             if (draggedItemInfo != null)
             {
-                var itemKind = draggedItemInfo.itemKind;
+                var itemKind = draggedItemInfo.item;
                 bool isAllowed = false;
 
                 // 아이템 타입이 슬롯의 허용된 타입과 같은지 확인합니다.
@@ -73,7 +74,7 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
                     {
                         myChild.GetComponent<ISwapParent>()?.SwapParent(draggedItem.GetComponent<IGetParent>().myParent);
 
-                        ItemInfo?.itemKind.TakeOff(user);// 기존 아이템 능력치 해제
+                        ItemInfo?.item.TakeOff(user);// 기존 아이템 능력치 해제
                     }
                     else
                     {
@@ -86,7 +87,7 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
                     myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
                     ItemInfo = myChild.GetComponent<SaveItemInfo>();
 
-                    ItemInfo?.itemKind.Use(user); // 새 아이템 능력치 적용
+                    ItemInfo?.item.Use(user); // 새 아이템 능력치 적용
                     curChild = myChild;
                     //  PlayerStateUiManager.Instance.UpdatePlayerStats();// 능력치 업데이트
                 }
@@ -113,7 +114,7 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
             // 우클릭 처리
             if (myChild != null)
             {
-                ItemInfo?.itemKind.TakeOff(user);
+                ItemInfo?.item.TakeOff(user);
                 Inventory.Instance.AddItem(myChild);
                 myChild=null;
                 curChild = myChild;
@@ -128,13 +129,13 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
         if (myChild == null)
         {
             ItemInfo = draggedItem.GetComponent<SaveItemInfo>();
-            ItemInfo?.itemKind.TakeOff(user);
+            ItemInfo?.item.TakeOff(user);
            // PlayerStateUiManager.Instance.UpdatePlayerStats();
         }
         else if(curChild != myChild)
         {
-            myChild.GetComponent<SaveItemInfo>().itemKind.Use(user);
-            curChild.GetComponent<SaveItemInfo>().itemKind.TakeOff(user);
+            myChild.GetComponent<SaveItemInfo>().item.Use(user);
+            curChild.GetComponent<SaveItemInfo>().item.TakeOff(user);
            // PlayerStateUiManager.Instance.UpdatePlayerStats();
         }
         curChild = myChild;

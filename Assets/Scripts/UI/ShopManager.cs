@@ -88,7 +88,7 @@ public class ShopManager : MonoBehaviour
             SaveItemInfo saveItemInfo = lastClickedSlot.myChild.GetComponent<SaveItemInfo>();
             if (saveItemInfo != null)
             {
-                curItemforSell = saveItemInfo.itemKind; // 현재 선택된 아이템 정보를 저장
+                curItemforSell = saveItemInfo.item; // 현재 선택된 아이템 정보를 저장
             }
         }
         else
@@ -293,6 +293,7 @@ public class ShopManager : MonoBehaviour
             else if (consumInfo.effectType == EffectType.AttackBoostEffect && consumInfo.EffectPoint != 0)
             {
                 infoText.text += $"공격력 증가 : {consumInfo.EffectPoint}\n";
+                infoText.text += $"지속 시간 : {consumInfo.EffectDuration}\n";
             }
 
         }

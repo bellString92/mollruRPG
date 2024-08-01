@@ -38,30 +38,30 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
 
         if (myChild != null && draggedItemInfo != null)
         {
-            if (draggedItemInfo.itemKind.maxStack > 1)
+            if (draggedItemInfo.item.maxStack > 1)
             {
                 var myItemInfo = myChild?.GetComponent<SaveItemInfo>();
                 // 드래그한 아이템과 현재 슬롯의 아이템이 같은 종류인지 확인
-                if (myItemInfo != null && myItemInfo.itemKind.quantity != myItemInfo.itemKind.maxStack)
+                if (myItemInfo != null && myItemInfo.item.quantity != myItemInfo.item.maxStack)
                 {
-                    if (myItemInfo.itemKind.itemID == draggedItemInfo.itemKind.itemID)
+                    if (myItemInfo.item.itemID == draggedItemInfo.item.itemID)
                     {
-                        int totalQuantity = myItemInfo.itemKind.quantity + draggedItemInfo.itemKind.quantity;
+                        int totalQuantity = myItemInfo.item.quantity + draggedItemInfo.item.quantity;
 
-                        if (totalQuantity > myItemInfo.itemKind.maxStack)
+                        if (totalQuantity > myItemInfo.item.maxStack)
                         {
-                            int excessQuantity = totalQuantity - myItemInfo.itemKind.maxStack;
+                            int excessQuantity = totalQuantity - myItemInfo.item.maxStack;
 
                             // 슬롯 아이템 수량을 최대 스택 수량으로 설정
-                            myItemInfo.itemKind.quantity = myItemInfo.itemKind.maxStack;
+                            myItemInfo.item.quantity = myItemInfo.item.maxStack;
 
                             // 드래그된 아이템의 수량을 초과한 수량만큼 감소
-                            draggedItemInfo.itemKind.quantity = excessQuantity;
+                            draggedItemInfo.item.quantity = excessQuantity;
                         }
                         else
                         {
                             // 수량을 합친다
-                            myItemInfo.itemKind.quantity = totalQuantity;
+                            myItemInfo.item.quantity = totalQuantity;
 
                             // 드래그 시작 슬롯의 myChild를 null로 설정한다.
                             eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
@@ -74,7 +74,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
                         TextMeshProUGUI quantityText = myItemInfo.GetComponentInChildren<TextMeshProUGUI>();
                         if (quantityText != null)
                         {
-                            quantityText.text = myItemInfo.itemKind.quantity.ToString();
+                            quantityText.text = myItemInfo.item.quantity.ToString();
                         }
 
                         return;// 기존의 코드 실행을 방지하고 여기서 메서드 종료
@@ -113,16 +113,16 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
             if (myChild != null)
             {
                 itemInfo = myChild?.GetComponent<SaveItemInfo>();
-                if (itemInfo.itemKind.itemType == ItemType.weaponItem || itemInfo.itemKind.itemType == ItemType.armorItem || itemInfo.itemKind.itemType == ItemType.acceItem)
+                if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem || itemInfo.item.itemType == ItemType.acceItem)
                 {
                     PlayerStateUiManager stateManager = PlayerStateUiManager.Instance;
-                    stateManager.SetSlot(myChild, itemInfo.itemKind.itemType);
+                    stateManager.SetSlot(myChild, itemInfo.item.itemType);
                     myChild = null;
                 }
-                else if (itemInfo?.itemKind.itemType == ItemType.consumItem)
+                else if (itemInfo?.item.itemType == ItemType.consumItem)
                 {
-                    itemInfo?.itemKind.Use(user);
-                    if (itemInfo?.itemKind.quantity == 0)
+                    itemInfo?.item.Use(user);
+                    if (itemInfo?.item.quantity == 0)
                     {
                         Destroy(myChild);
                     }

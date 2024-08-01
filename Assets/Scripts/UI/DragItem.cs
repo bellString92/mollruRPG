@@ -11,9 +11,11 @@ public class DragItem : Drag
     public override void OnBeginDrag(PointerEventData eventData)
     {
         base.OnBeginDrag(eventData);
-        parentSlot = myParent.GetComponent<StateUiSlot>();
+        if (myParent.GetComponent<StateUiSlot>() != null)
+        {
+            parentSlot = myParent.GetComponent<StateUiSlot>();
+        }
     }
-
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);

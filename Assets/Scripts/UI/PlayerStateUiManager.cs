@@ -42,7 +42,7 @@ public class PlayerStateUiManager : MonoBehaviour
                 slotTransform = weaponSlot;
                 break;
             case ItemType.armorItem:
-                var armorItem = item.GetComponent<SaveItemInfo>()?.itemKind as ArmorItem;
+                var armorItem = item.GetComponent<SaveItemInfo>()?.item as ArmorItem;
                 if (armorItem != null)
                 {
                     switch (armorItem.armorType)
@@ -65,7 +65,7 @@ public class PlayerStateUiManager : MonoBehaviour
                 }
                 break;
             case ItemType.acceItem:
-                var acceItem = item.GetComponent<SaveItemInfo>()?.itemKind as AcceItem;
+                var acceItem = item.GetComponent<SaveItemInfo>()?.item as AcceItem;
                 if (acceItem != null)
                 {
                     switch (acceItem.AcceType)
@@ -102,14 +102,14 @@ public class PlayerStateUiManager : MonoBehaviour
             if (slot.myChild != null)
             {
                 GameObject existingItem = slot.myChild;
-                existingItem.GetComponent<SaveItemInfo>()?.itemKind.TakeOff(user);// 기존 아이템 능력치 제거
+                existingItem.GetComponent<SaveItemInfo>()?.item.TakeOff(user);// 기존 아이템 능력치 제거
                 Inventory.Instance.AddItem(existingItem); // 인벤토리의 빈 슬롯을 찾아 이동
             }
             item.transform.SetParent(slotTransform);
             item.transform.localPosition = Vector2.zero;
             slot.SetChild(item);
             slot.curChild = item;
-            item.GetComponent<SaveItemInfo>()?.itemKind.Use(user); // 새 아이템 능력치 적용
+            item.GetComponent<SaveItemInfo>()?.item.Use(user); // 새 아이템 능력치 적용
 
             // 능력치 업데이트
             //UpdatePlayerStats();

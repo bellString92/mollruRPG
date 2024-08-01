@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class ForgeSlot : MonoBehaviour, IDropHandler, ISetChild
 {
     public GameObject myChild = null;
+    public SlotType slotType;
     private SaveItemInfo ItemInfo; // SaveItemInfo 컴포넌트를 저장할 변수
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,7 @@ public class ForgeSlot : MonoBehaviour, IDropHandler, ISetChild
             // 드래그된 아이템의 ItemInfo가 null이 아닌지 확인합니다.
             if (draggedItemInfo != null)
             {
-                var itemKind = draggedItemInfo.itemKind;
+                var itemKind = draggedItemInfo.item;
 
                 // 아이템 타입이 WeaponItem 또는 ArmorItem인지 확인합니다.
                 if (itemKind.itemType == ItemType.weaponItem || itemKind.itemType == ItemType.armorItem)
