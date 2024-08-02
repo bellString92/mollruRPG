@@ -110,9 +110,9 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            ItemInfo = myChild.GetComponent<SaveItemInfo>();
+            ItemInfo = myChild?.GetComponent<SaveItemInfo>();
             // 우클릭 처리
-            if (myChild != null)
+            if (myChild != null && Inventory.Instance.HasEmptySlot())
             {
                 ItemInfo?.item.TakeOff(user);
                 Inventory.Instance.AddItem(myChild);
@@ -121,6 +121,10 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
                 // 능력치 업데이트
               //  PlayerStateUiManager.Instance.UpdatePlayerStats();
             }
+            else if(Inventory.Instance.HasEmptySlot()==false)
+            {
+                Inventory.Instance.NoEmptySlot();
+            }    
         }
     }
 
@@ -139,5 +143,17 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
            // PlayerStateUiManager.Instance.UpdatePlayerStats();
         }
         curChild = myChild;
+    }
+
+    public bool HasEmptySlot()
+    {
+        if (myChild == null)
+        {
+            return true; // 빈 슬롯을 찾음
+        }
+        else
+        {
+            return false; // 빈 슬롯이 없음
+        }
     }
 }

@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 520179339598120704}
   - component: {fileID: 1408514035938674560}
   m_Layer: 5
-  m_Name: shopImage10
+  m_Name: shopImage15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3022,7 +3022,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 4577517694915068876}
-  item: {fileID: 11400000, guid: dcd8f664c7a2eed4e84180e4e36a0622, type: 2}
+  item: {fileID: 11400000, guid: 8a2272f978610fc4fa9f6c2374cb92d1, type: 2}
 --- !u!222 &8640813031855813985
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4083,7 +4083,7 @@ GameObject:
   - component: {fileID: 6357682640529926115}
   - component: {fileID: 328278422171118152}
   m_Layer: 5
-  m_Name: shopImage10
+  m_Name: shopImage12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4342,7 +4342,7 @@ GameObject:
   - component: {fileID: 8676383809240001431}
   - component: {fileID: 6052512022465276025}
   m_Layer: 5
-  m_Name: shopImage10
+  m_Name: shopImage11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5127,7 +5127,7 @@ GameObject:
   - component: {fileID: 6113838890640698767}
   - component: {fileID: 4577517694915068876}
   m_Layer: 5
-  m_Name: shopImage10
+  m_Name: shopImage13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5536,7 +5536,7 @@ GameObject:
   - component: {fileID: 687812281975691634}
   - component: {fileID: 5643490687702269410}
   m_Layer: 5
-  m_Name: shopImage10
+  m_Name: shopImage14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6362,7 +6362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 328278422171118152}
-  item: {fileID: 11400000, guid: 8a2272f978610fc4fa9f6c2374cb92d1, type: 2}
+  item: {fileID: 11400000, guid: dcd8f664c7a2eed4e84180e4e36a0622, type: 2}
 --- !u!222 &4708410232210072856
 CanvasRenderer:
   m_ObjectHideFlags: 0

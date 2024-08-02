@@ -112,12 +112,28 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
             // 우클릭 처리: use 실행
             if (myChild != null)
             {
+
                 itemInfo = myChild?.GetComponent<SaveItemInfo>();
+                
                 if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem || itemInfo.item.itemType == ItemType.acceItem)
                 {
-                    PlayerStateUiManager stateManager = PlayerStateUiManager.Instance;
-                    stateManager.SetSlot(myChild, itemInfo.item.itemType);
-                    myChild = null;
+                    if (PlayerStateUiManager.Instance.CheckSlotEmpty(myChild,itemInfo.item.itemType))
+                    {
+                        PlayerStateUiManager stateManager = PlayerStateUiManager.Instance;
+                        stateManager.SetSlot(myChild, itemInfo.item.itemType);
+                        myChild = null;
+                    }
+                    else if(Inventory.Instance.HasEmptySlot())
+                    {
+                        PlayerStateUiManager stateManager = PlayerStateUiManager.Instance;
+                        stateManager.SetSlot(myChild, itemInfo.item.itemType);
+                        myChild = null;
+                    }
+                    else
+                    {
+                        Inventory.Instance.NoEmptySlot();
+                        return;
+                    }
                 }
                 else if (itemInfo?.item.itemType == ItemType.consumItem)
                 {

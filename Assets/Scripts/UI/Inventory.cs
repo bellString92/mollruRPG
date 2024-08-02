@@ -94,7 +94,7 @@ public class Inventory : MonoBehaviour
                 }
             }
             Debug.LogWarning("No empty slots available.");
-            UIManager.Instance.ShowUI(NoEmptySlotPopup);
+            NoEmptySlot();
 
         }
         else
@@ -197,6 +197,22 @@ public class Inventory : MonoBehaviour
         {
             Debug.LogWarning("Item not found or insufficient quantity.");
         }
+    }
+    public bool HasEmptySlot()
+    {
+        foreach (Transform slot in content)
+        {
+            InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
+            if (inventorySlot != null && inventorySlot.myChild == null)
+            {
+                return true; // 빈 슬롯을 찾음
+            }
+        }
+        return false; // 빈 슬롯이 없음
+    }
+    public void NoEmptySlot()
+    {
+        UIManager.Instance.ShowOkbuttonUI(NoEmptySlotPopup);
     }
 }
 

@@ -83,7 +83,8 @@ public class UIManager : MonoBehaviour
         }
 
         // Quantity UI 열기
-        currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
+        currentQuantityUI = Instantiate(itemQuantityCheckPrefab, canvas.transform);
+        //currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
 
         var quantityCheck = currentQuantityUI.AddComponent<ItemQuantityCheck>();
         if (quantityCheck != null)
@@ -101,7 +102,8 @@ public class UIManager : MonoBehaviour
         }
 
         // Quantity UI 열기
-        currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
+        currentQuantityUI = Instantiate(itemQuantityCheckPrefab, canvas.transform);
+        //currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
 
         var quantityCheck = currentQuantityUI.AddComponent<SellQuantityCheck>();
         if (quantityCheck != null)
@@ -125,6 +127,11 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Canvas가 설정되지 않음");
             return null;
         } 
+    }
+    public void ShowOkbuttonUI(GameObject uiPrefab)
+    {
+        GameObject uiInstance = Instantiate(uiPrefab, canvas.transform);
+        uiStack.Push(uiInstance);
     }
 
     public string GetSellQuantityText()

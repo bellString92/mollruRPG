@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using static UnityEditor.Progress;
 
 public class PlayerStateUiManager : MonoBehaviour
 {
@@ -34,76 +35,24 @@ public class PlayerStateUiManager : MonoBehaviour
 
     public void SetSlot(GameObject item, ItemType itemType)
     {
-        Transform slotTransform = null;
-
-        switch (itemType)
-        {
-            case ItemType.weaponItem:
-                slotTransform = weaponSlot;
-                break;
-            case ItemType.armorItem:
-                var armorItem = item.GetComponent<SaveItemInfo>()?.item as ArmorItem;
-                if (armorItem != null)
-                {
-                    switch (armorItem.armorType)
-                    {
-                        case ArmorType.Head:
-                            slotTransform = headArmorSlot;
-                            break;
-                        case ArmorType.Chest:
-                            slotTransform = chestArmorSlot;
-                            break;
-                        case ArmorType.Gloves:
-                            slotTransform = glovesArmorSlot;
-                            break;
-                        case ArmorType.Boots:
-                            slotTransform = bootsArmorSlot;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                break;
-            case ItemType.acceItem:
-                var acceItem = item.GetComponent<SaveItemInfo>()?.item as AcceItem;
-                if (acceItem != null)
-                {
-                    switch (acceItem.AcceType)
-                    {
-                        case AcceType.Necklace:
-                            slotTransform = NecklaceSlot;
-                            break;
-                        case AcceType.Ring:
-                            // 반지 슬롯 중 빈 슬롯을 찾음
-                            if (RingSlot.GetComponent<StateUiSlot>()?.myChild == null)
-                            {
-                                slotTransform = RingSlot;
-                            }
-                            else if (SecondRingSlot.GetComponent<StateUiSlot>()?.myChild == null)
-                            {
-                                slotTransform = SecondRingSlot;
-                            }
-                            else
-                            {
-                                // 두 슬롯 모두 차있을 경우 첫 번째 슬롯으로 설정
-                                slotTransform = RingSlot;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                break;
-        }
+        Transform slotTransform = CheckItemType(item, itemType);
 
         if (slotTransform != null)
         {
             StateUiSlot slot = slotTransform.GetComponent<StateUiSlot>();
             if (slot.myChild != null)
             {
-                GameObject existingItem = slot.myChild;
-                existingItem.GetComponent<SaveItemInfo>()?.item.TakeOff(user);// 기존 아이템 능력치 제거
-                Inventory.Instance.AddItem(existingItem); // 인벤토리의 빈 슬롯을 찾아 이동
+                if (Inventory.Instance.HasEmptySlot())
+                {
+                    GameObject existingItem = slot.myChild;
+                    existingItem.GetComponent<SaveItemInfo>()?.item.TakeOff(user);// 기존 아이템 능력치 제거
+                    Inventory.Instance.AddItem(existingItem); // 인벤토리의 빈 슬롯을 찾아 이동
+                }
+                else
+                {
+                    Inventory.Instance.NoEmptySlot();
+                    return;
+                }
             }
             item.transform.SetParent(slotTransform);
             item.transform.localPosition = Vector2.zero;
@@ -133,5 +82,84 @@ public class PlayerStateUiManager : MonoBehaviour
             showMyState.text = playerStats;
         }
     }
+    public Transform CheckItemType(GameObject item, ItemType itemType)
+    {
+        Transform slotTransform = null;
+        switch (itemType)
+        {
+            case ItemType.weaponItem:
+                slotTransform = weaponSlot;
+                return slotTransform;
+            case ItemType.armorItem:
+                var armorItem = item.GetComponent<SaveItemInfo>()?.item as ArmorItem;
+                if (armorItem != null)
+                {
+                    switch (armorItem.armorType)
+                    {
+                        case ArmorType.Head:
+                            slotTransform = headArmorSlot;
+                            return slotTransform;
+                        case ArmorType.Chest:
+                            slotTransform = chestArmorSlot;
+                            return slotTransform;
+                        case ArmorType.Gloves:
+                            slotTransform = glovesArmorSlot;
+                            return slotTransform;
+                        case ArmorType.Boots:
+                            slotTransform = bootsArmorSlot;
+                            return slotTransform;
+                        default:
+                            return slotTransform = null;
+                    }
+                }
+                return slotTransform = null;
+            case ItemType.acceItem:
+                var acceItem = item.GetComponent<SaveItemInfo>()?.item as AcceItem;
+                if (acceItem != null)
+                {
+                    switch (acceItem.AcceType)
+                    {
+                        case AcceType.Necklace:
+                            slotTransform = NecklaceSlot;
+                            return slotTransform;
+                        case AcceType.Ring:
+                            // 반지 슬롯 중 빈 슬롯을 찾음
+                            if (RingSlot.GetComponent<StateUiSlot>()?.myChild == null)
+                            {
+                                slotTransform = RingSlot;
+                            }
+                            else if (SecondRingSlot.GetComponent<StateUiSlot>()?.myChild == null)
+                            {
+                                slotTransform = SecondRingSlot;
+                            }
+                            else
+                            {
+                                // 두 슬롯 모두 차있을 경우 첫 번째 슬롯으로 설정
+                                slotTransform = RingSlot;
+                            }
+                            return slotTransform;
+                        default:
+                            return slotTransform = null;
+                    }
+                }
+                return slotTransform = null;
+        
+        }
+        return slotTransform = null;
+    }
 
+    public bool CheckSlotEmpty(GameObject item, ItemType itemType)
+    {
+        Transform slot = CheckItemType(item, itemType);
+        
+        if(slot.GetComponent<StateUiSlot>()?.myChild == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
 }
