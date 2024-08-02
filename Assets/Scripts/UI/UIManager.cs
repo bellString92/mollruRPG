@@ -27,10 +27,17 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        myInven.gameObject.SetActive(false);
+        if (myInven != null)
+        {
+            myInven.gameObject.SetActive(false);
+        }
         if (myStateWindow != null)
         {
             myStateWindow.gameObject.SetActive(false);
+        }
+        if (mySkill != null)
+        {
+            mySkill.gameObject.SetActive(false);
         }
     }
 
