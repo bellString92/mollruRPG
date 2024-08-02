@@ -145,6 +145,10 @@ public class ArmorItem : ItemKind
             boost *= Mathf.Pow(incrementValues[3], level - 15);
         }
 
+        // 소수점 첫째 자리에서 반올림 후 정수로 변환하여 소수점 이하 제거
+        boost = Mathf.Round(boost);
+        boost = (float)((int)boost);
+
         return boost;
     }
 }

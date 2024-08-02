@@ -28,6 +28,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
     public Player user;
     SaveItemInfo itemInfo;
     public SlotType _slotType = SlotType.UseItem;
+
+    private float lastClickTime = 0f;
+    private const float doubleClickThreshold = 1.0f; // 더블 클릭 감지 시간(초)
+
     public void OnDrop(PointerEventData eventData)
     {
         if (_slotType.Equals(SlotType.Skill)) return;
@@ -92,60 +96,74 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
             eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
         }
 
-        
         myChild = eventData.pointerDrag;
         myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
 
     }
-  
+
     public void OnPointerClick(PointerEventData eventData)
     {
+        ShopManager shopManager = ShopManager.Instance;
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (ShopManager.Instance != null)
+            if (shopManager != null)
             {
-                ShopManager.Instance.SetDestroySlotItem(myChild != null ? this : null);
+                shopManager.SetDestroySlotItem(myChild != null ? this : null);
             }
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
-        {           
+        {
             // 우클릭 처리: use 실행
             if (myChild != null)
             {
-
+                PlayerStateUiManager stateManager = PlayerStateUiManager.Instance;
+                Inventory invenManager = Inventory.Instance;
                 itemInfo = myChild?.GetComponent<SaveItemInfo>();
-                
-                if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem || itemInfo.item.itemType == ItemType.acceItem)
+
+                float timeSinceLastClick = Time.time - lastClickTime;
+                lastClickTime = Time.time;
+
+                if (timeSinceLastClick <= doubleClickThreshold)
                 {
-                    if (PlayerStateUiManager.Instance.CheckSlotEmpty(myChild,itemInfo.item.itemType))
+                    if (shopManager != null)
                     {
-                        PlayerStateUiManager stateManager = PlayerStateUiManager.Instance;
-                        stateManager.SetSlot(myChild, itemInfo.item.itemType);
-                        myChild = null;
+                        shopManager.SetDestroySlotItem(myChild != null ? this : null);
+                        shopManager.OnDestroyInventorySlotItem();
+                        return; // 더블 클릭 시에는 이후 로직을 수행하지 않음
                     }
-                    else if(Inventory.Instance.HasEmptySlot())
+                }
+                if (shopManager == null)
+                {
+                    if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem || itemInfo.item.itemType == ItemType.acceItem)
                     {
-                        PlayerStateUiManager stateManager = PlayerStateUiManager.Instance;
-                        stateManager.SetSlot(myChild, itemInfo.item.itemType);
-                        myChild = null;
+                        if (stateManager.CheckSlotEmpty(myChild, itemInfo.item.itemType))
+                        {
+                            stateManager.SetSlot(myChild, itemInfo.item.itemType);
+                            myChild = null;
+                        }
+                        else if (invenManager.HasEmptySlot())
+                        {
+                            stateManager.SetSlot(myChild, itemInfo.item.itemType);
+                            myChild = null;
+                        }
+                        else
+                        {
+                            invenManager.NoEmptySlot();
+                            return;
+                        }
+                    }
+                    else if (itemInfo?.item.itemType == ItemType.consumItem)
+                    {
+                        itemInfo?.item.Use(user);
+                        if (itemInfo?.item.quantity == 0)
+                        {
+                            Destroy(myChild);
+                        }
                     }
                     else
                     {
-                        Inventory.Instance.NoEmptySlot();
-                        return;
+                        Debug.Log("올바르지 않은 아이템 사용");
                     }
-                }
-                else if (itemInfo?.item.itemType == ItemType.consumItem)
-                {
-                    itemInfo?.item.Use(user);
-                    if (itemInfo?.item.quantity == 0)
-                    {
-                        Destroy(myChild);
-                    }
-                }
-                else
-                {
-                    Debug.Log("올바르지 않은 아이템 사용");
                 }
             }
         }

@@ -84,6 +84,10 @@ public class ItemQuantityCheck : MonoBehaviour
                 EndEditInputField(inputField.text);
             }
         }
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            OnOkButton();
+        }
     }
 
     private void ShowInputField()

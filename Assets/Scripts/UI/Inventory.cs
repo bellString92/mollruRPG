@@ -25,113 +25,69 @@ public class Inventory : MonoBehaviour
     {
         if (itemKind != null && itemPrefab != null)
         {
-            // 같은 종류의 아이템이 있는 슬롯을 찾기
-            foreach (Transform slot in content)
+            if (TryAddItemToExistingStack(itemKind)) // 같은 아이템이 있는지 확인
             {
-                InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
-                if (inventorySlot != null && inventorySlot.myChild != null)
-                {
-                    SaveItemInfo existingItemInfo = inventorySlot.myChild.GetComponent<SaveItemInfo>();
-                    if (existingItemInfo != null && existingItemInfo.item != null)
-                    {
-                        if ((itemKind.itemType == ItemType.consumItem || itemKind.itemType == ItemType.materialItem) && existingItemInfo.item.itemID == itemKind.itemID)
-                        {
-                            int combinedQuantity = existingItemInfo.item.quantity + itemKind.quantity;
-                            if (combinedQuantity <= itemKind.maxStack)
-                            {
-                                existingItemInfo.item.quantity = combinedQuantity;
-                                TextMeshProUGUI quantityText = inventorySlot.myChild.GetComponentInChildren<TextMeshProUGUI>();
-                                if (quantityText != null)
-                                {
-                                    quantityText.text = existingItemInfo.item.quantity.ToString();
-                                }
-                                return;
-                            }
-                            else
-                            {
-                                int remainingQuantity = combinedQuantity - itemKind.maxStack;
-                                existingItemInfo.item.quantity = itemKind.maxStack;
-                                TextMeshProUGUI quantityText = inventorySlot.myChild.GetComponentInChildren<TextMeshProUGUI>();
-                                if (quantityText != null)
-                                {
-                                    quantityText.text = existingItemInfo.item.quantity.ToString();
-                                }
-                                itemKind.quantity = remainingQuantity;
-                                break; // 빈 슬롯을 찾아 나머지 수량을 생성하기 위해 루프를 빠져나감
-                            }
-                        }
-                    }
-                }
+                return; // 만약 새로 생성할 아이템의 갯수 기존에 있던 아이템의 갯수를 더한 값이 아이템의 최대 스텍을 넘지못하면 생성하지 않고 종료  
             }
 
-
-            // content의 자식 슬롯들을 순회
-            foreach (Transform slot in content)
+            if (HasEmptySlot())// 빈슬롯이 있는지 검사
             {
-                InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
-                if (inventorySlot != null && inventorySlot.myChild == null)
+                ItemKind newItemKind = Instantiate(itemKind);
+                GameObject newItem = Instantiate(itemPrefab);
+                newItem.name = newItemKind.itemName;
+
+
+                // 새로운 게임 오브젝트에 Drag 컴포넌트 추가 (이미 존재하지 않을 때만)
+                if (newItem.GetComponent<DragItem>() == null)
                 {
-                    // ItemKind를 복제하여 사용
-                    ItemKind newItemKind = Instantiate(itemKind);
-
-                    // 새로운 게임 오브젝트 생성 및 설정
-                    GameObject newItem = Instantiate(itemPrefab);
-
-
-                    newItem.name = newItemKind.itemName;
-
-                    // 새로운 게임 오브젝트에 Drag 컴포넌트 추가 (이미 존재하지 않을 때만)
-                    if (newItem.GetComponent<DragItem>() == null)
-                    {
-                        newItem.AddComponent<DragItem>();
-                    }
-
-                    // 아이템의 ItemKind 정보를 불러오기를 쉽게하기 위해 정보를 저장 (이미 존재하지 않을 때만)
-                    SaveItemInfo saveItemInfo = newItem.GetComponent<SaveItemInfo>();
-                    if (saveItemInfo == null)
-                    {
-                        saveItemInfo = newItem.AddComponent<SaveItemInfo>();
-                    }
-                    saveItemInfo.item = newItemKind;
-
-                    // 태그 설정
-                    newItem.tag = newItemKind.itemTag;
-
-                    // 아이콘 설정
-                    Image iconImage = newItem.GetComponent<Image>();
-                    if (iconImage != null && newItemKind.itemIcon != null)
-                    {
-                        iconImage.sprite = newItemKind.itemIcon;
-                    }
-
-                    // 슬롯에 아이템 배치
-                    inventorySlot.SetChild(newItem);
-                    newItem.transform.SetParent(slot);
-
-                    //아이템 갯수 표시
-                    TextMeshProUGUI quantityText = newItem.GetComponentInChildren<TextMeshProUGUI>();
-                    if (quantityText != null)
-                    {
-                        quantityText.text = newItemKind.quantity.ToString();
-                    }
-
-                    // 위치와 크기 설정
-                    // RectTransform 초기화
-                    RectTransform rectTransform = newItem.GetComponent<RectTransform>();
-                    if (rectTransform != null)
-                    {
-                        rectTransform.anchorMin = Vector2.zero;
-                        rectTransform.anchorMax = Vector2.one;
-                        rectTransform.anchoredPosition = Vector2.zero;
-                        rectTransform.sizeDelta = Vector2.zero;
-                        rectTransform.localPosition = Vector3.zero;
-                        rectTransform.localRotation = Quaternion.identity;
-                        rectTransform.localScale = Vector3.one;
-                    }
-
-                    return;
-
+                    newItem.AddComponent<DragItem>();
                 }
+
+                // 아이템의 ItemKind 정보를 불러오기를 쉽게하기 위해 정보를 저장 (이미 존재하지 않을 때만)
+                SaveItemInfo saveItemInfo = newItem.GetComponent<SaveItemInfo>();
+                if (saveItemInfo == null)
+                {
+                    saveItemInfo = newItem.AddComponent<SaveItemInfo>();
+                }
+                saveItemInfo.item = newItemKind;
+
+                // 태그 설정
+                newItem.tag = newItemKind.itemTag;
+
+                // 아이콘 설정
+                Image iconImage = newItem.GetComponent<Image>();
+                if (iconImage != null && newItemKind.itemIcon != null)
+                {
+                    iconImage.sprite = newItemKind.itemIcon;
+                }
+
+                // 슬롯에 아이템 배치
+                AddItemToEmptySlot(newItem);
+
+                //아이템 갯수 표시
+                TextMeshProUGUI quantityText = newItem.GetComponentInChildren<TextMeshProUGUI>();
+                if (quantityText != null)
+                {
+                    quantityText.text = newItemKind.quantity.ToString();
+                }
+
+                // 위치와 크기 설정
+                // RectTransform 초기화
+                RectTransform rectTransform = newItem.GetComponent<RectTransform>();
+                if (rectTransform != null)
+                {
+                    rectTransform.anchorMin = Vector2.zero;
+                    rectTransform.anchorMax = Vector2.one;
+                    rectTransform.anchoredPosition = Vector2.zero;
+                    rectTransform.sizeDelta = Vector2.zero;
+                    rectTransform.localPosition = Vector3.zero;
+                    rectTransform.localRotation = Quaternion.identity;
+                    rectTransform.localScale = Vector3.one;
+                }
+
+                return;
+
+
             }
             Debug.LogWarning("No empty slots available.");
             NoEmptySlot();
@@ -146,16 +102,29 @@ public class Inventory : MonoBehaviour
     {
         if (item != null)
         {
-            // content의 자식 슬롯들을 순회
-            foreach (Transform slot in content)
+            if (item != null)
             {
-                InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
-                if (inventorySlot != null && inventorySlot.myChild == null)
+                SaveItemInfo saveItemInfo = item.GetComponent<SaveItemInfo>();
+                if (saveItemInfo != null && saveItemInfo.item != null)
                 {
-                    item.transform.SetParent(slot);
-                    item.transform.localPosition = Vector2.zero;
-                    inventorySlot.SetChild(item);
-                    break;
+                    ItemKind itemKind = saveItemInfo.item;
+                    if (TryAddItemToExistingStack(itemKind))
+                    {
+                        Destroy(item); // 아이템이 성공적으로 추가된 경우 파괴
+                        return;
+                    }
+                    if (HasEmptySlot())
+                    {
+                        AddItemToEmptySlot(item);
+                    }
+                    else
+                    {
+                        NoEmptySlot();
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("Invalid item information.");
                 }
             }
         }
@@ -250,6 +219,64 @@ public class Inventory : MonoBehaviour
         }
         return false; // 빈 슬롯이 없음
     }
+
+    public bool TryAddItemToExistingStack(ItemKind itemKind)
+    {
+        foreach (Transform slot in content)
+        {
+            InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
+            if (inventorySlot != null && inventorySlot.myChild != null)
+            {
+                SaveItemInfo existingItemInfo = inventorySlot.myChild.GetComponent<SaveItemInfo>();
+                if (existingItemInfo != null && existingItemInfo.item != null)
+                {
+                    if ((itemKind.itemType == ItemType.consumItem || itemKind.itemType == ItemType.materialItem) && existingItemInfo.item.itemID == itemKind.itemID)
+                    {
+                        int combinedQuantity = existingItemInfo.item.quantity + itemKind.quantity;
+                        if (combinedQuantity <= itemKind.maxStack)
+                        {
+                            existingItemInfo.item.quantity = combinedQuantity;
+                            TextMeshProUGUI quantityText = inventorySlot.myChild.GetComponentInChildren<TextMeshProUGUI>();
+                            if (quantityText != null)
+                            {
+                                quantityText.text = existingItemInfo.item.quantity.ToString();
+                            }
+                            return true;
+                        }
+                        else
+                        {
+                            int remainingQuantity = combinedQuantity - itemKind.maxStack;
+                            existingItemInfo.item.quantity = itemKind.maxStack;
+                            TextMeshProUGUI quantityText = inventorySlot.myChild.GetComponentInChildren<TextMeshProUGUI>();
+                            if (quantityText != null)
+                            {
+                                quantityText.text = existingItemInfo.item.quantity.ToString();
+                            }
+                            itemKind.quantity = remainingQuantity;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public bool AddItemToEmptySlot(GameObject item)
+    {
+        foreach (Transform slot in content)
+        {
+            InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
+            if (inventorySlot != null && inventorySlot.myChild == null)
+            {
+                item.transform.SetParent(slot);
+                item.transform.localPosition = Vector2.zero;
+                inventorySlot.SetChild(item);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void NoEmptySlot()
     {
         UIManager.Instance.ShowOkbuttonUI(NoEmptySlotPopup);
