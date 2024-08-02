@@ -132,7 +132,7 @@ public class BossAI : BattleSystem
                 break;
 
             case State.Alert:
-                LookAtPlayer();
+                //LookAtPlayer();
                 break;
             case State.Chase:
                 LookAtPlayer();
@@ -375,7 +375,7 @@ public class BossAI : BattleSystem
 
         // 공격 애니메이션이 끝난 후 Alert 상태로 돌아가기
         yield return new WaitForSeconds(0.1f); // 짧은 대기 시간 후 상태 변경
-        UpdateState(State.Alert);
+        UpdateState(State.Chase);
 
         Debug.Log("ResetAttack coroutine complete");
     }
