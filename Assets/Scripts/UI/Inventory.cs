@@ -25,6 +25,46 @@ public class Inventory : MonoBehaviour
     {
         if (itemKind != null && itemPrefab != null)
         {
+            // 같은 종류의 아이템이 있는 슬롯을 찾기
+            foreach (Transform slot in content)
+            {
+                InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
+                if (inventorySlot != null && inventorySlot.myChild != null)
+                {
+                    SaveItemInfo existingItemInfo = inventorySlot.myChild.GetComponent<SaveItemInfo>();
+                    if (existingItemInfo != null && existingItemInfo.item != null)
+                    {
+                        if ((itemKind.itemType == ItemType.consumItem || itemKind.itemType == ItemType.materialItem) && existingItemInfo.item.itemID == itemKind.itemID)
+                        {
+                            int combinedQuantity = existingItemInfo.item.quantity + itemKind.quantity;
+                            if (combinedQuantity <= itemKind.maxStack)
+                            {
+                                existingItemInfo.item.quantity = combinedQuantity;
+                                TextMeshProUGUI quantityText = inventorySlot.myChild.GetComponentInChildren<TextMeshProUGUI>();
+                                if (quantityText != null)
+                                {
+                                    quantityText.text = existingItemInfo.item.quantity.ToString();
+                                }
+                                return;
+                            }
+                            else
+                            {
+                                int remainingQuantity = combinedQuantity - itemKind.maxStack;
+                                existingItemInfo.item.quantity = itemKind.maxStack;
+                                TextMeshProUGUI quantityText = inventorySlot.myChild.GetComponentInChildren<TextMeshProUGUI>();
+                                if (quantityText != null)
+                                {
+                                    quantityText.text = existingItemInfo.item.quantity.ToString();
+                                }
+                                itemKind.quantity = remainingQuantity;
+                                break; // 빈 슬롯을 찾아 나머지 수량을 생성하기 위해 루프를 빠져나감
+                            }
+                        }
+                    }
+                }
+            }
+
+
             // content의 자식 슬롯들을 순회
             foreach (Transform slot in content)
             {

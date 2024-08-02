@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SpeedBoostPotion
   m_EditorClassIdentifier: 
   itemName: "\uC2E0\uC18D \uBB3C\uC57D"
-  itemType: 0
-  itemTag: 
+  itemType: 3
+  itemTag: ConsumItem
   itemIcon: {fileID: 21300000, guid: 9f369ff339154214e9ab604ef094c701, type: 3}
   description: "\uB9C8\uC2DC\uBA74 \uBC1C\uC774 \uBE68\uB77C\uC9C0\uB294 \uC2E0\uBE44\uD55C
     \uBB3C\uC57D"
@@ -25,6 +25,6 @@ MonoBehaviour:
   quantity: 1
   rarity: 2
   kaiLevel: 0
-  effectType: 0
+  effectType: 2
   EffectPoint: 100
   EffectDuration: 10
