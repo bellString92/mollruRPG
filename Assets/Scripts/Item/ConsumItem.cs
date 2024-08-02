@@ -8,6 +8,7 @@ public enum EffectType
 {
     HealEffect,
     AttackBoostEffect,
+    SpeedBoostEffect
     // 새로운 효과 추가
 }
 
@@ -52,6 +53,9 @@ public class ConsumItem : ItemKind
                 break;
             case EffectType.AttackBoostEffect:
                 useEffect = ConsumItemEffects.AttackBoostEffect;
+                break;
+            case EffectType.SpeedBoostEffect:
+                useEffect = ConsumItemEffects.SpeedBoostEffect;
                 break;
             // 새로운 효과 할당
             default:

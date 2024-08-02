@@ -27,4 +27,12 @@ public class ConsumItemEffects : MonoBehaviour
         item.quantity--; // 사용 후 갯수 감소
     }
 
+    public static void SpeedBoostEffect(Player user, ConsumItem item)
+    {
+        if (item.quantity > 0)
+        {
+            Inventory.Instance.user.AllBuff(item.EffectPoint, item.EffectDuration, BuffType.MoveSpeed);
+        }
+        item.quantity--; // 사용 후 갯수 감소
+    }
 }

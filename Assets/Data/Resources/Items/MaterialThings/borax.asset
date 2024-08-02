@@ -22,6 +22,6 @@ MonoBehaviour:
   resellprice: 96
   itemID: 5003
   maxStack: 999
-  quantity: 0
+  quantity: 1
   rarity: 1
   kaiLevel: 0
