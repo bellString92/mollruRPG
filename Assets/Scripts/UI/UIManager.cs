@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     private Stack<GameObject> uiStack= new Stack<GameObject>(); //매번 생성될 UI를 저장할 장소
     public Canvas canvas;
     public GameObject UiForNPC; // npc가 ui를 불러올때 이곳에 생성시켜 그려지는 순서조정
+    public GameObject DontTouch; // ui가 활성화되면 활성화시키기
 
     // player조작 ui
     public Inventory myInven;
@@ -44,6 +45,11 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (DontTouch.gameObject.activeSelf)
+        {
+            SetNotouchActive();
+        }
+        
         if (Input.GetKeyDown(KeyCode.Escape) && uiStack.Count > 0) // esc로 ui종료 매서드호출
         {
             CloseTopUi();
@@ -53,16 +59,29 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
         {
             myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
+            SetNotouchActive();
         }
 
         if (Input.GetKeyDown(KeyCode.U))
         {
             myStateWindow.gameObject.SetActive(!myStateWindow.gameObject.activeSelf);
+            SetNotouchActive();
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
             mySkill.gameObject.SetActive(!mySkill.gameObject.activeSelf);
+        }
+    }
+    private void SetNotouchActive()
+    {
+        if (uiStack.Count <= 0 && !myInven.gameObject.activeSelf && !myStateWindow.gameObject.activeSelf)
+        {
+            DontTouch.gameObject.SetActive(false);
+        }
+        else
+        {
+            DontTouch.gameObject.SetActive(true);
         }
     }
     public void CloseTopUi() // 가장위에 존재하는 UI종료
@@ -119,7 +138,8 @@ public class UIManager : MonoBehaviour
         {
             Transform parentTransform = UiForNPC != null ? UiForNPC.transform : canvas.transform;
             GameObject uiInstance = Instantiate(uiPrefab, parentTransform); 
-            uiStack.Push(uiInstance); 
+            uiStack.Push(uiInstance);
+            SetNotouchActive();
             return uiInstance;
         } 
         else 
@@ -127,6 +147,7 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Canvas가 설정되지 않음");
             return null;
         } 
+
     }
     public void ShowOkbuttonUI(GameObject uiPrefab)
     {

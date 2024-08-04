@@ -3,9 +3,9 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-public class ForgeUI : MonoBehaviour
+public class ForgeManager : MonoBehaviour
 {
-    public static ForgeUI Instance;
+    public static ForgeManager Instance;
     public TMP_Text itemInfoTextPrefab; // 아이템 정보를 표시할 TextMeshPro 프리팹
     public Transform scrollViewContent; // Scroll View의 Content Transform
     public TextMeshProUGUI LuckPercent; // 확률을 보여줄 TextMeshPro
@@ -17,6 +17,31 @@ public class ForgeUI : MonoBehaviour
     {
         Instance = this;
     }
+
+    public void SetSlot(GameObject item)
+    {
+        if (item != null)
+        {
+            forgeSlot = forgeSlot.GetComponent<ForgeSlot>();
+
+            if (Inventory.Instance.HasEmptySlot())
+            {
+                GameObject existingItem = forgeSlot.myChild;
+                Inventory.Instance.AddItem(existingItem); // 인벤토리의 빈 슬롯을 찾아 이동
+                forgeSlot.myChild = item;
+            }
+            else
+            {
+                Inventory.Instance.NoEmptySlot();
+                return;
+            }
+            item.transform.SetParent(forgeSlot.transform);
+            item.transform.localPosition = Vector2.zero;
+            forgeSlot.SetChild(item);
+            DisplayItemInfo(item?.GetComponent<SaveItemInfo>());
+        }
+    }
+
 
     // 아이템 정보를 표시하는 메서드
     public void DisplayItemInfo(SaveItemInfo saveItemInfo)
@@ -170,10 +195,17 @@ public class ForgeUI : MonoBehaviour
     }
 
     // 확률을 퍼센트로 변환하여 LuckPercent에 표시하는 메서드
-    private void UpdateLuckPercent(ItemKind itemInfo)
+    public void UpdateLuckPercent(ItemKind itemInfo)
     {
-        float successRate = itemInfo.GetUpgradeSuccessRate();
-        LuckPercent.text = $"성공 확률 : {successRate * 100}%";
+        if (itemInfo != null)
+        {
+            float successRate = itemInfo.GetUpgradeSuccessRate();
+            LuckPercent.text = $"성공 확률 : {successRate * 100}%";
+        }
+        else
+        {
+            LuckPercent.text = $"성공 확률 : {00}%";
+        }
     }
 
     public void OnCloseForge()
@@ -189,7 +221,7 @@ public class ForgeUI : MonoBehaviour
             SaveItemInfo saveItemInfo = forgeSlot.myChild.GetComponent<SaveItemInfo>();
             if (saveItemInfo != null)
             {               
-                Inventory.Instance.CreateItem(saveItemInfo.item, forgeSlot.myChild);
+                Inventory.Instance.AddItem(forgeSlot.myChild);
                 forgeSlot.myChild = null;
             }
         }

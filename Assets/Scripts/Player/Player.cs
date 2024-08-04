@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
@@ -121,183 +122,195 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
-        // 이동
-        desireDir.x = Input.GetAxis("Horizontal");
-        desireDir.y = Input.GetAxis("Vertical");
-
-        inputDir = Vector2.Lerp(inputDir, desireDir, Time.deltaTime * 10.0f);
-
-        myAnim.SetFloat("x", inputDir.x);
-        myAnim.SetFloat("y", inputDir.y);
-
-        // W+W 달리기
-        if (Input.GetKeyDown(KeyCode.W))
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {
-            if (!myIsOneClick)
+            desireDir.x = 0;
+            desireDir.y = 0;
+            inputDir = Vector2.Lerp(inputDir, desireDir, Time.deltaTime * 10.0f);
+            myAnim.SetFloat("x", inputDir.x);
+            myAnim.SetFloat("y", inputDir.y);
+            myAnim.SetBool("Run", false);
+            return;
+        }
+        else
+        {
+            // 이동
+            desireDir.x = Input.GetAxis("Horizontal");
+            desireDir.y = Input.GetAxis("Vertical");
+
+            inputDir = Vector2.Lerp(inputDir, desireDir, Time.deltaTime * 10.0f);
+
+            myAnim.SetFloat("x", inputDir.x);
+            myAnim.SetFloat("y", inputDir.y);
+
+            // W+W 달리기
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                myTimer = Time.time;
-                myIsOneClick = true;
+                if (!myIsOneClick)
+                {
+                    myTimer = Time.time;
+                    myIsOneClick = true;
+                }
+                else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
+                {
+                    myIsOneClick = false;
+                    myAnim.SetBool("Run", true);
+                }
             }
-            else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
+
+            // W+LShift 달리기
+            if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
             {
-                myIsOneClick = false;
                 myAnim.SetBool("Run", true);
             }
-        }
 
-        // W+LShift 달리기
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
-        {
-            myAnim.SetBool("Run", true);
-        }
-
-        // 달리기 해제
-        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            myAnim.SetBool("Run", false);
-        }
-
-        // 구르기
-        if (!myAnim.GetBool("IsRoll") && Input.GetKeyDown(KeyCode.Space)) 
-        {
-            myAnim.SetBool("IsRoll", true);
-            myAnim.SetTrigger("OnRoll");
-            AllBuff(20f, 3.5f, BuffType.MoveSpeed);
-        }
-
-        // 상호작용키
-        if ((myTarger != null) && isNearButton && Input.GetKeyDown(KeyCode.F))
-        {
-            currentButton.OnButtonPress();
-        }
-        if (currentChest != null && isNearChest && Input.GetKeyDown(KeyCode.F))
-        {
-            currentChest.OpenChest();
-        }
-
-        // 기본공격 좌클
-        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-        {
-            if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
+            // 달리기 해제
+            if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.LeftShift))
             {
-                OnAllSkillTrue();
-                myAnim.SetTrigger("OnAttack");
+                myAnim.SetBool("Run", false);
             }
-        }
-        
-        // 스킬 Q (이동기)
-        if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q) && TGDir.magnitude < 3)
-        {
-            skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_Q);
-            if (skill != null)
-            {
-                SkillAction(skill);
-                AllBuff(15f, 10, BuffType.MoveSpeed);
-            }
-        }
 
-        // 스킬 E (이동기)
-        if (!myAnim.GetBool("IsSkill_E") && Input.GetKey(KeyCode.E) && TGDir.magnitude < 3)
-        {
-            skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_E);
-            if (skill != null)
+            // 구르기
+            if (!myAnim.GetBool("IsRoll") && Input.GetKeyDown(KeyCode.Space))
             {
-                SkillAction(skill);
-                AllBuff(15f, 10, BuffType.MoveSpeed);
+                myAnim.SetBool("IsRoll", true);
+                myAnim.SetTrigger("OnRoll");
+                AllBuff(20f, 3.5f, BuffType.MoveSpeed);
             }
-        }
 
-        // 스킬 SS (이동기)
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            if (!myIsOneClick)
+            // 상호작용키
+            if ((myTarger != null) && isNearButton && Input.GetKeyDown(KeyCode.F))
             {
-                myTimer = Time.time;
-                myIsOneClick = true;
+                currentButton.OnButtonPress();
             }
-            else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
+            if (currentChest != null && isNearChest && Input.GetKeyDown(KeyCode.F))
             {
-                myIsOneClick = false;
-                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_S);
+                currentChest.OpenChest();
+            }
+
+            // 기본공격 좌클
+            if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            {
+                if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
+                {
+                    OnAllSkillTrue();
+                    myAnim.SetTrigger("OnAttack");
+                }
+            }
+
+            // 스킬 Q (이동기)
+            if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q) && TGDir.magnitude < 3)
+            {
+                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_Q);
                 if (skill != null)
                 {
                     SkillAction(skill);
-                    AllBuff(1.5f,10, BuffType.MoveSpeed);
+                    AllBuff(15f, 10, BuffType.MoveSpeed);
+                }
+            }
+
+            // 스킬 E (이동기)
+            if (!myAnim.GetBool("IsSkill_E") && Input.GetKey(KeyCode.E) && TGDir.magnitude < 3)
+            {
+                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_E);
+                if (skill != null)
+                {
+                    SkillAction(skill);
+                    AllBuff(15f, 10, BuffType.MoveSpeed);
+                }
+            }
+
+            // 스킬 SS (이동기)
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                if (!myIsOneClick)
+                {
+                    myTimer = Time.time;
+                    myIsOneClick = true;
+                }
+                else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
+                {
+                    myIsOneClick = false;
+                    skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_S);
+                    if (skill != null)
+                    {
+                        SkillAction(skill);
+                        AllBuff(1.5f, 10, BuffType.MoveSpeed);
+                    }
+                }
+            }
+
+            // 더블 클릭 타이머 리셋
+            if (myIsOneClick && (Time.time - myTimer) >= myDoubleClickSecond)
+            {
+                myIsOneClick = false;
+            }
+
+            // 스킬 F1
+            if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
+            {
+                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_F1);
+                if (skill != null)
+                {
+                    SkillAction(skill);
+                    myAnim.SetBool("IsSkill_F1", true);
+                }
+            }
+
+            // 스킬 F2
+            if (!myAnim.GetBool("IsSkill_F2") && Input.GetKeyDown(KeyCode.F))
+            {
+                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_F2);
+                if (skill != null)
+                {
+                    SkillAction(skill);
+                    myAnim.SetBool("IsSkill_F2", true);
+                }
+            }
+
+            // 스킬 Tab
+            if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab))
+            {
+                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_Tab);
+                if (skill != null)
+                {
+                    SkillAction(skill);
+                }
+            }
+
+            // 스킬 1
+            if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_1);
+                if (skill != null)
+                {
+                    SkillAction(skill);
+                    AllBuff(10.0f, 5.0f, BuffType.Defense);
+                }
+            }
+
+            // 스킬 2
+            if (!myAnim.GetBool("IsSkill_2") && Input.GetKey(KeyCode.Alpha2))
+            {
+                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_2);
+                if (skill != null)
+                {
+                    myAnim.SetBool("IsSkill_2_On", true);
+                    SkillAction(skill);
+                }
+            }
+
+            // 스킬 3
+            if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_3);
+                if (skill != null)
+                {
+                    myAnim.SetBool("IsSkill_3_On", true);
+                    SkillAction(skill);
                 }
             }
         }
-
-        // 더블 클릭 타이머 리셋
-        if (myIsOneClick && (Time.time - myTimer) >= myDoubleClickSecond)
-        {
-            myIsOneClick = false;
-        }
-
-        // 스킬 F1
-        if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
-        {
-            skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_F1);
-            if (skill != null)
-            {
-                SkillAction(skill);
-                myAnim.SetBool("IsSkill_F1", true);
-            }
-        }
-
-        // 스킬 F2
-        if (!myAnim.GetBool("IsSkill_F2") && Input.GetKeyDown(KeyCode.F))
-        {
-            skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_F2);
-            if (skill != null)
-            {
-                SkillAction(skill);
-                myAnim.SetBool("IsSkill_F2", true);
-            }
-        }
-
-        // 스킬 Tab
-        if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab))
-        {
-            skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_Tab);
-            if (skill != null)
-            {
-                SkillAction(skill);
-            }
-        }
-
-        // 스킬 1
-        if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_1);
-            if (skill != null)
-            {
-                SkillAction(skill);
-                AllBuff(10.0f, 5.0f, BuffType.Defense);
-            }
-        }
-
-        // 스킬 2
-        if (!myAnim.GetBool("IsSkill_2") && Input.GetKey(KeyCode.Alpha2))
-        {
-            skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_2);
-            if (skill != null)
-            {
-                myAnim.SetBool("IsSkill_2_On", true);
-                SkillAction(skill);
-            }
-        }
-
-        // 스킬 3
-        if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_3);
-            if (skill != null)
-            {
-                myAnim.SetBool("IsSkill_3_On", true);
-                SkillAction(skill);
-            }
-        }
-
     }
 
     private void SkillAction(PlayerSkill playerSkill)
