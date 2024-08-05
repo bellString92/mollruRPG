@@ -13,6 +13,8 @@ public class RootMotion : AnimatorProperty
 
     float radius = 0.0f;
     Rigidbody rb;
+    bool isGrounded;
+    float groundCheckDistance = 0.3f;
 
     // Start is called before the first frame update
     void Start()
@@ -32,22 +34,7 @@ public class RootMotion : AnimatorProperty
 
     private void FixedUpdate()
     {
-        // 레이 생성 deltaPosition.normalized
-        Ray ray = new Ray(transform.parent.position + (Vector3.up * 0.1f), Vector3.down);
-
-        // 레이 캐스트
-        Physics.SphereCast(ray, radius, out RaycastHit hit, 2.0f, crashMask);
-
-        // 각도 구함
-        var angle = Vector3.Angle(Vector3.up, hit.normal);
-
-
-        // 실제 이동
-        if (!Physics.SphereCast(ray, radius, out RaycastHit hitzz, 2.0f, crashMask))
-        {
-            if (angle < 60f) { rb.velocity = deltaPosition; }
-        }
-        Debug.DrawRay(transform.parent.position + (Vector3.up * 0.1f), Vector3.down * 2.0f, UnityEngine.Color.red, 1.0f);
+        rb.velocity = deltaPosition;
         transform.parent.rotation *= deltaRotation;
 
         // 초기화
@@ -61,6 +48,14 @@ public class RootMotion : AnimatorProperty
         Vector3 scaledMotion = myAnim.deltaPosition * transform.parent.GetComponent<Player>().myStat.moveSpeed;   // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
         Vector3 move = new Vector3(scaledMotion.x, -1.0f, scaledMotion.z);
 
+        // 레이캐스트를 발사하여 바닥에 닿아 있는지 확인
+        isGrounded = Physics.Raycast(transform.parent.position + (Vector3.up * 0.03f), Vector3.down, groundCheckDistance, crashMask);
+        Debug.DrawRay(transform.parent.position + (Vector3.up * 0.03f), Vector3.down * groundCheckDistance, UnityEngine.Color.red);
+        Debug.Log(isGrounded);
+
+        // 땅이 있으면
+        move.y = isGrounded ? -0.5f : move.y = -10.0f;
+        
         deltaPosition += move;
         deltaRotation *= myAnim.deltaRotation;
     }

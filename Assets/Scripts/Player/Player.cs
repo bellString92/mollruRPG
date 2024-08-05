@@ -135,8 +135,8 @@ public class Player : AnimatorProperty, IBattle
         else
         {
             // 이동
-            desireDir.x = Input.GetAxis("Horizontal");
-            desireDir.y = Input.GetAxis("Vertical");
+            desireDir.x = Input.GetAxisRaw("Horizontal");
+            desireDir.y = Input.GetAxisRaw("Vertical");
 
             inputDir = Vector2.Lerp(inputDir, desireDir, Time.deltaTime * 10.0f);
 
