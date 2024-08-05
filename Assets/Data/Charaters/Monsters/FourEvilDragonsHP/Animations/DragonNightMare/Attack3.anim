@@ -83923,7 +83923,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 1.0666667
+  - time: 1.2666667
     functionName: OnDamage
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: 9a1117e36845a254c9eac115a2c07196, type: 3}

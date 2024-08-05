@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEditor;
 
 public enum State { Sleep, Alert, Chase, Battle, Enraged, Death }
 
@@ -23,13 +24,19 @@ public class BossAI : BattleSystem
     private SphereCollider sleepCollider;
     private GameObject sleepColliderObject;
 
+
     private void LookAtPlayer()
     {
-        if (player == null) return;
+        if(distanceToPlayer >  this.myBattleStat.AttackRange / 2)
+        {
+            {
+                if (player == null) return;
 
-        Vector3 direction = (player.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 4f); // 바라보는 속도
+                Vector3 direction = (player.position - transform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 4f); // 바라보는 속도
+            }
+        }
     }
 
     private void MoveIfInChaseAnimation()
@@ -43,11 +50,19 @@ public class BossAI : BattleSystem
 
     public void MoveTowardsPlayer()
     {
-        if (player == null) return;
+        if (distanceToPlayer <= this.myBattleStat.AttackRange / 2)
+        {
+            //myAnim.SetBool("isMoving", false);
+            return;
+        }
+        else if(distanceToPlayer > this.myBattleStat.AttackRange / 2)
+        {
+            if (player == null) return;
 
-        Vector3 direction = (player.position - transform.position).normalized;
-        transform.position += direction * moveSpeed * Time.deltaTime;
-        myAnim.SetBool("isMoving", true);
+            Vector3 direction = (player.position - transform.position).normalized;
+            transform.position += direction * moveSpeed * Time.deltaTime;
+            myAnim.SetBool("isMoving", true);
+        }
     }
 
     void Awake()
@@ -67,9 +82,10 @@ public class BossAI : BattleSystem
 
     void Update()
     {
-        distanceToPlayer = Vector3.Distance(player.position, transform.position);
-        UpdateStateBasedOnDistance(distanceToPlayer);
-        PerformActionBasedOnState();
+            distanceToPlayer = Vector3.Distance(player.position, transform.position);
+            UpdateStateBasedOnDistance(distanceToPlayer);
+            //Debug.Log(distanceToPlayer);
+            PerformActionBasedOnState();
     }
 
     void UpdateStateBasedOnDistance(float distanceToPlayer)
@@ -90,7 +106,7 @@ public class BossAI : BattleSystem
                 }
                 else if (distanceToPlayer <= this.myBattleStat.AttackRange * 1.5f && EnragedCount <= 1)
                 {
-                    // 추가 로직을 여기에 작성합니다.
+                    
                 }
                 break;
 
@@ -140,8 +156,15 @@ public class BossAI : BattleSystem
                 break;
 
             case State.Battle:
-                LookAtPlayer();
-                MoveIfInChaseAnimation();
+                if (distanceToPlayer <= this.myBattleStat.AttackRange / 2)
+                {
+                    
+                }
+                else
+                {
+                    LookAtPlayer();
+                    MoveIfInChaseAnimation();
+                }
                 if (!isAttacking)
                 {
                     Attack();
@@ -286,10 +309,11 @@ public class BossAI : BattleSystem
     {
         if (myState != State.Chase && myState != State.Battle && myState != State.Enraged)
         {
-            return; // Chase 상태 이전에는 데미지를 받지 않습니다.
+            return; 
         }
 
-        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 1.0f, 5.0f, enemyMask);
+        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 2.0f, 6.0f, enemyMask);
+
         foreach (Collider col in list)
         {
             IDamage id = col.GetComponent<IDamage>();
@@ -321,6 +345,9 @@ public class BossAI : BattleSystem
 
             // 공격 애니메이션이 끝날 때까지 기다립니다.
             StartCoroutine(WaitForAttackAnimation(chosenAttack));
+
+            // 공격이후 일정시간 딜레이 줘야함
+            // 딜레이동안 회전, 이동 불가능
         }
     }
 
@@ -335,8 +362,8 @@ public class BossAI : BattleSystem
         while (true)
         {
             stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
-            Debug.Log($"Current state: {stateInfo.IsName(attackTrigger)}, normalizedTime: {stateInfo.normalizedTime}");
-
+            //Debug.Log($"Current state: {stateInfo.IsName(attackTrigger)}, normalizedTime: {stateInfo.normalizedTime}");
+            
             // 상태가 일치하고 normalizedTime이 1 이상인 경우 종료
             if (stateInfo.IsName(attackTrigger) && stateInfo.normalizedTime >= 1f)
             {

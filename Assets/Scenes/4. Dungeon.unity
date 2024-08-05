@@ -5254,6 +5254,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5697938557687295413, guid: 56573eef1615e114898560d666b18e89, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6143104144811562964, guid: 56573eef1615e114898560d666b18e89, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -22935,7 +22939,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1251324029}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -23551,7 +23555,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6902155283979075405, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 38
+      value: 101.7
       objectReference: {fileID: 0}
     - target: {fileID: 6902155283979075405, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -40301,6 +40305,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1309714377}
     - target: {fileID: 5048191393534889240, guid: 696188f7251f07641a9438751e3558ca, type: 3}
+      propertyPath: rotSpeed
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048191393534889240, guid: 696188f7251f07641a9438751e3558ca, type: 3}
       propertyPath: moveSpeed
       value: 5
       objectReference: {fileID: 0}
@@ -40314,7 +40322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5048191393534889240, guid: 696188f7251f07641a9438751e3558ca, type: 3}
       propertyPath: myBattleStat.AttackRange
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8117688855398590940, guid: 696188f7251f07641a9438751e3558ca, type: 3}
       propertyPath: m_Enabled
