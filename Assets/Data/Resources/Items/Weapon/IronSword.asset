@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c327f600c49d941b0117f81632fcd0, type: 3}
   m_Name: IronSword
   m_EditorClassIdentifier: 
-  itemName: IronSword
+  itemName: "\uC81C\uC2DD \uCCA0\uAC80"
   itemType: 0
   itemTag: WeaponItem
   itemIcon: {fileID: 21300000, guid: a332f9cc2040f6042a04c65fa9e4a000, type: 3}

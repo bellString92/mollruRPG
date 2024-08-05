@@ -12,7 +12,7 @@ public class NpcState : AnimatorProperty
     private GameObject doMyJob; // 상호작용을 여러번해 중복 생성 되지않도록 이미 상호작용중 이라면 생성한 object를 저장해서 관리
     private bool doingmyjob = false; 
 
-    public Inventory urInventory ;
+    public Inventory urInventory ; // 플레이어의 인벤토리를 참조해 필요할때 자동으로 열고 닫아주기
     
     Vector3 startPos;
     Quaternion startRot;

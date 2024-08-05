@@ -39,12 +39,65 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
         var draggedItemInfo = eventData.pointerDrag.GetComponent<SaveItemInfo>();        
         // 드래그 시작 슬롯의 InventorySlot 컴포넌트를 가져옵니다.
         var startSlot = eventData.pointerDrag.GetComponentInParent<InventorySlot>();
-
-        if (myChild != null && draggedItemInfo != null)
+        if (startSlot == null)
         {
-            if (draggedItemInfo.item.maxStack > 1)
+            var startUiSlot = eventData.pointerDrag.GetComponentInParent<StateUiSlot>();
+        }
+
+        if (PlayerStateUiManager.Instance.gameObject.activeSelf)
+        {
+            if (startSlot == GetComponentInParent<StateUiSlot>())
             {
                 var myItemInfo = myChild?.GetComponent<SaveItemInfo>();
+                if (draggedItemInfo.item.itemType == ItemType.weaponItem ||
+                    draggedItemInfo.item.itemType == ItemType.armorItem ||
+                    draggedItemInfo.item.itemType == ItemType.acceItem)
+                {
+                    var dragitemType = draggedItemInfo.item;
+
+                    // 드래그된 아이템과 현재 슬롯의 아이템 타입이 같은지 확인
+                    if (myItemInfo != null && draggedItemInfo.item.itemType == myItemInfo.item.itemType)
+                    {
+                        if (dragitemType is ArmorItem armorItem && myItemInfo.item is ArmorItem myArmorItem)
+                        {
+                            // 드래그된 아이템과 현재 슬롯의 아이템의 ArmorType이 같은지 확인
+                            if (armorItem.armorType != myArmorItem.armorType)
+                            {
+                                Debug.LogWarning("아머 타입이 일치하지 않습니다.");
+                                return;
+                            }
+                        }
+                        else if (dragitemType is AcceItem acceItem && myItemInfo.item is AcceItem myAcceItem)
+                        {
+                            if (acceItem.AcceType != myAcceItem.AcceType)
+                            {
+                                Debug.LogWarning("악세사리 타입이 일치하지 않습니다.");
+                                return;
+                            }
+                        }
+                    }
+                    else if (myItemInfo == null)
+                    {
+
+                    }
+                    else
+                    {
+                        Debug.LogWarning("아이템 타입이 일치하지 않습니다.");
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("유효하지 않은 아이템 타입입니다.");
+                    return;
+                }
+            }
+        }
+        if (myChild != null && draggedItemInfo != null)
+        {
+            var myItemInfo = myChild?.GetComponent<SaveItemInfo>();
+            if (draggedItemInfo.item.maxStack > 1)
+            {
                 // 드래그한 아이템과 현재 슬롯의 아이템이 같은 종류인지 확인
                 if (myItemInfo != null && myItemInfo.item.quantity != myItemInfo.item.maxStack)
                 {
@@ -117,6 +170,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
             if (myChild != null)
             {
                 PlayerStateUiManager stateManager = PlayerStateUiManager.Instance;
+                ForgeManager forgeManager = ForgeManager.Instance;
                 Inventory invenManager = Inventory.Instance;
                 itemInfo = myChild?.GetComponent<SaveItemInfo>();
 
@@ -132,7 +186,16 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
                         return; // 더블 클릭 시에는 이후 로직을 수행하지 않음
                     }
                 }
-                if (shopManager == null)
+                if (forgeManager != null)
+                {
+                    if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem)
+                    {
+                        forgeManager.SetSlot(myChild);
+                        myChild = null;
+                        return;
+                    }
+                }
+                if (shopManager == null && forgeManager == null)
                 {
                     if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem || itemInfo.item.itemType == ItemType.acceItem)
                     {

@@ -282,9 +282,9 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         if (armorInfo != null)
         {
             // 방어구 부위 정보 표시
-            info += $"부위: {armorInfo.CalculateEffectiveMaxHealBoost()}\n";
+            info += $"부위: {armorInfo.armorType}\n";
             // 기본적으로 모든 무기가 가지는 공격력 보너스 표시
-            info += $"방어구 체력 : {armorInfo.maxHealBoost}\n";
+            info += $"방어구 체력 : {armorInfo.CalculateEffectiveMaxHealBoost()}\n";
 
             // 효과 목록을 순회하여 설정된 효과만 표시
             foreach (var effect in armorInfo.effectList)

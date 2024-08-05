@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class ShopManager : MonoBehaviour
 {
@@ -16,6 +18,9 @@ public class ShopManager : MonoBehaviour
     public Transform content;
 
     public ItemKind curItem = null;// 현재 선택중인 아이템 정보를 저장할 변수
+    public ShopSlot curSlot = null;
+    public ShopSlot beforSlot = null;
+
     public ItemKind curItemforSell = null;
     public GameObject marterialObject;
 
@@ -40,15 +45,18 @@ public class ShopManager : MonoBehaviour
             slots[i].InitializeSlot(slots[i].item); // 각 슬롯의 아이템 정보를 초기화
         }
     }
-    public void OnSlotClicked(ItemKind itemInfo)
+
+    public void ShowInfo(ItemKind iteminfo, ShopSlot setSlot)
     {
-        // 아이템 정보를 TextMeshPro에 표시
-        if (itemInfo != null)
-        {
-            DisplayItemInfo(itemInfo);
-            curItem = itemInfo;
+        if (curSlot != setSlot)
+        { 
+            beforSlot = curSlot;
+            curSlot = setSlot;
+            curSlot.SelectSlotCheck();
+            beforSlot?.UnSelectSlotCheck();
         }
-        
+        DisplayItemInfo(iteminfo);
+        curItem= iteminfo;
     }
 
 
@@ -56,7 +64,6 @@ public class ShopManager : MonoBehaviour
     public void OnAddNewItemInInventory()
     {
         ItemKind copiedItem = Instantiate(curItem); // 원본 아이템 데이터를 보존하기위한 정보복사
-
 
         // AssemblyManager의 CreateItem 호출하여 아이템 생성
         if (curItem != null)
