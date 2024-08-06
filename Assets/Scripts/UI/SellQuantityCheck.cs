@@ -47,8 +47,9 @@ public class SellQuantityCheck : MonoBehaviour
         inputField.onValueChanged.AddListener(ValidateInput); // 실시간 업데이트        
 
         // Input Field를 숨기고 중앙 텍스트를 클릭할 때만 보이게 설정합니다.
-        inputField.gameObject.SetActive(false);
-        centerText.gameObject.SetActive(true);
+        inputField.gameObject.SetActive(true);
+        centerText.gameObject.SetActive(false);
+        inputField.ActivateInputField(); // Input Field를 활성화하여 포커스 설정
 
         // 배경 이미지를 클릭하면 Input Field가 보이도록 설정합니다.
         backgroundImage.GetComponent<Button>().onClick.AddListener(ShowInputField);
@@ -110,6 +111,7 @@ public class SellQuantityCheck : MonoBehaviour
 
             centerText.text = newQuantity.ToString();
             lastValidText = centerText.text; // 유효한 텍스트로 업데이트
+            inputField.text = centerText.text; // 입력 필드도 업데이트
         }
         else
         {
@@ -124,19 +126,28 @@ public class SellQuantityCheck : MonoBehaviour
     private void ValidateInput(string newText)
     {
         int number;
-        if (newText == "")
+        if (string.IsNullOrEmpty(newText))
         {
             // 빈 문자열일 경우 유효하지 않은 입력으로 처리
             inputField.text = "";
-            centerText.text = "";
         }
-        else if (!int.TryParse(newText, out number))
+        else if (int.TryParse(newText, out number))
         {
-            inputField.text = lastValidText; // 유효하지 않으면 마지막 유효 텍스트로 복구
+            if (number > itemData.quantity)
+            {
+                // 입력 값이 maxStack을 넘는 경우, maxStack으로 설정
+                inputField.text = itemData.quantity.ToString();
+                centerText.text = itemData.quantity.ToString();
+            }
+            else
+            {
+                lastValidText = newText; // 유효한 경우 lastValidText를 업데이트
+                centerText.text = newText;
+            }
         }
         else
         {
-            lastValidText = newText; // 유효한 경우 lastValidText를 업데이트
+            inputField.text = lastValidText; // 유효하지 않으면 마지막 유효 텍스트로 복구
         }
     }
 

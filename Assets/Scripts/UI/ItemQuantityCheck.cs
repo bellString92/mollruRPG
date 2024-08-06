@@ -39,16 +39,19 @@ public class ItemQuantityCheck : MonoBehaviour
 
         titleText.text = "구매 수량";
 
-        centerText.text = itemData.quantity.ToString(); // 초기값
+        // 초기값 설정
+        itemData.quantity = 1; // 초기값을 1로 설정
+        centerText.text = itemData.quantity.ToString();
         inputField.text = centerText.text;
 
         // Input Field와 중앙 텍스트를 연동합니다.
         inputField.onEndEdit.AddListener(EndEditInputField);
         inputField.onValueChanged.AddListener(ValidateInput); // 실시간 업데이트        
 
-        // Input Field를 숨기고 중앙 텍스트를 클릭할 때만 보이게 설정합니다.
-        inputField.gameObject.SetActive(false);
-        centerText.gameObject.SetActive(true);
+        // Input Field를 초기 활성화 및 중앙 텍스트를 비활성화
+        inputField.gameObject.SetActive(true);
+        centerText.gameObject.SetActive(false);
+        inputField.ActivateInputField(); // Input Field를 활성화하여 포커스 설정
 
         // 배경 이미지를 클릭하면 Input Field가 보이도록 설정합니다.
         backgroundImage.GetComponent<Button>().onClick.AddListener(ShowInputField);
@@ -90,14 +93,6 @@ public class ItemQuantityCheck : MonoBehaviour
         }
     }
 
-    private void ShowInputField()
-    {
-        inputField.text = centerText.text; // 현재 텍스트를 Input Field로 복사
-        inputField.gameObject.SetActive(true);
-        centerText.gameObject.SetActive(false);
-        inputField.ActivateInputField(); // Input Field를 활성화하여 포커스 설정
-    }
-
     private void EndEditInputField(string newText)
     {
         int newQuantity;
@@ -109,13 +104,13 @@ public class ItemQuantityCheck : MonoBehaviour
             centerText.text = newQuantity.ToString();
             itemData.quantity = newQuantity; // 아이템 데이터의 quantity 업데이트
             lastValidText = centerText.text; // 유효한 텍스트로 업데이트
+            inputField.text = centerText.text; // 입력 필드도 업데이트
         }
         else
         {
             centerText.text = lastValidText; // 유효하지 않으면 마지막 유효 텍스트로 복구
             inputField.text = lastValidText;
         }
-
 
         inputField.gameObject.SetActive(false);
         centerText.gameObject.SetActive(true);
@@ -124,23 +119,34 @@ public class ItemQuantityCheck : MonoBehaviour
     private void ValidateInput(string newText)
     {
         int number;
-        if (newText == "")
+        if (string.IsNullOrEmpty(newText))
         {
             // 빈 문자열일 경우 유효하지 않은 입력으로 처리
             inputField.text = "";
-            centerText.text = "";
         }
-        else if (!int.TryParse(newText, out number))
+        else if (int.TryParse(newText, out number))
         {
-            inputField.text = lastValidText; // 유효하지 않으면 마지막 유효 텍스트로 복구
+            if (number > itemData.maxStack)
+            {
+                // 입력 값이 maxStack을 넘는 경우, maxStack으로 설정
+                inputField.text = itemData.maxStack.ToString();
+                centerText.text = itemData.maxStack.ToString();
+                itemData.quantity = itemData.maxStack;
+            }
+            else
+            {
+                lastValidText = newText; // 유효한 경우 lastValidText를 업데이트
+                centerText.text = newText;
+                itemData.quantity = number;
+            }
         }
         else
         {
-            lastValidText = newText; // 유효한 경우 lastValidText를 업데이트
+            inputField.text = lastValidText; // 유효하지 않으면 마지막 유효 텍스트로 복구
         }
     }
 
-    private bool IsPointerOverGameObject(GameObject obj) //  특정 위치에만 작용하도록 재정의
+    private bool IsPointerOverGameObject(GameObject obj) // 특정 위치에만 작용하도록 재정의
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         eventData.position = Input.mousePosition;
@@ -156,8 +162,13 @@ public class ItemQuantityCheck : MonoBehaviour
         return false;
     }
 
-
-
+    private void ShowInputField()
+    {
+        inputField.text = centerText.text; // 현재 텍스트를 Input Field로 복사
+        inputField.gameObject.SetActive(true);
+        centerText.gameObject.SetActive(false);
+        inputField.ActivateInputField(); // Input Field를 활성화하여 포커스 설정
+    }
 
     // 버튼에 연결할 메서드
     public void OnPlusText()
