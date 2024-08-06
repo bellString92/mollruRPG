@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class Inventory : MonoBehaviour
 {
@@ -55,10 +56,33 @@ public class Inventory : MonoBehaviour
                 newItem.tag = newItemKind.itemTag;
 
                 // 아이콘 설정
-                Image iconImage = newItem.GetComponent<Image>();
+                Image iconImage = newItem.GetComponentInChildren<Image>();
                 if (iconImage != null && newItemKind.itemIcon != null)
                 {
                     iconImage.sprite = newItemKind.itemIcon;
+                }
+
+                //레어도에 따라 차이점
+                Image rarityBG = newItem.AddComponent<Image>();
+                switch (saveItemInfo.item.rarity)
+                {
+                    case Rarity.Common:
+                        rarityBG.color = Color.clear;
+                        break;
+                    case Rarity.Uncommon:
+                        rarityBG.color = new Color(0, 1, 0, 10f / 255f);
+                        break;
+                    case Rarity.Rare:
+                        rarityBG.color = new Color(0f, 0f, 1f, 10f / 255f);
+                        break;
+                    case Rarity.Epic:
+                        rarityBG.color = new Color(1, 0, 1, 10f / 255f);
+                        break;
+                    case Rarity.Legendary:
+                        rarityBG.color = new Color(1, 1, 0, 10f / 255f);
+                        break;
+                    default:
+                        break;
                 }
 
                 // 슬롯에 아이템 배치

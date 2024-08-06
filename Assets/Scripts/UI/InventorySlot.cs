@@ -22,7 +22,7 @@ public enum SlotType
     UseItem, Skill, SlotItem, SlotSkill, Item
 }
 
-public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerClickHandler
+public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClickHandler
 {
     public GameObject myChild = null;
     public Player user;
@@ -36,19 +36,13 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
     {
         if (_slotType.Equals(SlotType.Skill)) return;
 
-        var draggedItemInfo = eventData.pointerDrag.GetComponent<SaveItemInfo>();        
+        var draggedItemInfo = eventData.pointerDrag.GetComponent<SaveItemInfo>();
         // 드래그 시작 슬롯의 InventorySlot 컴포넌트를 가져옵니다.
-        var startSlot = eventData.pointerDrag.GetComponentInParent<InventorySlot>();
-        if (startSlot == null)
+        if (myChild != null && draggedItemInfo != null)
         {
-            var startUiSlot = eventData.pointerDrag.GetComponentInParent<StateUiSlot>();
-        }
-
-        if (PlayerStateUiManager.Instance.gameObject.activeSelf)
-        {
-            if (startSlot == GetComponentInParent<StateUiSlot>())
+            var myItemInfo = myChild?.GetComponent<SaveItemInfo>();
+            if (PlayerStateUiManager.Instance.gameObject.activeSelf)
             {
-                var myItemInfo = myChild?.GetComponent<SaveItemInfo>();
                 if (draggedItemInfo.item.itemType == ItemType.weaponItem ||
                     draggedItemInfo.item.itemType == ItemType.armorItem ||
                     draggedItemInfo.item.itemType == ItemType.acceItem)
@@ -92,10 +86,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
                     return;
                 }
             }
-        }
-        if (myChild != null && draggedItemInfo != null)
-        {
-            var myItemInfo = myChild?.GetComponent<SaveItemInfo>();
             if (draggedItemInfo.item.maxStack > 1)
             {
                 // 드래그한 아이템과 현재 슬롯의 아이템이 같은 종류인지 확인
@@ -138,20 +128,19 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild , IPointerCl
                     }
                 }
             }
-        }
-        if (myChild != null)
-        {
-            myChild.GetComponent<ISwapParent>()?.SwapParent(eventData.pointerDrag.GetComponent<IGetParent>().myParent);
 
-        }
-        else
-        {
-            eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
-        }
+            if (myChild != null)
+            {
+                myChild.GetComponent<ISwapParent>()?.SwapParent(eventData.pointerDrag.GetComponent<IGetParent>().myParent);
 
-        myChild = eventData.pointerDrag;
-        myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
-
+            }
+            else
+            {
+                eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
+            }
+            myChild = eventData.pointerDrag;
+            myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

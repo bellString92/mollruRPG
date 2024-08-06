@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public class MaterialRequirementDisplay : MonoBehaviour
 {
@@ -48,10 +49,33 @@ public class MaterialRequirementDisplay : MonoBehaviour
                 GameObject materialIconInstance = Instantiate(materialIconPrefab, slot.transform);
 
                 // 재료 정보를 표시하는 로직 (예: 아이콘 이미지, 이름, 수량 등)
-                Image iconImage = materialIconInstance.GetComponent<Image>();
+                Image iconImage = materialIconInstance.GetComponentInChildren<Image>();
                 if (iconImage != null)
                 {
                     iconImage.sprite = material.requiredItem.itemIcon; // 아이콘 이미지 설정
+                }
+
+                //레어도에 따라 차이점
+                Image rarityBG = materialIconInstance.AddComponent<Image>();
+                switch (itemInfo.rarity)
+                {
+                    case Rarity.Common:
+                        rarityBG.color = Color.clear;
+                        break;
+                    case Rarity.Uncommon:
+                        rarityBG.color = new Color(0, 1, 0, 10f / 255f);
+                        break;
+                    case Rarity.Rare:
+                        rarityBG.color = new Color(0f, 0f, 1f, 10f / 255f);
+                        break;
+                    case Rarity.Epic:
+                        rarityBG.color = new Color(1, 0, 1, 10f / 255f);
+                        break;
+                    case Rarity.Legendary:
+                        rarityBG.color = new Color(1, 1, 0, 10f / 255f);
+                        break;
+                    default:
+                        break;
                 }
 
                 TextMeshProUGUI quantityText = materialIconInstance.GetComponentInChildren<TextMeshProUGUI>();

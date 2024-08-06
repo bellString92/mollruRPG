@@ -22,7 +22,7 @@ MonoBehaviour:
   itemID: 3001
   maxStack: 1
   quantity: 1
-  rarity: 0
+  rarity: 2
   kaiLevel: 0
   AcceType: 0
   effectList:
