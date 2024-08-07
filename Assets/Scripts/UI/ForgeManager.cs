@@ -38,6 +38,7 @@ public class ForgeManager : MonoBehaviour
             item.transform.SetParent(forgeSlot.transform);
             item.transform.localPosition = Vector2.zero;
             forgeSlot.SetChild(item);
+            forgeSlot.UpdateItemSlotInfo();
             DisplayItemInfo(item?.GetComponent<SaveItemInfo>());
         }
     }
@@ -180,6 +181,9 @@ public class ForgeManager : MonoBehaviour
                     {
                         Inventory.Instance.RemoveItem(material.requiredItem, material.quantity);
                     }
+                    saveItemInfo.quantityText.fontSize = 30.0f;
+                    saveItemInfo.quantityText.color = Color.yellow;
+                    saveItemInfo.quantityText.text = $"<b>+{itemInfo.kaiLevel}</b>"; // 텍스트를 볼드로 설정
                     DisplayItemInfo(saveItemInfo); // 아이템 정보 갱신
                 }
                 else if(hasAllMaterials == false)

@@ -180,6 +180,25 @@ public class Inventory : MonoBehaviour
         // 합산된 수량이 요구 수량에 못 미치면 false 반환
         return false;
     }
+    public int GetItemQuantity(ItemKind itemKind) // 아이템의 총 갯수를 반환
+    {
+        int totalQuantity = 0;
+
+        foreach (Transform slot in content)
+        {
+            InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
+            if (inventorySlot != null && inventorySlot.myChild != null)
+            {
+                SaveItemInfo saveItemInfo = inventorySlot.myChild.GetComponent<SaveItemInfo>();
+                if (saveItemInfo != null && saveItemInfo.item.itemID == itemKind.itemID)
+                {
+                    totalQuantity += saveItemInfo.item.quantity;
+                }
+            }
+        }
+
+        return totalQuantity;
+    }
 
     // 인벤토리에서 특정 아이템과 수량을 제거하는 메서드
     public void RemoveItem(ItemKind itemKind, int quantity)

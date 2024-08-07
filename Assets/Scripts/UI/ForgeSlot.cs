@@ -100,6 +100,10 @@ public class ForgeSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClickHa
     {
         myChild = newChild;
     }
+    public void UpdateItemSlotInfo()
+    {
+        ItemInfo = myChild.GetComponent<SaveItemInfo>();
+    }
 
     public void OnIncreaseKaiLevelButtonClick()
     {

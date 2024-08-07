@@ -11,8 +11,10 @@ public class MaterialRequirementDisplay : MonoBehaviour
 
     public void DisplayMaterialRequirements(ItemKind itemInfo)
     {
+
         if (itemInfo != null)
-        {  // 모든 슬롯을 초기화
+        {
+            // 모든 슬롯을 초기화
             foreach (var slot in slots)
             {
                 foreach (Transform child in slot.transform)
@@ -48,14 +50,14 @@ public class MaterialRequirementDisplay : MonoBehaviour
                 // 프리팹 인스턴스화
                 GameObject materialIconInstance = Instantiate(materialIconPrefab, slot.transform);
 
-                // 재료 정보를 표시하는 로직 (예: 아이콘 이미지, 이름, 수량 등)
+                // 재료 정보를 표시
                 Image iconImage = materialIconInstance.GetComponentInChildren<Image>();
                 if (iconImage != null)
                 {
                     iconImage.sprite = material.requiredItem.itemIcon; // 아이콘 이미지 설정
                 }
 
-                //레어도에 따라 차이점
+                // 레어도에 따라 차이점
                 Image rarityBG = materialIconInstance.AddComponent<Image>();
                 switch (itemInfo.rarity)
                 {
@@ -81,12 +83,23 @@ public class MaterialRequirementDisplay : MonoBehaviour
                 TextMeshProUGUI quantityText = materialIconInstance.GetComponentInChildren<TextMeshProUGUI>();
                 if (quantityText != null)
                 {
-                    quantityText.text = material.quantity.ToString(); // 수량 설정
+                    int inventoryQuantity = Inventory.Instance.GetItemQuantity(material.requiredItem);
+
+                    if (inventoryQuantity >= material.quantity)
+                    {
+                        quantityText.text = $"{inventoryQuantity} / {material.quantity}";
+                        quantityText.color = Color.white; // 흰색 텍스트
+                    }
+                    else
+                    {
+                        quantityText.text = $"<color=red>{inventoryQuantity}</color> / {material.quantity}";
+                    }
                 }
             }
         }
-        else // 모든 슬롯을 비활성화
+        else
         {
+            // 모든 슬롯을 비활성화
             foreach (var slot in slots)
             {
                 foreach (Transform child in slot.transform)

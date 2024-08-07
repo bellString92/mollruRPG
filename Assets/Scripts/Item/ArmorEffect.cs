@@ -11,7 +11,7 @@ public static class ArmorEffect
             switch (effect.effectType)
             {
                 case ArmorEffectType.AttackBoost:
-                    user.myStat.maxHealPoint += effect.effectValue;
+                    user.myStat.AttackPoint += effect.effectValue;
                     break;
                 case ArmorEffectType.CritChanceBoost:
                     user.myStat.CriticalProbability += effect.effectValue;
@@ -34,7 +34,7 @@ public static class ArmorEffect
             switch (effect.effectType)
             {
                 case ArmorEffectType.AttackBoost:
-                    user.myStat.maxHealPoint -= effect.effectValue;
+                    user.myStat.AttackPoint -= effect.effectValue;
                     break;
                 case ArmorEffectType.CritChanceBoost:
                     user.myStat.CriticalProbability -= effect.effectValue;

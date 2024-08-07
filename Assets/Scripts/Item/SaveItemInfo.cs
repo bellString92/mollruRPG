@@ -8,7 +8,7 @@ using UnityEngine.TextCore;
 public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public ItemKind item;
-    private TextMeshProUGUI quantityText; // 수량을 표시하는 텍스트
+    public TextMeshProUGUI quantityText; // 수량을 표시하는 텍스트
     private int lastQuantity; // 마지막으로 표시된 수량
 
     public GameObject tooltipPrefab; // Tooltip Prefab
@@ -23,6 +23,7 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         if (quantityText != null)
         {
             lastQuantity = item.quantity;
+            quantityText.fontSize = 18.0f;
             UpdateQuantityText(); // 초기 수량 업데이트
         }
         tooltipPrefab = Resources.Load<GameObject>("Prefabs/Tooltip");
@@ -31,10 +32,13 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private void Update()
     {
         // 수량이 변경되었는지 확인하고 UI를 업데이트합니다.
-        if (item.quantity != lastQuantity)
+        if (item.itemType == ItemType.consumItem || item.itemType == ItemType.materialItem)
         {
-            UpdateQuantityText();
-            lastQuantity = item.quantity;
+            if (item.quantity != lastQuantity)
+            {
+                UpdateQuantityText();
+                lastQuantity = item.quantity;
+            }
         }
         if (!transform.gameObject.activeInHierarchy)
         {
@@ -59,6 +63,7 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                 quantityText.text = item.quantity.ToString();
         }
     }
+    
     public void OnPointerEnter(PointerEventData eventData)
     {
         // Tooltip 생성 및 위치 설정
@@ -200,16 +205,42 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         string name;
         if (item.kaiLevel != 0)
         {
-            name = $"[ {item.itemName} +{item.kaiLevel} ]\n";
+            name = $"[ {item.itemName} <color=yellow>+{item.kaiLevel}</color> ]\n";
         }
         else
         {
             name = $"[ {item.itemName} ]\n";
         }
 
+        Color rareityColor;
+        string rarityColorHex = "";
+        switch (item.rarity)
+        {
+            case Rarity.Common:
+                rareityColor = Color.white;
+                rarityColorHex = ColorUtility.ToHtmlStringRGB(rareityColor);
+                break;
+            case Rarity.Uncommon:
+                rareityColor = new Color(0, 1, 0);
+                rarityColorHex = ColorUtility.ToHtmlStringRGB(rareityColor);
+                break;
+            case Rarity.Rare:
+                rareityColor = new Color(0.3f, 0.3f, 1f);
+                rarityColorHex = ColorUtility.ToHtmlStringRGB(rareityColor);
+                break;
+            case Rarity.Epic:
+                rareityColor = new Color(1, 0, 1);
+                rarityColorHex = ColorUtility.ToHtmlStringRGB(rareityColor);
+                break;
+            case Rarity.Legendary:
+                rareityColor = new Color(1, 1, 0);
+                rarityColorHex = ColorUtility.ToHtmlStringRGB(rareityColor);
+                break;
+        }
+
         // 기본 정보 설정
-        string info = $"{name}\n" +
-                      $"등급 : {item.rarity}\n" +
+        string info = $"<b>{name}</b>\n" +
+                      $"등급 : <b><color=#{rarityColorHex}>{item.rarity}</color></b>\n" +
                       $"분류 : {item.itemType}\n";
 
         // 추가적인 정보 표시를 위해 switch문 사용
@@ -237,7 +268,7 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
         // 공통 정보 추가
         info += $"[ {item.description} ]\n" +
-                $"판매 가격 : {item.resellprice}({item.resellprice * item.quantity})";
+                $"판매 가격 : <color=yellow>{item.resellprice}({item.resellprice * item.quantity})</color>";
 
         return info;
     }
@@ -247,7 +278,7 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         if (weaponInfo != null)
         {
             // 기본적으로 모든 무기가 가지는 공격력 보너스 표시
-            info += $"무기 공격력 : {weaponInfo.CalculateEffectiveAttackBoost()}\n";
+            info += $"<b>무기 공격력 : {weaponInfo.CalculateEffectiveAttackBoost()}</b>\n";
 
             // 효과 목록을 순회하여 설정된 효과만 표시
             foreach (var effect in weaponInfo.effectList)
@@ -255,20 +286,20 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                 switch (effect.effectType)
                 {
                     case WeaponEffectType.MaxHealthBoost:
-                        info += $"추가 체력 : {effect.effectValue}\n";
+                        info += $"<b>추가 체력 : {effect.effectValue}</b>\n";
                         break;
                     case WeaponEffectType.CritChanceBoost:
-                        info += $"치명타 확률 : {effect.effectValue}\n";
+                        info += $"<b>치명타 확률 : {effect.effectValue}</b>\n";
                         break;
                     case WeaponEffectType.CritDamageBoost:
-                        info += $"치명타 대미지 : {effect.effectValue}\n";
+                        info += $"<b>치명타 대미지 : {effect.effectValue}</b>\n";
                         break;
                     case WeaponEffectType.SpeedBoost:
-                        info += $"추가 속도 : {effect.effectValue}\n";
+                        info += $"<b>추가 속도 : {effect.effectValue}</b>\n";
                         break;
                     // 추가적인 효과 
                     default:
-                        info += $"Unknown Effect Type: {effect.effectType}\n";
+                        info += $"<b>Unknown Effect Type: {effect.effectType}</b>\n";
                         break;
                 }
             }
@@ -284,7 +315,7 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             // 방어구 부위 정보 표시
             info += $"부위: {armorInfo.armorType}\n";
             // 기본적으로 모든 무기가 가지는 공격력 보너스 표시
-            info += $"방어구 체력 : {armorInfo.CalculateEffectiveMaxHealBoost()}\n";
+            info += $"<b>방어구 체력 : {armorInfo.CalculateEffectiveMaxHealBoost()}</b>\n";
 
             // 효과 목록을 순회하여 설정된 효과만 표시
             foreach (var effect in armorInfo.effectList)
@@ -292,20 +323,20 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                 switch (effect.effectType)
                 {
                     case ArmorEffectType.AttackBoost:
-                        info += $"추가 공격력: {effect.effectValue}\n";
+                        info += $"<b>추가 공격력: {effect.effectValue}</b>\n";
                         break;
                     case ArmorEffectType.CritChanceBoost:
-                        info += $"치명타 확률 : {effect.effectValue}\n";
+                        info += $"<b>치명타 확률 : {effect.effectValue}</b>\n";
                         break;
                     case ArmorEffectType.CritDamageBoost:
-                        info += $"치명타 대미지 : {effect.effectValue}\n";
+                        info += $"<b>치명타 대미지 : {effect.effectValue}</b>\n";
                         break;
                     case ArmorEffectType.SpeedBoost:
-                        info += $"추가 속도 : {effect.effectValue}\n";
+                        info += $"<b>추가 속도 : {effect.effectValue}</b>\n";
                         break;
                     // 추가적인 효과 
                     default:
-                        info += $"Unknown Effect Type: {effect.effectType}\n";
+                        info += $"<b>Unknown Effect Type: {effect.effectType}</b>\n";
                         break;
                 }
             }
@@ -326,23 +357,23 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                 switch (effect.effectType)
                 {
                     case AcceEffectType.AttackBoost:
-                        info += $"추가 공격력: {effect.effectValue}\n";
+                        info += $"<b>추가 공격력: {effect.effectValue}</b>\n";
                         break;
                     case AcceEffectType.MaxHealthBoost:
-                        info += $"추가 체력: {effect.effectValue}\n";
+                        info += $"<b>추가 체력: {effect.effectValue}</b>\n";
                         break;
                     case AcceEffectType.CritChanceBoost:
-                        info += $"치명타 확률 : {effect.effectValue}\n";
+                        info += $"<b>치명타 확률 : {effect.effectValue}</b>\n";
                         break;
                     case AcceEffectType.CritDamageBoost:
-                        info += $"치명타 대미지 : {effect.effectValue}\n";
+                        info += $"<b>치명타 대미지 : {effect.effectValue}</b>\n";
                         break;
                     case AcceEffectType.SpeedBoost:
-                        info += $"추가 속도 : {effect.effectValue}\n";
+                        info += $"<b>추가 속도 : {effect.effectValue}</b>\n";
                         break;
                     // 추가적인 효과 
                     default:
-                        info += $"Unknown Effect Type: {effect.effectType}\n";
+                        info += $"<b>Unknown Effect Type: {effect.effectType}</b>\n";
                         break;
                 }
             }
@@ -358,12 +389,12 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         {
             if (consumInfo.effectType == EffectType.HealEffect && consumInfo.EffectPoint != 0)
             {
-                info += $"회복량 : {consumInfo.EffectPoint}\n";
+                info += $"<b>회복량 : {consumInfo.EffectPoint}</b>\n";
             }
             else if (consumInfo.effectType == EffectType.AttackBoostEffect && consumInfo.EffectPoint != 0)
             {
-                info += $"공격력 증가 : {consumInfo.EffectPoint}\n";
-                info += $"지속 시간 : {consumInfo.EffectDuration}\n";
+                info += $"<b>공격력 증가 : {consumInfo.EffectPoint}</b>\n";
+                info += $"<b>지속 시간 : {consumInfo.EffectDuration}</b>\n";
             }
 
         }
