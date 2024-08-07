@@ -138,10 +138,28 @@ public class Player : AnimatorProperty, IBattle
             desireDir.x = Input.GetAxisRaw("Horizontal");
             desireDir.y = Input.GetAxisRaw("Vertical");
 
+            if (myAnim.GetBool("Run") && myAnim.GetFloat("x") > 0)
+            {
+                myAnim.SetBool("Right", true);
+            }
+            else 
+            {
+                myAnim.SetBool("Right", false);
+            }
+
+            if (myAnim.GetBool("Run") && myAnim.GetFloat("x") < 0)
+            {
+                myAnim.SetBool("Left", true);
+            }
+            else
+            {
+                myAnim.SetBool("Left", false);
+            }
+
             inputDir = Vector2.Lerp(inputDir, desireDir, Time.deltaTime * 10.0f);
 
-            myAnim.SetFloat("x", inputDir.x);
-            myAnim.SetFloat("y", inputDir.y);
+            myAnim.SetFloat("x", desireDir.x);
+            myAnim.SetFloat("y", desireDir.y);
 
             // W+W 달리기
             if (Input.GetKeyDown(KeyCode.W))

@@ -15,6 +15,7 @@ public class RootMotion : AnimatorProperty
     Rigidbody rb;
     bool isGrounded;
     float groundCheckDistance = 0.3f;
+    bool Check = true;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,7 @@ public class RootMotion : AnimatorProperty
 
     private void FixedUpdate()
     {
+        // 실제이동
         rb.velocity = deltaPosition;
         transform.parent.rotation *= deltaRotation;
 
@@ -44,9 +46,10 @@ public class RootMotion : AnimatorProperty
 
     private void OnAnimatorMove()
     {
-        // 이동속도 버프용
+        // 이동 관련
         Vector3 scaledMotion = myAnim.deltaPosition * transform.parent.GetComponent<Player>().myStat.moveSpeed;   // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
-        Vector3 move = new Vector3(scaledMotion.x, -1.0f, scaledMotion.z);
+        Quaternion scaledRotation = Quaternion.Euler(0, myAnim.GetBool("Right") ? 45 : myAnim.GetBool("Left") ? -45 : 0, 0);
+        Vector3 move = scaledRotation * scaledMotion;
 
         // 레이캐스트를 발사하여 바닥에 닿아 있는지 확인
         isGrounded = Physics.Raycast(transform.parent.position + (Vector3.up * 0.03f), Vector3.down, groundCheckDistance, crashMask);
@@ -54,8 +57,8 @@ public class RootMotion : AnimatorProperty
         Debug.Log(isGrounded);
 
         // 땅이 있으면
-        move.y = isGrounded ? -0.5f : move.y = -10.0f;
-        
+        move.y = isGrounded ? -0.5f : -5.0f;
+
         deltaPosition += move;
         deltaRotation *= myAnim.deltaRotation;
     }
