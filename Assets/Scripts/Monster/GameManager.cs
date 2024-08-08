@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        DontDestroyOnLoad(this.gameObject);     //다른 씬으로 넘어가더라도 삭제하지 않고 유지
+        //DontDestroyOnLoad(this.gameObject);     //다른 씬으로 넘어가더라도 삭제하지 않고 유지
     }
 
     // Start is called before the first frame update
