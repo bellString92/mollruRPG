@@ -34,7 +34,6 @@ public class RootMotion : AnimatorProperty
 
     private void FixedUpdate()
     {
-        if (Cursor.visible == true) return;
         // 실제이동
         rb.velocity = deltaPosition;
         transform.parent.rotation *= deltaRotation;
@@ -46,6 +45,8 @@ public class RootMotion : AnimatorProperty
 
     private void OnAnimatorMove()
     {
+        if (Cursor.visible == true) return;
+
         // 이동 관련
         Vector3 scaledMotion = myAnim.deltaPosition * transform.parent.GetComponent<Player>().myStat.moveSpeed;   // 이동 속도 배수를 적용하여 새로운 deltaPosition을 계산합니다.
         Quaternion scaledRotation = Quaternion.Euler(0, myAnim.GetBool("Right") ? 45 : myAnim.GetBool("Left") ? -45 : 0, 0);

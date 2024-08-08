@@ -21,6 +21,10 @@ public class UIManager : MonoBehaviour
     private GameObject currentQuantityUI = null;
     private System.Action quantityConfirmCallback;
 
+    // 마우스 포인트 관련
+    bool isCursorVisible = false;
+    bool isPressed = true;
+
     private void Awake()
     {
         Instance = this;
@@ -28,6 +32,11 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // 마우스를 숨기기
+        Cursor.visible = isCursorVisible;
+        // 마우스 중앙 고정 및 잠구기
+        Cursor.lockState = CursorLockMode.Locked;
+
         if (myInven != null)
         {
             myInven.gameObject.SetActive(false);
@@ -45,45 +54,66 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (DontTouch.gameObject.activeSelf)
-        {
-            SetNotouchActive();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Escape) && uiStack.Count > 0) // esc로 ui종료 매서드호출
+        // esc로 ui종료 매서드호출
+        if (Input.GetKeyDown(KeyCode.Escape) && uiStack.Count > 0) 
         {
             CloseTopUi();
         }
 
-        //인벤토리 상호작용
-        if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
+        // UI 상호작용
         {
-            myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
-            SetNotouchActive();
-        }
+            if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
+            {
+                myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
+                isCursorVisible = myInven.gameObject.activeSelf;
+            }
 
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            myStateWindow.gameObject.SetActive(!myStateWindow.gameObject.activeSelf);
-            SetNotouchActive();
-        }
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                myStateWindow.gameObject.SetActive(!myStateWindow.gameObject.activeSelf);
+                isCursorVisible = myStateWindow.gameObject.activeSelf;
+            }
 
-        if (Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                mySkill.gameObject.SetActive(!mySkill.gameObject.activeSelf);
+                isCursorVisible = mySkill.gameObject.activeSelf;
+            }
+        }
+        // 마우스 제어 관련
         {
-            mySkill.gameObject.SetActive(!mySkill.gameObject.activeSelf);
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                isCursorVisible = !isCursorVisible;
+            }
+
+            if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && isPressed)
+            {
+                isCursorVisible = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            {
+                isPressed = false;
+                isCursorVisible = true;
+            }
+
+            if (Input.GetKeyUp(KeyCode.LeftAlt))
+            {
+                isPressed = true;
+                isCursorVisible = false;
+            }
+            UpdateCursorState();
         }
     }
-    private void SetNotouchActive()
+
+    void UpdateCursorState()
     {
-        if (uiStack.Count <= 0 && !myInven.gameObject.activeSelf && !myStateWindow.gameObject.activeSelf)
-        {
-            DontTouch.gameObject.SetActive(false);
-        }
-        else
-        {
-            DontTouch.gameObject.SetActive(true);
-        }
+        // isCursorVisible 변수에 따라 마우스 커서 상태를 업데이트합니다.
+        Cursor.visible = isCursorVisible;
+        Cursor.lockState = isCursorVisible ? CursorLockMode.None : CursorLockMode.Locked;
     }
+
     public void CloseTopUi() // 가장위에 존재하는 UI종료
     {
         if(uiStack.Count > 0)
@@ -139,7 +169,6 @@ public class UIManager : MonoBehaviour
             Transform parentTransform = UiForNPC != null ? UiForNPC.transform : canvas.transform;
             GameObject uiInstance = Instantiate(uiPrefab, parentTransform); 
             uiStack.Push(uiInstance);
-            SetNotouchActive();
             return uiInstance;
         } 
         else 
