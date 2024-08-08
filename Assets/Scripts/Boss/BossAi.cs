@@ -32,7 +32,7 @@ public class BossAI : BattleSystem
 
             Vector3 direction = (player.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 3f); // 바라보는 속도
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 1.5f); // 바라보는 속도
         }
     }
 
@@ -40,6 +40,10 @@ public class BossAI : BattleSystem
     {
         AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("Battle") || stateInfo.IsName("AttackWait"))
+        {
+            MoveTowardsPlayer();
+        }
+        else if (stateInfo.IsName("Chase"))
         {
             MoveTowardsPlayer();
         }
@@ -395,14 +399,14 @@ public class BossAI : BattleSystem
         isAttacking = false;
         UpdateState(State.Chase);
 
-        // 3초 대기 코루틴 시작
+        // 대기 코루틴 시작
         StartCoroutine(WaitAfterAttack());
     }
 
     IEnumerator WaitAfterAttack()
     {
-        // 3초 동안 대기
-        yield return new WaitForSeconds(2f);
+        // 1초 동안 대기
+        yield return new WaitForSeconds(1.0f);
 
         // Chase 상태로 돌아가기
         UpdateState(State.Chase);

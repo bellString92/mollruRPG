@@ -150,8 +150,10 @@ public class Movement : AnimatorProperty
         return Vector3.Distance(transform.position, target.position);
     }
 
+
     protected IEnumerator FollowingTarget(Transform target, CheckAction<float> checkAct, UnityAction act)
     {
+        AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
         myAnim.SetBool("IsMoving", true);
         while(target != null)
         {
@@ -163,8 +165,9 @@ public class Movement : AnimatorProperty
                 myAnim.SetBool("IsMoving", false);
                 //Action
                 act?.Invoke();
+
             }
-            else if(myAnim.GetBool("IsAttacking") == false)
+            else if(myAnim.GetBool("IsAttacking") == false )
             {
                 myAnim.SetBool("IsMoving", true);
                 delta = moveSpeed * Time.deltaTime;
