@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class Enemy : BattleSystem
 {
+    public Transform dropparent;
     public float myExp = 100;
 
     private bool isDie      /// 몬스터 생존 여부
@@ -53,6 +54,7 @@ public class Enemy : BattleSystem
                 break;
             case State.Death:
                 GetComponent<Rigidbody>().useGravity = false;
+                DropingPocket();
                 giveExp(myExp);
                 deadAct?.Invoke();
                 StopAllCoroutines();
@@ -144,5 +146,10 @@ public class Enemy : BattleSystem
         this.isDie = false;
         GetComponent<CapsuleCollider>().enabled = true;//몬스터 Collider 활성화
         this.gameObject.SetActive(false);
+    }
+    void DropingPocket()
+    {
+        //GameObject obj = Resources.Load<GameObject>("Prefabs/DropPocket");
+        //Instantiate(obj, dropparent);
     }
 }

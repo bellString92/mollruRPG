@@ -98,13 +98,14 @@ MonoBehaviour:
     moveSpeed: 0
     CriticalProbability: 0
     CriticalDamage: 0
-    maxHealPoint: 100
-    curHealPoint: 100
+    maxHealPoint: 10
+    curHealPoint: 10
     maxMagicPoint: 0
     curMagicPoint: 0
     myLvevel: 0
     maxExperiencePoint: 1000000
     curExperiencePoint: 0
+  dropparent: {fileID: 2342214191862875238}
   myExp: 100
   myState: 0
 --- !u!136 &8626463264264953478
