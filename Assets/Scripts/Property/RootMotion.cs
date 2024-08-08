@@ -15,8 +15,6 @@ public class RootMotion : AnimatorProperty
     Rigidbody rb;
     bool isGrounded;
     float groundCheckDistance = 0.3f;
-    bool Check = true;
-    bool RotCheck = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +34,7 @@ public class RootMotion : AnimatorProperty
 
     private void FixedUpdate()
     {
+        if (Cursor.visible == true) return;
         // 실제이동
         rb.velocity = deltaPosition;
         transform.parent.rotation *= deltaRotation;

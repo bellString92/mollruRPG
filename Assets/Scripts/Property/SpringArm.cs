@@ -25,6 +25,7 @@ public class SpringArm : CameraProperty
     void Update()
     {
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+        if (Cursor.visible == true) return;
 
         float x = Input.GetAxis("Mouse X");
         transform.parent.Rotate(Vector3.up * x * rotSpeed);

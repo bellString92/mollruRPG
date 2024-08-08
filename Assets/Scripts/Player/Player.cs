@@ -122,6 +122,10 @@ public class Player : AnimatorProperty, IBattle
             }
         }
 
+        // 마우스 제어
+        if (UnityEngine.Cursor.visible == true) return; 
+
+
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {
             desireDir.x = 0;

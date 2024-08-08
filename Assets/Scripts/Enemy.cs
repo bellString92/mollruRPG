@@ -7,7 +7,10 @@ public class Enemy : BattleSystem
 {
     public float myExp = 100;
 
-    private bool isDie = false;//몬스터의 사망 여부
+    private bool isDie      /// 몬스터 생존 여부
+    {
+        get;set;
+    }
 
     public enum State
     {
@@ -87,7 +90,7 @@ public class Enemy : BattleSystem
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         startPos = transform.position;
         OnChangeState(State.Normal);
         Rigidbody rigidbody = GetComponent<Rigidbody>();
