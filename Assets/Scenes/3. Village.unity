@@ -26681,10 +26681,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5090399162879680846, guid: 56573eef1615e114898560d666b18e89, type: 3}
-      propertyPath: comboSkill
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5219259697006728711, guid: 56573eef1615e114898560d666b18e89, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -26813,10 +26809,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 5931565659447412401, guid: 56573eef1615e114898560d666b18e89, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6143104144811562964, guid: 56573eef1615e114898560d666b18e89, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -26984,10 +26976,6 @@ PrefabInstance:
     - target: {fileID: 6685211728223631297, guid: 56573eef1615e114898560d666b18e89, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6768571240233371929, guid: 56573eef1615e114898560d666b18e89, type: 3}
-      propertyPath: comboSkill
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7057894637179402987, guid: 56573eef1615e114898560d666b18e89, type: 3}
       propertyPath: m_AnchorMax.y
@@ -27233,10 +27221,6 @@ PrefabInstance:
       propertyPath: user
       value: 
       objectReference: {fileID: 1985618731}
-    - target: {fileID: 8624265296249229427, guid: 56573eef1615e114898560d666b18e89, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8656843869084428715, guid: 56573eef1615e114898560d666b18e89, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

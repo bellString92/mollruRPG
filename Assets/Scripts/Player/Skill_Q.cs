@@ -15,7 +15,7 @@ public class Skill_Q : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //타겟 저장
+        // 타겟 저장
         if (FieldOfView.visibleMonster.Count > 0)
         {
             myTarget = FieldOfView.visibleMonster[0];
@@ -25,16 +25,15 @@ public class Skill_Q : StateMachineBehaviour
             myTarget = null;
             return;
         }
-        //나의 위치 저장
+        // 나의 위치 저장
         myPos = animator.transform.parent.position;
 
-
-
+        // 위치값 계산
         Vector3 positionTarget = myTarget.position;                 // myTarget의 위치값
         Quaternion rotationTarget = myTarget.rotation;              // myTarget의 회전값
         Vector3 offset = rotationTarget * Vector3.right * distance; // 90도 옆의 방향
 
-        targetPosition = positionTarget + offset;           // 목표 위치를 계산
+        targetPosition = positionTarget + offset;                   // 목표 위치를 계산
         initialized = true;
     }
 

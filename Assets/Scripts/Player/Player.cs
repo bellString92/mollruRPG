@@ -38,7 +38,6 @@ public class Player : AnimatorProperty, IBattle
     public BuffManager BuffManager;     // 버프 매니저 호출을 위한 변수
     public Animator _myAni;             // 애니메이션 속도 제어를 위한 변수
 
-    private PlayerSkill skill = null;
 
     public bool IsLive
     {
@@ -98,47 +97,39 @@ public class Player : AnimatorProperty, IBattle
         myTarger.Clear();
 
         // 타겟 저장 시스템
-        FieldOfView myFOV = GetComponent<FieldOfView>();
-        if (myFOV.visibleMonsterView.Count > 0)
         {
-            for (int i = 0; i < myFOV.visibleMonsterView.Count; i++)
+            FieldOfView myFOV = GetComponent<FieldOfView>();
+            if (myFOV.visibleMonsterView.Count > 0)
             {
-                myTargetmonster.Add(myFOV.visibleMonsterView[i]);
-                float distance = Vector3.Distance(transform.position, myTargetmonster[0].position);        // 타겟과 나의 거리 구함, 추후 스킬과 연계하여 사용하기 위해 미리 제작
+                for (int i = 0; i < myFOV.visibleMonsterView.Count; i++)
+                {
+                    myTargetmonster.Add(myFOV.visibleMonsterView[i]);
+                    float distance = Vector3.Distance(transform.position, myTargetmonster[0].position);        // 타겟과 나의 거리 구함, 추후 스킬과 연계하여 사용하기 위해 미리 제작
+                }
             }
-        }
-        if (myFOV.visibleNPCView.Count > 0)
-        {
-            for (int i = 0; i < myFOV.visibleNPCView.Count; i++)
+            if (myFOV.visibleNPCView.Count > 0)
             {
-                myTarger.Add(myFOV.visibleNPCView[i]);
+                for (int i = 0; i < myFOV.visibleNPCView.Count; i++)
+                {
+                    myTarger.Add(myFOV.visibleNPCView[i]);
+                }
             }
-        }
-        if (myFOV.visibleETCView.Count > 0)
-        {
-            for (int i = 0;i < myFOV.visibleETCView.Count; i++)
+            if (myFOV.visibleETCView.Count > 0)
             {
-                myTarger.Add(myFOV.visibleETCView[i]);
+                for (int i = 0; i < myFOV.visibleETCView.Count; i++)
+                {
+                    myTarger.Add(myFOV.visibleETCView[i]);
+                }
             }
         }
 
         // 마우스 제어
-        if (UnityEngine.Cursor.visible == true) return; 
-
-
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {
-            desireDir.x = 0;
-            desireDir.y = 0;
-            inputDir = Vector2.Lerp(inputDir, desireDir, Time.deltaTime * 10.0f);
-            myAnim.SetFloat("x", inputDir.x);
-            myAnim.SetFloat("y", inputDir.y);
-            myAnim.SetBool("Run", false);
-            return;
+            if (UnityEngine.Cursor.visible == true) return;
         }
-        else
+
+        // 이동
         {
-            // 이동
             desireDir.x = Input.GetAxisRaw("Horizontal");
             desireDir.y = Input.GetAxisRaw("Vertical");
 
@@ -146,7 +137,7 @@ public class Player : AnimatorProperty, IBattle
             {
                 myAnim.SetBool("Right", true);
             }
-            else 
+            else
             {
                 myAnim.SetBool("Right", false);
             }
@@ -199,47 +190,45 @@ public class Player : AnimatorProperty, IBattle
                 myAnim.SetTrigger("OnRoll");
                 AllBuff(20f, 3.5f, BuffType.MoveSpeed);
             }
+        }
 
-            // 상호작용키
-            if ((myTarger != null) && isNearButton && Input.GetKeyDown(KeyCode.F))
+        // 상호작용키
+        {
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                currentButton.OnButtonPress();
-            }
-            if (currentChest != null && isNearChest && Input.GetKeyDown(KeyCode.F))
-            {
-                currentChest.OpenChest();
-            }
-
-            // 기본공격 좌클
-            if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-            {
-                if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
+                if ((myTarger != null) && isNearButton)
                 {
-                    OnAllSkillTrue();
-                    myAnim.SetTrigger("OnAttack");
+                    currentButton.OnButtonPress();
                 }
+
+                if (currentChest != null && isNearChest)
+                {
+                    currentChest.OpenChest();
+                }
+            }
+        }
+
+        // 플레이어 스킬
+        {
+            // 기본공격 좌클
+            if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
+            {
+                OnAllSkillTrue();
+                myAnim.SetTrigger("OnAttack");
             }
 
             // 스킬 Q (이동기)
-            if (!myAnim.GetBool("IsSkill_Q") && Input.GetKey(KeyCode.Q) && TGDir.magnitude < 3)
+            if (!myAnim.GetBool("IsSkill_Q") && Input.GetKeyDown(KeyCode.Q) && TGDir.magnitude < 3)
             {
-                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_Q);
-                if (skill != null)
-                {
-                    SkillAction(skill);
-                    AllBuff(15f, 10, BuffType.MoveSpeed);
-                }
+                myAnim.SetTrigger("OnSkill_Q");
+                AllBuff(15f, 10, BuffType.MoveSpeed);
             }
 
             // 스킬 E (이동기)
-            if (!myAnim.GetBool("IsSkill_E") && Input.GetKey(KeyCode.E) && TGDir.magnitude < 3)
+            if (!myAnim.GetBool("IsSkill_E") && Input.GetKeyDown(KeyCode.E) && TGDir.magnitude < 3)
             {
-                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_E);
-                if (skill != null)
-                {
-                    SkillAction(skill);
-                    AllBuff(15f, 10, BuffType.MoveSpeed);
-                }
+                myAnim.SetTrigger("OnSkill_E");
+                AllBuff(15f, 10, BuffType.MoveSpeed);
             }
 
             // 스킬 SS (이동기)
@@ -253,12 +242,7 @@ public class Player : AnimatorProperty, IBattle
                 else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
                 {
                     myIsOneClick = false;
-                    skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_S);
-                    if (skill != null)
-                    {
-                        SkillAction(skill);
-                        AllBuff(1.5f, 10, BuffType.MoveSpeed);
-                    }
+                    AllBuff(1.5f, 10, BuffType.MoveSpeed);
                 }
             }
 
@@ -268,69 +252,40 @@ public class Player : AnimatorProperty, IBattle
                 myIsOneClick = false;
             }
 
-            // 스킬 F1
-            if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
-            {
-                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_F1);
-                if (skill != null)
-                {
-                    SkillAction(skill);
-                    myAnim.SetBool("IsSkill_F1", true);
-                }
-            }
-
-            // 스킬 F2
-            if (!myAnim.GetBool("IsSkill_F2") && Input.GetKeyDown(KeyCode.F))
-            {
-                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_F2);
-                if (skill != null)
-                {
-                    SkillAction(skill);
-                    myAnim.SetBool("IsSkill_F2", true);
-                }
-            }
-
             // 스킬 Tab
             if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab))
             {
-                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_Tab);
-                if (skill != null)
-                {
-                    SkillAction(skill);
-                }
+                myAnim.SetTrigger("OnSkill_Tab");
             }
 
             // 스킬 1
             if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
             {
-                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_1);
-                if (skill != null)
-                {
-                    SkillAction(skill);
-                    AllBuff(10.0f, 5.0f, BuffType.Defense);
-                }
+                myAnim.SetTrigger("OnSkill_1");
             }
 
             // 스킬 2
-            if (!myAnim.GetBool("IsSkill_2") && Input.GetKey(KeyCode.Alpha2))
+            if (!myAnim.GetBool("IsSkill_2") && Input.GetKeyDown(KeyCode.Alpha2))
             {
-                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_2);
-                if (skill != null)
-                {
-                    myAnim.SetBool("IsSkill_2_On", true);
-                    SkillAction(skill);
-                }
+                myAnim.SetTrigger("OnSkill_2");
             }
 
             // 스킬 3
             if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
             {
-                skill = SkillController.Instance.SlotSkillPlay(Skill.Skill_3);
-                if (skill != null)
-                {
-                    myAnim.SetBool("IsSkill_3_On", true);
-                    SkillAction(skill);
-                }
+                myAnim.SetTrigger("OnSkill_3");
+            }
+
+            // 스킬 F1
+            if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
+            {
+                myAnim.SetTrigger("OnSkill_F1");
+            }
+
+            // 스킬 F2
+            if (!myAnim.GetBool("IsSkill_F2") && Input.GetKeyDown(KeyCode.F))
+            {
+                myAnim.SetTrigger("OnSkill_F2");
             }
         }
     }
@@ -341,7 +296,6 @@ public class Player : AnimatorProperty, IBattle
         if (!playerSkill.skill.Equals(Skill.Skill_S))
             OnAllSkillTrue();
         myAnim.SetTrigger(playerSkill.skillTriggerName);
-        skill = null;
     }
 
     // 버프 추가 매서드
@@ -395,7 +349,7 @@ public class Player : AnimatorProperty, IBattle
 
     public void OnDamage()
     {
-        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 0.5f, 0.5f, enemyMask);
+        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 1.0f, 1.0f, enemyMask);
         foreach(Collider col in list)
         {
             IDamage id = col.GetComponent<IDamage>();
@@ -462,7 +416,7 @@ public class Player : AnimatorProperty, IBattle
             currentChest = null;
         }
     }
-
+    /*
     public void OnComboSkill(Skill skill)
     {
         SkillController.Instance.SlotSkillOnCombo(skill);
@@ -472,4 +426,5 @@ public class Player : AnimatorProperty, IBattle
     {
         SkillController.Instance.SlotSkillOffCombo(skill);
     }
+    */
 }
