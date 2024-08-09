@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] GameObject dropPocketPrefab;
     [SerializeField] GameObject monsterPrefab;
     [SerializeField] Transform parentTransform;
 
     public List<Transform> points = new List<Transform>();//몬스터가 출현할 위치를 저장할 List 변수
+
     public List<GameObject> monsterPools = new List<GameObject>();//몬스터를 미리 생성해 저장
+    public List<GameObject> pocketPools = new List<GameObject>();//아이템 미리 저장
+
 
     public int maxMonsters = 10; //오브젝트 풀에 생성할 몬스터 최대 개수
     public static GameManager instance = null;//싱글톤 인스턴스 생성
@@ -17,11 +22,13 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (instance == null)
-        {//인스터스가 할당되지 않았을경우
+        {
+            //인스터스가 할당되지 않았을경우
             instance = this;
         }
         else if (instance != this)
-        {//인스턴스에 할당된 클래스의 인스턴스가 다르게 새로 생성된 클래스
+        {
+            //인스턴스에 할당된 클래스의 인스턴스가 다르게 새로 생성된 클래스
             Destroy(this.gameObject);
         }
 
@@ -56,6 +63,7 @@ public class GameManager : MonoBehaviour
         monster?.SetActive(true);
     }
 
+
     public GameObject GetMonsterInPool()
     {
         // 오브젝트 풀의 처음부터 끝까지 순회
@@ -69,6 +77,20 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    public GameObject GetDropPocketInPool()
+    {
+        // 오브젝트 풀의 처음부터 끝까지 순회
+        foreach (var dropPocket in pocketPools)
+        {
+            if (dropPocket.activeSelf == false)
+            {
+                return dropPocket; // 비활성화 여부로 사용 가능한 몬스터 판단
+            }
+        }
+        return null;
+    }
+
+
     // 몬스터 생성
     private void CreateMonsterPool()
     {
@@ -77,6 +99,25 @@ public class GameManager : MonoBehaviour
             GameObject monster = Instantiate(monsterPrefab, parentTransform); // 실제 몬스터 생성
             monster.SetActive(false);   // 몬스터 비활성화
             monsterPools.Add(monster);  // 몬스터 폴에 추가
+        }
+    }
+
+    public void AddPocket()
+    {
+        if (pocketPools == null)
+        {
+            GameObject dropPocket = Instantiate(dropPocketPrefab, parentTransform);
+            dropPocket.SetActive(false);
+            pocketPools.Add(dropPocket);
+        }
+        else 
+        {
+            // 활성화시키고
+            GameObject dropPocket = GetDropPocketInPool();
+            // 위치값 받아서 그 주변으로 이동
+
+            dropPocket?.SetActive(true);
+            // 애니메이션 효과 셋하고
         }
     }
 }
