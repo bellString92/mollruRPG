@@ -3,17 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum BuffType
 { Damage, Defense, MoveSpeed, AttackSpeed, AttackRange }
+public enum BuffSource
+{
+    Skill,
+    ConsumableItem
+}
 public abstract class BuffSystem
 {
     protected float duration; // 버프의 지속 시간
     protected GameObject target; // 버프가 적용될 대상
+    protected BuffSource source; // 버프의 출처
 
 
-
-    public BuffSystem(float duration, GameObject target)
+    public BuffSystem(float duration, GameObject target, BuffSource source)
     {
         this.duration = duration;
         this.target = target;
+        this.source = source;
+    }
+    public BuffSource Source
+    {
+        get { return source; }
     }
 
     // 버프 효과를 적용하는 메서드 (추상 메서드)

@@ -11,8 +11,7 @@ public class DamageBuff : BuffSystem
     //private GameObject myBody;
     private BuffType type;
 
-
-    public DamageBuff(float v, GameObject target, float t, BuffType b) : base(t, target)
+    public DamageBuff(float v, GameObject target, float t, BuffType b, BuffSource s) : base(t, target, s)
     {
         this.attackIncrease = v;
         //this.myBody = target;

@@ -188,7 +188,7 @@ public class Player : AnimatorProperty, IBattle
             {
                 myAnim.SetBool("IsRoll", true);
                 myAnim.SetTrigger("OnRoll");
-                AllBuff(20f, 3.5f, BuffType.MoveSpeed);
+                AllBuff(20f, 3.5f, BuffType.MoveSpeed, BuffSource.Skill);
             }
         }
 
@@ -221,14 +221,14 @@ public class Player : AnimatorProperty, IBattle
             if (!myAnim.GetBool("IsSkill_Q") && Input.GetKeyDown(KeyCode.Q) && TGDir.magnitude < 3)
             {
                 myAnim.SetTrigger("OnSkill_Q");
-                AllBuff(15f, 10, BuffType.MoveSpeed);
+                AllBuff(15f, 10, BuffType.MoveSpeed, BuffSource.Skill);
             }
 
             // 스킬 E (이동기)
             if (!myAnim.GetBool("IsSkill_E") && Input.GetKeyDown(KeyCode.E) && TGDir.magnitude < 3)
             {
                 myAnim.SetTrigger("OnSkill_E");
-                AllBuff(15f, 10, BuffType.MoveSpeed);
+                AllBuff(15f, 10, BuffType.MoveSpeed, BuffSource.Skill);
             }
 
             // 스킬 SS (이동기)
@@ -242,7 +242,7 @@ public class Player : AnimatorProperty, IBattle
                 else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
                 {
                     myIsOneClick = false;
-                    AllBuff(1.5f, 10, BuffType.MoveSpeed);
+                    AllBuff(1.5f, 10, BuffType.MoveSpeed, BuffSource.Skill);
                 }
             }
 
@@ -299,9 +299,9 @@ public class Player : AnimatorProperty, IBattle
     }
 
     // 버프 추가 매서드
-    public void AllBuff(float v, float t, BuffType b)
+    public void AllBuff(float v, float t, BuffType b, BuffSource s)
     {
-        BuffSystem attackBuff = new DamageBuff(v, gameObject, t, b);
+        BuffSystem attackBuff = new DamageBuff(v, gameObject, t, b, s);
         BuffManager.AddBuff(attackBuff);
     }
 

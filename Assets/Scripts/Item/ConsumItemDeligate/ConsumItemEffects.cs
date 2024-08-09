@@ -22,7 +22,7 @@ public class ConsumItemEffects : MonoBehaviour
     {
         if (item.quantity > 0)
         {
-            Inventory.Instance.user.AllBuff(item.EffectPoint, item.EffectDuration, BuffType.Damage);
+            Inventory.Instance.user.AllBuff(item.EffectPoint, item.EffectDuration, BuffType.Damage, BuffSource.ConsumableItem);
         }
         item.quantity--; // 사용 후 갯수 감소
     }
@@ -31,7 +31,7 @@ public class ConsumItemEffects : MonoBehaviour
     {
         if (item.quantity > 0)
         {
-            Inventory.Instance.user.AllBuff(item.EffectPoint, item.EffectDuration, BuffType.MoveSpeed);
+            Inventory.Instance.user.AllBuff(item.EffectPoint, item.EffectDuration, BuffType.MoveSpeed, BuffSource.ConsumableItem);
         }
         item.quantity--; // 사용 후 갯수 감소
     }
