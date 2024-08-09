@@ -7,10 +7,13 @@ public class Enemy : BattleSystem
 {
     public Transform dropparent;
     public float myExp = 100;
+    public List<DropItem> dropitemList; // 드랍할 아이템 리스트
+    public int minDropQuanity;    // 한번에 드롭 가능한 최소 수량
+    public int maxDropQuanity;    // 한번에 드롭 가능한 최대 수량
 
     private bool isDie      /// 몬스터 생존 여부
     {
-        get;set;
+        get; set;
     }
 
     public enum State
@@ -19,7 +22,7 @@ public class Enemy : BattleSystem
     }
     public State myState = State.Create;
     Vector3 startPos;
-    Coroutine coRoam = null;    
+    Coroutine coRoam = null;
 
     protected override void OnDead()
     {
@@ -38,13 +41,13 @@ public class Enemy : BattleSystem
     {
         if (myState == s) return;
         myState = s;
-        switch(myState)
+        switch (myState)
         {
-            case State.Create:                
+            case State.Create:
                 break;
             case State.Normal:
                 StopMoveCoroutine();
-                StopRoamCoroutine();                
+                StopRoamCoroutine();
                 coRoam = StartCoroutine(Roaming());
                 break;
             case State.Battle:
@@ -60,7 +63,7 @@ public class Enemy : BattleSystem
                 StopAllCoroutines();
                 break;
         }
-    }    
+    }
 
     IEnumerator Roaming()
     {
@@ -92,7 +95,7 @@ public class Enemy : BattleSystem
 
     // Start is called before the first frame update
     void Start()
-    {        
+    {
         startPos = transform.position;
         OnChangeState(State.Normal);
         Rigidbody rigidbody = GetComponent<Rigidbody>();
@@ -106,10 +109,10 @@ public class Enemy : BattleSystem
 
     public void giveExp(float exp)
     {
-        if (myTarget== null) return;
+        if (myTarget == null) return;
         OnGiveExp(myExp);
     }
-    
+
 
     public void OnBattle(Transform target)
     {
@@ -122,7 +125,7 @@ public class Enemy : BattleSystem
         myTarget = null;
         OnChangeState(State.Normal);
     }
-    
+
     public void OnDisApear()
     {
         StartCoroutine(DisApearing(0.3f));
@@ -134,7 +137,7 @@ public class Enemy : BattleSystem
         yield return new WaitForSeconds(3.0f);
         Vector3 dir = Vector3.down;
         float dist = 1.0f;
-        while(dist > 0.0f)
+        while (dist > 0.0f)
         {
             float delta = downSpeed * Time.deltaTime;
             transform.Translate(dir * delta);
@@ -151,5 +154,40 @@ public class Enemy : BattleSystem
     {
         //GameObject obj = Resources.Load<GameObject>("Prefabs/DropPocket");
         //Instantiate(obj, dropparent);
+        //GetRandomDropItems();
+    }
+    // 아이템 드롭 메서드
+    public List<ItemKind> GetRandomDropItems()
+    {
+        List<ItemKind> droppedItems = new List<ItemKind>();
+        float totalChance = 0f;
+
+        // 전체 확률의 합을 구함
+        foreach (DropItem dropItem in dropitemList)
+        {
+            totalChance += dropItem.dropChance;
+        }
+        // 몬스터에서 지정한 최소 수량과 최대 수량 사이에서 랜덤한 수량을 선택
+        int dropQuantity = Random.Range(minDropQuanity, maxDropQuanity + 1);
+        // 해당 수량만큼 아이템을 리스트에 추가
+        for (int i = 0; i < dropQuantity; i++)
+        {
+            // 0부터 전체 확률까지의 랜덤 값을 생성
+            float randomValue = Random.Range(0f, totalChance);
+            float cumulativeChance = 0f;
+
+            // 랜덤 값이 어느 아이템의 범위에 속하는지 체크
+            foreach (DropItem dropItem in dropitemList)
+            {
+                cumulativeChance += dropItem.dropChance;
+
+                if (randomValue <= cumulativeChance)
+                {
+                    droppedItems.Add(dropItem.itemKind);
+                    break;
+                }
+            }
+        }
+        return droppedItems;
     }
 }

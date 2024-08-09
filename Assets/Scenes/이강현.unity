@@ -2400,7 +2400,7 @@ PrefabInstance:
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: BuffManager
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2092491868}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: myStat.moveSpeed
       value: 200
@@ -2479,6 +2479,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2645294f7727cf141a396496b8beddee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2092491868 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5421192223774236073, guid: 56573eef1615e114898560d666b18e89, type: 3}
+  m_PrefabInstance: {fileID: 498272062}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59383e4b618702469856798ca681f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2799201861373720409
