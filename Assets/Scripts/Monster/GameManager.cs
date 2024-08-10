@@ -1,75 +1,88 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject dropPocketPrefab;
     [SerializeField] GameObject monsterPrefab;
-    [SerializeField] Transform parentTransform;
+    [SerializeField] Transform parentTransform; // 몬스터 풀과 드롭 포켓 풀의 부모 트랜스폼
 
-    public List<Transform> points = new List<Transform>();//몬스터가 출현할 위치를 저장할 List 변수
+    public List<Transform> points = new List<Transform>(); // 몬스터가 출현할 위치를 저장할 List 변수
 
-    public List<GameObject> monsterPools = new List<GameObject>();//몬스터를 미리 생성해 저장
-    public List<GameObject> pocketPools = new List<GameObject>();//아이템 미리 저장
+    public List<GameObject> monsterPools = new List<GameObject>(); // 몬스터를 미리 생성해 저장
+    public List<GameObject> pocketPools = new List<GameObject>(); // 아이템 미리 저장
 
-
-    public int maxMonsters = 10; //오브젝트 풀에 생성할 몬스터 최대 개수
-    public static GameManager instance = null;//싱글톤 인스턴스 생성
+    public int maxMonsters = 10; // 오브젝트 풀에 생성할 몬스터 최대 개수
+    public static GameManager instance = null; // 싱글톤 인스턴스 생성
     private float createTime = 3.0f;
 
     private void Awake()
     {
         if (instance == null)
         {
-            //인스터스가 할당되지 않았을경우
+            // 인스턴스가 할당되지 않았을 경우
             instance = this;
         }
         else if (instance != this)
         {
-            //인스턴스에 할당된 클래스의 인스턴스가 다르게 새로 생성된 클래스
+            // 인스턴스에 할당된 클래스의 인스턴스가 다르게 새로 생성된 경우
             Destroy(this.gameObject);
         }
-
-        //DontDestroyOnLoad(this.gameObject);     //다른 씬으로 넘어가더라도 삭제하지 않고 유지
     }
 
     // Start is called before the first frame update
     void Start()
     {
         CreateMonsterPool();
+        InitializePocketPool(); // DropPocket 풀 초기화
+
         Transform spawnPointGroup = GameObject.Find("SpawnPointGroup").transform;
 
         foreach (Transform point in spawnPointGroup)
         {
-            points.Add(point); //parent 제외하고 child의 컴포넌트만 추출
+            points.Add(point); // parent 제외하고 child의 컴포넌트만 추출
         }
-        InvokeRepeating("CreateMonster", 3.0f, this.createTime);//일정한 시간 간격으로 함수 호출
+        InvokeRepeating("CreateMonster", 3.0f, this.createTime); // 일정한 시간 간격으로 함수 호출
     }
 
-    // Update is called once per frame
-    void Update()
+    private void InitializePocketPool()
     {
-        
+        for (int i = 0; i < 30; i++)
+        {
+            GameObject dropPocket = Instantiate(dropPocketPrefab, parentTransform);
+            dropPocket.SetActive(false);
+            pocketPools.Add(dropPocket); // 생성된 드롭 포켓을 pocketPools에 추가
+        }
     }
+
     private void CreateMonster()
     {
-        int idx = Random.Range(0, points.Count);//몬스터의 불규칙한 생성 위치 산출
+        int idx = Random.Range(0, points.Count); // 몬스터의 불규칙한 생성 위치 산출
 
-        //풀에서 비활성화된 오브젝트 가져오기
+        // 풀에서 비활성화된 오브젝트 가져오기
         GameObject monster = GetMonsterInPool();
-        monster?.transform.SetPositionAndRotation(points[idx].position, points[idx].rotation);
-        monster?.SetActive(true);
-    }
+        if (monster != null)
+        {
+            monster.transform.SetPositionAndRotation(points[idx].position, points[idx].rotation);
+            monster.SetActive(true);
 
+            // Enemy상태를 Create로 변경
+            Enemy enemyComponent = monster.GetComponent<Enemy>();
+            if (enemyComponent != null)
+            {
+                enemyComponent.SetState(Enemy.State.Normal);
+            }
+
+        }
+    }
 
     public GameObject GetMonsterInPool()
     {
         // 오브젝트 풀의 처음부터 끝까지 순회
         foreach (var monster in monsterPools)
         {
-            if (monster.activeSelf == false)
+            if (!monster.activeSelf)
             {
                 return monster; // 비활성화 여부로 사용 가능한 몬스터 판단
             }
@@ -82,42 +95,41 @@ public class GameManager : MonoBehaviour
         // 오브젝트 풀의 처음부터 끝까지 순회
         foreach (var dropPocket in pocketPools)
         {
-            if (dropPocket.activeSelf == false)
+            if (!dropPocket.activeSelf)
             {
-                return dropPocket; // 비활성화 여부로 사용 가능한 몬스터 판단
+                return dropPocket; // 비활성화 여부로 사용 가능한 드롭 포켓 판단
             }
         }
         return null;
     }
 
-
-    // 몬스터 생성
     private void CreateMonsterPool()
     {
         for (int i = 0; i < maxMonsters; i++)
         {
             GameObject monster = Instantiate(monsterPrefab, parentTransform); // 실제 몬스터 생성
-            monster.SetActive(false);   // 몬스터 비활성화
-            monsterPools.Add(monster);  // 몬스터 폴에 추가
+            monster.SetActive(false); // 몬스터 비활성화
+            monsterPools.Add(monster); // 몬스터 풀에 추가
         }
     }
 
-    public void AddPocket()
+    public void AddPocketAtPosition(Vector3 position)
     {
-        if (pocketPools == null)
-        {
-            GameObject dropPocket = Instantiate(dropPocketPrefab, parentTransform);
-            dropPocket.SetActive(false);
-            pocketPools.Add(dropPocket);
-        }
-        else 
-        {
-            // 활성화시키고
-            GameObject dropPocket = GetDropPocketInPool();
-            // 위치값 받아서 그 주변으로 이동
+        // 오브젝트 풀에서 비활성화된 DropPocket을 가져옴
+        GameObject dropPocket = GetDropPocketInPool();
 
-            dropPocket?.SetActive(true);
-            // 애니메이션 효과 셋하고
+        if (dropPocket != null)
+        {
+            // DropPocket을 활성화하고 위치를 설정
+            dropPocket.transform.position = position;
+            dropPocket.SetActive(true);
+        }
+        else
+        {
+            // 풀에 남아있는 DropPocket이 없으면 새로 생성
+            dropPocket = Instantiate(dropPocketPrefab, position, Quaternion.identity);
+            dropPocket.transform.SetParent(parentTransform); // DropPocket을 parentTransform의 자식으로 설정
+            pocketPools.Add(dropPocket); // 새로 생성된 클론을 pocketPools에 추가
         }
     }
 }

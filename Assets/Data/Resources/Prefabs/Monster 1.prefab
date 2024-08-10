@@ -107,6 +107,9 @@ MonoBehaviour:
     curExperiencePoint: 0
   dropparent: {fileID: 2342214191862875238}
   myExp: 100
+  dropitemList: []
+  minDropQuanity: 0
+  maxDropQuanity: 0
   myState: 0
 --- !u!136 &8626463264264953478
 CapsuleCollider:
@@ -139,7 +142,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4980345128072532735}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

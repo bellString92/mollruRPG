@@ -1,21 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Enemy : BattleSystem
 {
     public Transform dropparent;
     public float myExp = 100;
     public List<DropItem> dropitemList; // 드랍할 아이템 리스트
-    public int minDropQuanity;    // 한번에 드롭 가능한 최소 수량
-    public int maxDropQuanity;    // 한번에 드롭 가능한 최대 수량
+    public int minDropQuanity; // 한번에 드롭 가능한 최소 수량
+    public int maxDropQuanity; // 한번에 드롭 가능한 최대 수량
 
-    private bool isDie      /// 몬스터 생존 여부
-    {
-        get; set;
-    }
-
+    private bool isDie; // 몬스터 생존 여부
     public enum State
     {
         Create, Normal, Battle, Death
@@ -37,15 +32,25 @@ public class Enemy : BattleSystem
             coRoam = null;
         }
     }
+
     void OnChangeState(State s)
     {
         if (myState == s) return;
         myState = s;
+
+        // 코루틴을 시작하기 전에 게임 오브젝트가 활성화되어 있는지 확인
+        if (!gameObject.activeSelf)
+        {
+            return; // 게임 오브젝트가 비활성화되어 있으면 코루틴 시작을 생략
+        }
+
         switch (myState)
         {
             case State.Create:
+                GetComponent<Rigidbody>().useGravity = true;
                 break;
             case State.Normal:
+                GetComponent<Rigidbody>().useGravity = true;
                 StopMoveCoroutine();
                 StopRoamCoroutine();
                 coRoam = StartCoroutine(Roaming());
@@ -57,8 +62,8 @@ public class Enemy : BattleSystem
                 break;
             case State.Death:
                 GetComponent<Rigidbody>().useGravity = false;
-                DropingPocket();
                 giveExp(myExp);
+                OnDeath(); // 죽었을때 전리품 드롭
                 deadAct?.Invoke();
                 StopAllCoroutines();
                 break;
@@ -113,7 +118,6 @@ public class Enemy : BattleSystem
         OnGiveExp(myExp);
     }
 
-
     public void OnBattle(Transform target)
     {
         myTarget = target;
@@ -135,6 +139,12 @@ public class Enemy : BattleSystem
     {
         this.isDie = true;
         yield return new WaitForSeconds(3.0f);
+
+        if (!gameObject.activeSelf)
+        {
+            yield break; // 게임 오브젝트가 비활성화되어 있으면 코루틴을 종료
+        }
+
         Vector3 dir = Vector3.down;
         float dist = 1.0f;
         while (dist > 0.0f)
@@ -144,18 +154,14 @@ public class Enemy : BattleSystem
             dist -= delta;
             yield return null;
         }
-        //Destroy(gameObject);
+
+        // Destroy(gameObject); // 게임 오브젝트를 삭제하거나 비활성화
         this.myBattleStat.curHealPoint = 100;
         this.isDie = false;
-        GetComponent<CapsuleCollider>().enabled = true;//몬스터 Collider 활성화
+        GetComponent<CapsuleCollider>().enabled = true; // 몬스터 Collider 활성화
         this.gameObject.SetActive(false);
     }
-    void DropingPocket()
-    {
-        //GameObject obj = Resources.Load<GameObject>("Prefabs/DropPocket");
-        //Instantiate(obj, dropparent);
-        //GetRandomDropItems();
-    }
+
     // 아이템 드롭 메서드
     public List<ItemKind> GetRandomDropItems()
     {
@@ -189,5 +195,17 @@ public class Enemy : BattleSystem
             }
         }
         return droppedItems;
+    }
+
+    public void OnDeath()
+    {
+        // 몬스터 사망 시 DropPocket 생성
+        GameManager.instance.AddPocketAtPosition(transform.position);
+    }
+    public void SetState(State newState) 
+    {
+        // 몬스터 리스폰해서 활성화 시 상태를 변경
+        myState = newState;
+        OnChangeState(myState);
     }
 }
