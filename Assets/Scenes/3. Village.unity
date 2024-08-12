@@ -10524,7 +10524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6902155283979075405, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 472.68
+      value: 389
       objectReference: {fileID: 0}
     - target: {fileID: 6902155283979075405, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -37407,6 +37407,7 @@ MonoBehaviour:
   dropPocketPrefab: {fileID: 7675138991408063776, guid: b7f68eacd0853b147bef68af791ea07f, type: 3}
   monsterPrefab: {fileID: 4980345128072532735, guid: 6ee4e74a9e3ff324fbe52e84c26b4313, type: 3}
   parentTransform: {fileID: 158899910}
+  pocketparentTransform: {fileID: 586081434}
   points:
   - {fileID: 1289730417}
   - {fileID: 1653058904}

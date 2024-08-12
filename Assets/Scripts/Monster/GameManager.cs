@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject dropPocketPrefab;
     [SerializeField] GameObject monsterPrefab;
-    [SerializeField] Transform parentTransform; // 몬스터 풀과 드롭 포켓 풀의 부모 트랜스폼
+    [SerializeField] Transform parentTransform; // 몬스터 풀의 부모 트랜스폼
+    [SerializeField] Transform pocketparentTransform; //드롭 포켓 풀의 부모 트랜스폼
 
     public List<Transform> points = new List<Transform>(); // 몬스터가 출현할 위치를 저장할 List 변수
 
@@ -50,7 +51,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < 30; i++)
         {
-            GameObject dropPocket = Instantiate(dropPocketPrefab, parentTransform);
+            GameObject dropPocket = Instantiate(dropPocketPrefab, pocketparentTransform);
             dropPocket.SetActive(false);
             pocketPools.Add(dropPocket); // 생성된 드롭 포켓을 pocketPools에 추가
         }
@@ -66,12 +67,14 @@ public class GameManager : MonoBehaviour
         {
             monster.transform.SetPositionAndRotation(points[idx].position, points[idx].rotation);
             monster.SetActive(true);
+            monster.transform.GetChild(1).gameObject.SetActive(true);
+
 
             // Enemy상태를 Create로 변경
             Enemy enemyComponent = monster.GetComponent<Enemy>();
             if (enemyComponent != null)
             {
-                enemyComponent.SetState(Enemy.State.Normal);
+                enemyComponent.SetState(Enemy.State.Create);
             }
 
         }
@@ -128,7 +131,7 @@ public class GameManager : MonoBehaviour
         {
             // 풀에 남아있는 DropPocket이 없으면 새로 생성
             dropPocket = Instantiate(dropPocketPrefab, position, Quaternion.identity);
-            dropPocket.transform.SetParent(parentTransform); // DropPocket을 parentTransform의 자식으로 설정
+            dropPocket.transform.SetParent(pocketparentTransform); // DropPocket을 parentTransform의 자식으로 설정
             pocketPools.Add(dropPocket); // 새로 생성된 클론을 pocketPools에 추가
         }
     }

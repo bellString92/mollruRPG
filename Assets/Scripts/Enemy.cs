@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Enemy : BattleSystem
@@ -43,30 +44,32 @@ public class Enemy : BattleSystem
         {
             return; // 게임 오브젝트가 비활성화되어 있으면 코루틴 시작을 생략
         }
-
-        switch (myState)
+        else if (gameObject.activeSelf)
         {
-            case State.Create:
-                GetComponent<Rigidbody>().useGravity = true;
-                break;
-            case State.Normal:
-                GetComponent<Rigidbody>().useGravity = true;
-                StopMoveCoroutine();
-                StopRoamCoroutine();
-                coRoam = StartCoroutine(Roaming());
-                break;
-            case State.Battle:
-                StopMoveCoroutine();
-                StopRoamCoroutine();
-                FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
-                break;
-            case State.Death:
-                GetComponent<Rigidbody>().useGravity = false;
-                giveExp(myExp);
-                OnDeath(); // 죽었을때 전리품 드롭
-                deadAct?.Invoke();
-                StopAllCoroutines();
-                break;
+
+            switch (myState)
+            {
+                case State.Create:
+                    break;
+                case State.Normal:
+                    coRoam = StartCoroutine(Roaming());
+                    StopMoveCoroutine();
+                    StopRoamCoroutine();
+                    break;
+                case State.Battle:
+                    StopMoveCoroutine();
+                    StopRoamCoroutine();
+                    FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
+                    break;
+                case State.Death:
+                    GetComponent<Rigidbody>().useGravity = false;
+                    giveExp(myExp);
+                    OnDeath(); // 죽었을때 전리품 드롭
+                    deadAct?.Invoke();
+                    //StopAllCoroutines();
+                    StopCoroutine(Roaming());
+                    break;
+            }
         }
     }
 
@@ -207,5 +210,14 @@ public class Enemy : BattleSystem
         // 몬스터 리스폰해서 활성화 시 상태를 변경
         myState = newState;
         OnChangeState(myState);
+    }
+    public void OnEnable()
+    {
+        startPos = transform.position;
+        OnChangeState(State.Normal);
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        GetComponent<Rigidbody>().useGravity = true;
+        StartCoroutine(Roaming());
+        
     }
 }
