@@ -590,6 +590,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302425494}
   m_CullTransparentMesh: 1
+--- !u!1 &531077450 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
+  m_PrefabInstance: {fileID: 1621833480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &547983922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,6 +1206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1217251591}
+  - component: {fileID: 1217251592}
   m_Layer: 5
   m_Name: PopupParent
   m_TagString: Untagged
@@ -1227,6 +1233,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 450, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1217251592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217251590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6deb5ac0df5cb9b44a5b1e14af2ebdc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  createAct:
+    m_PersistentCalls:
+      m_Calls: []
+  startAct:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1270571504
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,16 +1704,55 @@ PrefabInstance:
       propertyPath: m_Name
       value: Magic circle
       objectReference: {fileID: 0}
+    - target: {fileID: 4985723243535661033, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
+      propertyPath: m_Height
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4985723243535661033, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
+      propertyPath: m_Center.y
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1679081680}
   m_SourcePrefab: {fileID: 100100000, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
 --- !u!4 &1679081676 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3650638188812647480, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
   m_PrefabInstance: {fileID: 1621833480}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1679081680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531077450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a58c6d9b38b0a4987e4ef18fec72ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selBtnAct:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1270571506}
+        m_TargetAssemblyTypeName: CharacterSelect, Assembly-CSharp
+        m_MethodName: OnCreateBtn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  dontTouch: {fileID: 1034983420}
 --- !u!1 &1794284852
 GameObject:
   m_ObjectHideFlags: 0
@@ -1700,6 +1763,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1794284853}
   - component: {fileID: 1794284854}
+  - component: {fileID: 1794284855}
   m_Layer: 0
   m_Name: Slot1
   m_TagString: Untagged
@@ -1753,6 +1817,34 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1794284855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794284852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a58c6d9b38b0a4987e4ef18fec72ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selBtnAct:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 162051974}
+        m_TargetAssemblyTypeName: ButtonEvent, Assembly-CSharp
+        m_MethodName: OnCreateBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  dontTouch: {fileID: 1034983420}
 --- !u!1 &1830327601
 GameObject:
   m_ObjectHideFlags: 0

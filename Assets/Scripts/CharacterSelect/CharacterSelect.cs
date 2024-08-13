@@ -26,8 +26,10 @@ public class CharacterSelect : MonoBehaviour
     public Transform popupParent = null;
     public Transform dontTouch = null;
 
+    private UnityEvent escapeAct;
+    private UnityEvent enterAct;
+    
     private Dictionary<int, CharacterData> characters = null;
-
 
     private void Start()
     {
@@ -40,6 +42,9 @@ public class CharacterSelect : MonoBehaviour
         deleteBtnArr = new GameObject[slotCount];
         playCharacters = new string[slotCount];
 
+        escapeAct = new UnityEvent();
+        enterAct = new UnityEvent();
+
         for (int i = 0; i < slotCount; i++)
         {
             Vector3 oriViewportPoint = new Vector3(1.0f / (slotCount + 1) * (i + 1), 0.5f, 0);
@@ -48,7 +53,6 @@ public class CharacterSelect : MonoBehaviour
             Vector3 screenPoint = Camera.main.ViewportToScreenPoint(oriViewportPoint);
 
             Vector3 changeViewportPoint = oriViewportPoint;
-
 
             if (i == 0)
             {
@@ -137,7 +141,7 @@ public class CharacterSelect : MonoBehaviour
                     texts[1].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
                     {
                         dontTouch.GetChild(0).gameObject.SetActive(false);
-                        Destroy(popup);
+                        DestroyPopup(popup);
                     });
                     texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
                     {
@@ -151,21 +155,29 @@ public class CharacterSelect : MonoBehaviour
                         }
                         Destroy(character);
                         dontTouch.GetChild(0).gameObject.SetActive(false);
-                        Destroy(popup);
+                        DestroyPopup(popup);
                         playCharacters[selNumber - 1] = "";
                         characters.Remove(selNumber);
                         FileManager.SaveToBinary(characterPath, characters);
                     });
                     popup.SetActive(true);
                     dontTouch.GetChild(0).gameObject.SetActive(true);
+                    escapeAct.AddListener(() => {
+                        texts[1].transform.parent.GetComponent<Button>().onClick.Invoke();
+                    });
+                    enterAct.AddListener(() => {
+                        texts[2].transform.parent.GetComponent<Button>().onClick.Invoke();
+                    });
                 });
                 playCharacters[selNumber - 1] = playCharacter;
                 PlayerPrefs.SetString("jobSelect", "");
             }
-            
-            
-
         }
+    }
+
+    private void OnDeleteOk(int selNumber)
+    {
+
     }
 
     public void OnCreateBtn(int num)
@@ -182,7 +194,7 @@ public class CharacterSelect : MonoBehaviour
             texts[1].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
             {
                 dontTouch.GetChild(0).gameObject.SetActive(false);
-                Destroy(popup);
+                DestroyPopup(popup);
             });
             texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
             {
@@ -190,10 +202,16 @@ public class CharacterSelect : MonoBehaviour
                 //SceneChange.OnSceneChange("Customize");
                 SceneManager.LoadSceneAsync(3);
                 dontTouch.GetChild(0).gameObject.SetActive(false);
-                Destroy(popup);
+                DestroyPopup(popup);
             });
             popup.SetActive(true);
             dontTouch.GetChild(0).gameObject.SetActive(true);
+            escapeAct.AddListener(() => {
+                texts[1].transform.parent.GetComponent<Button>().onClick.Invoke();
+            });
+            enterAct.AddListener(() => {
+                texts[2].transform.parent.GetComponent<Button>().onClick.Invoke();
+            });
         }
         else
         {
@@ -224,32 +242,78 @@ public class CharacterSelect : MonoBehaviour
 
     public void OnStartBtn()
     {
+        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+        popup.name = "Popup";
+        popup.transform.SetParent(popupParent);
+        popup.transform.localPosition = Vector3.zero;
+        TMPro.TMP_Text[] texts = popup.GetComponentsInChildren<TMPro.TMP_Text>();
         if (selNum == 0)
         {
-            GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
-            popup.name = "Popup";
-            popup.transform.SetParent(popupParent);
-            popup.transform.localPosition = Vector3.zero;
-            TMPro.TMP_Text[] texts = popup.GetComponentsInChildren<TMPro.TMP_Text>();
             texts[0].text = "캐릭터를 선택해주세요.";
             texts[1].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
             {
                 dontTouch.GetChild(0).gameObject.SetActive(false);
-                Destroy(popup);
+                DestroyPopup(popup);
             });
             texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
             {
                 dontTouch.GetChild(0).gameObject.SetActive(false);
-                Destroy(popup);
+                DestroyPopup(popup);
             });
-            popup.SetActive(true);
-            dontTouch.GetChild(0).gameObject.SetActive(true);
-        } else
+        } 
+        else
         {
-            PlayerPrefs.SetString("playCharacter", playCharacters[selNum-1]);
-            SceneChange.OnSceneChange("3. Village");
+            texts[0].text = "게임을 시작하시겠습니까?";
+            texts[1].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                dontTouch.GetChild(0).gameObject.SetActive(false);
+                DestroyPopup(popup);
+            });
+            texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                PlayerPrefs.SetString("playCharacter", playCharacters[selNum - 1]);
+                SceneChange.OnSceneChange("3. Village");
+            });
+        }
+        popup.SetActive(true);
+        dontTouch.GetChild(0).gameObject.SetActive(true);
+        escapeAct.AddListener(() => {
+            texts[1].transform.parent.GetComponent<Button>().onClick.Invoke();
+        });
+        enterAct.AddListener(() => {
+            texts[2].transform.parent.GetComponent<Button>().onClick.Invoke();
+        });
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && popupParent.childCount > 0)
+        {
+            OnEscapeEvent();
         }
 
+        if (Input.GetKeyDown(KeyCode.Return) && popupParent.childCount > 0)
+        {
+            OnEnterEvent();
+        }
+    }
+
+    public void OnEscapeEvent()
+    {
+        escapeAct?.Invoke();
+    }
+
+    public void OnEnterEvent()
+    {
+        enterAct?.Invoke();
+    }
+    
+    public void DestroyPopup(GameObject popup)
+    {
+        escapeAct.RemoveAllListeners();
+        enterAct.RemoveAllListeners();
+        Debug.Log("esc누름");
+        Destroy(popup);
     }
 
 }

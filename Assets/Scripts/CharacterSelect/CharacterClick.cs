@@ -15,7 +15,7 @@ public class CharacterClick : MonoBehaviour
         if (dontTouch.GetComponentInChildren<Image>() != null) return;
         if (transform.childCount > 1)
         {
-            int selNumber = transform.GetSiblingIndex();
+            int selNumber = transform.parent.GetSiblingIndex();
             selBtnAct?.Invoke(selNumber);
         }
     }

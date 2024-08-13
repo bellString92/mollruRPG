@@ -33,7 +33,8 @@ public class Intro : MonoBehaviour
                 myTitle.text = "MollRu RPG";
                 startCor = StartCor(1.0f, 3, 0.5f);
                 StartCoroutine(startCor);
-            } else if (startWaitCor != null) {
+            } else {
+                StopAllCoroutines();
                 introCor = null;
                 startCor = null;
                 PlayerPrefs.SetString("nextSceneText", "로딩 중");
@@ -63,11 +64,12 @@ public class Intro : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         startCor = StartCor(startTime, dot, dotTime);
-        StartCoroutine(startWaitCor);
+        StartCoroutine(startCor);
     }
 
     IEnumerator StartCor(float startTime, int dot, float dotTime)
     {
+        introCor = null;
         float curTime = 0.0f;
         float colorA = 0.0f;
         Color color = myStart.color;

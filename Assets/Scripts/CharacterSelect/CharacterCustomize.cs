@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -28,6 +29,8 @@ public class CharacterCustomize : MonoBehaviour
     public Transform popupParent = null;
     private string jobSelect = "paladin_warrior";
 
+    private string[] characterNames;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +49,21 @@ public class CharacterCustomize : MonoBehaviour
             {"warrior", warrior},
             {"magician", magician},
         };
-        
+
+        characterNames = new string[3];
+        string characterPath = $"{Application.dataPath}/Data/SaveData/Characters.dat";
+        Dictionary<int, CharacterData> characters = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath);
+        if (characters != default)
+        {
+            for (int i = 0; i < characterNames.Length; i++)
+            {
+                if (characters.ContainsKey(i+1))
+                {
+                    characterNames[i] = characters[i + 1].NickName;
+                }
+            }
+        }
+
     }
 
     // Update is called once per frame
@@ -184,6 +201,10 @@ public class CharacterCustomize : MonoBehaviour
         else if (text.Contains(" "))
         {
             result = "닉네임에 띄어쓰기가 있습니다.";
+        }
+        else if (characterNames.Contains(text))
+        {
+            result = "이미 사용중인 닉네임입니다.";
         }
         else
         {
