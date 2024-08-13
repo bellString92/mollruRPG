@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> monsterPools = new List<GameObject>(); // 몬스터를 미리 생성해 저장
     public List<GameObject> pocketPools = new List<GameObject>(); // 아이템 미리 저장
 
+    public float pocketFalseDelay;
     public int maxMonsters = 10; // 오브젝트 풀에 생성할 몬스터 최대 개수
     public static GameManager instance = null; // 싱글톤 인스턴스 생성
     private float createTime = 3.0f;
@@ -68,13 +69,13 @@ public class GameManager : MonoBehaviour
             monster.transform.SetPositionAndRotation(points[idx].position, points[idx].rotation);
             monster.SetActive(true);
             monster.transform.GetChild(1).gameObject.SetActive(true);
-
+            
 
             // Enemy상태를 Create로 변경
             Enemy enemyComponent = monster.GetComponent<Enemy>();
             if (enemyComponent != null)
             {
-                enemyComponent.SetState(Enemy.State.Create);
+                enemyComponent.SetState(Enemy.State.Normal);
             }
 
         }
@@ -126,6 +127,11 @@ public class GameManager : MonoBehaviour
             // DropPocket을 활성화하고 위치를 설정
             dropPocket.transform.position = position;
             dropPocket.SetActive(true);
+            pocketFalseDelay = Time.deltaTime;
+            if(pocketFalseDelay > 90)
+            {
+                dropPocket.SetActive(false);
+            }
         }
         else
         {

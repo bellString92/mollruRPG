@@ -51,11 +51,13 @@ public class Enemy : BattleSystem
             switch (myState)
             {
                 case State.Create:
+                    
                     break;
                 case State.Normal:
                     coRoam = StartCoroutine(Roaming());
-                    StopMoveCoroutine();
-                    StopRoamCoroutine();
+                    myTarget = null;
+                    //StopMoveCoroutine();
+                    //StopRoamCoroutine();
                     break;
                 case State.Battle:
                     StopMoveCoroutine();
@@ -67,8 +69,9 @@ public class Enemy : BattleSystem
                     giveExp(myExp);
                     OnDeath(); // 죽었을때 전리품 드롭
                     deadAct?.Invoke();
-                    //StopAllCoroutines();
-                    StopCoroutine(Roaming());
+                    StopAllCoroutines();
+                    //StopMoveCoroutine();
+                    //StopRoamCoroutine();
                     break;
             }
         }
@@ -114,6 +117,16 @@ public class Enemy : BattleSystem
     void Update()
     {
         StateProcess();
+        if(myTarget != null && myBattleStat.curHealPoint >= 0)
+        {
+            StopRoamCoroutine();
+            FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
+        }
+        else
+        {
+
+        }
+        
     }
 
     public void giveExp(float exp)
@@ -250,6 +263,7 @@ public class Enemy : BattleSystem
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         GetComponent<Rigidbody>().useGravity = true;
         StartCoroutine(Roaming());
-        
     }
+
+    
 }

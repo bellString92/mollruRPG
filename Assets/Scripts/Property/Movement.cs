@@ -188,5 +188,6 @@ public class Movement : AnimatorProperty
             yield return null;
         }
         myAnim.SetBool("IsMoving", false);
+        
     }
 }
