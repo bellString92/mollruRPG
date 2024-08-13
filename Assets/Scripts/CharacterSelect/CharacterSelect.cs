@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.TextCore.Text;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class CharacterSelect : MonoBehaviour
 {
@@ -312,6 +313,7 @@ public class CharacterSelect : MonoBehaviour
     {
         escapeAct.RemoveAllListeners();
         enterAct.RemoveAllListeners();
+        EventSystem.current.SetSelectedGameObject(null);
         Debug.Log("esc누름");
         Destroy(popup);
     }
