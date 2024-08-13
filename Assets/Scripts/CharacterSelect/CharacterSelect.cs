@@ -314,7 +314,6 @@ public class CharacterSelect : MonoBehaviour
         escapeAct.RemoveAllListeners();
         enterAct.RemoveAllListeners();
         EventSystem.current.SetSelectedGameObject(null);
-        Debug.Log("esc누름");
         Destroy(popup);
     }
 
