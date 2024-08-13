@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 
 public enum ItemType // 아이템 분류 장비,소비,재료
@@ -47,6 +48,7 @@ public abstract class ItemKind : ScriptableObject
         description = original.description;
         price = original.price;
         resellprice = original.resellprice;
+        itemID = original.itemID;
         quantity = original.quantity;
         rarity = original.rarity;
         kaiLevel = Mathf.Min(original.kaiLevel, GetMaxKaiLevel(original.rarity));

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : BattleSystem
@@ -168,36 +169,67 @@ public class Enemy : BattleSystem
     // 아이템 드롭 메서드
     public List<ItemKind> GetRandomDropItems()
     {
-        List<ItemKind> droppedItems = new List<ItemKind>();
-        float totalChance = 0f;
+         List<ItemKind> droppedItems = new List<ItemKind>();
+    float totalChance = 0f;
 
-        // 전체 확률의 합을 구함
+    // 전체 확률의 합을 구함
+    foreach (DropItem dropItem in dropitemList)
+    {
+        totalChance += dropItem.dropChance;
+    }
+
+    // 몬스터에서 지정한 최소 수량과 최대 수량 사이에서 랜덤한 수량을 선택
+    int dropQuantity = Random.Range(minDropQuanity, maxDropQuanity + 1);
+
+    // 해당 수량만큼 아이템을 리스트에 추가
+    for (int i = 0; i < dropQuantity; i++)
+    {
+        // 0부터 전체 확률까지의 랜덤 값을 생성
+        float randomValue = Random.Range(0f, totalChance);
+        float cumulativeChance = 0f;
+
+        // 랜덤 값이 어느 아이템의 범위에 속하는지 체크
         foreach (DropItem dropItem in dropitemList)
         {
-            totalChance += dropItem.dropChance;
-        }
-        // 몬스터에서 지정한 최소 수량과 최대 수량 사이에서 랜덤한 수량을 선택
-        int dropQuantity = Random.Range(minDropQuanity, maxDropQuanity + 1);
-        // 해당 수량만큼 아이템을 리스트에 추가
-        for (int i = 0; i < dropQuantity; i++)
-        {
-            // 0부터 전체 확률까지의 랜덤 값을 생성
-            float randomValue = Random.Range(0f, totalChance);
-            float cumulativeChance = 0f;
+            cumulativeChance += dropItem.dropChance;
 
-            // 랜덤 값이 어느 아이템의 범위에 속하는지 체크
-            foreach (DropItem dropItem in dropitemList)
+            if (randomValue <= cumulativeChance)
             {
-                cumulativeChance += dropItem.dropChance;
+                    // 원본 `ItemKind`를 오염시키지 않기 위해 복사본을 생성
+                    ItemKind itemInfo;
 
-                if (randomValue <= cumulativeChance)
-                {
-                    droppedItems.Add(dropItem.itemKind);
-                    break;
-                }
+                    if (dropItem.itemKind is WeaponItem)
+                    {
+                        itemInfo = new WeaponItem((WeaponItem)dropItem.itemKind);
+                    }
+                    else if (dropItem.itemKind is ArmorItem)
+                    {
+                        itemInfo = new ArmorItem((ArmorItem)dropItem.itemKind);
+                    }
+                    else if (dropItem.itemKind is ConsumItem)
+                    {
+                        itemInfo = new ConsumItem((ConsumItem)dropItem.itemKind);
+                    }
+                    else if (dropItem.itemKind is MaterialItem)
+                    {
+                        itemInfo = new MaterialItem((MaterialItem)dropItem.itemKind);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    // `DropItem`의 `quanity` 값을 복사한 `ItemKind`의 `quantity`에 할당
+                    itemInfo.quantity = dropItem.quanity;
+
+                // 복사된 `ItemKind`를 리스트에 추가
+                droppedItems.Add(itemInfo);
+                break;
             }
         }
-        return droppedItems;
+    }
+
+    return droppedItems;
     }
 
     public void OnDeath()
