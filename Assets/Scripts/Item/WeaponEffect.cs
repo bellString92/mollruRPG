@@ -12,6 +12,7 @@ public static class WeaponEffect
             {
                 case WeaponEffectType.MaxHealthBoost:
                     user.myStat.maxHealPoint += effect.effectValue;
+                    user.TakeDamage(0);
                     break;
                 case WeaponEffectType.CritChanceBoost:
                     user.myStat.CriticalProbability += effect.effectValue;

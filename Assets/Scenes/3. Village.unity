@@ -26332,6 +26332,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1156370497956842289, guid: 56573eef1615e114898560d666b18e89, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1382920438552806671, guid: 56573eef1615e114898560d666b18e89, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -37425,6 +37429,7 @@ MonoBehaviour:
   - {fileID: 158899909}
   pocketPools:
   - {fileID: 586081433}
+  pocketFalseDelay: 0
   maxMonsters: 10
 --- !u!4 &2109211786
 Transform:

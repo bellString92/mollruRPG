@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddPocketAtPosition(Vector3 position)
+    public void AddPocketAtPosition(Vector3 position, List<ItemKind> dropItems)
     {
         // 오브젝트 풀에서 비활성화된 DropPocket을 가져옴
         GameObject dropPocket = GetDropPocketInPool();
@@ -125,6 +125,7 @@ public class GameManager : MonoBehaviour
         if (dropPocket != null)
         {
             // DropPocket을 활성화하고 위치를 설정
+            dropPocket.GetComponent<DropItemPoket>().GetItemList(dropItems);
             dropPocket.transform.position = position;
             dropPocket.SetActive(true);
             pocketFalseDelay = Time.deltaTime;
@@ -136,6 +137,7 @@ public class GameManager : MonoBehaviour
         else
         {
             // 풀에 남아있는 DropPocket이 없으면 새로 생성
+            dropPocket.GetComponent<DropItemPoket>().GetItemList(dropItems);
             dropPocket = Instantiate(dropPocketPrefab, position, Quaternion.identity);
             dropPocket.transform.SetParent(pocketparentTransform); // DropPocket을 parentTransform의 자식으로 설정
             pocketPools.Add(dropPocket); // 새로 생성된 클론을 pocketPools에 추가

@@ -24,6 +24,7 @@ public static class ArmorEffect
                     break;
                     // 추가 효과 로직
             }
+
         }
     }
 

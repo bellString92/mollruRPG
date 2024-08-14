@@ -32,6 +32,8 @@ public class ConsumItem : ItemKind
     public ConsumItem(ConsumItem original) : base(original)
     {
         this.useEffect = original.useEffect;
+        EffectPoint = original.EffectPoint;
+        EffectDuration = original.EffectDuration;
     }
     public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
     {

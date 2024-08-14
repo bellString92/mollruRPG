@@ -39,6 +39,7 @@ public class ArmorItem : ItemKind
     public ArmorItem(ArmorItem original) : base(original)
     {
         maxHealBoost = original.maxHealBoost;
+        armorType = original.armorType;
         effectList = new List<ArmorEffectValueList>(original.effectList);
     }
      
@@ -48,6 +49,7 @@ public class ArmorItem : ItemKind
         user.myStat.maxHealPoint += effectiveMaxHealBoost;
         user.myStat.curHealPoint += effectiveMaxHealBoost;
         ArmorEffect.ApplyEffects(user, this);
+        user.TakeDamage(0);
     }
     public override void TakeOff(Player user)
     {

@@ -387,16 +387,20 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         info += $"소지수 : {item.quantity}\n";
         if (consumInfo != null)
         {
-            if (consumInfo.effectType == EffectType.HealEffect && consumInfo.EffectPoint != 0)
+            switch(consumInfo.effectType)
             {
-                info += $"<b>회복량 : {consumInfo.EffectPoint}</b>\n";
+                case EffectType.HealEffect:
+                    info += $"<b>회복량 : {consumInfo.EffectPoint}</b>\n";
+                    break;
+                case EffectType.AttackBoostEffect:
+                    info += $"<b>공격력 증가 : {consumInfo.EffectPoint}</b>\n";
+                    info += $"<b>지속 시간 : {consumInfo.EffectDuration}</b>\n";
+                    break;
+                case EffectType.SpeedBoostEffect:
+                    info += $"<b>속도 증가 : {consumInfo.EffectPoint}</b>\n";
+                    info += $"<b>지속 시간 : {consumInfo.EffectDuration}</b>\n";
+                    break;
             }
-            else if (consumInfo.effectType == EffectType.AttackBoostEffect && consumInfo.EffectPoint != 0)
-            {
-                info += $"<b>공격력 증가 : {consumInfo.EffectPoint}</b>\n";
-                info += $"<b>지속 시간 : {consumInfo.EffectDuration}</b>\n";
-            }
-
         }
         return info;
     }

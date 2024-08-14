@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.GraphicsBuffer;
 
 public class ConsumItemEffects : MonoBehaviour
@@ -14,6 +15,7 @@ public class ConsumItemEffects : MonoBehaviour
             {
                 user.myStat.curHealPoint = user.myStat.maxHealPoint;
             }
+            user.TakeDamage(0);
             item.quantity--; // 사용 후 갯수 감소
         }
     }

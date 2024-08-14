@@ -33,6 +33,7 @@ public class AcceItem : ItemKind
 
     public AcceItem(AcceItem original) : base(original)
     {
+        AcceType = original.AcceType;
         effectList = new List<AcceEffectValueList>(original.effectList);
     }
 

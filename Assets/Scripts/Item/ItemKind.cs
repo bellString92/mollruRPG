@@ -44,11 +44,13 @@ public abstract class ItemKind : ScriptableObject
     public ItemKind(ItemKind original)
     {
         itemName = original.itemName;
+        itemType = original.itemType;
         itemIcon = original.itemIcon;
         description = original.description;
         price = original.price;
         resellprice = original.resellprice;
         itemID = original.itemID;
+        maxStack = original.maxStack;
         quantity = original.quantity;
         rarity = original.rarity;
         kaiLevel = Mathf.Min(original.kaiLevel, GetMaxKaiLevel(original.rarity));

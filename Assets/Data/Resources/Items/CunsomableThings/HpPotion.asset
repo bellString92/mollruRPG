@@ -26,4 +26,4 @@ MonoBehaviour:
   kaiLevel: 0
   effectType: 0
   EffectPoint: 30
-  EffectDuration: 0
+  EffectDuration: 1

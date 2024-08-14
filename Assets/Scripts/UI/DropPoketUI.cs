@@ -14,11 +14,12 @@ public class DropPoketUI : MonoBehaviour
     private const int maxColumns = 4;  // 한 줄에 최대 4개
 
     public GameObject itemBody;
-    private bool isTransferring = false;
+    private float actionCooldown = 0.1f; // 0.1초 간격
+    private float timer = 0f;
 
-    //테스트 변수
-    bool onetime = false;
-    public Enemy TestMon;
+    bool isRunning = false;
+    GameObject openPoket;
+
 
     private void Awake()
     {
@@ -33,41 +34,39 @@ public class DropPoketUI : MonoBehaviour
     }
     void Start()
     {
+        gameObject.SetActive(false);
         parentRectTransform = GetComponent<RectTransform>();
         AdjustSize();
     }
 
     void Update()
     {
-        if (TestMon != null && onetime == false)
+        // F 키를 누르고 있는 동안 코루틴 실행
+        if (Input.GetKey(KeyCode.F))
         {
-            TestMon.myState.GetType();
-            if (TestMon.myState == Enemy.State.Death)
+            timer += Time.deltaTime;  // 타이머를 증가시킴
+
+            if (timer >= actionCooldown)  // 타이머가 간격을 초과했을 때
             {
-                itemlist = TestMon.GetRandomDropItems();
-                SetSlots();
-                onetime = true;
+                TransferNextItemToInventory();
+                timer = 0f;  // 타이머 초기화
             }
         }
-
-        // F 키를 누르면 아이템을 인벤토리에 추가하고 슬롯을 비활성화
-        if (Input.GetKeyDown(KeyCode.F) && !isTransferring)
+        else
         {
-            isTransferring = true;
-            StartCoroutine(TransferItemsSequentially());
-        }
-
-        // F 키를 떼면 전송 중지
-        if (Input.GetKeyUp(KeyCode.F))
-        {
-            Debug.Log("keyup");
-            StopCoroutine(TransferItemsSequentially());
-            isTransferring = false;
+            timer = 0f;  // F 키가 눌리지 않으면 타이머 초기화
         }
     }
 
-    public void SetSlots()
+    private void OnEnable()
     {
+        IsActive();
+    }
+
+    public void SetSlots(List<ItemKind> dropItems, GameObject curPoket)
+    {
+        itemlist = dropItems;
+        openPoket = curPoket;
         // Step 1: 모든 자식을 비활성화
         for (int i = 0; i < inven.childCount; i++)
         {
@@ -175,22 +174,21 @@ public class DropPoketUI : MonoBehaviour
         }
     }
 
-    private IEnumerator TransferItemsSequentially()
+    private void TransferNextItemToInventory()
     {
         for (int i = 0; i < inven.childCount; i++)
         {
             DropPoketSlot slot = inven.GetChild(i).GetComponent<DropPoketSlot>();
             if (slot != null && slot.setitem != null)
             {
-                Inventory.Instance.CreateItem(slot.setitem, itemBody); // 인벤토리에 아이템 추가
-                slot.setitem = null; // 슬롯 비우기
-                slot.UpdateQuanity(); // 수량 텍스트 업데이트
-                inven.GetChild(i).gameObject.SetActive(false); // 슬롯 비활성화
+                Inventory.Instance.CreateItem(slot.setitem, itemBody);
+                slot.setitem = null;
+                slot.UpdateQuanity();
+                inven.GetChild(i).gameObject.SetActive(false);
 
-                // 모든 슬롯이 비활성화되었는지 확인
                 CheckAllSlotsDeactivated();
+                break;  // 한 번에 하나씩만 처리
             }
-            yield return new WaitForSeconds(0.1f); // 슬롯마다 약간의 지연 추가
         }
     }
 
@@ -209,7 +207,21 @@ public class DropPoketUI : MonoBehaviour
         if (allSlotsDeactivated)
         {
             gameObject.SetActive(false); // DropPoketUI 비활성화
+            openPoket.SetActive(false);
         }
     }
 
+    public bool IsActive()
+    {
+        if(gameObject.activeSelf)
+        {
+            isRunning = true;
+        }
+        else if (!gameObject.activeSelf)
+        {
+            isRunning = false;
+        }
+        return isRunning;
+    }
+    
 }
