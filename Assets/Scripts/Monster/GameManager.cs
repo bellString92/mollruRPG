@@ -10,16 +10,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform pocketparentTransform; //드롭 포켓 풀의 부모 트랜스폼
 
     public List<Transform> points = new List<Transform>(); // 몬스터가 출현할 위치를 저장할 List 변수
-
     public List<GameObject> monsterPools = new List<GameObject>(); // 몬스터를 미리 생성해 저장
     public List<GameObject> pocketPools = new List<GameObject>(); // 아이템 미리 저장
 
     public float pocketFalseDelay;
     public int maxMonsters = 10; // 오브젝트 풀에 생성할 몬스터 최대 개수
-    public static GameManager instance = null; // 싱글톤 인스턴스 생성
+    //public static GameManager instance = null; // 싱글톤 인스턴스 생성
     private float createTime = 3.0f;
 
-    private void Awake()
+    /*private void Awake()
     {
         if (instance == null)
         {
@@ -31,7 +30,7 @@ public class GameManager : MonoBehaviour
             // 인스턴스에 할당된 클래스의 인스턴스가 다르게 새로 생성된 경우
             Destroy(this.gameObject);
         }
-    }
+    }*/
 
     // Start is called before the first frame update
     void Start()
