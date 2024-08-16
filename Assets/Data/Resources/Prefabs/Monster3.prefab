@@ -105,6 +105,7 @@ MonoBehaviour:
     myLvevel: 0
     maxExperiencePoint: 1000000
     curExperiencePoint: 0
+  gameManager: {fileID: 0}
   dropparent: {fileID: 2797100012204083292}
   myExp: 100
   dropitemList:
@@ -175,7 +176,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5285802830428853223}
   serializedVersion: 4
-  m_Mass: 200
+  m_Mass: 300
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
