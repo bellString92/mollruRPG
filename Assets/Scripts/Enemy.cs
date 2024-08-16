@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Enemy : BattleSystem
 {
+    public GameManager gameManager;
     public Transform dropparent;
     public float myExp = 100;
     public List<DropItem> dropitemList; // 드랍할 아이템 리스트
@@ -111,6 +112,11 @@ public class Enemy : BattleSystem
         startPos = transform.position;
         OnChangeState(State.Normal);
         Rigidbody rigidbody = GetComponent<Rigidbody>();
+
+        if (gameManager == null)
+        {
+            gameManager = FindObjectOfType<GameManager>(); // 현재 씬에 존재하는 GameManager를 찾아서 할당
+        }
     }
 
     // Update is called once per frame
@@ -246,9 +252,9 @@ public class Enemy : BattleSystem
 
     public void OnDeath()
     {
-        List<ItemKind> List = GetRandomDropItems();
+        List<ItemKind> list = GetRandomDropItems();
         // 몬스터 사망 시 DropPocket 생성
-        GameManager.instance.AddPocketAtPosition(transform.position, List);
+        gameManager.AddPocketAtPosition(transform.position, list);
     }
     public void SetState(State newState) 
     {
