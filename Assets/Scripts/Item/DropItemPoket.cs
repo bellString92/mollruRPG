@@ -8,6 +8,9 @@ public class DropItemPoket : MonoBehaviour
     public DropPoketUI dropPoketUI;
     public Canvas canvas;
     public List<ItemKind> dropItems;
+
+    private bool collectable= false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +21,7 @@ public class DropItemPoket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && !dropPoketUI.IsActive())
+        if (Input.GetKeyDown(KeyCode.F) && !dropPoketUI.IsActive()&& collectable)
         {
             if (dropPoketUI != null && canvas != null)
             {
@@ -49,5 +52,18 @@ public class DropItemPoket : MonoBehaviour
     public void EmptyPoket()
     {
         gameObject.SetActive(false);
+    }
+
+    public void Collectable()
+    {
+        collectable = true;
+    }
+    public void CantCollectable()
+    {
+        collectable = false;    
+        if(dropPoketUI != null)
+        {
+            dropPoketUI.gameObject.SetActive(false);
+        }
     }
 }

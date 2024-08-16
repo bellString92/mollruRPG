@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
-public class DropPoketSlot : MonoBehaviour
+public class DropPoketSlot : MonoBehaviour, IPointerClickHandler
 {
     public ItemKind setitem;
     public Image icon;
@@ -18,6 +20,25 @@ public class DropPoketSlot : MonoBehaviour
             UpdateQuanity();
         }
     }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            DropPoketUI poketUI = DropPoketUI.Instance;
+            if (poketUI != null && setitem != null)
+            {
+                poketUI.itemlist.Remove(setitem);
+                Inventory.Instance.CreateItem(setitem, poketUI.itemBody);
+                setitem = null;
+                gameObject.SetActive(false);
+                UpdateQuanity();
+                poketUI.AdjustSize();
+                poketUI.CheckAllSlotsDeactivated();
+            }
+        }
+    }
+
     public void UpdateQuanity()
     {
         if(setitem == null)
@@ -41,4 +62,5 @@ public class DropPoketSlot : MonoBehaviour
             UpdateQuanity();  // 추가된 후 수량 업데이트
         }
     }
+
 }

@@ -41,6 +41,11 @@ public class DropPoketUI : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            isRunning = false;
+            gameObject.SetActive(false);
+        }
         // F 키를 누르고 있는 동안 코루틴 실행
         if (Input.GetKey(KeyCode.F))
         {
@@ -67,6 +72,7 @@ public class DropPoketUI : MonoBehaviour
     {
         itemlist = dropItems;
         openPoket = curPoket;
+
         // Step 1: 모든 자식을 비활성화
         for (int i = 0; i < inven.childCount; i++)
         {
@@ -74,6 +80,9 @@ public class DropPoketUI : MonoBehaviour
         }
 
         int slotIndex = 0; // 슬롯 인덱스
+
+        // 아이템 리스트를 순회하며 중복된 아이템을 제거하기 위한 리스트
+        List<ItemKind> itemsToRemove = new List<ItemKind>();
 
         // Step 2: 아이템 리스트를 순회하며 아이템을 슬롯에 할당
         for (int itemIndex = 0; itemIndex < itemlist.Count; itemIndex++)
@@ -95,6 +104,9 @@ public class DropPoketUI : MonoBehaviour
                             existingSlot.AddQuantity(currentItem.quantity); // 수량 합치기
                             existingSlot.UpdateQuanity(); // 수량 업데이트
                             merged = true;
+
+                            // 중복된 아이템을 리스트에서 제거하기 위해 추가
+                            itemsToRemove.Add(currentItem);
                             break;
                         }
                     }
@@ -115,11 +127,17 @@ public class DropPoketUI : MonoBehaviour
             }
         }
 
+        // 병합된 아이템들을 itemlist에서 제거
+        foreach (ItemKind item in itemsToRemove)
+        {
+            itemlist.Remove(item);
+        }
+
         // 아이템이 모두 할당된 후 필요에 따라 UI를 업데이트
         AdjustSize(); // 크기 조정
     }
 
-        private void AdjustSize()
+    public void AdjustSize()
     {
         gridLayoutGroup = inven.GetComponent<GridLayoutGroup>();
         if (gridLayoutGroup == null) return;
@@ -163,12 +181,15 @@ public class DropPoketUI : MonoBehaviour
             DropPoketSlot slot = inven.GetChild(slotIndex).GetComponent<DropPoketSlot>();
             if (slot != null && slot.setitem != null)
             {
+                // 리스트에서 아이템 제거
+                itemlist.Remove(slot.setitem);
                 Inventory.Instance.CreateItem(slot.setitem, itemBody); // 인벤토리에 아이템 추가
+
                 slot.setitem = null; // 슬롯 비우기
                 slot.UpdateQuanity(); // 수량 텍스트 업데이트
                 inven.GetChild(slotIndex).gameObject.SetActive(false); // 슬롯 비활성화
             }
-
+            AdjustSize();
             // 모든 슬롯이 비활성화되었는지 확인
             CheckAllSlotsDeactivated();
         }
@@ -181,10 +202,14 @@ public class DropPoketUI : MonoBehaviour
             DropPoketSlot slot = inven.GetChild(i).GetComponent<DropPoketSlot>();
             if (slot != null && slot.setitem != null)
             {
+                // 리스트에서 아이템 제거
+                itemlist.Remove(slot.setitem);
                 Inventory.Instance.CreateItem(slot.setitem, itemBody);
+
                 slot.setitem = null;
                 slot.UpdateQuanity();
                 inven.GetChild(i).gameObject.SetActive(false);
+                AdjustSize();
 
                 CheckAllSlotsDeactivated();
                 break;  // 한 번에 하나씩만 처리
@@ -192,7 +217,7 @@ public class DropPoketUI : MonoBehaviour
         }
     }
 
-    private void CheckAllSlotsDeactivated()
+    public void CheckAllSlotsDeactivated()
     {
         bool allSlotsDeactivated = true;
         for (int i = 0; i < inven.childCount; i++)
