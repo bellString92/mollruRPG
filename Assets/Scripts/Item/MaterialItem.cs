@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [CreateAssetMenu(fileName = "New MaterialItem", menuName = "Items/MaterialItem")]// Asset/create창에서 아이템을 생성시키게 할수있는 코드
 public class MaterialItem : ItemKind
 {
@@ -9,7 +10,6 @@ public class MaterialItem : ItemKind
     {
         itemTag = "MaterialItem";
         itemType = ItemType.materialItem;
-        maxStack = 999;
     }
     public MaterialItem(MaterialItem original) : base(original)
     {

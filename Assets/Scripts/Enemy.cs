@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,9 +10,12 @@ public class Enemy : BattleSystem
     public GameManager gameManager;
     public Transform dropparent;
     public float myExp = 100;
+
+    public GoldItem dropGold; // 드랍할 골드 
     public List<DropItem> dropitemList; // 드랍할 아이템 리스트
     public int minDropQuanity; // 한번에 드롭 가능한 최소 수량
     public int maxDropQuanity; // 한번에 드롭 가능한 최대 수량
+    public float noDropChance; // 아무 아이템도 드랍되지 않을 확률
 
     private bool isDie; // 몬스터 생존 여부
     public enum State
@@ -188,7 +192,15 @@ public class Enemy : BattleSystem
     // 아이템 드롭 메서드
     public List<ItemKind> GetRandomDropItems()
     {
+        // 확률로 아무것도 드롭되지 않음
+        if (Random.Range(0f, 100f) <= noDropChance)
+        {
+            return new List<ItemKind>(); // 빈 리스트 반환
+        }
+
         List<ItemKind> droppedItems = new List<ItemKind>();
+        droppedItems.Add(randomDropGold());
+
         float totalChance = 0f;
 
         // 전체 확률의 합을 구함
@@ -249,12 +261,22 @@ public class Enemy : BattleSystem
         }
         return droppedItems;
     }
+    private ItemKind randomDropGold()
+    {
+        int quanity = Random.Range(dropGold.minQuanity, dropGold.maxQuanity + 1);
+        ItemKind copyGold = new MaterialItem((MaterialItem)dropGold.item);
+        copyGold.quantity = quanity;
+        return copyGold;
+    }
 
     public void OnDeath()
     {
         List<ItemKind> list = GetRandomDropItems();
         // 몬스터 사망 시 DropPocket 생성
-        gameManager.AddPocketAtPosition(transform.position, list);
+        if (list.Count > 0)
+        { 
+            gameManager.AddPocketAtPosition(transform.position, list); 
+        }
     }
     public void SetState(State newState) 
     {

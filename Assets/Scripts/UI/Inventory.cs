@@ -11,6 +11,8 @@ public class Inventory : MonoBehaviour
     public GameObject NoEmptySlotPopup;
     public Player user;
     public Transform dragItem;
+    public TextMeshProUGUI haveGold;
+    private int curGold;
 
     void Awake()
     {
@@ -20,6 +22,14 @@ public class Inventory : MonoBehaviour
 
     public Transform content; // 슬롯들을 자식으로 가지고 있는 부모 Transform
 
+    private void Update()
+    {
+        if (curGold != user.myStat.myGold)
+        {
+            haveGold.text = user.myStat.myGold.ToString();
+            curGold = user.myStat.myGold;
+        }
+    }
 
     // 아이템을 생성하는 메서드
     public void CreateItem(ItemKind itemKind, GameObject itemPrefab)
@@ -322,7 +332,7 @@ public class Inventory : MonoBehaviour
 
     public void NoEmptySlot()
     {
-        UIManager.Instance.ShowOkbuttonUI(NoEmptySlotPopup);
+        UIManager.Instance.ShowOkbuttonUI(NoEmptySlotPopup, OkBoxType.NoEmptySlot);
     }
 }
 

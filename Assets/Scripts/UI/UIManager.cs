@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+public enum OkBoxType
+{
+    NoEmptySlot,
+    NotEnoughGold
+}
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
@@ -24,6 +30,9 @@ public class UIManager : MonoBehaviour
     // 마우스 포인트 관련
     bool isCursorVisible = false;
     bool isPressed = true;
+
+    // 확인 팝업 ui관련
+    public OkBoxType boxMsg;
 
     private void Awake()
     {
@@ -178,9 +187,19 @@ public class UIManager : MonoBehaviour
         } 
 
     }
-    public void ShowOkbuttonUI(GameObject uiPrefab)
+    public void ShowOkbuttonUI(GameObject uiPrefab, OkBoxType msgtype)
     {
         GameObject uiInstance = Instantiate(uiPrefab, canvas.transform);
+        OnlyOkButtonUI Box = uiInstance.GetComponent<OnlyOkButtonUI>();
+        switch(msgtype)
+        {
+            case OkBoxType.NoEmptySlot:
+                Box.msg.text = "인벤토리에 여유 공간이 없습니다";
+                break;
+            case OkBoxType.NotEnoughGold:
+                Box.msg.text = "소지금이 충분하지 않습니다";
+                break;
+        }
         uiStack.Push(uiInstance);
     }
 

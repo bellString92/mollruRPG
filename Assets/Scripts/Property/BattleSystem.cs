@@ -34,6 +34,7 @@ public struct BattleStat
     public int myLvevel;
     public float maxExperiencePoint;
     public float curExperiencePoint;
+    public int myGold;// 최대수치 2147483647
 
     public float GetHpValue()
     {

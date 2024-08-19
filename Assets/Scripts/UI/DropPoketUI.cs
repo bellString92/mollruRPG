@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class DropPoketUI : MonoBehaviour
 {
@@ -46,7 +47,6 @@ public class DropPoketUI : MonoBehaviour
             isRunning = false;
             gameObject.SetActive(false);
         }
-        // F 키를 누르고 있는 동안 코루틴 실행
         if (Input.GetKey(KeyCode.F))
         {
             timer += Time.deltaTime;  // 타이머를 증가시킴
@@ -89,7 +89,6 @@ public class DropPoketUI : MonoBehaviour
         {
             ItemKind currentItem = itemlist[itemIndex];
             bool merged = false;
-
             // consumItem 또는 materialItem 타입의 경우 중복 검사
             if (currentItem.itemType == ItemType.consumItem || currentItem.itemType == ItemType.materialItem)
             {
@@ -174,26 +173,6 @@ public class DropPoketUI : MonoBehaviour
         gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayoutGroup.constraintCount = maxColumns;
     }
-    private void TransferItemToInventory(int slotIndex)
-    {
-        if (slotIndex < inven.childCount)
-        {
-            DropPoketSlot slot = inven.GetChild(slotIndex).GetComponent<DropPoketSlot>();
-            if (slot != null && slot.setitem != null)
-            {
-                // 리스트에서 아이템 제거
-                itemlist.Remove(slot.setitem);
-                Inventory.Instance.CreateItem(slot.setitem, itemBody); // 인벤토리에 아이템 추가
-
-                slot.setitem = null; // 슬롯 비우기
-                slot.UpdateQuanity(); // 수량 텍스트 업데이트
-                inven.GetChild(slotIndex).gameObject.SetActive(false); // 슬롯 비활성화
-            }
-            AdjustSize();
-            // 모든 슬롯이 비활성화되었는지 확인
-            CheckAllSlotsDeactivated();
-        }
-    }
 
     private void TransferNextItemToInventory()
     {
@@ -202,9 +181,18 @@ public class DropPoketUI : MonoBehaviour
             DropPoketSlot slot = inven.GetChild(i).GetComponent<DropPoketSlot>();
             if (slot != null && slot.setitem != null)
             {
-                // 리스트에서 아이템 제거
-                itemlist.Remove(slot.setitem);
-                Inventory.Instance.CreateItem(slot.setitem, itemBody);
+                if (slot.setitem.itemID == 1)
+                {
+                    itemlist.Remove(slot.setitem);
+                    int dropglod = slot.setitem.quantity;
+                    Inventory.Instance.user.myStat.myGold += dropglod;
+                }
+                else
+                {
+                    // 리스트에서 아이템 제거
+                    itemlist.Remove(slot.setitem);
+                    Inventory.Instance.CreateItem(slot.setitem, itemBody); // 인벤토리에 아이템 추가
+                }
 
                 slot.setitem = null;
                 slot.UpdateQuanity();

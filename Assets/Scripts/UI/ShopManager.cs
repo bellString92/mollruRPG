@@ -64,9 +64,8 @@ public class ShopManager : MonoBehaviour
     // 구매
     public void OnAddNewItemInInventory()
     {
-        ItemKind copiedItem = Instantiate(curItem); // 원본 아이템 데이터를 보존하기위한 정보복사
+        ItemKind copiedItem = Instantiate(curItem); // 원본 아이템 데이터를 보존하기위한 정보 복사
 
-        // AssemblyManager의 CreateItem 호출하여 아이템 생성
         if (curItem != null)
         {
             if (copiedItem.itemType == ItemType.consumItem || copiedItem.itemType == ItemType.materialItem)
@@ -75,14 +74,34 @@ public class ShopManager : MonoBehaviour
                 UIManager.Instance.OpenQuantityUI(copiedItem, () =>
                 {
                     // 사용자가 버튼을 누르면 호출되는 콜백
-                    Inventory.Instance.CreateItem(copiedItem, marterialObject);
+                    FinalizePurchase(copiedItem);
                 });
             }
             else
             {
                 // 아이템 타입이 consumItem 또는 materialItem이 아닌 경우 바로 인벤토리에 추가
-                Inventory.Instance.CreateItem(copiedItem, marterialObject);
+                FinalizePurchase(copiedItem);
             }
+        }
+    }
+
+    private void FinalizePurchase(ItemKind copiedItem)
+    {
+        int totalCost = copiedItem.price * copiedItem.quantity;
+        Inventory inven = Inventory.Instance;
+        // 사용자의 소지 금액이 충분한지 확인
+        if (inven.user.myStat.myGold >= totalCost)
+        {
+            // 금액이 충분한 경우 아이템을 인벤토리에 추가
+            inven.CreateItem(copiedItem, marterialObject);
+
+            // 소지 금액에서 아이템 가격을 차감
+            inven.user.myStat.myGold -= totalCost;
+        }
+        else
+        {
+            // 금액이 부족한 경우 경고 메시지 출력 또는 다른 로직 수행
+            UIManager.Instance.ShowOkbuttonUI(inven.NoEmptySlotPopup, OkBoxType.NotEnoughGold);
         }
     }
 
