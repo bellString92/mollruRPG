@@ -100,7 +100,7 @@ public class ShopManager : MonoBehaviour
         }
         else
         {
-            // 금액이 부족한 경우 경고 메시지 출력 또는 다른 로직 수행
+            // 금액이 부족한 경우 경고 메시지 출력
             UIManager.Instance.ShowOkbuttonUI(inven.NoEmptySlotPopup, OkBoxType.NotEnoughGold);
         }
     }
@@ -142,7 +142,7 @@ public class ShopManager : MonoBehaviour
                     {
                         quantityToDeduct = Mathf.Clamp(enteredQuantity, 0, curItemforSell.quantity); // 유효한 범위로 클램프
                     }
-
+                    Inventory.Instance.user.myStat.myGold += quantityToDeduct * curItemforSell.resellprice;
                     curItemforSell.quantity -= quantityToDeduct; // quantity 감소
                     if (curItemforSell.quantity <= 0)
                     {
@@ -155,6 +155,7 @@ public class ShopManager : MonoBehaviour
             }
             else
             {
+                Inventory.Instance.user.myStat.myGold += curItemforSell.quantity * curItemforSell.resellprice;
                 lastClickedSlot.DestroyChild();
                 lastClickedSlot = null;
             }
