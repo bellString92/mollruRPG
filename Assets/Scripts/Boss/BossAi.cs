@@ -24,8 +24,13 @@ public class BossAI : BattleSystem
     private SphereCollider sleepCollider;
     private GameObject sleepColliderObject;
 
+    public GameObject attackRangePrefab;
+    private GameObject currentAttackRange;
+
     private void LookAtPlayer()
     {
+        AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
+
         if (distanceToPlayer > this.myBattleStat.AttackRange / 2)
         {
             if (player == null) return;
@@ -39,11 +44,7 @@ public class BossAI : BattleSystem
     private void MoveIfInChaseAnimation()
     {
         AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Battle") || stateInfo.IsName("AttackWait"))
-        {
-            MoveTowardsPlayer();
-        }
-        else if (stateInfo.IsName("Chase"))
+        if (stateInfo.IsName("Battle") || stateInfo.IsName("Chase"))
         {
             MoveTowardsPlayer();
         }
@@ -51,6 +52,7 @@ public class BossAI : BattleSystem
 
     public void MoveTowardsPlayer()
     {
+        AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
         if (distanceToPlayer <= this.myBattleStat.AttackRange / 2)
         {
             //myAnim.SetBool("isMoving", false);
@@ -107,7 +109,7 @@ public class BossAI : BattleSystem
                 }
                 else if (distanceToPlayer <= this.myBattleStat.AttackRange * 1.5f && EnragedCount <= 1)
                 {
-                    // 추가 동작을 여기서 구현할 수 있습니다.
+                    // 추가 동작을 여기서 구현
                 }
                 break;
 
@@ -326,7 +328,7 @@ public class BossAI : BattleSystem
             return;
         }
 
-        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 2.0f, 6.0f, enemyMask);
+        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 6.0f, 9.0f, enemyMask);
 
         foreach (Collider col in list)
         {
@@ -382,7 +384,7 @@ public class BossAI : BattleSystem
             elapsedTime += Time.deltaTime;
             if (elapsedTime > timeout)
             {
-                Debug.LogError("WaitForAttackAnimation timed out");
+                //Debug.LogError("WaitForAttackAnimation timed out");
                 break;
             }
 
@@ -395,9 +397,9 @@ public class BossAI : BattleSystem
             myAnim.ResetTrigger(trigger);
         }
 
-        // 공격 완료 후 상태를 Chase로 변경
+        // 공격 완료 후 상태를 변경
         isAttacking = false;
-        UpdateState(State.Chase);
+        UpdateState(State.Battle);
 
         // 대기 코루틴 시작
         StartCoroutine(WaitAfterAttack());
@@ -409,7 +411,7 @@ public class BossAI : BattleSystem
         yield return new WaitForSeconds(1.0f);
 
         // Chase 상태로 돌아가기
-        UpdateState(State.Chase);
+        UpdateState(State.Battle);
     }
 
     IEnumerator ResetAttack()
@@ -421,5 +423,20 @@ public class BossAI : BattleSystem
         UpdateState(State.Chase);
 
         Debug.Log("ResetAttack coroutine complete");
+    }
+    public void ShowAttackRange()
+    {
+        if (attackRangePrefab != null)
+        {
+            currentAttackRange = Instantiate(attackRangePrefab, transform.position + transform.forward * 6.0f, Quaternion.identity);
+        }
+    }
+
+    public void HideAttackRange()
+    {
+        if (currentAttackRange != null)
+        {
+            Destroy(currentAttackRange);
+        }
     }
 }
