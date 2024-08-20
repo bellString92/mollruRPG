@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8756d66819215d40b9dd7df1a74a5b6, type: 3}
-  m_Name: Glod
+  m_Name: MidleMonsterCore
   m_EditorClassIdentifier: 
-  itemName: "\uACE8\uB4DC"
+  itemName: "\uBAAC\uC2A4\uD130 \uCF54\uC5B4"
   itemType: 4
   itemTag: MaterialItem
-  itemIcon: {fileID: 21300000, guid: 93b5b28db06f8d2439c780ec3aeb28d2, type: 3}
-  description: "\uD1B5\uC6A9 \uD654\uD3D0"
-  price: 1
-  resellprice: 1
-  itemID: 1
-  maxStack: 2147483647
-  quantity: 28
-  rarity: 0
+  itemIcon: {fileID: 21300000, guid: 5e04ba78c5eeb8642bd112882bd02539, type: 3}
+  description: "\uAC00\uB054 \uBAAC\uC2A4\uD130\uAC00 \uB0A8\uAE30\uB294 \uBAAC\uC2A4\uD130\uC758
+    \uCF54\uC5B4"
+  price: 600
+  resellprice: 480
+  itemID: 5007
+  maxStack: 999
+  quantity: 1
+  rarity: 2
   kaiLevel: 0

@@ -125,7 +125,7 @@ MonoBehaviour:
     dropChance: 20
   - itemKind: {fileID: 11400000, guid: 6240809e3dce94c40a1387ef0c67070c, type: 2}
     quanity: 1
-    dropChance: 15
+    dropChance: 10
   - itemKind: {fileID: 11400000, guid: 28ead90119419694bbebbf3b6c6c392b, type: 2}
     quanity: 1
     dropChance: 5
@@ -141,7 +141,7 @@ MonoBehaviour:
   - itemKind: {fileID: 11400000, guid: ba0e7af217af07645abac28327693e82, type: 2}
     quanity: 1
     dropChance: 5
-  - itemKind: {fileID: 11400000, guid: 5254687959a608b45a903c42490f1a7a, type: 2}
+  - itemKind: {fileID: 11400000, guid: 95ac4ed6d8a21fa438826cb7edd500d1, type: 2}
     quanity: 1
     dropChance: 5
   minDropQuanity: 2

@@ -18,6 +18,12 @@ public class GameManager : MonoBehaviour
     //public static GameManager instance = null; // 싱글톤 인스턴스 생성
     private float createTime = 3.0f;
 
+    //드랍 아이템 ui관리 변수
+    private DropPoketUI dropPoketUI;
+    private Canvas canvas;
+    private DropItemPoket activeDropItem;
+
+
     /*private void Awake()
     {
         if (instance == null)
@@ -35,6 +41,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        dropPoketUI = DropPoketUI.Instance;
+        canvas = UIManager.Instance.canvas;
+
         CreateMonsterPool();
         InitializePocketPool(); // DropPocket 풀 초기화
 
@@ -141,5 +150,83 @@ public class GameManager : MonoBehaviour
             dropPocket.transform.SetParent(pocketparentTransform); // DropPocket을 parentTransform의 자식으로 설정
             pocketPools.Add(dropPocket); // 새로 생성된 클론을 pocketPools에 추가
         }
+    }
+
+    // 드롭 아이템 관련
+    void Update()
+    {
+        if (dropPoketUI != null && dropPoketUI.IsActive())
+        {
+            UpdateDropPoketUIPosition();
+        }
+    }
+
+    private void UpdateDropPoketUIPosition()
+    {
+        if (activeDropItem != null)
+        {
+            Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, activeDropItem.transform.position);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvas.transform as RectTransform,
+                screenPoint,
+                canvas.worldCamera,
+                out Vector2 localPoint
+            );
+
+            dropPoketUI.GetComponent<RectTransform>().localPosition = localPoint;
+
+            if (!IsWithinCanvas(dropPoketUI.GetComponent<RectTransform>(), canvas.GetComponent<RectTransform>()))
+            {
+                dropPoketUI.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private bool IsWithinCanvas(RectTransform uiElement, RectTransform canvasRect)
+    {
+        Vector3[] corners = new Vector3[4];
+        uiElement.GetWorldCorners(corners);
+
+        Rect canvasBounds = new Rect(
+            canvasRect.position.x - canvasRect.rect.width * canvasRect.pivot.x,
+            canvasRect.position.y - canvasRect.rect.height * canvasRect.pivot.y,
+            canvasRect.rect.width,
+            canvasRect.rect.height
+        );
+
+        foreach (Vector3 corner in corners)
+        {
+            if (!canvasBounds.Contains(corner))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void ActivateDropPocketUI(DropItemPoket dropItem, List<ItemKind> dropItems)
+    {
+        if (dropPoketUI != null && canvas != null)
+        {
+            if (activeDropItem != null && activeDropItem != dropItem)
+            {
+                dropPoketUI.gameObject.SetActive(false);
+            }
+
+            activeDropItem = dropItem;
+            dropPoketUI.gameObject.SetActive(true);
+            dropPoketUI.SetSlots(dropItems, dropItem.gameObject);
+
+            UpdateDropPoketUIPosition();
+        }
+    }
+
+    public void DeactivateDropPocketUI()
+    {
+        if (dropPoketUI != null)
+        {
+            dropPoketUI.gameObject.SetActive(false);
+        }
+        activeDropItem = null;
     }
 }

@@ -204,45 +204,36 @@ MonoBehaviour:
     myLvevel: 0
     maxExperiencePoint: 1000000
     curExperiencePoint: 0
+    myGold: 0
   gameManager: {fileID: 0}
   dropparent: {fileID: 4053122627031529346}
   myExp: 100
+  dropGold:
+    item: {fileID: 11400000, guid: 7788b47c9bd091a4da2247f331179589, type: 2}
+    minQuanity: 20
+    maxQuanity: 80
   dropitemList:
-  - itemKind: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
-    quanity: 3
+  - itemKind: {fileID: 11400000, guid: abb5e4c169c0bc947a3b1bc138b59b57, type: 2}
+    quanity: 1
     dropChance: 20
-  - itemKind: {fileID: 11400000, guid: 8a2272f978610fc4fa9f6c2374cb92d1, type: 2}
-    quanity: 3
-    dropChance: 20
-  - itemKind: {fileID: 11400000, guid: 9956325bb5c1aaa48af743ab7aae9648, type: 2}
-    quanity: 5
-    dropChance: 20
-  - itemKind: {fileID: 11400000, guid: dcd8f664c7a2eed4e84180e4e36a0622, type: 2}
-    quanity: 1
-    dropChance: 7.5
-  - itemKind: {fileID: 11400000, guid: 6240809e3dce94c40a1387ef0c67070c, type: 2}
-    quanity: 1
-    dropChance: 7.5
-  - itemKind: {fileID: 11400000, guid: 28ead90119419694bbebbf3b6c6c392b, type: 2}
-    quanity: 1
-    dropChance: 5
-  - itemKind: {fileID: 11400000, guid: 208c928754550a146bcb55d650606bfe, type: 2}
-    quanity: 1
-    dropChance: 5
-  - itemKind: {fileID: 11400000, guid: bb67a74a2b0d1a74783042ac4d661183, type: 2}
-    quanity: 1
-    dropChance: 5
-  - itemKind: {fileID: 11400000, guid: 281b3b3949cabe742a68a28b7bf87d72, type: 2}
-    quanity: 1
-    dropChance: 5
-  - itemKind: {fileID: 11400000, guid: ba0e7af217af07645abac28327693e82, type: 2}
-    quanity: 1
-    dropChance: 5
   - itemKind: {fileID: 11400000, guid: 5254687959a608b45a903c42490f1a7a, type: 2}
     quanity: 1
+    dropChance: 10
+  - itemKind: {fileID: 11400000, guid: 9956325bb5c1aaa48af743ab7aae9648, type: 2}
+    quanity: 3
+    dropChance: 45
+  - itemKind: {fileID: 11400000, guid: c6e1530e53ed461468750b58f1a21320, type: 2}
+    quanity: 1
+    dropChance: 10
+  - itemKind: {fileID: 11400000, guid: aee10f33910a4de4ab8a876bbd18040d, type: 2}
+    quanity: 1
     dropChance: 5
+  - itemKind: {fileID: 11400000, guid: 3b0c82b1fbaec4e478c12cdac9a83310, type: 2}
+    quanity: 1
+    dropChance: 10
   minDropQuanity: 5
   maxDropQuanity: 10
+  noDropChance: 30
   myState: 0
 --- !u!136 &5150914466832496096
 CapsuleCollider:

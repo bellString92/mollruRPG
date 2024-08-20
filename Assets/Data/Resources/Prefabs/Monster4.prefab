@@ -105,9 +105,14 @@ MonoBehaviour:
     myLvevel: 0
     maxExperiencePoint: 1000000
     curExperiencePoint: 0
+    myGold: 0
   gameManager: {fileID: 0}
   dropparent: {fileID: 3474930033853674535}
   myExp: 100
+  dropGold:
+    item: {fileID: 11400000, guid: 7788b47c9bd091a4da2247f331179589, type: 2}
+    minQuanity: 0
+    maxQuanity: 0
   dropitemList:
   - itemKind: {fileID: 11400000, guid: 3960190c0ff8b4c49a898b9078793790, type: 2}
     quanity: 3
@@ -144,6 +149,7 @@ MonoBehaviour:
     dropChance: 5
   minDropQuanity: 5
   maxDropQuanity: 10
+  noDropChance: 0
   myState: 0
 --- !u!136 &1689088898848278946
 CapsuleCollider:

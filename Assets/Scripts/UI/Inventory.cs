@@ -22,13 +22,21 @@ public class Inventory : MonoBehaviour
 
     public Transform content; // 슬롯들을 자식으로 가지고 있는 부모 Transform
 
+    private void Start()
+    {
+        UpdateGold();
+    }
     private void Update()
     {
         if (curGold != user.myStat.myGold)
         {
-            haveGold.text = user.myStat.myGold.ToString();
-            curGold = user.myStat.myGold;
+            UpdateGold();
         }
+    }
+    private void UpdateGold()
+    {
+        haveGold.text = user.myStat.myGold.ToString();
+        curGold = user.myStat.myGold;
     }
 
     // 아이템을 생성하는 메서드

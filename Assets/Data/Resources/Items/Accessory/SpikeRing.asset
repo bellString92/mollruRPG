@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cf5ca9d05d90004c9f99f10bf044ff0, type: 3}
-  m_Name: IronRing
+  m_Name: SpikeRing
   m_EditorClassIdentifier: 
-  itemName: "\uCCA0 \uBC18\uC9C0"
+  itemName: "\uAC00\uC2DC \uBC18\uC9C0"
   itemType: 2
   itemTag: AccessoryItem
-  itemIcon: {fileID: 21300000, guid: 59e8c113b1d57fd4c82d2032a1b9b364, type: 3}
-  description: "\uCCA0\uB85C \uB9CC\uB4E0 \uBC18\uC9C0"
-  price: 500
-  resellprice: 400
-  itemID: 3002
+  itemIcon: {fileID: 21300000, guid: 96fc905c0c7216f45bf78dfae9d66763, type: 3}
+  description: "\uAC00\uC2DC\uAC00 \uB3CB\uC544\uC788\uB294 \uBC18\uC9C0"
+  price: 55
+  resellprice: 44
+  itemID: 3005
   maxStack: 1
   quantity: 1
-  rarity: 3
+  rarity: 1
   kaiLevel: 0
   AcceType: 1
   effectList:
   - effectType: 0
-    effectValue: 20
+    effectValue: 30

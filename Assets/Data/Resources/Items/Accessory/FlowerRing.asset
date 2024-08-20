@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cf5ca9d05d90004c9f99f10bf044ff0, type: 3}
-  m_Name: IronRing
+  m_Name: FlowerRing
   m_EditorClassIdentifier: 
-  itemName: "\uCCA0 \uBC18\uC9C0"
+  itemName: "\uAF43\uBC18\uC9C0"
   itemType: 2
   itemTag: AccessoryItem
-  itemIcon: {fileID: 21300000, guid: 59e8c113b1d57fd4c82d2032a1b9b364, type: 3}
-  description: "\uCCA0\uB85C \uB9CC\uB4E0 \uBC18\uC9C0"
-  price: 500
-  resellprice: 400
-  itemID: 3002
+  itemIcon: {fileID: 21300000, guid: e283bb4693b3cc44083204d836315d77, type: 3}
+  description: "\uC0DD\uAE30\uC788\uB294 \uAF43\uC73C\uB85C \uB9CC\uB4E0 \uBC18\uC9C0"
+  price: 50
+  resellprice: 40
+  itemID: 3004
   maxStack: 1
   quantity: 1
-  rarity: 3
+  rarity: 1
   kaiLevel: 0
   AcceType: 1
   effectList:
-  - effectType: 0
-    effectValue: 20
+  - effectType: 1
+    effectValue: 30

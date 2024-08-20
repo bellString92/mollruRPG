@@ -6,6 +6,6 @@ using UnityEngine;
 public class GoldItem 
 {
     public ItemKind item;
-    public int minQuanity;
-    public int maxQuanity;
+    public int minQuanity;// 최소 드랍
+    public int maxQuanity;// 최대 드랍
 }

@@ -199,7 +199,7 @@ public class Enemy : BattleSystem
         }
 
         List<ItemKind> droppedItems = new List<ItemKind>();
-        droppedItems.Add(randomDropGold());
+        droppedItems.Add(randomDropGold()); // 반드시 첫번째가 골드로 설정
 
         float totalChance = 0f;
 
@@ -261,7 +261,7 @@ public class Enemy : BattleSystem
         }
         return droppedItems;
     }
-    private ItemKind randomDropGold()
+    private ItemKind randomDropGold() // 지정한 범위 내의 수량의 골드를 랜던으로 만듬
     {
         int quanity = Random.Range(dropGold.minQuanity, dropGold.maxQuanity + 1);
         ItemKind copyGold = new MaterialItem((MaterialItem)dropGold.item);

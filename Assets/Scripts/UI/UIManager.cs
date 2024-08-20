@@ -142,7 +142,6 @@ public class UIManager : MonoBehaviour
 
         // Quantity UI 열기
         currentQuantityUI = Instantiate(itemQuantityCheckPrefab, canvas.transform);
-        //currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
 
         var quantityCheck = currentQuantityUI.AddComponent<ItemQuantityCheck>();
         if (quantityCheck != null)
@@ -191,7 +190,7 @@ public class UIManager : MonoBehaviour
     {
         GameObject uiInstance = Instantiate(uiPrefab, canvas.transform);
         OnlyOkButtonUI Box = uiInstance.GetComponent<OnlyOkButtonUI>();
-        switch(msgtype)
+        switch(msgtype) // 타입마다 텍스트를 바꿔서 안내 메세지 출력
         {
             case OkBoxType.NoEmptySlot:
                 Box.msg.text = "인벤토리에 여유 공간이 없습니다";

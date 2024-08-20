@@ -10,21 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cf5ca9d05d90004c9f99f10bf044ff0, type: 3}
-  m_Name: IronRing
+  m_Name: jadeNecklace
   m_EditorClassIdentifier: 
-  itemName: "\uCCA0 \uBC18\uC9C0"
+  itemName: "\uBE44\uCDE8 \uBAA9\uAC78\uC774"
   itemType: 2
   itemTag: AccessoryItem
-  itemIcon: {fileID: 21300000, guid: 59e8c113b1d57fd4c82d2032a1b9b364, type: 3}
-  description: "\uCCA0\uB85C \uB9CC\uB4E0 \uBC18\uC9C0"
-  price: 500
-  resellprice: 400
-  itemID: 3002
+  itemIcon: {fileID: 21300000, guid: a15f9eef18072634fab419257e221e0e, type: 3}
+  description: "\uBE44\uCDE8\uB97C \uC138\uACF5\uD574 \uB9CC\uB4E0 \uBAA9\uAC78\uC774"
+  price: 420
+  resellprice: 336
+  itemID: 3006
   maxStack: 1
   quantity: 1
-  rarity: 3
+  rarity: 2
   kaiLevel: 0
-  AcceType: 1
+  AcceType: 0
   effectList:
+  - effectType: 1
+    effectValue: 80
   - effectType: 0
-    effectValue: 20
+    effectValue: 30
+  - effectType: 4
+    effectValue: 10
