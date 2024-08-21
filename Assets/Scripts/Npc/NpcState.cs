@@ -2,11 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum NpcType
+{
+  Shop,
+  Forge,
+  Quest
+}
+
 public class NpcState : AnimatorProperty
 {
     public enum State { Create, Nomal, Reco }
     public State mystate = State.Create;
     public Transform myTarget;
+    public NpcType type;
 
     public GameObject myJob; // 각 npc가 담당할 Ui를 프리펩으로 만들고 바인딩
     private GameObject doMyJob; // 상호작용을 여러번해 중복 생성 되지않도록 이미 상호작용중 이라면 생성한 object를 저장해서 관리

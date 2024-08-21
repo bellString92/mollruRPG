@@ -8,6 +8,11 @@ public enum OkBoxType
     NoEmptySlot,
     NotEnoughGold
 }
+public interface IQuantityCheck
+{
+    void Initialize(ItemKind item, System.Action onConfirm,string title);
+}
+
 
 public class UIManager : MonoBehaviour
 {
@@ -22,7 +27,9 @@ public class UIManager : MonoBehaviour
     public GameObject mySkill;
     public PlayerStateUiManager myStateWindow;
 
-    // 상점에 필요한 요소
+    //  npc UI 관리 요소
+    public GameObject shop;
+    public GameObject forge;
     public GameObject itemQuantityCheckPrefab; // Quantity를 표시할 프리팹
     private GameObject currentQuantityUI = null;
     private System.Action quantityConfirmCallback;
@@ -32,7 +39,7 @@ public class UIManager : MonoBehaviour
     bool isPressed = true;
 
     // 확인 팝업 ui관련
-    public OkBoxType boxMsg;
+    OkBoxType boxMsg;
 
     private void Awake()
     {
@@ -132,7 +139,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OpenQuantityUI(ItemKind item, System.Action onConfirm)
+    public void OpenQuantityUI<T>(ItemKind item, System.Action onConfirm, string title) where T : Component
     {
         // 기존에 열린 UI가 있으면 닫기
         if (currentQuantityUI != null)
@@ -143,31 +150,38 @@ public class UIManager : MonoBehaviour
         // Quantity UI 열기
         currentQuantityUI = Instantiate(itemQuantityCheckPrefab, canvas.transform);
 
-        var quantityCheck = currentQuantityUI.AddComponent<ItemQuantityCheck>();
+        var quantityCheck = currentQuantityUI.AddComponent<T>();
         if (quantityCheck != null)
         {
-            quantityCheck.Initialize(item, onConfirm);
+            (quantityCheck as IQuantityCheck)?.Initialize(item, onConfirm, title);
         }
         uiStack.Push(currentQuantityUI);
     }
+
+    public void OpenQuantityCheckUI(ItemKind item, System.Action onConfirm) // 이걸 호출 시키면 위 코드에 지정한 컴퍼넌트를 추가해 실행
+    {
+        OpenQuantityUI<ItemQuantityCheck>(item, onConfirm, "구매 수량");
+    }
+
     public void OpenSellQuantityCheckUI(ItemKind item, System.Action onConfirm)
     {
-        // 기존에 열린 UI가 있으면 닫기
-        if (currentQuantityUI != null)
-        {
-            CloseTopUi();
-        }
+        OpenQuantityUI<SellQuantityCheck>(item, onConfirm, "판매 수량");
+    }
 
-        // Quantity UI 열기
-        currentQuantityUI = Instantiate(itemQuantityCheckPrefab, canvas.transform);
-        //currentQuantityUI = ShowUI(itemQuantityCheckPrefab);
-
-        var quantityCheck = currentQuantityUI.AddComponent<SellQuantityCheck>();
-        if (quantityCheck != null)
+    public void ShowUI(GameObject uiPrefab, NpcType type)
+    {
+        if (type == NpcType.Shop)
         {
-            quantityCheck.Initialize(item, onConfirm);
+            shop = uiPrefab;
+            shop.gameObject.SetActive(true);
+            uiStack.Push(shop);
         }
-        uiStack.Push(currentQuantityUI);
+        else if (type == NpcType.Forge)
+        {
+            forge = uiPrefab;
+            forge.gameObject.SetActive(true);
+            uiStack.Push(forge);
+        }
     }
 
     public GameObject ShowUI(GameObject uiPrefab) // 호출자가 가지고있는 프리펩 ui생성

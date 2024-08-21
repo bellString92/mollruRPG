@@ -148,7 +148,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
         ShopManager shopManager = ShopManager.Instance;
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (shopManager != null)
+            if (shopManager.gameObject.activeSelf)
             {
                 shopManager.SetDestroySlotItem(myChild != null ? this : null);
             }
@@ -175,7 +175,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
                         return; // 더블 클릭 시에는 이후 로직을 수행하지 않음
                     }
                 }
-                if (forgeManager != null)
+                if (forgeManager.gameObject.activeSelf)
                 {
                     if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem)
                     {

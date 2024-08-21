@@ -71,7 +71,7 @@ public class ShopManager : MonoBehaviour
             if (copiedItem.itemType == ItemType.consumItem || copiedItem.itemType == ItemType.materialItem)
             {
                 // UI를 통해 quantity 수정 가능하도록 설정
-                UIManager.Instance.OpenQuantityUI(copiedItem, () =>
+                UIManager.Instance.OpenQuantityCheckUI(copiedItem, () =>
                 {
                     // 사용자가 버튼을 누르면 호출되는 콜백
                     FinalizePurchase(copiedItem);
