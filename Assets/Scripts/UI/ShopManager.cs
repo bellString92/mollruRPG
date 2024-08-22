@@ -38,6 +38,7 @@ public class ShopManager : MonoBehaviour
     {
         // 상점 초기화 함수 호출
         InitializeShop();
+        gameObject.SetActive(false);
     }
     private void InitializeShop()
     {
@@ -46,6 +47,7 @@ public class ShopManager : MonoBehaviour
             slots[i].InitializeSlot(slots[i].item); // 각 슬롯의 아이템 정보를 초기화
         }
     }
+
 
     public void ShowInfo(ItemKind iteminfo, ShopSlot setSlot)
     {
@@ -101,7 +103,7 @@ public class ShopManager : MonoBehaviour
         else
         {
             // 금액이 부족한 경우 경고 메시지 출력
-            UIManager.Instance.ShowOkbuttonUI(inven.NoEmptySlotPopup, OkBoxType.NotEnoughGold);
+            UIManager.Instance.ShowOkbuttonUI(OkBoxType.NotEnoughGold);
         }
     }
 

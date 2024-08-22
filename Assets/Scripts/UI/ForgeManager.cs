@@ -17,7 +17,10 @@ public class ForgeManager : MonoBehaviour
     {
         Instance = this;
     }
-
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
     public void SetSlot(GameObject item)
     {
         if (item != null)
@@ -66,11 +69,11 @@ public class ForgeManager : MonoBehaviour
 
         if (itemInfo.kaiLevel != 0)
         {
-            newText.text = $"[ {itemInfo.itemName} +{itemInfo.kaiLevel} ]\n";
+            newText.text = $"<b>[ {itemInfo.itemName} +{itemInfo.kaiLevel} ]</b>\n";
         }
         else
         {
-            newText.text = $"[ {itemInfo.itemName} ]\n";
+            newText.text = $"<b>[ {itemInfo.itemName} ]</b>\n";
         }
         newText.text += $"[ {itemInfo.description} ]\n";
 
@@ -104,11 +107,11 @@ public class ForgeManager : MonoBehaviour
 
             if (weaponInfo.kaiLevel < maxKaiLevel)
             {
-                infoText.text += $"무기 공격력 : {currentBoost} => {nextBoost}\n";
+                infoText.text += $"<b>무기 공격력 : {currentBoost} => {nextBoost}</b>\n";
             }
             else
             {
-                infoText.text += $"무기 공격력 : {currentBoost} (최고 강화 등급입니다)\n";
+                infoText.text += $"<b>무기 공격력 : {currentBoost} (최고 강화 등급입니다)</b>\n";
             }
         }
     }
@@ -126,11 +129,11 @@ public class ForgeManager : MonoBehaviour
 
             if (armorInfo.kaiLevel < maxKaiLevel)
             {
-                infoText.text += $"방어구 체력: {currentBoost} => {nextBoost}\n";
+                infoText.text += $"<b>방어구 체력: {currentBoost} => {nextBoost}</b>\n";
             }
             else
             {
-                infoText.text += $"방어구 체력: {currentBoost} (최고 강화 등급입니다)\n";
+                infoText.text += $"<b>방어구 체력: {currentBoost} (최고 강화 등급입니다)</b>\n";
             }
         }
     }
@@ -188,11 +191,11 @@ public class ForgeManager : MonoBehaviour
                 }
                 else if(hasAllMaterials == false)
                 {
-                    Debug.Log("재료가 부족합니다.");
+                    UIManager.Instance.ShowOkbuttonUI(OkBoxType.NotEnoughMaterial);
                 }
                 else
                 {
-                    Debug.Log("최고 강화 등급입니다.");
+                    UIManager.Instance.ShowOkbuttonUI(OkBoxType.NomoreUpgrade);
                 }
             }
         }

@@ -1117,7 +1117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 887372131540436463}
   m_Layer: 5
-  m_Name: Shop_QuantityCheckPopup
+  m_Name: ItemQuantityCheckPopupUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

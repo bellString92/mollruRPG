@@ -14,7 +14,7 @@ public class NpcState : AnimatorProperty
     public enum State { Create, Nomal, Reco }
     public State mystate = State.Create;
     public Transform myTarget;
-    public NpcType type;
+    public NpcType myType;
 
     public GameObject myJob; // 각 npc가 담당할 Ui를 프리펩으로 만들고 바인딩
     private GameObject doMyJob; // 상호작용을 여러번해 중복 생성 되지않도록 이미 상호작용중 이라면 생성한 object를 저장해서 관리
@@ -68,7 +68,16 @@ public class NpcState : AnimatorProperty
                         {
                             if(UIManager.Instance != null && doMyJob == null)
                             {
-                                doMyJob = UIManager.Instance.ShowUI(myJob);// 중복생성 방지를 위한 domyjob저장 ShowUI는 정상작동
+                                UIManager.Instance.ShowNPCUI(myType);// 중복생성 방지를 위한 domyjob저장 ShowUI는 정상작동
+                                switch(myType)
+                                {
+                                    case NpcType.Shop:
+                                        doMyJob=UIManager.Instance.shop;
+                                        break;
+                                    case NpcType.Forge:
+                                        doMyJob=UIManager.Instance.forge;
+                                        break;
+                                }
                                 urInventory?.gameObject.SetActive(true);
                                 doingmyjob = true;
                             }
@@ -144,7 +153,7 @@ public class NpcState : AnimatorProperty
     {
         if(doMyJob != null)
         {
-            Destroy(doMyJob);
+            UIManager.Instance.CloseNPCUI(myType);
             doMyJob = null;
             urInventory?.gameObject.SetActive(false);
         }

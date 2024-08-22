@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 4770984312537570412}
   - component: {fileID: 8573730683333321407}
   m_Layer: 5
-  m_Name: NoEmptySlotBox
+  m_Name: OkButtonUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

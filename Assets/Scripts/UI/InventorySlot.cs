@@ -170,21 +170,27 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
                 {
                     if (shopManager != null)
                     {
-                        shopManager.SetDestroySlotItem(myChild != null ? this : null);
-                        shopManager.OnDestroyInventorySlotItem();
-                        return; // 더블 클릭 시에는 이후 로직을 수행하지 않음
+                        if (shopManager.gameObject.activeSelf)
+                        {
+                            shopManager.SetDestroySlotItem(myChild != null ? this : null);
+                            shopManager.OnDestroyInventorySlotItem();
+                            return; // 더블 클릭 시에는 이후 로직을 수행하지 않음
+                        }
                     }
                 }
-                if (forgeManager.gameObject.activeSelf)
+                if (forgeManager != null)
                 {
-                    if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem)
+                    if (forgeManager.gameObject.activeSelf)
                     {
-                        forgeManager.SetSlot(myChild);
-                        myChild = null;
-                        return;
+                        if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem)
+                        {
+                            forgeManager.SetSlot(myChild);
+                            myChild = null;
+                            return;
+                        }
                     }
                 }
-                if (shopManager == null && forgeManager == null)
+                if (!shopManager.gameObject.activeSelf && !forgeManager.gameObject.activeSelf)
                 {
                     if (itemInfo.item.itemType == ItemType.weaponItem || itemInfo.item.itemType == ItemType.armorItem || itemInfo.item.itemType == ItemType.acceItem)
                     {

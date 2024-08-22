@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,7 +7,9 @@ using UnityEngine;
 public enum OkBoxType
 {
     NoEmptySlot,
-    NotEnoughGold
+    NotEnoughGold,
+    NotEnoughMaterial,
+    NomoreUpgrade
 }
 public interface IQuantityCheck
 {
@@ -16,7 +19,7 @@ public interface IQuantityCheck
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance { get; private set; }
+    public static UIManager Instance { get; private set; }  
     private Stack<GameObject> uiStack= new Stack<GameObject>(); //매번 생성될 UI를 저장할 장소
     public Canvas canvas;
     public GameObject UiForNPC; // npc가 ui를 불러올때 이곳에 생성시켜 그려지는 순서조정
@@ -30,7 +33,8 @@ public class UIManager : MonoBehaviour
     //  npc UI 관리 요소
     public GameObject shop;
     public GameObject forge;
-    public GameObject itemQuantityCheckPrefab; // Quantity를 표시할 프리팹
+    public GameObject itemQuantityCheckUI;
+    public GameObject OkButtonUI;
     private GameObject currentQuantityUI = null;
     private System.Action quantityConfirmCallback;
 
@@ -65,6 +69,10 @@ public class UIManager : MonoBehaviour
         {
             mySkill.gameObject.SetActive(false);
         }
+
+        // OkButtonUI 오브젝트 풀 생성
+        PopupObjectPool.Instance.CreatePool("OkButtonUI", OkButtonUI, 5);
+
     }
 
     // Update is called once per frame
@@ -134,77 +142,103 @@ public class UIManager : MonoBehaviour
     {
         if(uiStack.Count > 0)
         {
-            GameObject topUI = uiStack.Pop();
-            Destroy(topUI);
+            GameObject topUI = uiStack.Peek();
+            topUI.SetActive(false);
+            uiStack.Pop();
         }
     }
 
-    public void OpenQuantityUI<T>(ItemKind item, System.Action onConfirm, string title) where T : Component
+    public void OpenQuantityUI<T>(ItemKind item, Action onConfirm, string title) where T : Component
     {
-        // 기존에 열린 UI가 있으면 닫기
         if (currentQuantityUI != null)
         {
             CloseTopUi();
         }
 
-        // Quantity UI 열기
-        currentQuantityUI = Instantiate(itemQuantityCheckPrefab, canvas.transform);
+        currentQuantityUI = itemQuantityCheckUI;
+        currentQuantityUI.SetActive(true);
 
-        var quantityCheck = currentQuantityUI.AddComponent<T>();
+        // 기존에 있는 컴포넌트를 제거하고 새로운 컴포넌트를 추가
+        var quantityCheck = currentQuantityUI.GetComponent<T>();
+        if (quantityCheck != null)
+        {
+            Destroy(quantityCheck);
+        }
+
+        quantityCheck = currentQuantityUI.AddComponent<T>();
         if (quantityCheck != null)
         {
             (quantityCheck as IQuantityCheck)?.Initialize(item, onConfirm, title);
         }
+
         uiStack.Push(currentQuantityUI);
     }
 
-    public void OpenQuantityCheckUI(ItemKind item, System.Action onConfirm) // 이걸 호출 시키면 위 코드에 지정한 컴퍼넌트를 추가해 실행
+    public void OpenQuantityCheckUI(ItemKind item, Action onConfirm)
     {
         OpenQuantityUI<ItemQuantityCheck>(item, onConfirm, "구매 수량");
     }
 
-    public void OpenSellQuantityCheckUI(ItemKind item, System.Action onConfirm)
+    public void OpenSellQuantityCheckUI(ItemKind item, Action onConfirm)
     {
         OpenQuantityUI<SellQuantityCheck>(item, onConfirm, "판매 수량");
     }
 
-    public void ShowUI(GameObject uiPrefab, NpcType type)
+
+    public void ShowNPCUI(NpcType type)
     {
-        if (type == NpcType.Shop)
+        GameObject npcUI = null;
+
+        switch (type)
         {
-            shop = uiPrefab;
-            shop.gameObject.SetActive(true);
-            uiStack.Push(shop);
+            case NpcType.Shop:
+                {
+                    npcUI = shop;
+                    break;
+                }
+            case NpcType.Forge:
+                {
+                    npcUI = forge;
+                    break;
+                }
         }
-        else if (type == NpcType.Forge)
+        if (npcUI != null)
         {
-            forge = uiPrefab;
-            forge.gameObject.SetActive(true);
-            uiStack.Push(forge);
+            npcUI.SetActive(true);
+            uiStack.Push(npcUI);
+        }
+    }
+    public void CloseNPCUI(NpcType type)
+    {
+        switch (type)
+        {
+            case NpcType.Shop:
+                {
+                    if (shop.gameObject.activeSelf)
+                    {
+                        shop.SetActive(false);
+                        uiStack.Pop();
+                    }
+                    break;
+                }
+            case NpcType.Forge:
+                {
+                    if (forge.gameObject.activeSelf)
+                    {
+                        forge.SetActive(false);
+                        uiStack.Pop();
+                    }
+                    break;
+                }
         }
     }
 
-    public GameObject ShowUI(GameObject uiPrefab) // 호출자가 가지고있는 프리펩 ui생성
-    { 
-        if (canvas != null) 
-        {
-            Transform parentTransform = UiForNPC != null ? UiForNPC.transform : canvas.transform;
-            GameObject uiInstance = Instantiate(uiPrefab, parentTransform); 
-            uiStack.Push(uiInstance);
-            return uiInstance;
-        } 
-        else 
-        { 
-            Debug.LogError("Canvas가 설정되지 않음");
-            return null;
-        } 
-
-    }
-    public void ShowOkbuttonUI(GameObject uiPrefab, OkBoxType msgtype)
+    public void ShowOkbuttonUI(OkBoxType msgtype)
     {
-        GameObject uiInstance = Instantiate(uiPrefab, canvas.transform);
+        GameObject uiInstance = PopupObjectPool.Instance.GetFromPool("OkButtonUI");
+
         OnlyOkButtonUI Box = uiInstance.GetComponent<OnlyOkButtonUI>();
-        switch(msgtype) // 타입마다 텍스트를 바꿔서 안내 메세지 출력
+        switch (msgtype)
         {
             case OkBoxType.NoEmptySlot:
                 Box.msg.text = "인벤토리에 여유 공간이 없습니다";
@@ -212,7 +246,15 @@ public class UIManager : MonoBehaviour
             case OkBoxType.NotEnoughGold:
                 Box.msg.text = "소지금이 충분하지 않습니다";
                 break;
+            case OkBoxType.NotEnoughMaterial:
+                Box.msg.text = "재료가 부족합니다.";
+                break;
+            case OkBoxType.NomoreUpgrade:
+                Box.msg.text = "최고 강화 등급입니다.";
+                break;
+                    
         }
+
         uiStack.Push(uiInstance);
     }
 

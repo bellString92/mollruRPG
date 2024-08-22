@@ -8,7 +8,6 @@ using Unity.VisualScripting;
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
-    public GameObject NoEmptySlotPopup;
     public Player user;
     public Transform dragItem;
     public TextMeshProUGUI haveGold;
@@ -340,7 +339,7 @@ public class Inventory : MonoBehaviour
 
     public void NoEmptySlot()
     {
-        UIManager.Instance.ShowOkbuttonUI(NoEmptySlotPopup, OkBoxType.NoEmptySlot);
+        UIManager.Instance.ShowOkbuttonUI(OkBoxType.NoEmptySlot);
     }
 }
 
