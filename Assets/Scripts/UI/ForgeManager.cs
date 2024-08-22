@@ -220,9 +220,9 @@ public class ForgeManager : MonoBehaviour
         UIManager.Instance.CloseTopUi();
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        if (forgeSlot != null && forgeSlot.myChild != null)
+         if (forgeSlot != null && forgeSlot.myChild != null)
         {
             // 창 종료 시점에 인벤토리로 아이템을 보내는 로직 구현
             SaveItemInfo saveItemInfo = forgeSlot.myChild.GetComponent<SaveItemInfo>();

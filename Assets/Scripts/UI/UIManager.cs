@@ -79,7 +79,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         // esc로 ui종료 매서드호출
-        if (Input.GetKeyDown(KeyCode.Escape) && uiStack.Count > 0) 
+        if (Input.GetKeyDown(KeyCode.Escape) && uiStack.Count > 0)
         {
             CloseTopUi();
         }
@@ -88,20 +88,17 @@ public class UIManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
             {
-                myInven.gameObject.SetActive(!myInven.gameObject.activeSelf);
-                isCursorVisible = myInven.gameObject.activeSelf;
+                ToggleUI(myInven.gameObject);
             }
 
             if (Input.GetKeyDown(KeyCode.U))
             {
-                myStateWindow.gameObject.SetActive(!myStateWindow.gameObject.activeSelf);
-                isCursorVisible = myStateWindow.gameObject.activeSelf;
+                ToggleUI(myStateWindow.gameObject);
             }
 
             if (Input.GetKeyDown(KeyCode.K))
             {
-                mySkill.gameObject.SetActive(!mySkill.gameObject.activeSelf);
-                isCursorVisible = mySkill.gameObject.activeSelf;
+                ToggleUI(mySkill.gameObject);
             }
         }
         // 마우스 제어 관련
@@ -131,6 +128,25 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    void ToggleUI(GameObject uiElement)
+    {
+        bool isActive = !uiElement.activeSelf;
+        uiElement.SetActive(isActive);
+        isCursorVisible = isActive;
+
+        if (isActive)
+        {
+            uiStack.Push(uiElement);
+        }
+        else
+        {
+            if (uiStack.Count > 0 && uiStack.Peek() == uiElement)
+            {
+                uiStack.Pop();
+            }
+        }
+    }
+
     void UpdateCursorState()
     {
         // isCursorVisible 변수에 따라 마우스 커서 상태를 업데이트합니다.
@@ -152,7 +168,7 @@ public class UIManager : MonoBehaviour
     {
         if (currentQuantityUI != null)
         {
-            CloseTopUi();
+            currentQuantityUI.SetActive(false);
         }
 
         currentQuantityUI = itemQuantityCheckUI;

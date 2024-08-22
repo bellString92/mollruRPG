@@ -30,6 +30,7 @@ public class WeaponItem : ItemKind
     public WeaponItem(WeaponItem original) : base(original)
     {
         attackBoost = original.attackBoost;
+        weaponUpgradeRequirements = new List<UpgradeRequirement>(original.weaponUpgradeRequirements);
         effectList = new List<WeaponEffectValueList>(original.effectList);
     }
 

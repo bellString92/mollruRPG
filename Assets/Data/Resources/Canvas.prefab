@@ -5594,7 +5594,7 @@ MonoBehaviour:
   myInven: {fileID: 8710528156744113136}
   mySkill: {fileID: 5936882511566566892}
   myStateWindow: {fileID: 8557052607055585022}
-  shop: {fileID: 6333353685241905342}
+  shop: {fileID: 6749311964258998914}
   forge: {fileID: 5199922225650111111}
   itemQuantityCheckUI: {fileID: 8749836253993232381}
   OkButtonUI: {fileID: 5454399906945036695, guid: a7a73fb71d3c6164e9dbb5d2427cd831, type: 3}
@@ -11257,6 +11257,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3164666130878330883, guid: 2600e298cee586e43854730e6eb0549f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.00025177002
+      objectReference: {fileID: 0}
     - target: {fileID: 7214228841507094975, guid: 2600e298cee586e43854730e6eb0549f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -12489,6 +12493,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6492619839435031212, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
+      propertyPath: m_Size
+      value: 0.46650776
+      objectReference: {fileID: 0}
+    - target: {fileID: 6492619839435031212, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
+      propertyPath: m_Value
+      value: -0.00000038146973
+      objectReference: {fileID: 0}
     - target: {fileID: 6874867603829016770, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -12536,15 +12548,19 @@ PrefabInstance:
     - target: {fileID: 7076976476730544731, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8071418400375951028, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 160.00005
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
---- !u!1 &6333353685241905342 stripped
+--- !u!1 &6749311964258998914 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2935131679916556212, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2519032068425983368, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
   m_PrefabInstance: {fileID: 9178117414861848330}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &7284421014109665573 stripped

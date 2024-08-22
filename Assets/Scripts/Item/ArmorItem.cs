@@ -40,6 +40,7 @@ public class ArmorItem : ItemKind
     {
         maxHealBoost = original.maxHealBoost;
         armorType = original.armorType;
+        armorUpgradeRequirements = new List<UpgradeRequirement>(original.armorUpgradeRequirements);
         effectList = new List<ArmorEffectValueList>(original.effectList);
     }
      
