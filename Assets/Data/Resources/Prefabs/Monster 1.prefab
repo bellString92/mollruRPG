@@ -98,7 +98,7 @@ MonoBehaviour:
     moveSpeed: 0
     CriticalProbability: 0
     CriticalDamage: 0
-    maxHealPoint: 10
+    maxHealPoint: 100
     curHealPoint: 10
     maxMagicPoint: 0
     curMagicPoint: 0

@@ -17,6 +17,7 @@ public class Enemy : BattleSystem
     public int maxDropQuanity; // 한번에 드롭 가능한 최대 수량
     public float noDropChance; // 아무 아이템도 드랍되지 않을 확률
 
+    private int SleepCount;
     private bool isDie; // 몬스터 생존 여부
     public enum State
     {
@@ -56,10 +57,11 @@ public class Enemy : BattleSystem
             switch (myState)
             {
                 case State.Create:
-                    
+
                     break;
                 case State.Normal:
                     coRoam = StartCoroutine(Roaming());
+                    FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
                     myTarget = null;
                     //StopMoveCoroutine();
                     //StopRoamCoroutine();
@@ -75,6 +77,7 @@ public class Enemy : BattleSystem
                     OnDeath(); // 죽었을때 전리품 드롭
                     deadAct?.Invoke();
                     StopAllCoroutines();
+                    //OnDisApear();
                     //StopMoveCoroutine();
                     //StopRoamCoroutine();
                     break;
@@ -127,16 +130,12 @@ public class Enemy : BattleSystem
     void Update()
     {
         StateProcess();
-        if(myTarget != null && myBattleStat.curHealPoint >= 0)
+        if (myTarget != null && myBattleStat.curHealPoint >= 0)
         {
             StopRoamCoroutine();
             FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
+            
         }
-        else
-        {
-
-        }
-        
     }
 
     public void giveExp(float exp)
@@ -274,11 +273,11 @@ public class Enemy : BattleSystem
         List<ItemKind> list = GetRandomDropItems();
         // 몬스터 사망 시 DropPocket 생성
         if (list.Count > 0)
-        { 
-            gameManager.AddPocketAtPosition(transform.position, list); 
+        {
+            gameManager.AddPocketAtPosition(transform.position, list);
         }
     }
-    public void SetState(State newState) 
+    public void SetState(State newState)
     {
         // 몬스터 리스폰해서 활성화 시 상태를 변경
         myState = newState;
@@ -292,6 +291,4 @@ public class Enemy : BattleSystem
         GetComponent<Rigidbody>().useGravity = true;
         StartCoroutine(Roaming());
     }
-
-    
 }

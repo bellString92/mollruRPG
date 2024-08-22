@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> monsterPools = new List<GameObject>(); // 몬스터를 미리 생성해 저장
     public List<GameObject> pocketPools = new List<GameObject>(); // 아이템 미리 저장
 
+    public float recreatetime;
     public float pocketFalseDelay;
     public int maxMonsters = 10; // 오브젝트 풀에 생성할 몬스터 최대 개수
     //public static GameManager instance = null; // 싱글톤 인스턴스 생성
@@ -53,7 +54,7 @@ public class GameManager : MonoBehaviour
         {
             points.Add(point); // parent 제외하고 child의 컴포넌트만 추출
         }
-        InvokeRepeating("CreateMonster", 3.0f, this.createTime); // 일정한 시간 간격으로 함수 호출
+        InvokeRepeating("CreateMonster", recreatetime, this.createTime); // 일정한 시간 간격으로 함수 호출
     }
 
     private void InitializePocketPool()

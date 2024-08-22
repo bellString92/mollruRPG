@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -8,6 +10,7 @@ public class AIMovement : Movement
 {
     NavMeshPath myPath;
     Coroutine move = null;
+
     protected void DrawPath()
     {
         if (myPath != null)
