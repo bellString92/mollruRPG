@@ -16,7 +16,6 @@ public class NpcState : AnimatorProperty
     public Transform myTarget;
     public NpcType myType;
 
-    public GameObject myJob; // 각 npc가 담당할 Ui를 프리펩으로 만들고 바인딩
     private GameObject doMyJob; // 상호작용을 여러번해 중복 생성 되지않도록 이미 상호작용중 이라면 생성한 object를 저장해서 관리
     private bool doingmyjob = false; 
 
