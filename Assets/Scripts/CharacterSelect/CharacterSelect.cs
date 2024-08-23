@@ -112,13 +112,11 @@ public class CharacterSelect : MonoBehaviour
                 string playCharacter = "Paladin";
                 switch (jobSelect)
                 {
-                    case "maria_warrior":
-                    case "maria_magician":
+                    case "maria":
                         playCharacter = "Maria";
                         character = Instantiate(Resources.Load("Prefabs/Maria") as GameObject);
                         break;
-                    case "paladin_warrior":
-                    case "paladin_magician":
+                    case "paladin":
                     default:
                         playCharacter = "Paladin";
                         character = Instantiate(Resources.Load("Prefabs/Paladin") as GameObject);
@@ -126,6 +124,7 @@ public class CharacterSelect : MonoBehaviour
                 }
                 character.transform.SetParent(characterSlotArr[i - 1].transform);
                 character.transform.localPosition = Vector3.zero;
+                character.transform.localRotation = Quaternion.identity;
                 nickNameArr[selNumber - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = characters[selNumber].NickName;
                 nickNameArr[selNumber - 1].transform.GetChild(0).gameObject.SetActive(true);
                 createBtnArr[selNumber - 1].transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "캐릭터 선택";
@@ -160,6 +159,7 @@ public class CharacterSelect : MonoBehaviour
                         playCharacters[selNumber - 1] = "";
                         characters.Remove(selNumber);
                         FileManager.SaveToBinary(characterPath, characters);
+
                     });
                     popup.SetActive(true);
                     dontTouch.GetChild(0).gameObject.SetActive(true);
@@ -174,11 +174,6 @@ public class CharacterSelect : MonoBehaviour
                 PlayerPrefs.SetString("jobSelect", "");
             }
         }
-    }
-
-    private void OnDeleteOk(int selNumber)
-    {
-
     }
 
     public void OnCreateBtn(int num)
@@ -221,20 +216,24 @@ public class CharacterSelect : MonoBehaviour
             {
                 if (i == num)
                 {
-                    Transform circles = transform.GetChild(i).GetChild(0);
+                    Transform circles = t.GetChild(0);
                     for (int j = 0; j < circles.childCount; j++)
                     {
                         circles.GetChild(j).gameObject.SetActive(true);
                     }
-
+                    t.GetComponentInChildren<Animator>().SetBool("idle", false);
+                    t.GetComponentInChildren<Animator>().SetBool("select", true);
+                    t.GetComponentInChildren<Animator>().SetTrigger("selectIdle");
                 }
                 else
                 {
-                    Transform circles = transform.GetChild(i).GetChild(0);
+                    Transform circles = t.GetChild(0);
                     for (int j = 0; j < circles.childCount; j++)
                     {
                         circles.GetChild(j).gameObject.SetActive(false);
                     }
+                    t.GetComponentInChildren<Animator>()?.SetBool("select", false);
+                    t.GetComponentInChildren<Animator>()?.SetBool("idle", true);
                 }
                 i++;
             }
