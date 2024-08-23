@@ -36,6 +36,7 @@ public class Player : AnimatorProperty, IBattle
 
     [Header("기타 변수"), Space(5)]
     public BuffManager BuffManager;     // 버프 매니저 호출을 위한 변수
+    public CoolTimeManager myCool;      // 쿨타임 매니저
     public Animator _myAni;             // 애니메이션 속도 제어를 위한 변수
 
 
@@ -220,14 +221,16 @@ public class Player : AnimatorProperty, IBattle
             // 스킬 Q (이동기)
             if (!myAnim.GetBool("IsSkill_Q") && Input.GetKeyDown(KeyCode.Q) && TGDir.magnitude < 3)
             {
-                myAnim.SetTrigger("OnSkill_Q");
+                myCool.UseSkill("Skill_Q");
+                //myAnim.SetTrigger("OnSkill_Q");
                 AllBuff(15f, 10, BuffType.MoveSpeed, BuffSource.Skill);
             }
 
             // 스킬 E (이동기)
             if (!myAnim.GetBool("IsSkill_E") && Input.GetKeyDown(KeyCode.E) && TGDir.magnitude < 3)
             {
-                myAnim.SetTrigger("OnSkill_E");
+                myCool.UseSkill("Skill_E");
+                //myAnim.SetTrigger("OnSkill_E");
                 AllBuff(15f, 10, BuffType.MoveSpeed, BuffSource.Skill);
             }
 
@@ -255,37 +258,43 @@ public class Player : AnimatorProperty, IBattle
             // 스킬 Tab
             if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab))
             {
-                myAnim.SetTrigger("OnSkill_Tab");
+                myCool.UseSkill("Skill_Tab");
+                //myAnim.SetTrigger("OnSkill_Tab");
             }
 
             // 스킬 1
             if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
             {
-                myAnim.SetTrigger("OnSkill_1");
+                myCool.UseSkill("Skill_1");
+                //myAnim.SetTrigger("OnSkill_1");
             }
 
             // 스킬 2
             if (!myAnim.GetBool("IsSkill_2") && Input.GetKeyDown(KeyCode.Alpha2))
             {
-                myAnim.SetTrigger("OnSkill_2");
+                myCool.UseSkill("Skill_2");
+                //myAnim.SetTrigger("OnSkill_2");
             }
 
             // 스킬 3
             if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
             {
-                myAnim.SetTrigger("OnSkill_3");
+                myCool.UseSkill("Skill_3");
+                //myAnim.SetTrigger("OnSkill_3");
             }
 
             // 스킬 F1
             if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
             {
-                myAnim.SetTrigger("OnSkill_F1");
+                myCool.UseSkill("Skill_F1");
+                //myAnim.SetTrigger("OnSkill_F1");
             }
 
             // 스킬 F2
             if (!myAnim.GetBool("IsSkill_F2") && Input.GetKeyDown(KeyCode.F))
             {
-                myAnim.SetTrigger("OnSkill_F2");
+                myCool.UseSkill("Skill_F2");
+                //myAnim.SetTrigger("OnSkill_F2");
             }
         }
     }
