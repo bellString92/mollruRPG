@@ -305,6 +305,7 @@ public class BossAI : BattleSystem
 
     void Attack()
     {
+        //확률로 공격패턴이 나오게 다시 해야함
         if (this.myBattleStat.curHealPoint <= 200 && EnragedAttackCount < 1)
         {
             myAnim.SetTrigger("EnragedAttack");
