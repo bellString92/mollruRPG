@@ -34,113 +34,147 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
 
     public void OnDrop(PointerEventData eventData)
     {
+        // 스킬 슬롯은 무시
         if (_slotType.Equals(SlotType.Skill)) return;
 
-        var draggedItemInfo = eventData.pointerDrag.GetComponent<SaveItemInfo>();
-        // 드래그 시작 슬롯의 InventorySlot 컴포넌트를 가져옵니다.
-        if (myChild != null && draggedItemInfo != null)
+        // 드래그된 아이템 정보 가져오기
+        var draggedItemInfo = eventData.pointerDrag?.GetComponent<SaveItemInfo>();
+        if (draggedItemInfo == null) return;
+
+        // 드래그된 아이템의 슬롯 타입 가져오기
+        var draggedSlotType = eventData.pointerDrag.GetComponent<Drag>().slotType;
+
+        // 현재 슬롯의 아이템 정보 가져오기
+        var myItemInfo = myChild?.GetComponent<SaveItemInfo>();
+
+        // 슬롯 타입이 다르면 처리하지 않음 - 퀵슬롯에서 드래그한 아이템이 인벤슬롯 아이템위에 드랍할때 상호작용 방지
+        if (_slotType != draggedSlotType)
         {
-            var myItemInfo = myChild?.GetComponent<SaveItemInfo>();
-            if (PlayerStateUiManager.Instance.gameObject.activeSelf)
+            return;
+        }
+
+        // 플레이어 상태 UI가 활성화된 경우에만 추가 검사
+        if (PlayerStateUiManager.Instance.gameObject.activeSelf)
+        {
+            if (!IsValidItemType(draggedItemInfo, myItemInfo))
             {
-                if (draggedItemInfo.item.itemType == ItemType.weaponItem ||
-                    draggedItemInfo.item.itemType == ItemType.armorItem ||
-                    draggedItemInfo.item.itemType == ItemType.acceItem)
-                {
-                    var dragitemType = draggedItemInfo.item;
-
-                    // 드래그된 아이템과 현재 슬롯의 아이템 타입이 같은지 확인
-                    if (myItemInfo != null && draggedItemInfo.item.itemType == myItemInfo.item.itemType)
-                    {
-                        if (dragitemType is ArmorItem armorItem && myItemInfo.item is ArmorItem myArmorItem)
-                        {
-                            // 드래그된 아이템과 현재 슬롯의 아이템의 ArmorType이 같은지 확인
-                            if (armorItem.armorType != myArmorItem.armorType)
-                            {
-                                Debug.LogWarning("아머 타입이 일치하지 않습니다.");
-                                return;
-                            }
-                        }
-                        else if (dragitemType is AcceItem acceItem && myItemInfo.item is AcceItem myAcceItem)
-                        {
-                            if (acceItem.AcceType != myAcceItem.AcceType)
-                            {
-                                Debug.LogWarning("악세사리 타입이 일치하지 않습니다.");
-                                return;
-                            }
-                        }
-                    }
-                    else if (myItemInfo == null)
-                    {
-
-                    }
-                    else
-                    {
-                        Debug.LogWarning("아이템 타입이 일치하지 않습니다.");
-                        return;
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("유효하지 않은 아이템 타입입니다.");
-                    return;
-                }
+                return;
             }
-            if (draggedItemInfo.item.maxStack > 1)
+        }
+
+        // 스택 가능한 아이템 처리
+        if (draggedItemInfo.item.maxStack > 1 && TryStackItems(draggedItemInfo, myItemInfo, eventData))
+        {
+            return; // 스택 처리 완료 후 종료
+        }
+
+        // 부모 교체 및 드래그된 아이템 처리
+        HandleItemSwap(eventData, draggedItemInfo);
+    }
+
+    // 아이템 타입과 관련된 검증 로직 분리
+    private bool IsValidItemType(SaveItemInfo draggedItemInfo, SaveItemInfo myItemInfo)
+    {
+        var dragItemType = draggedItemInfo.item.itemType;
+
+        // 드래그된 아이템이 무기, 방어구, 악세사리인 경우에만 검사
+        if (dragItemType != ItemType.weaponItem && dragItemType != ItemType.armorItem && dragItemType != ItemType.acceItem)
+        {
+            Debug.LogWarning("유효하지 않은 아이템 타입입니다.");
+            return false;
+        }
+
+        // 슬롯에 아이템이 없을 경우 유효
+        if (myItemInfo == null)
+        {
+            return true;
+        }
+
+        // 아이템 타입이 일치하지 않는 경우 처리
+        if (dragItemType != myItemInfo.item.itemType)
+        {
+            Debug.LogWarning("아이템 타입이 일치하지 않습니다.");
+            return false;
+        }
+
+        // 방어구 타입 검사
+        if (dragItemType == ItemType.armorItem)
+        {
+            var draggedArmor = draggedItemInfo.item as ArmorItem;
+            var myArmor = myItemInfo.item as ArmorItem;
+            if (draggedArmor?.armorType != myArmor?.armorType)
             {
-                // 드래그한 아이템과 현재 슬롯의 아이템이 같은 종류인지 확인
-                if (myItemInfo != null && myItemInfo.item.quantity != myItemInfo.item.maxStack)
-                {
-                    if (myItemInfo.item.itemID == draggedItemInfo.item.itemID)
-                    {
-                        int totalQuantity = myItemInfo.item.quantity + draggedItemInfo.item.quantity;
-
-                        if (totalQuantity > myItemInfo.item.maxStack)
-                        {
-                            int excessQuantity = totalQuantity - myItemInfo.item.maxStack;
-
-                            // 슬롯 아이템 수량을 최대 스택 수량으로 설정
-                            myItemInfo.item.quantity = myItemInfo.item.maxStack;
-
-                            // 드래그된 아이템의 수량을 초과한 수량만큼 감소
-                            draggedItemInfo.item.quantity = excessQuantity;
-                        }
-                        else
-                        {
-                            // 수량을 합친다
-                            myItemInfo.item.quantity = totalQuantity;
-
-                            // 드래그 시작 슬롯의 myChild를 null로 설정한다.
-                            eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
-
-                            // 드래그된 아이템을 삭제한다
-                            Destroy(eventData.pointerDrag);
-                        }
-
-                        // 아이템 수량 업데이트
-                        TextMeshProUGUI quantityText = myItemInfo.GetComponentInChildren<TextMeshProUGUI>();
-                        if (quantityText != null)
-                        {
-                            quantityText.text = myItemInfo.item.quantity.ToString();
-                        }
-
-                        return;// 기존의 코드 실행을 방지하고 여기서 메서드 종료
-                    }
-                }
+                Debug.LogWarning("아머 타입이 일치하지 않습니다.");
+                return false;
             }
-
-            if (myChild != null)
+        }
+        // 악세사리 타입 검사
+        else if (dragItemType == ItemType.acceItem)
+        {
+            var draggedAcce = draggedItemInfo.item as AcceItem;
+            var myAcce = myItemInfo.item as AcceItem;
+            if (draggedAcce?.AcceType != myAcce?.AcceType)
             {
-                myChild.GetComponent<ISwapParent>()?.SwapParent(eventData.pointerDrag.GetComponent<IGetParent>().myParent);
+                Debug.LogWarning("악세사리 타입이 일치하지 않습니다.");
+                return false;
+            }
+        }
 
+        return true; // 모든 검사 통과
+    }
+
+    // 스택 가능한 아이템 처리 로직 분리
+    private bool TryStackItems(SaveItemInfo draggedItemInfo, SaveItemInfo myItemInfo, PointerEventData eventData)
+    {
+        if (myItemInfo != null && myItemInfo.item.itemID == draggedItemInfo.item.itemID && myItemInfo.item.quantity != myItemInfo.item.maxStack)
+        {
+            int totalQuantity = myItemInfo.item.quantity + draggedItemInfo.item.quantity;
+
+            if (totalQuantity > myItemInfo.item.maxStack)
+            {
+                int excessQuantity = totalQuantity - myItemInfo.item.maxStack;
+                myItemInfo.item.quantity = myItemInfo.item.maxStack;
+                draggedItemInfo.item.quantity = excessQuantity;
             }
             else
             {
+                myItemInfo.item.quantity = totalQuantity;
                 eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
+                Destroy(eventData.pointerDrag);
             }
-            myChild = eventData.pointerDrag;
-            myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
+
+            // 수량 업데이트
+            UpdateItemQuantity(myItemInfo);
+            return true; // 스택 처리 성공
         }
+
+        return false; // 스택 처리 실패
+    }
+
+    // 아이템 수량 업데이트 로직
+    private void UpdateItemQuantity(SaveItemInfo itemInfo)
+    {
+        var quantityText = itemInfo.GetComponentInChildren<TextMeshProUGUI>();
+        if (quantityText != null)
+        {
+            quantityText.text = itemInfo.item.quantity.ToString();
+        }
+    }
+
+    // 부모 교체 및 아이템 드랍 처리
+    private void HandleItemSwap(PointerEventData eventData, SaveItemInfo draggedItemInfo)
+    {
+        if (myChild != null)
+        {
+            myChild.GetComponent<ISwapParent>()?.SwapParent(eventData.pointerDrag.GetComponent<IGetParent>().myParent);
+        }
+        else
+        {
+            eventData.pointerDrag.GetComponent<IGetParent>()?.myParent.GetComponent<ISetChild>().SetChild(null);
+        }
+
+        myChild = eventData.pointerDrag;
+        myChild.GetComponent<IChangeParent>()?.ChangeParent(transform);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -243,10 +277,14 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
     // Start is called before the first frame update
     void Start()
     {
-        IChildObject child = GetComponentInChildren<IChildObject>();
+        SaveItemInfo child = GetComponentInChildren<SaveItemInfo>();
         if (child != null)
         {
             myChild = child.gameObject;
+        }
+        else
+        {
+            myChild = null;
         }
         if (user == null && Inventory.Instance != null)
         {

@@ -17,7 +17,7 @@ public class ItemSkillSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
             (slotType.Equals(SlotType.SlotItem) && eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.UseItem)) ||
             (slotType.Equals(SlotType.SlotSkill) && eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.Skill)))
         {
-            if (SkillController.Instance.coCool[transform.GetSiblingIndex()] != null) return;
+            //if (SkillController.Instance.coCool[transform.GetSiblingIndex()] != null) return;
             Transform slotItem;
             Transform comboSkill = null;
             if (eventData.pointerDrag.GetComponent<Drag>().slotType.Equals(SlotType.SlotItem) ||
@@ -29,11 +29,26 @@ public class ItemSkillSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
             }
             else
             {
+                var draggedItemInfo = eventData.pointerDrag?.GetComponent<SaveItemInfo>();
+                // 드래그된 아이템을 새로 생성하여 슬롯에 설정
                 slotItem = GameObject.Instantiate(eventData.pointerDrag.transform);
                 slotItem.name = eventData.pointerDrag.transform.name;
                 slotItem.GetComponent<Drag>().slotType = slotType.Equals(SlotType.UseItem) || slotType.Equals(SlotType.SlotItem) ? SlotType.SlotItem : SlotType.SlotSkill;
-                if (slotItem.GetComponent<PlayerSkill>() != null && slotItem.GetComponent<PlayerSkill>().comboSkill != null)
-                    comboSkill = GameObject.Instantiate(slotItem.GetComponent<PlayerSkill>().comboSkill);
+
+                // 아이템 타입이 consumItem인 경우 추가 로직 실행
+                if (draggedItemInfo != null && draggedItemInfo.item.itemType == ItemType.consumItem)
+                {
+                    if (slotItem.GetComponent<PlayerSkill>() != null && slotItem.GetComponent<PlayerSkill>().comboSkill != null)
+                    {
+                        comboSkill = GameObject.Instantiate(slotItem.GetComponent<PlayerSkill>().comboSkill);
+                    }
+                }
+                else
+                {
+                    // 아이템 타입이 consumItem이 아닌 경우에 대한 처리
+                    Debug.LogWarning("올바르지 않은 아이템 타입입니다.");
+                    return;
+                }
             }
 
             if (comboSkill != null)

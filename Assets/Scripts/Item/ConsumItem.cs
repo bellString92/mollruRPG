@@ -20,6 +20,7 @@ public class ConsumItem : ItemKind
 
     public float EffectPoint;
     public float EffectDuration;
+    public float EffectCoolTime;
 
 
     private void OnEnable()
@@ -34,6 +35,7 @@ public class ConsumItem : ItemKind
         this.useEffect = original.useEffect;
         EffectPoint = original.EffectPoint;
         EffectDuration = original.EffectDuration;
+        EffectCoolTime = original.EffectCoolTime;
     }
     public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
     {

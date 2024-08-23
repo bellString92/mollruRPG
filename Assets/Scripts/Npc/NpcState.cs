@@ -63,7 +63,7 @@ public class NpcState : AnimatorProperty
                 {
                     if (FieldOfView.visibleNPC.Count > 0 && FieldOfView.visibleNPC[0] != null)
                     {
-                        if (FieldOfView.visibleNPC[0].transform == transform && Input.GetKeyDown(KeyCode.F))
+                        if (FieldOfView.visibleNPC[0].transform == transform && Input.GetKeyDown(KeyCode.G))
                         {
                             if(UIManager.Instance != null && doMyJob == null)
                             {

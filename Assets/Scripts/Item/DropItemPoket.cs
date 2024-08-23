@@ -19,7 +19,7 @@ public class DropItemPoket : MonoBehaviour
     void Update()
     {
         // F키를 눌러 UI를 활성화하는 조건
-        if (Input.GetKeyDown(KeyCode.F) && collectable)
+        if (Input.GetKeyDown(KeyCode.G) && collectable)
         {
             gameManager.ActivateDropPocketUI(this, dropItems);
         }

@@ -62,6 +62,10 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             else
                 quantityText.text = item.quantity.ToString();
         }
+        if(item.quantity <=0)
+        {
+            Destroy(this.gameObject);
+        }
     }
     
     public void OnPointerEnter(PointerEventData eventData)

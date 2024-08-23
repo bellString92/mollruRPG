@@ -47,7 +47,7 @@ public class DropPoketUI : MonoBehaviour
             isRunning = false;
             gameObject.SetActive(false);
         }
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKey(KeyCode.G))
         {
             timer += Time.deltaTime;  // 타이머를 증가시킴
 
