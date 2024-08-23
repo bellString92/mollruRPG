@@ -19,11 +19,13 @@ public interface IQuantityCheck
 
 public class UIManager : MonoBehaviour
 {
+    [Header("플레이어 참조용")]        // 하위 자식들의 플레이어 참조에 Find 사용을 줄이기 위해 참조중. 없애면 하위 오브젝트가 플레이어를 찾지 못함
+    public GameObject player;
+
     public static UIManager Instance { get; private set; }  
     private Stack<GameObject> uiStack= new Stack<GameObject>(); //매번 생성될 UI를 저장할 장소
     public Canvas canvas;
     public GameObject UiForNPC; // npc가 ui를 불러올때 이곳에 생성시켜 그려지는 순서조정
-    public GameObject DontTouch; // ui가 활성화되면 활성화시키기
 
     // player조작 ui
     public Inventory myInven;
@@ -48,6 +50,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        player = GameObject.Find("Player");
     }
     // Start is called before the first frame update
     void Start()

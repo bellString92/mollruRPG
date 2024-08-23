@@ -28,6 +28,11 @@ public class PlayerStateUiManager : MonoBehaviour
             Instance = this;
     }
 
+    private void Start()
+    {
+        user = transform.parent.GetComponent<UIManager>().player.GetComponent<Player>();
+    }
+
     private void Update()
     {
         UpdatePlayerStats();

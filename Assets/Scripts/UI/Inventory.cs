@@ -15,6 +15,7 @@ public class Inventory : MonoBehaviour
 
     void Awake()
     {
+        user = transform.parent.GetComponent<UIManager>().player.GetComponent<Player>();
         if (Instance == null)
             Instance = this;
     }

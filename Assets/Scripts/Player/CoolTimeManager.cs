@@ -1,11 +1,12 @@
+using Scene_Teleportation_Kit.Scripts.player;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CoolTimeManager : MonoBehaviour
 {
     
     [SerializeField] private Dictionary<string, SkillData> skills = new Dictionary<string, SkillData>();
-    [SerializeField] public Player player;
 
     private void Awake()
     {

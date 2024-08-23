@@ -23,7 +23,8 @@ public class DragAble : ImageProperty, IBeginDragHandler, IDragHandler, IEndDrag
     // Start is called before the first frame update
     void Start()
     {
-
+        GameObject myParent = transform.parent.gameObject;
+        myParent.SetActive(false);
     }
 
     // Update is called once per frame

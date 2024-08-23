@@ -5,22 +5,21 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-
-/*public enum SkillsName
+public enum CheckSlot
 {
-    Skill_1, Skill_2
+    OnSlot, OffSlot
 }
-*/
+
 
 public class SkillData : MonoBehaviour
 {
-    //[SerializeField] SkillsName Skills;
+    [SerializeField] CheckSlot CheckSlot;
     [SerializeField] public string skillName;
     [SerializeField] public string triggerName;
     [SerializeField] public float cooldownTime;
     [SerializeField] public Player Player;
     [SerializeField] GameObject myParent;
-
+    
 
     [SerializeField] UnityAction useAct;
     [SerializeField] Coroutine coCool = null;
@@ -29,11 +28,11 @@ public class SkillData : MonoBehaviour
 
     private void Start()
     {
-        Player = transform.parent.parent.parent.GetComponent<CoolTimeManager>().player;
         myImg = GetComponent<Image>();
         myLabel = transform.GetChild(1).GetComponent<TMP_Text>();
         myParent = transform.parent.gameObject;
-        myParent.SetActive(false);
+        if (CheckSlot == CheckSlot.OffSlot) myParent.SetActive(false);
+        Player = transform.parent.parent.parent.parent.GetComponent<UIManager>().player.GetComponent<Player>();
     }
 
     public void UseSkill()
@@ -65,7 +64,7 @@ public class SkillData : MonoBehaviour
             //myLabel.text = temp.ToString(); //> 1.0f ? ((int)temp).ToString() : temp.ToString("0.00");
             yield return null;
         }
-        myParent.SetActive(false);
+        if (CheckSlot == CheckSlot.OffSlot) myParent.SetActive(false);
         myImg.fillAmount = 1.0f;
         Player.myAnim.SetBool(skillName, false);
         coCool = null;
