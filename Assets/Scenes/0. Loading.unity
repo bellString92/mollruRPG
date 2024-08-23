@@ -598,6 +598,18 @@ PrefabInstance:
       value: Paladin
       objectReference: {fileID: 0}
     - target: {fileID: 6686391715535254828, guid: 0867337f4225db344a5e41237f0c7cee, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6686391715535254828, guid: 0867337f4225db344a5e41237f0c7cee, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6686391715535254828, guid: 0867337f4225db344a5e41237f0c7cee, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6686391715535254828, guid: 0867337f4225db344a5e41237f0c7cee, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.115
       objectReference: {fileID: 0}

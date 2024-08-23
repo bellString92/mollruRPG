@@ -272,6 +272,7 @@ public class CharacterSelect : MonoBehaviour
             texts[2].transform.parent.GetComponent<Button>().onClick.AddListener(() =>
             {
                 PlayerPrefs.SetString("playCharacter", playCharacters[selNum - 1]);
+                PlayerPrefs.SetString("nickName", nickNameArr[selNum - 1].GetComponentInChildren<TMPro.TMP_Text>().text);
                 SceneChange.OnSceneChange("3. Village");
             });
         }
