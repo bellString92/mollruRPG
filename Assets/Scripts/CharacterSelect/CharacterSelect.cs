@@ -114,12 +114,12 @@ public class CharacterSelect : MonoBehaviour
                 {
                     case "maria":
                         playCharacter = "Maria";
-                        character = Instantiate(Resources.Load("Prefabs/Maria") as GameObject);
+                        character = Instantiate(Resources.Load("Prefabs/Character/Maria") as GameObject);
                         break;
                     case "paladin":
                     default:
                         playCharacter = "Paladin";
-                        character = Instantiate(Resources.Load("Prefabs/Paladin") as GameObject);
+                        character = Instantiate(Resources.Load("Prefabs/Character/Paladin") as GameObject);
                         break;
                 }
                 character.transform.SetParent(characterSlotArr[i - 1].transform);
@@ -132,7 +132,7 @@ public class CharacterSelect : MonoBehaviour
                 
                 deleteBtnArr[selNumber - 1].GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+                    GameObject popup = Instantiate(Resources.Load("Prefabs/Popup/Popup") as GameObject);
                     popup.name = "Popup";
                     popup.transform.SetParent(popupParent);
                     popup.transform.localPosition = Vector3.zero;
@@ -181,7 +181,7 @@ public class CharacterSelect : MonoBehaviour
         selNum = num + 1;
         if (transform.GetChild(num).childCount == 1)
         {
-            GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+            GameObject popup = Instantiate(Resources.Load("Prefabs/Popup/Popup") as GameObject);
             popup.name = "Popup";
             popup.transform.SetParent(popupParent);
             popup.transform.localPosition = Vector3.zero;
@@ -242,7 +242,7 @@ public class CharacterSelect : MonoBehaviour
 
     public void OnStartBtn()
     {
-        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup/Popup") as GameObject);
         popup.name = "Popup";
         popup.transform.SetParent(popupParent);
         popup.transform.localPosition = Vector3.zero;

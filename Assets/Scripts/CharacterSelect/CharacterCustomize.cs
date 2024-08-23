@@ -175,7 +175,7 @@ public class CharacterCustomize : MonoBehaviour
 
     private void notSelectPopup()
     {
-        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup/Popup") as GameObject);
         popup.name = "Popup";
         popup.transform.SetParent(popupParent);
         popup.transform.localPosition = Vector3.zero;
@@ -214,7 +214,7 @@ public class CharacterCustomize : MonoBehaviour
             DontReady();
             return;
         }
-        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup/Popup") as GameObject);
         popup.name = "Popup";
         popup.transform.SetParent(popupParent);
         popup.transform.localPosition = Vector3.zero;
@@ -282,7 +282,7 @@ public class CharacterCustomize : MonoBehaviour
 
     private void DontReady()
     {
-        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup") as GameObject);
+        GameObject popup = Instantiate(Resources.Load("Prefabs/Popup/Popup") as GameObject);
         popup.name = "Popup";
         popup.transform.SetParent(popupParent);
         popup.transform.localPosition = Vector3.zero;
