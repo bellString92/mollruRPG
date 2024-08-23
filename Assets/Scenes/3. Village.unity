@@ -10702,6 +10702,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: myCool
+      value: 
+      objectReference: {fileID: 981490140}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: BuffManager
       value: 
       objectReference: {fileID: 577612270}
@@ -10713,6 +10717,22 @@ PrefabInstance:
       propertyPath: changeMpAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1386066057}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnChangeHP
+      objectReference: {fileID: 0}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: changeMpAct.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnChangeMP
+      objectReference: {fileID: 0}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: changeMpAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerUI, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7300052518693149317, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
     m_RemovedGameObjects: []
@@ -24289,6 +24309,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4734638368276354, guid: c378119a19828bd4094a244ddab3d03b, type: 3}
   m_PrefabInstance: {fileID: 574464809}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &981490140 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 948285777893399371, guid: 56573eef1615e114898560d666b18e89, type: 3}
+  m_PrefabInstance: {fileID: 1386066055}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfc791cf33614b9458adb5e0099b5717, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &991096768 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4734638368276354, guid: c378119a19828bd4094a244ddab3d03b, type: 3}
@@ -31777,6 +31808,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 948285777893399371, guid: 56573eef1615e114898560d666b18e89, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1985618731}
     - target: {fileID: 1106840338248462782, guid: 56573eef1615e114898560d666b18e89, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 160.00017

@@ -396,12 +396,13 @@ MonoBehaviour:
     myLvevel: 1
     maxExperiencePoint: 100
     curExperiencePoint: 80
+    myGold: 0
   changeHpAct:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
-        m_MethodName: OnChangeHP
+        m_TargetAssemblyTypeName: UnityEngine.UI.Slider, UnityEngine.UI
+        m_MethodName: set_value
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -415,8 +416,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
-        m_MethodName: OnChangeMP
+        m_TargetAssemblyTypeName: UnityEngine.UI.Slider, UnityEngine.UI
+        m_MethodName: set_value
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -432,6 +433,7 @@ MonoBehaviour:
   myTargetmonster: []
   myTarger: []
   BuffManager: {fileID: 0}
+  myCool: {fileID: 0}
   _myAni: {fileID: 0}
 --- !u!114 &3741278184048714632
 MonoBehaviour:

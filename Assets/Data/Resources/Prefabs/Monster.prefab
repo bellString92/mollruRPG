@@ -77,23 +77,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 4980345128072532735}
-        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   myTarget: {fileID: 0}
   myBattleStat:
     AttackPoint: 10
     AttackRange: 2
     AttackDelay: 2
+    moveSpeed: 0
+    CriticalProbability: 0
+    CriticalDamage: 0
     maxHealPoint: 100
     curHealPoint: 100
     maxMagicPoint: 0
@@ -101,7 +92,18 @@ MonoBehaviour:
     myLvevel: 0
     maxExperiencePoint: 1000000
     curExperiencePoint: 0
+    myGold: 0
+  gameManager: {fileID: 0}
+  dropparent: {fileID: 0}
   myExp: 100
+  dropGold:
+    item: {fileID: 0}
+    minQuanity: 0
+    maxQuanity: 0
+  dropitemList: []
+  minDropQuanity: 0
+  maxDropQuanity: 0
+  noDropChance: 0
   myState: 0
 --- !u!136 &8626463264264953478
 CapsuleCollider:
@@ -955,21 +957,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af61f9f45fa6274c9080af7e1595f8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackAct:
+  damageAct:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8468134994725073932}
-        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
-        m_MethodName: OnAttackTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   deadAct:
     m_PersistentCalls:
       m_Calls:
@@ -991,21 +981,33 @@ MonoBehaviour:
   stopAct:
     m_PersistentCalls:
       m_Calls: []
-  takeExpAct:
+  resetAct:
     m_PersistentCalls:
       m_Calls: []
-  skillDamageAct:
+  ComboAct:
     m_PersistentCalls:
       m_Calls: []
-  skillCheckStartAct:
+  attackAct:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8468134994725073932}
+        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
+        m_MethodName: OnAttackTarget
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  skill_AttackAct:
     m_PersistentCalls:
       m_Calls: []
-  skillCheckEndAct:
+  onComboAct:
     m_PersistentCalls:
       m_Calls: []
-  AttackCheckStartAct:
-    m_PersistentCalls:
-      m_Calls: []
-  AttackCheckEndAct:
+  offComboAct:
     m_PersistentCalls:
       m_Calls: []

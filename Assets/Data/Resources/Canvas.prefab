@@ -796,9 +796,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c20335078e45c408d4005a52bad2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 
-  triggerName: 
-  cooldownTime: 0
+  skillName: Skill_S
+  triggerName: OnSkill_S
+  cooldownTime: 8
   Player: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
@@ -836,10 +836,10 @@ RectTransform:
   - {fileID: 5738177702715754753}
   m_Father: {fileID: 2406587318527800011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 370, y: -450}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &200479844011885573
 MonoBehaviour:
@@ -1156,10 +1156,10 @@ RectTransform:
   - {fileID: 6664276031064920108}
   m_Father: {fileID: 2406587318527800011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 70, y: -300}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6583727355608872753
 MonoBehaviour:
@@ -1451,7 +1451,7 @@ GameObject:
   - component: {fileID: 8472575951026655762}
   - component: {fileID: 9006213634954082996}
   m_Layer: 5
-  m_Name: SKill_4
+  m_Name: SKill_Tab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2278,10 +2278,10 @@ RectTransform:
   - {fileID: 7790959326702684683}
   m_Father: {fileID: 2406587318527800011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 370, y: -150}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7261174333450896236
 MonoBehaviour:
@@ -2695,9 +2695,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c20335078e45c408d4005a52bad2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 
-  triggerName: 
-  cooldownTime: 0
+  skillName: Skill_F1
+  triggerName: OnSkill_F1
+  cooldownTime: 0.1
   Player: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
@@ -3398,9 +3398,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c20335078e45c408d4005a52bad2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 
-  triggerName: 
-  cooldownTime: 0
+  skillName: Skill_3
+  triggerName: OnSkill_3
+  cooldownTime: 3
   Player: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
@@ -3762,10 +3762,10 @@ RectTransform:
   - {fileID: 5674042869992975867}
   m_Father: {fileID: 2406587318527800011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 220, y: -300}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3550883644212108577
 MonoBehaviour:
@@ -4426,10 +4426,10 @@ RectTransform:
   - {fileID: 3781053173168852214}
   m_Father: {fileID: 2406587318527800011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 220, y: -150}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6515692713218902939
 MonoBehaviour:
@@ -6021,9 +6021,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c20335078e45c408d4005a52bad2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 
-  triggerName: 
-  cooldownTime: 0
+  skillName: Skill_Q
+  triggerName: OnSkill_Q
+  cooldownTime: 7
   Player: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
@@ -6214,15 +6214,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 5
+    m_Right: 5
+    m_Top: 5
+    m_Bottom: 5
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 5, y: 0}
+  m_Spacing: {x: 5, y: 5}
   m_Constraint: 1
   m_ConstraintCount: 6
 --- !u!1 &5069499627259079860
@@ -6392,9 +6392,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c20335078e45c408d4005a52bad2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 
-  triggerName: 
-  cooldownTime: 0
+  skillName: Skill_2
+  triggerName: OnSkill_2
+  cooldownTime: 3
   Player: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
@@ -7169,7 +7169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7545970613108984307
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7562,9 +7562,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c20335078e45c408d4005a52bad2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 
-  triggerName: 
-  cooldownTime: 0
+  skillName: Skill_F2
+  triggerName: OnSkill_F2
+  cooldownTime: 0.1
   Player: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
@@ -8245,9 +8245,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c20335078e45c408d4005a52bad2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 
-  triggerName: 
-  cooldownTime: 0
+  skillName: Skill_E
+  triggerName: OnSkill_E
+  cooldownTime: 7
   Player: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
@@ -9942,10 +9942,10 @@ RectTransform:
   - {fileID: 765093109055578682}
   m_Father: {fileID: 2406587318527800011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 70, y: -150}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8925904107511534112
 MonoBehaviour:
@@ -10946,9 +10946,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c20335078e45c408d4005a52bad2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 
-  triggerName: 
-  cooldownTime: 0
+  skillName: Skill_Tab
+  triggerName: OnSkill_Tab
+  cooldownTime: 7
   Player: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
@@ -12345,10 +12345,10 @@ RectTransform:
   - {fileID: 3356243127495431394}
   m_Father: {fileID: 2406587318527800011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 370, y: -300}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546250954597271079
 MonoBehaviour:
@@ -12437,10 +12437,10 @@ RectTransform:
   - {fileID: 1114743119204780960}
   m_Father: {fileID: 2406587318527800011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 220, y: -450}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2385673146476357699
 MonoBehaviour:
@@ -12930,9 +12930,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c20335078e45c408d4005a52bad2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 
-  triggerName: 
-  cooldownTime: 0
+  skillName: Skill_1
+  triggerName: OnSkill_1
+  cooldownTime: 5
   Player: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
@@ -13500,10 +13500,10 @@ RectTransform:
   - {fileID: 4616332760785185477}
   m_Father: {fileID: 2406587318527800011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 70, y: -450}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4904154859193737444
 MonoBehaviour:
@@ -14695,7 +14695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 321275535928131058, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.46362832
+      value: 0.46666667
       objectReference: {fileID: 0}
     - target: {fileID: 321275535928131058, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
       propertyPath: m_AnchorMin.y
@@ -15171,7 +15171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8071418400375951028, guid: bd8d00941e6b3e644a3eb2b9dc7db606, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 160.00006
+      value: 160.00017
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
