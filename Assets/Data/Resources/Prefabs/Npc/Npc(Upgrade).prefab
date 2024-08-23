@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 2081869559130820706}
   - component: {fileID: 1879146927675831248}
   m_Layer: 12
-  m_Name: Npc2
+  m_Name: Npc(Upgrade)
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
