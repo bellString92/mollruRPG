@@ -2,19 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Call_Skill_F1 : StateMachineBehaviour
+public class ActChange : StateMachineBehaviour
 {
-    IEnumerator CallSkill(Animator animator)
-    {
-        yield return new WaitForSeconds(1.0f);
-        animator.SetBool("IsSkill_F1", true);
-    }
-
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool("IsSkill_F1", false);
-        animator.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(CallSkill(animator));
+        animator.SetBool("Act", true);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -24,10 +17,10 @@ public class Call_Skill_F1 : StateMachineBehaviour
     //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        animator.SetBool("Act", false);
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

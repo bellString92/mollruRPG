@@ -800,6 +800,7 @@ MonoBehaviour:
   triggerName: OnSkill_S
   cooldownTime: 8
   Player: {fileID: 0}
+  myParent: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
 --- !u!1 &614625650400738140
@@ -2699,6 +2700,7 @@ MonoBehaviour:
   triggerName: OnSkill_F1
   cooldownTime: 0.1
   Player: {fileID: 0}
+  myParent: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
 --- !u!1 &1901403313613516039
@@ -3402,6 +3404,7 @@ MonoBehaviour:
   triggerName: OnSkill_3
   cooldownTime: 3
   Player: {fileID: 0}
+  myParent: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
 --- !u!1 &2784482929857387541
@@ -6025,6 +6028,7 @@ MonoBehaviour:
   triggerName: OnSkill_Q
   cooldownTime: 7
   Player: {fileID: 0}
+  myParent: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
 --- !u!1 &5055561895803100983
@@ -6396,6 +6400,7 @@ MonoBehaviour:
   triggerName: OnSkill_2
   cooldownTime: 3
   Player: {fileID: 0}
+  myParent: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
 --- !u!1 &5343267391265128503
@@ -7566,6 +7571,7 @@ MonoBehaviour:
   triggerName: OnSkill_F2
   cooldownTime: 0.1
   Player: {fileID: 0}
+  myParent: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
 --- !u!1 &6187824842524750613
@@ -8249,6 +8255,7 @@ MonoBehaviour:
   triggerName: OnSkill_E
   cooldownTime: 7
   Player: {fileID: 0}
+  myParent: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
 --- !u!1 &6366231085805398656
@@ -10950,6 +10957,7 @@ MonoBehaviour:
   triggerName: OnSkill_Tab
   cooldownTime: 7
   Player: {fileID: 0}
+  myParent: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
 --- !u!1 &7973861731296867551
@@ -12934,6 +12942,7 @@ MonoBehaviour:
   triggerName: OnSkill_1
   cooldownTime: 5
   Player: {fileID: 0}
+  myParent: {fileID: 0}
   myImg: {fileID: 0}
   myLabel: {fileID: 0}
 --- !u!1 &8890985989568487136

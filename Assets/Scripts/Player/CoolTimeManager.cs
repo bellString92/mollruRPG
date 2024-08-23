@@ -7,7 +7,7 @@ public class CoolTimeManager : MonoBehaviour
     [SerializeField] private Dictionary<string, SkillData> skills = new Dictionary<string, SkillData>();
     [SerializeField] public Player player;
 
-    private void Start()
+    private void Awake()
     {
         // 모든 자식 스킬 오브젝트를 찾아서 등록
         foreach (SkillData skill in GetComponentsInChildren<SkillData>())
@@ -20,6 +20,7 @@ public class CoolTimeManager : MonoBehaviour
     {
         if (skills.TryGetValue(skillName, out SkillData skill))
         {
+            skill.transform.parent.gameObject.SetActive(true);
             skill.UseSkill();
         }
     }

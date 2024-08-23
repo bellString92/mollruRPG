@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 using static UnityEngine.GraphicsBuffer;
 
 public class Player : AnimatorProperty, IBattle
@@ -18,10 +19,9 @@ public class Player : AnimatorProperty, IBattle
     private bool isNearButton, isNearChest = false;         // ???
     private ButtonController currentButton;                 // ??
     private ChestController currentChest;                   // ??
-    Vector3 TGDir;
-    Vector2 inputDir = Vector2.zero;
-    Vector2 desireDir = Vector2.zero;
-    // public GameObject myBody; // 어딘가에 쓰이긴 하는데 어디에 쓰이는질 모르겠네;;;
+    [SerializeField]float TGDir;
+    Vector2 inputDir = Vector2.zero;                        // 캐릭터 이동 관련
+    Vector2 desireDir = Vector2.zero;                       // 캐릭터 이동 관련
 
     // 더블 클릭 체크용
     float myDoubleClickSecond = 0.25f;
@@ -105,7 +105,7 @@ public class Player : AnimatorProperty, IBattle
                 for (int i = 0; i < myFOV.visibleMonsterView.Count; i++)
                 {
                     myTargetmonster.Add(myFOV.visibleMonsterView[i]);
-                    float distance = Vector3.Distance(transform.position, myTargetmonster[0].position);        // 타겟과 나의 거리 구함, 추후 스킬과 연계하여 사용하기 위해 미리 제작
+                    TGDir = Vector3.Distance(transform.position, myTargetmonster[0].position);        // 타겟과 나의 거리 구함, 추후 스킬과 연계하여 사용하기 위해 미리 제작
                 }
             }
             if (myFOV.visibleNPCView.Count > 0)
@@ -211,90 +211,95 @@ public class Player : AnimatorProperty, IBattle
 
         // 플레이어 스킬
         {
-            // 기본공격 좌클
-            if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
+            if (!myAnim.GetBool("Act"))
             {
-                OnAllSkillTrue();
-                myAnim.SetTrigger("OnAttack");
-            }
-
-            // 스킬 Q (이동기)
-            if (!myAnim.GetBool("IsSkill_Q") && Input.GetKeyDown(KeyCode.Q) && TGDir.magnitude < 3)
-            {
-                myCool.UseSkill("Skill_Q");
-                //myAnim.SetTrigger("OnSkill_Q");
-                AllBuff(15f, 10, BuffType.MoveSpeed, BuffSource.Skill);
-            }
-
-            // 스킬 E (이동기)
-            if (!myAnim.GetBool("IsSkill_E") && Input.GetKeyDown(KeyCode.E) && TGDir.magnitude < 3)
-            {
-                myCool.UseSkill("Skill_E");
-                //myAnim.SetTrigger("OnSkill_E");
-                AllBuff(15f, 10, BuffType.MoveSpeed, BuffSource.Skill);
-            }
-
-            // 스킬 SS (이동기)
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                if (!myIsOneClick)
+                // 기본공격 좌클
+                if (!myAnim.GetBool("IsAttack") && Input.GetMouseButton(0))
                 {
-                    myTimer = Time.time;
-                    myIsOneClick = true;
+                    OnAllSkillTrue();
+                    myAnim.SetTrigger("OnAttack");
                 }
-                else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
+
+                // 스킬 Q (이동기)
+                if (!myAnim.GetBool("IsSkill_Q") && Input.GetKeyDown(KeyCode.Q) && TGDir < myStat.AttackRange) 
+                {
+                    myCool.UseSkill("Skill_Q");
+                    //myAnim.SetTrigger("OnSkill_Q");
+                    AllBuff(15f, 10, BuffType.MoveSpeed, BuffSource.Skill);
+                }
+
+                // 스킬 E (이동기)
+                if (!myAnim.GetBool("IsSkill_E") && Input.GetKeyDown(KeyCode.E) && TGDir < myStat.AttackRange)
+                {
+                    myCool.UseSkill("Skill_E");
+                    //myAnim.SetTrigger("OnSkill_E");
+                    AllBuff(15f, 10, BuffType.MoveSpeed, BuffSource.Skill);
+                }
+                
+
+                // 스킬 SS (이동기)
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    if (!myIsOneClick)
+                    {
+                        myTimer = Time.time;
+                        myIsOneClick = true;
+                    }
+                    else if (myIsOneClick && ((Time.time - myTimer) < myDoubleClickSecond))
+                    {
+                        myCool.UseSkill("Skill_S");
+                        AllBuff(1.5f, 10, BuffType.MoveSpeed, BuffSource.Skill);
+                        myIsOneClick = false;
+                    }
+                }
+
+                // 더블 클릭 타이머 리셋
+                if (myIsOneClick && (Time.time - myTimer) >= myDoubleClickSecond)
                 {
                     myIsOneClick = false;
-                    AllBuff(1.5f, 10, BuffType.MoveSpeed, BuffSource.Skill);
                 }
-            }
 
-            // 더블 클릭 타이머 리셋
-            if (myIsOneClick && (Time.time - myTimer) >= myDoubleClickSecond)
-            {
-                myIsOneClick = false;
-            }
+                // 스킬 Tab
+                if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab) && myTargetmonster.Count > 0 && TGDir < 15)
+                {
+                    myCool.UseSkill("Skill_Tab");
+                    //myAnim.SetTrigger("OnSkill_Tab");
+                }
 
-            // 스킬 Tab
-            if (!myAnim.GetBool("IsSkill_Tab") && Input.GetKeyDown(KeyCode.Tab))
-            {
-                myCool.UseSkill("Skill_Tab");
-                //myAnim.SetTrigger("OnSkill_Tab");
-            }
+                // 스킬 1
+                if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    myCool.UseSkill("Skill_1");
+                    //myAnim.SetTrigger("OnSkill_1");
+                }
 
-            // 스킬 1
-            if (!myAnim.GetBool("IsSkill_1") && Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                myCool.UseSkill("Skill_1");
-                //myAnim.SetTrigger("OnSkill_1");
-            }
+                // 스킬 2
+                if (!myAnim.GetBool("IsSkill_2") && Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    myCool.UseSkill("Skill_2");
+                    //myAnim.SetTrigger("OnSkill_2");
+                }
 
-            // 스킬 2
-            if (!myAnim.GetBool("IsSkill_2") && Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                myCool.UseSkill("Skill_2");
-                //myAnim.SetTrigger("OnSkill_2");
-            }
+                // 스킬 3
+                if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    myCool.UseSkill("Skill_3");
+                    //myAnim.SetTrigger("OnSkill_3");
+                }
 
-            // 스킬 3
-            if (!myAnim.GetBool("IsSkill_3") && Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                myCool.UseSkill("Skill_3");
-                //myAnim.SetTrigger("OnSkill_3");
-            }
+                // 스킬 F1
+                if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
+                {
+                    myCool.UseSkill("Skill_F1");
+                    //myAnim.SetTrigger("OnSkill_F1");
+                }
 
-            // 스킬 F1
-            if (!myAnim.GetBool("IsSkill_F1") && Input.GetKeyDown(KeyCode.F))
-            {
-                myCool.UseSkill("Skill_F1");
-                //myAnim.SetTrigger("OnSkill_F1");
-            }
-
-            // 스킬 F2
-            if (!myAnim.GetBool("IsSkill_F2") && Input.GetKeyDown(KeyCode.F))
-            {
-                myCool.UseSkill("Skill_F2");
-                //myAnim.SetTrigger("OnSkill_F2");
+                // 스킬 F2
+                if (!myAnim.GetBool("IsSkill_F2") && Input.GetKeyDown(KeyCode.F))
+                {
+                    myCool.UseSkill("Skill_F2");
+                    //myAnim.SetTrigger("OnSkill_F2");
+                }
             }
         }
     }
@@ -339,21 +344,7 @@ public class Player : AnimatorProperty, IBattle
         myAnim.SetBool("IsSkill_Tab", false);
         myAnim.SetBool("IsSkill_1", false);
         myAnim.SetBool("IsSkill_2", false);
-        myAnim.SetBool("IsSkill_2_On", false);
         myAnim.SetBool("IsSkill_3", false);
-        myAnim.SetBool("IsSkill_3_On", false);
-    }
-
-    public void OnComboCheck()
-    {
-        if (myAnim.GetBool("IsSkill_2_On"))
-        {
-            myAnim.SetBool("IsSkill_F1", false);
-        }
-        if (myAnim.GetBool("IsSkill_3_On"))
-        {
-            myAnim.SetBool("IsSkill_F2", false);
-        }
     }
 
     public void OnDamage()
