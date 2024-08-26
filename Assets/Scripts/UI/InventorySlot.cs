@@ -246,7 +246,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
                     }
                     else if (itemInfo?.item.itemType == ItemType.consumItem)
                     {
-                        itemInfo?.item.Use(user);
+                        itemInfo?.UseItem(user);
                         if (itemInfo?.item.quantity == 0)
                         {
                             Destroy(myChild);

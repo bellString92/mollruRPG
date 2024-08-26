@@ -4,21 +4,25 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.TextCore;
+using UnityEngine.UI;
 
 public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public ItemKind item;
     public TextMeshProUGUI quantityText; // 수량을 표시하는 텍스트
+    public Image CooldownImage; // 쿨타임을 표시할 이미지
     private int lastQuantity; // 마지막으로 표시된 수량
 
     public GameObject tooltipPrefab; // Tooltip Prefab
     private GameObject tooltipInstance; // Tooltip Instance
 
     private Coroutine tooltipUpdateCoroutine;
-
+    private Coroutine cooldownCoroutine; // 쿨타임 표시를 위한 코루틴
 
     private void Start()
     {
+        CooldownImage = transform.Find("CoolDown").GetComponent<Image>();
+        CooldownImage.gameObject.SetActive(false);
         quantityText = GetComponentInChildren<TextMeshProUGUI>();
         if (quantityText != null)
         {
@@ -50,6 +54,94 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         // 오브젝트가 비활성화될 때 툴팁을 닫습니다.
         CloseTooltip();
     }
+
+
+    // 아이템의 고유 ID를 저장하는 사전 (Dictionary)
+    private static Dictionary<string, float> itemCooldowns = new Dictionary<string, float>();
+    public void UseItem(Player player)
+    {
+        if (item is ConsumItem consumItem)
+        {
+            // 아이템의 고유 ID를 가져옴
+            string itemId = consumItem.itemID.ToString();
+
+            // 해당 아이템의 쿨타임이 진행 중이라면 아이템 사용을 막음
+            if (itemCooldowns.ContainsKey(itemId) && Time.time - itemCooldowns[itemId] < consumItem.EffectCoolTime)
+            {
+                Debug.Log("아이템이 아직 쿨타임 중입니다.");
+                return;
+            }
+
+            // 쿨타임 갱신
+            itemCooldowns[itemId] = Time.time;
+
+            // 쿨타임 표시 시작
+            if (cooldownCoroutine != null)
+            {
+                StopCoroutine(cooldownCoroutine);
+            }
+            cooldownCoroutine = StartCoroutine(DisplayCooldown(consumItem));
+
+            // 쿨타임이 모든 인스턴스에 적용되도록 이벤트나 브로드캐스트 호출
+            ApplyCooldownToAllInstances(itemId);
+        }
+
+        item.Use(player);
+    }
+
+    // 모든 동일한 ID의 아이템 인스턴스에 쿨타임 적용
+    private IEnumerator DisplayCooldown(ConsumItem consumItem)
+    {
+        // 쿨타임 시작 시 이미지를 활성화
+        CooldownImage.gameObject.SetActive(true);
+
+        float startTime = itemCooldowns[consumItem.itemID.ToString()];  // 모든 인스턴스가 동일한 쿨타임을 참조하도록 함.
+
+        while (Time.time - startTime < consumItem.EffectCoolTime)
+        {
+            float timePassed = Time.time - startTime;
+            float cooldownRatio = (consumItem.EffectCoolTime - timePassed) / consumItem.EffectCoolTime;
+
+            // 이미지의 fillAmount를 사용하여 쿨타임 표시
+            CooldownImage.fillAmount = cooldownRatio;
+
+            yield return null;
+        }
+
+        // 쿨타임 종료 시 이미지를 비활성화
+        CooldownImage.fillAmount = 0f; // 쿨타임 종료 시 이미지를 초기화
+        CooldownImage.gameObject.SetActive(false);
+    }
+
+    public void StartCooldownCoroutine()
+    {
+        // 코루틴이 이미 실행 중인 경우 중지
+        if (cooldownCoroutine != null)
+        {
+            StopCoroutine(cooldownCoroutine);
+        }
+
+        // `item`이 `ConsumItem`일 때만 쿨타임 시작
+        if (item is ConsumItem consumItem)
+        {
+            // 모든 인스턴스에서 같은 쿨타임을 참조
+            cooldownCoroutine = StartCoroutine(DisplayCooldown(consumItem));
+        }
+    }
+
+    private void ApplyCooldownToAllInstances(string itemId)
+    {
+        SaveItemInfo[] allItems = FindObjectsOfType<SaveItemInfo>();
+        foreach (var itemInfo in allItems)
+        {
+            if (itemInfo.item.itemID.ToString() == itemId)
+            {
+                itemInfo.StartCooldownCoroutine();
+            }
+        }
+    }
+
+    // 아이템 툴팁 표시
 
     private void UpdateQuantityText()
     {

@@ -22,6 +22,7 @@ public class ConsumItem : ItemKind
     public float EffectDuration;
     public float EffectCoolTime;
 
+    public float lastUseTime; // 마지막 사용 시간을 기록하는 변수
 
     private void OnEnable()
     {
@@ -36,18 +37,22 @@ public class ConsumItem : ItemKind
         EffectPoint = original.EffectPoint;
         EffectDuration = original.EffectDuration;
         EffectCoolTime = original.EffectCoolTime;
+
     }
     public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
     {
-        if (useEffect != null)
+        if (useEffect != null && CanUse())
         {
             useEffect(user, this);
+            lastUseTime = Time.time; // 현재 시간을 기록하여 쿨타임을 설정
         }
     }
-    public override void TakeOff(Player myStat)
+    // 쿨타임이 지났는지 확인하는 메서드
+    private bool CanUse()
     {
-    
+        return Time.time >= lastUseTime + EffectCoolTime;
     }
+    public override void TakeOff(Player myStat){}
     public void AssignEffect()
     {
         switch (effectType)

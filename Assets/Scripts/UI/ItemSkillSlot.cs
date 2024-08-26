@@ -144,6 +144,14 @@ public class ItemSkillSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            UseItem();
+        }
+    }
 
+    public void UseItem()
+    {
+        myChild.GetComponent<SaveItemInfo>()?.UseItem(UIManager.Instance.player.GetComponent<Player>());
     }
 }
