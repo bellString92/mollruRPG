@@ -8,7 +8,6 @@ using UnityEngine;
 public class Enemy : BattleSystem
 {
     public GameManager gameManager;
-    public Transform dropparent;
     public float myExp = 100;
 
     public GoldItem dropGold; // 드랍할 골드 
@@ -53,16 +52,18 @@ public class Enemy : BattleSystem
         }
         else if (gameObject.activeSelf)
         {
-
             switch (myState)
             {
                 case State.Create:
-
                     break;
                 case State.Normal:
                     coRoam = StartCoroutine(Roaming());
                     FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
-                    myTarget = null;
+                    if(myTarget != null)
+                    {
+                        myState = State.Battle;
+                    }
+                    //myTarget = null;
                     //StopMoveCoroutine();
                     //StopRoamCoroutine();
                     break;
@@ -72,12 +73,12 @@ public class Enemy : BattleSystem
                     FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
                     break;
                 case State.Death:
+                    StopAllCoroutines();
                     GetComponent<Rigidbody>().useGravity = false;
                     giveExp(myExp);
                     OnDeath(); // 죽었을때 전리품 드롭
                     deadAct?.Invoke();
-                    StopAllCoroutines();
-                    //OnDisApear();
+                    myTarget = null;
                     //StopMoveCoroutine();
                     //StopRoamCoroutine();
                     break;
@@ -130,10 +131,16 @@ public class Enemy : BattleSystem
     void Update()
     {
         StateProcess();
+
         if (myTarget != null && myBattleStat.curHealPoint >= 0)
         {
             StopRoamCoroutine();
+
             FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
+            
+        }
+        else if(myTarget == null)
+        {
             
         }
     }
@@ -290,5 +297,10 @@ public class Enemy : BattleSystem
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         GetComponent<Rigidbody>().useGravity = true;
         StartCoroutine(Roaming());
+    }
+    private void OnDisable()
+    {
+        // 몬스터를 비활성화할 때 풀로 복귀
+        transform.SetParent(gameManager.parentTransform);
     }
 }

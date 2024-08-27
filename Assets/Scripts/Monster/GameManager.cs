@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject dropPocketPrefab;
     [SerializeField] GameObject monsterPrefab;
-    [SerializeField] Transform parentTransform; // 몬스터 풀의 부모 트랜스폼
-    [SerializeField] Transform pocketparentTransform; //드롭 포켓 풀의 부모 트랜스폼
+    [SerializeField] public Transform parentTransform; // 몬스터 풀의 부모 트랜스폼
+    [SerializeField] public Transform pocketparentTransform; //드롭 포켓 풀의 부모 트랜스폼
 
     public List<Transform> points = new List<Transform>(); // 몬스터가 출현할 위치를 저장할 List 변수
     public List<GameObject> monsterPools = new List<GameObject>(); // 몬스터를 미리 생성해 저장
@@ -75,12 +75,14 @@ public class GameManager : MonoBehaviour
         GameObject monster = GetMonsterInPool();
         if (monster != null)
         {
+            monster.transform.SetParent(points[idx]);
+
             monster.transform.SetPositionAndRotation(points[idx].position, points[idx].rotation);
             monster.SetActive(true);
             monster.transform.GetChild(1).gameObject.SetActive(true);
             
 
-            // Enemy상태를 Create로 변경
+            // Enemy상태를 Normal로 변경
             Enemy enemyComponent = monster.GetComponent<Enemy>();
             if (enemyComponent != null)
             {

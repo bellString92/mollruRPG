@@ -10690,6 +10690,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8207155050545461663, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: myCool
       value: 
@@ -49296,7 +49300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2222214542576912002, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 160.00003
+      value: 160.00018
       objectReference: {fileID: 0}
     - target: {fileID: 2346948175378242479, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
       propertyPath: m_AnchoredPosition.y

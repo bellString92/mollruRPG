@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class AIPerception : MonoBehaviour
 {
+    public float detectionRadius = 9.0f;
     public LayerMask enemyMask;
     public UnityEvent<Transform> findAct;
     public UnityEvent lostAct;
@@ -18,7 +19,7 @@ public class AIPerception : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -45,5 +46,30 @@ public class AIPerception : MonoBehaviour
     public void SetEnable(bool v)
     {
         gameObject.SetActive(v);
+    }
+
+    void OnEnable()
+    {
+        StartCoroutine(CheckForEnemies());
+    }
+    IEnumerator CheckForEnemies()
+    {
+        while (true)
+        {
+            Collider[] enemies = Physics.OverlapSphere(transform.position, detectionRadius, enemyMask);
+            if (enemies.Length > 0)
+            {
+                myTarget = enemies[0].transform;
+                findAct?.Invoke(myTarget);
+            }
+            
+            yield return new WaitForSeconds(0.5f); // 0.5초마다 실행
+
+            if (enemies.Length < 0)
+            {
+                StopCoroutine(CheckForEnemies());
+                break;
+            }
+        }
     }
 }
