@@ -305,8 +305,6 @@ public class BossAI : BattleSystem
 
     void Attack()
     {
-
-
         //확률로 공격패턴이 나오게 다시 해야함
         if (this.myBattleStat.curHealPoint <= 200 && EnragedAttackCount < 1)
         {
@@ -325,6 +323,7 @@ public class BossAI : BattleSystem
 
             // 공격 애니메이션이 끝날 때까지 기다립니다.
             StartCoroutine(WaitForAttackAnimation(chosenAttack));
+
         }
     }
 

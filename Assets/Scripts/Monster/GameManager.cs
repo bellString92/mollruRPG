@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializePocketPool()
     {
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 50; i++)
         {
             GameObject dropPocket = Instantiate(dropPocketPrefab, pocketparentTransform);
             dropPocket.SetActive(false);
@@ -69,26 +69,46 @@ public class GameManager : MonoBehaviour
 
     private void CreateMonster()
     {
-        int idx = Random.Range(0, points.Count); // 몬스터의 불규칙한 생성 위치 산출
+        // 비어 있는 스폰포인트 찾기
+        Transform emptySpawnPoint = null;
+        // 스폰 포인트를 랜덤하게 선택하여 빈 포인트를 찾기
+        for(int i = 0; i< points.Count; i++)
+        {
+            int idx = Random.Range(0, points.Count);
+
+            // 찾은 스폰 포인트에 자식이 있는지 확인
+            if (points[idx].childCount == 0)
+            {
+                emptySpawnPoint = points[idx];
+                break;
+            }
+        }
+
+        if(emptySpawnPoint == null)
+        {
+            emptySpawnPoint = points[0];
+        }
+
+        //int idx = Random.Range(0, points.Count); // 몬스터의 불규칙한 생성 위치 산출
 
         // 풀에서 비활성화된 오브젝트 가져오기
         GameObject monster = GetMonsterInPool();
         if (monster != null)
         {
-            monster.transform.SetParent(points[idx]);
+            monster.transform.SetParent(emptySpawnPoint);
 
-            monster.transform.SetPositionAndRotation(points[idx].position, points[idx].rotation);
+            monster.transform.SetPositionAndRotation(emptySpawnPoint.position, emptySpawnPoint.rotation);
             monster.SetActive(true);
-            monster.transform.GetChild(1).gameObject.SetActive(true);
-            
-
-            // Enemy상태를 Normal로 변경
+            if (monster.transform.childCount > 1)
+            {
+                monster.transform.GetChild(1).gameObject.SetActive(true);
+            }
+            // Enemy 상태를 Normal로 변경
             Enemy enemyComponent = monster.GetComponent<Enemy>();
             if (enemyComponent != null)
             {
                 enemyComponent.SetState(Enemy.State.Normal);
             }
-
         }
     }
 

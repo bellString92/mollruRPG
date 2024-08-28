@@ -92,14 +92,14 @@ MonoBehaviour:
         m_CallState: 2
   myTarget: {fileID: 0}
   myBattleStat:
-    AttackPoint: 15
+    AttackPoint: 10
     AttackRange: 3
     AttackDelay: 2
     moveSpeed: 0
     CriticalProbability: 0
     CriticalDamage: 0
-    maxHealPoint: 10
-    curHealPoint: 10
+    maxHealPoint: 40
+    curHealPoint: 40
     maxMagicPoint: 0
     curMagicPoint: 0
     myLvevel: 0
@@ -107,7 +107,6 @@ MonoBehaviour:
     curExperiencePoint: 0
     myGold: 0
   gameManager: {fileID: 0}
-  dropparent: {fileID: 3474930033853674535}
   myExp: 100
   dropGold:
     item: {fileID: 11400000, guid: 7788b47c9bd091a4da2247f331179589, type: 2}
@@ -267,6 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817cee7b90710814e95225ae8c737762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 9
   enemyMask:
     serializedVersion: 2
     m_Bits: 64

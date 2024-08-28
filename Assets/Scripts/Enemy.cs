@@ -301,6 +301,6 @@ public class Enemy : BattleSystem
     private void OnDisable()
     {
         // 몬스터를 비활성화할 때 풀로 복귀
-        transform.SetParent(gameManager.parentTransform);
+        //transform.SetParent(gameManager.parentTransform);
     }
 }
