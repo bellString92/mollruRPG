@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+public class ObjectPool : MySingleTon<ObjectPool>
 {
     public Dictionary<string, Queue<GameObject>> myPool = new Dictionary<string, Queue<GameObject>>();
-    public static ObjectPool Instance = null;
+
     private void Awake()
     {
-        Instance = this;
+        base.Initialize();
     }
 
     public GameObject Instantiate<T>(GameObject org, Transform parent)

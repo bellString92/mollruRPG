@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleTon<T> : MonoBehaviour where T : MonoBehaviour
+public class MySingleTon<T> : MonoBehaviour where T : MonoBehaviour
 {
     static T _inst = null;
     public static T Instance
