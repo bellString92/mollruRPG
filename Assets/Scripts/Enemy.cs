@@ -18,6 +18,15 @@ public class Enemy : BattleSystem
 
     private int SleepCount;
     private bool isDie; // 몬스터 생존 여부
+
+    public MonsterHpBar monsterHpBar;
+
+    public override void TakeDamage(float dmg)
+    {
+        base.TakeDamage(dmg);
+        monsterHpBar.OnHpBarChange(myBattleStat.curHealPoint / (myBattleStat.maxHealPoint == 0 ? 100 : myBattleStat.maxHealPoint));
+    }
+
     public enum State
     {
         Create, Normal, Battle, Death

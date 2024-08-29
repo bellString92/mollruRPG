@@ -61,7 +61,7 @@ public class BattleSystem : AIMovement, IBattle
     {
 
     }
-    public void TakeDamage(float dmg)
+    public virtual void TakeDamage(float dmg)
     {
         myBattleStat.curHealPoint -= dmg;
         changeHpAct?.Invoke(myBattleStat.GetHpValue());
