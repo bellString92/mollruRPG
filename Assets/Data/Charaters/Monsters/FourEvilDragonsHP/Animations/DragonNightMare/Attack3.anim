@@ -83924,20 +83924,20 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: ShowAttackRange
-    data: 
+    functionName: OnAttackStart
+    data: Attack3
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.1666666
-    functionName: HideAttackRange
+    functionName: OnAttackEnd
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.2666667
+  - time: 1.3
     functionName: OnDamage
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: 9a1117e36845a254c9eac115a2c07196, type: 3}
