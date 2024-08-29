@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class QuickSlotManager : MonoBehaviour
 {
+    public static QuickSlotManager Instance;
     public List<ItemSkillSlot> slots = new List<ItemSkillSlot>();
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,5 +50,19 @@ public class QuickSlotManager : MonoBehaviour
             }
         }
     }
-
+    public ItemSkillSlot FindSlotByItemID(int itemID)
+    {
+        foreach (ItemSkillSlot slot in slots)
+        {
+            if (slot.myChild != null)
+            {
+                SaveItemInfo saveItemInfo = slot.myChild.GetComponent<SaveItemInfo>();
+                if (saveItemInfo != null && saveItemInfo.item.itemID == itemID)
+                {
+                    return slot; // 해당 아이템이 이미 등록된 슬롯 반환
+                }
+            }
+        }
+        return null; // 해당 아이템이 등록되지 않음
+    }
 }

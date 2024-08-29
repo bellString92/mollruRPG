@@ -28,7 +28,6 @@ public class ConsumItem : ItemKind
     {
         itemTag = "ConsumItem";
         itemType = ItemType.consumItem;
-        maxStack = 99;
         AssignEffect();
     }
     public ConsumItem(ConsumItem original) : base(original)

@@ -128,6 +128,7 @@ public class ShopManager : MonoBehaviour
 
 
     // 판매
+    // 판매
     public void OnDestroyInventorySlotItem() // 판매 버튼을 누르면 호출
     {
         if (lastClickedSlot != null)
@@ -144,8 +145,14 @@ public class ShopManager : MonoBehaviour
                     {
                         quantityToDeduct = Mathf.Clamp(enteredQuantity, 0, curItemforSell.quantity); // 유효한 범위로 클램프
                     }
+
+                    // 판매 가격을 정산하여 골드를 추가
                     Inventory.Instance.user.myStat.myGold += quantityToDeduct * curItemforSell.resellprice;
-                    curItemforSell.quantity -= quantityToDeduct; // quantity 감소
+
+                    // 인벤토리에서 수량 감소 및 QuickSlot과 동기화
+                    curItemforSell.quantity -= quantityToDeduct;
+                    SyncQuickSlotWithInventory(curItemforSell.itemID, curItemforSell.quantity);
+
                     if (curItemforSell.quantity <= 0)
                     {
                         // quantity가 0 이하로 떨어지면 아이템을 제거
@@ -157,9 +164,57 @@ public class ShopManager : MonoBehaviour
             }
             else
             {
+                // 비소모품 및 재료가 아닌 아이템의 판매 로직
                 Inventory.Instance.user.myStat.myGold += curItemforSell.quantity * curItemforSell.resellprice;
+
+                // 인벤토리에서 아이템 제거 및 QuickSlot과 동기화
+                SyncQuickSlotWithInventory(curItemforSell.itemID, 0);
                 lastClickedSlot.DestroyChild();
+
                 lastClickedSlot = null;
+            }
+        }
+    }
+
+
+    private void UpdateQuickSlotItemQuantity(int itemID, int quantity)
+    {
+        foreach (ItemSkillSlot slot in QuickSlotManager.Instance.slots)
+        {
+            if (slot.myChild != null)
+            {
+                SaveItemInfo saveItemInfo = slot.myChild.GetComponent<SaveItemInfo>();
+                if (saveItemInfo != null && saveItemInfo.item.itemID == itemID)
+                {
+                    saveItemInfo.item.quantity = quantity;
+                    return;
+                }
+            }
+        }
+    }
+
+    private void SyncQuickSlotWithInventory(int itemID, int remainingQuantity)
+    {
+        // QuickSlot의 아이템이 인벤토리와 동기화될 수 있도록 처리
+        foreach (ItemSkillSlot slot in QuickSlotManager.Instance.slots)
+        {
+            if (slot.myChild != null)
+            {
+                SaveItemInfo saveItemInfo = slot.myChild.GetComponent<SaveItemInfo>();
+                if (saveItemInfo != null && saveItemInfo.item.itemID == itemID)
+                {
+                    if (remainingQuantity <= 0)
+                    {
+                        // 남은 수량이 0 이하라면 QuickSlot에서 제거
+                        Destroy(slot.myChild);
+                        slot.myChild = null;
+                    }
+                    else
+                    {
+                        // 남은 수량이 있다면 QuickSlot에 수량 업데이트
+                        saveItemInfo.item.quantity = remainingQuantity;
+                    }
+                }
             }
         }
     }

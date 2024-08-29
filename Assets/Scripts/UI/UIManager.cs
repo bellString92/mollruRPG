@@ -13,7 +13,7 @@ public enum OkBoxType
 }
 public interface IQuantityCheck
 {
-    void Initialize(ItemKind item, System.Action onConfirm,string title);
+    void Initialize(ItemKind item, System.Action onConfirm);
 }
 
 
@@ -177,6 +177,15 @@ public class UIManager : MonoBehaviour
         currentQuantityUI = itemQuantityCheckUI;
         currentQuantityUI.SetActive(true);
 
+        var buyUI = currentQuantityUI.GetComponent<ItemQuantityCheck>();
+        var sellUI = currentQuantityUI.GetComponent<SellQuantityCheck>();
+
+        if(buyUI != null || sellUI != null)
+        {
+            Destroy(buyUI);
+            Destroy(sellUI);
+        }
+
         // 기존에 있는 컴포넌트를 제거하고 새로운 컴포넌트를 추가
         var quantityCheck = currentQuantityUI.GetComponent<T>();
         if (quantityCheck != null)
@@ -187,7 +196,7 @@ public class UIManager : MonoBehaviour
         quantityCheck = currentQuantityUI.AddComponent<T>();
         if (quantityCheck != null)
         {
-            (quantityCheck as IQuantityCheck)?.Initialize(item, onConfirm, title);
+            (quantityCheck as IQuantityCheck)?.Initialize(item, onConfirm);
         }
 
         uiStack.Push(currentQuantityUI);

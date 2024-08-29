@@ -19,6 +19,18 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private Coroutine tooltipUpdateCoroutine;
     private Coroutine cooldownCoroutine; // 쿨타임 표시를 위한 코루틴
 
+    public SaveItemInfo(SaveItemInfo original)
+    {
+        this.item = original.item;
+        this.quantityText = original.quantityText;
+        CooldownImage = original.CooldownImage;
+        lastQuantity = original.lastQuantity;
+        tooltipPrefab = original.tooltipPrefab;
+        tooltipInstance = original.tooltipInstance;
+        cooldownCoroutine = original.cooldownCoroutine;
+        tooltipUpdateCoroutine = original.tooltipUpdateCoroutine;             
+    }
+
     private void Start()
     {
         CooldownImage = transform.Find("CoolDown").GetComponent<Image>();
