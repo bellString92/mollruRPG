@@ -33,18 +33,46 @@ public class ConsumItem : ItemKind
     public ConsumItem(ConsumItem original) : base(original)
     {
         this.useEffect = original.useEffect;
+        effectType = original.effectType;
         EffectPoint = original.EffectPoint;
         EffectDuration = original.EffectDuration;
         EffectCoolTime = original.EffectCoolTime;
 
     }
-    public override void Use(Player user) //사용시 player의 능력치에 영향을 주는 코드
+    public override void Use(Player user) // 사용 시 player의 능력치에 영향을 주는 코드
     {
+        // 사용 조건을 확인
         if (useEffect != null && CanUse())
         {
-            useEffect(user, this);
-            lastUseTime = Time.time; // 현재 시간을 기록하여 쿨타임을 설정
+            // 실제 사용 조건 확인
+            if (CanEffectivelyUse(user))
+            {
+                // 사용 효과 적용
+                useEffect(user, this);
+                lastUseTime = Time.time; // 현재 시간을 기록하여 쿨타임을 설정
+
+                // 사용 후 수량 감소
+                quantity--;
+            }
         }
+    }
+
+    // 사용 조건을 확인하는 메서드 예시
+    public bool CanEffectivelyUse(Player user)
+    {
+        if (effectType == EffectType.HealEffect)
+        {
+            if (user.myStat.curHealPoint < user.myStat.maxHealPoint)
+            {
+                return true;
+            }
+            else
+            {
+                Debug.Log("현재 체력이 이미 최대입니다.");
+                return false;
+            }
+        }
+        return true; // 기본적으로 사용 가능
     }
     // 쿨타임이 지났는지 확인하는 메서드
     private bool CanUse()

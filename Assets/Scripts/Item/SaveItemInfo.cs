@@ -66,6 +66,53 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         // 오브젝트가 비활성화될 때 툴팁을 닫습니다.
         CloseTooltip();
     }
+    private void OnEnable()
+    {
+        if (item is ConsumItem consumItem)
+        {
+            float elapsedTime = Time.time - consumItem.lastUseTime;
+            if (elapsedTime < consumItem.EffectCoolTime)
+            {
+                StartCooldownCoroutine(consumItem, consumItem.EffectCoolTime - elapsedTime);
+            }
+        }
+    }
+
+    public void StartCooldownCoroutine(ConsumItem consumItem, float remainingCooldown = -1f)
+    {
+        // 코루틴이 이미 실행 중인 경우 중지
+        if (cooldownCoroutine != null)
+        {
+            StopCoroutine(cooldownCoroutine);
+        }
+
+        if (remainingCooldown < 0)
+        {
+            remainingCooldown = consumItem.EffectCoolTime;
+        }
+
+        cooldownCoroutine = StartCoroutine(DisplayCooldown(consumItem, remainingCooldown));
+    }
+
+    private IEnumerator DisplayCooldown(ConsumItem consumItem, float remainingCooldown)
+    {
+        CooldownImage.gameObject.SetActive(true);
+
+        float startTime = Time.time;
+        float endTime = startTime + remainingCooldown;
+
+        while (Time.time < endTime)
+        {
+            float cooldownRatio = (endTime - Time.time) / remainingCooldown;
+
+            CooldownImage.fillAmount = cooldownRatio;
+
+            yield return null;
+        }
+
+        CooldownImage.fillAmount = 0f;
+        CooldownImage.gameObject.SetActive(false);
+    }
 
 
     // 아이템의 고유 ID를 저장하는 사전 (Dictionary)
@@ -93,6 +140,7 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                 StopCoroutine(cooldownCoroutine);
             }
             cooldownCoroutine = StartCoroutine(DisplayCooldown(consumItem));
+
 
             // 쿨타임이 모든 인스턴스에 적용되도록 이벤트나 브로드캐스트 호출
             ApplyCooldownToAllInstances(itemId);

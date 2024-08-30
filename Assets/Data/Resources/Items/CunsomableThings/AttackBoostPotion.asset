@@ -28,5 +28,5 @@ MonoBehaviour:
   effectType: 1
   EffectPoint: 30
   EffectDuration: 30
-  EffectCoolTime: 30
+  EffectCoolTime: 3
   lastUseTime: 0

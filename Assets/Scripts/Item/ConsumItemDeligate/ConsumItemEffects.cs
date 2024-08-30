@@ -19,12 +19,10 @@ public class ConsumItemEffects : MonoBehaviour
     public static void AttackBoostEffect(Player user, ConsumItem item)
     {
         Inventory.Instance.user.AllBuff(item.EffectPoint, item.EffectDuration, BuffType.Damage, BuffSource.ConsumableItem);
-        item.quantity--; // 사용 후 갯수 감소
     }
 
     public static void SpeedBoostEffect(Player user, ConsumItem item)
     {
         Inventory.Instance.user.AllBuff(item.EffectPoint, item.EffectDuration, BuffType.MoveSpeed, BuffSource.ConsumableItem);
-        item.quantity--; // 사용 후 갯수 감소
     }
 }
