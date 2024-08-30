@@ -18,6 +18,7 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private Coroutine tooltipUpdateCoroutine;
     private Coroutine cooldownCoroutine; // 쿨타임 표시를 위한 코루틴
+    private ConsumItem consumItem;
 
     public SaveItemInfo(SaveItemInfo original)
     {
@@ -66,21 +67,39 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         // 오브젝트가 비활성화될 때 툴팁을 닫습니다.
         CloseTooltip();
     }
-    private void OnEnable()
+   private void OnEnable()
     {
         if (item is ConsumItem consumItem)
         {
-            float elapsedTime = Time.time - consumItem.lastUseTime;
-            if (elapsedTime < consumItem.EffectCoolTime)
+            this.consumItem = consumItem;
+
+            // 쿨타임이 끝났는지 확인하고 UI를 업데이트
+            float remainingCooldown = CoolTimeManager.GetRemainingCooldown(consumItem.itemID);
+            if (remainingCooldown > 0)
             {
-                StartCooldownCoroutine(consumItem, consumItem.EffectCoolTime - elapsedTime);
+                StartCooldownCoroutine(consumItem, remainingCooldown);
+            }
+            else
+            {
+                ResetCooldownUI(); // 쿨타임이 끝난 상태로 UI 갱신
             }
         }
     }
 
+    private void ResetCooldownUI()
+    {
+        if (cooldownCoroutine != null)
+        {
+            StopCoroutine(cooldownCoroutine);
+            cooldownCoroutine = null;
+        }
+
+        // 쿨타임 UI를 초기화 (쿨타임이 끝난 상태로 표시)
+        CooldownImage.fillAmount = 0;
+    }
+
     public void StartCooldownCoroutine(ConsumItem consumItem, float remainingCooldown = -1f)
     {
-        // 코루틴이 이미 실행 중인 경우 중지
         if (cooldownCoroutine != null)
         {
             StopCoroutine(cooldownCoroutine);
@@ -94,24 +113,20 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         cooldownCoroutine = StartCoroutine(DisplayCooldown(consumItem, remainingCooldown));
     }
 
-    private IEnumerator DisplayCooldown(ConsumItem consumItem, float remainingCooldown)
+    private IEnumerator DisplayCooldown(ConsumItem consumItem, float duration)
     {
-        CooldownImage.gameObject.SetActive(true);
-
-        float startTime = Time.time;
-        float endTime = startTime + remainingCooldown;
-
-        while (Time.time < endTime)
+        float timeLeft = duration;
+        while (timeLeft > 0)
         {
-            float cooldownRatio = (endTime - Time.time) / remainingCooldown;
+            timeLeft -= Time.deltaTime;
 
-            CooldownImage.fillAmount = cooldownRatio;
+            // 쿨타임 UI 업데이트
+            CooldownImage.fillAmount = timeLeft / duration;
 
             yield return null;
         }
 
-        CooldownImage.fillAmount = 0f;
-        CooldownImage.gameObject.SetActive(false);
+        ResetCooldownUI(); // 쿨타임이 종료된 후 UI를 초기화
     }
 
 

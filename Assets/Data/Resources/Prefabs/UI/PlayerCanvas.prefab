@@ -859,7 +859,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000010804837}
+  m_AnchoredPosition: {x: 0, y: -0.00048667664}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &318189117855774694
@@ -8677,6 +8677,7 @@ MonoBehaviour:
   myChild: {fileID: 0}
   slotType: 2
   dragItemSkill: {fileID: 1675958848678193895}
+  originalItemInfo: {fileID: 0}
 --- !u!114 &7576650693784291711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15434,6 +15435,7 @@ MonoBehaviour:
   myChild: {fileID: 0}
   slotType: 2
   dragItemSkill: {fileID: 1675958848678193895}
+  originalItemInfo: {fileID: 0}
 --- !u!114 &8925583149799226047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15940,7 +15942,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6874644904702457599}
   m_HandleRect: {fileID: 7579210270670383245}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 1.0000032
   m_Size: 0.5
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -15955,7 +15957,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1463071810582518677}
-  - component: {fileID: 6620508326138896156}
+  - component: {fileID: 228666606626591144}
   - component: {fileID: 317895888388468327}
   - component: {fileID: 3874628597115990832}
   - component: {fileID: 6928821017217012981}
@@ -15993,7 +15995,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: -1440, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6620508326138896156
+--- !u!114 &228666606626591144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17271,7 +17273,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 160.00003}
+  m_AnchoredPosition: {x: 0, y: 159.99998}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &5517325253927794240
@@ -22035,6 +22037,7 @@ MonoBehaviour:
   myChild: {fileID: 0}
   slotType: 2
   dragItemSkill: {fileID: 1675958848678193895}
+  originalItemInfo: {fileID: 0}
 --- !u!114 &3757401556638939571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24518,7 +24521,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7294099043747805279}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.46648803
+  m_Size: 0.4665155
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -25536,6 +25539,7 @@ MonoBehaviour:
   myChild: {fileID: 0}
   slotType: 2
   dragItemSkill: {fileID: 1675958848678193895}
+  originalItemInfo: {fileID: 0}
 --- !u!114 &613305485330448339
 MonoBehaviour:
   m_ObjectHideFlags: 0

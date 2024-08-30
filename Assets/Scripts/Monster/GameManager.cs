@@ -178,12 +178,42 @@ public class GameManager : MonoBehaviour
     // 드롭 아이템 관련
     void Update()
     {
-        if (dropPoketUI != null && dropPoketUI.IsActive())
+        if (Input.GetKeyDown(KeyCode.G))
         {
-            UpdateDropPoketUIPosition();
+            DropItemPoket closestDropPocket = FindClosestDropPocket();
+            if (closestDropPocket != null)
+            {
+                if (dropPoketUI.gameObject.activeSelf && activeDropItem == closestDropPocket)
+                {
+                    return; // 이미 활성화된 UI가 있고, 같은 아이템 리스트라면 아무 반응하지 않음
+                }
+
+                activeDropItem = closestDropPocket;
+                dropPoketUI.SetSlots(closestDropPocket.dropItems, closestDropPocket.gameObject);
+                dropPoketUI.transform.position = closestDropPocket.transform.position; // UI를 오브젝트 위치로 이동
+                dropPoketUI.gameObject.SetActive(true);
+            }
         }
     }
+    private DropItemPoket FindClosestDropPocket()
+    {
+        float closestDistance = Mathf.Infinity;
+        DropItemPoket closestDropPocket = null;
 
+        foreach (var dropPocket in pocketPools)
+        {
+            if (dropPocket.activeSelf)
+            {
+                float distance = Vector3.Distance(transform.position, dropPocket.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestDropPocket = dropPocket.GetComponent<DropItemPoket>();
+                }
+            }
+        }
+        return closestDropPocket;
+    }
     private void UpdateDropPoketUIPosition()
     {
         if (activeDropItem != null)

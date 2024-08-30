@@ -39,17 +39,16 @@ public class ConsumItem : ItemKind
         EffectCoolTime = original.EffectCoolTime;
 
     }
-    public override void Use(Player user) // 사용 시 player의 능력치에 영향을 주는 코드
+    public override void Use(Player user)
     {
-        // 사용 조건을 확인
-        if (useEffect != null && CanUse())
+        if (useEffect != null && !CoolTimeManager.IsOnCooldown(itemID))
         {
-            // 실제 사용 조건 확인
             if (CanEffectivelyUse(user))
             {
-                // 사용 효과 적용
                 useEffect(user, this);
-                lastUseTime = Time.time; // 현재 시간을 기록하여 쿨타임을 설정
+
+                // 쿨타임 시작
+                CoolTimeManager.StartCooldown(itemID, EffectCoolTime);
 
                 // 사용 후 수량 감소
                 quantity--;
@@ -74,11 +73,7 @@ public class ConsumItem : ItemKind
         }
         return true; // 기본적으로 사용 가능
     }
-    // 쿨타임이 지났는지 확인하는 메서드
-    private bool CanUse()
-    {
-        return Time.time >= lastUseTime + EffectCoolTime;
-    }
+
     public override void TakeOff(Player myStat){}
     public void AssignEffect()
     {
