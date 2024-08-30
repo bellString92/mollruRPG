@@ -18,12 +18,10 @@ public class PlayerUI : MonoBehaviour
 
     public void OnChangeHP(float v)
     {
-        Debug.Log("체력바뀜");
         hpBar.value = v;
     }
     public void OnChangeMP(float v)
     {
-        Debug.Log("마나바뀜");
         mpBar.value = v;
     }
 
