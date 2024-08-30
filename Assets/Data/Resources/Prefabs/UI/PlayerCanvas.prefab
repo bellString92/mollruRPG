@@ -15957,7 +15957,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1463071810582518677}
-  - component: {fileID: 228666606626591144}
+  - component: {fileID: 6693418522058743306}
   - component: {fileID: 317895888388468327}
   - component: {fileID: 3874628597115990832}
   - component: {fileID: 6928821017217012981}
@@ -15995,7 +15995,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: -1440, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &228666606626591144
+--- !u!114 &6693418522058743306
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17273,7 +17273,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 159.99998}
+  m_AnchoredPosition: {x: 0, y: 160.0001}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &5517325253927794240
@@ -24520,8 +24520,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1380579523143030712}
   m_HandleRect: {fileID: 7294099043747805279}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.4665155
+  m_Value: -0.00000076293946
+  m_Size: 0.46658245
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
