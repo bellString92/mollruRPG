@@ -273,6 +273,8 @@ public class CharacterSelect : MonoBehaviour
             {
                 PlayerPrefs.SetString("playCharacter", playCharacters[selNum - 1]);
                 PlayerPrefs.SetString("nickName", nickNameArr[selNum - 1].GetComponentInChildren<TMPro.TMP_Text>().text);
+                PlayerPrefs.SetString("nextSceneText", "몰루타운");
+                PlayerPrefs.SetString("nextSceneImage", "Dungeon");
                 SceneChange.OnSceneChange("3. Village");
             });
         }

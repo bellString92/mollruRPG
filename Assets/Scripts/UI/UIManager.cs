@@ -43,6 +43,7 @@ public class UIManager : MonoBehaviour
     // 마우스 포인트 관련
     bool isCursorVisible = false;
     bool isPressed = true;
+    public int cursorState { get; set; }
 
     // 확인 팝업 ui관련
     OkBoxType boxMsg;
@@ -51,6 +52,7 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
         player = GameObject.Find("Player");
+        cursorState = 0;
     }
     // Start is called before the first frame update
     void Start()
@@ -92,6 +94,14 @@ public class UIManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.I)) // !ChatSystem.Instance.IsActive &&  채팅 생겼을때 쓸것
             {
                 ToggleUI(myInven.gameObject);
+                if (myInven.gameObject.activeSelf)
+                {
+                    cursorState = 1;
+                }
+                else
+                {
+                    cursorState = 2;
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.U))
@@ -116,18 +126,19 @@ public class UIManager : MonoBehaviour
                 isCursorVisible = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            if (Input.GetKeyDown(KeyCode.LeftAlt) || cursorState == 1)
             {
                 isPressed = false;
                 isCursorVisible = true;
             }
 
-            if (Input.GetKeyUp(KeyCode.LeftAlt))
+            if (Input.GetKeyUp(KeyCode.LeftAlt) || cursorState == 2)
             {
                 isPressed = true;
                 isCursorVisible = false;
             }
             UpdateCursorState();
+            if (cursorState == 2) cursorState = 0;
         }
     }
 
@@ -154,7 +165,10 @@ public class UIManager : MonoBehaviour
     {
         // isCursorVisible 변수에 따라 마우스 커서 상태를 업데이트합니다.
         Cursor.visible = isCursorVisible;
-        Cursor.lockState = isCursorVisible ? CursorLockMode.None : CursorLockMode.Locked;
+        if (cursorState == 2)
+            Cursor.lockState = Cursor.lockState = CursorLockMode.Confined;
+        else
+            Cursor.lockState = isCursorVisible ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
     public void CloseTopUi() // 가장위에 존재하는 UI종료

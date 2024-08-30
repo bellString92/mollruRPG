@@ -21,10 +21,11 @@ public class MonsterUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (player.myTargetmonster.Count > 0)
+        if (player.myTargetmonster.Count > 0)
         {
             foreach (Transform t in player.myTargetmonster)
             {
+                if (t.GetComponent<Enemy>() == null) continue;
                 if (t.GetComponent<Enemy>().monsterHpBar == null)
                 {
                     GameObject obj = Instantiate(orgHpBar, hpBarParent);
@@ -37,7 +38,6 @@ public class MonsterUI : MonoBehaviour
                     t.GetComponent<Enemy>().monsterHpBar.hpBarAliveTime = 0.0f;
                 }
             }
-        }*/
+        }
     }
-
  }

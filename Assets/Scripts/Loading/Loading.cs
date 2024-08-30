@@ -32,13 +32,6 @@ public class Loading : AnimatorProperty
         myAnim.SetBool("run", true);
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     IEnumerator LoadingCor()
     {
         string nextScene = PlayerPrefs.GetString("nextScene");
