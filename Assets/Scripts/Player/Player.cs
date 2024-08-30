@@ -96,11 +96,11 @@ public class Player : AnimatorProperty, IBattle
         Dictionary<int, CharacterData> saveData = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath);
         if (saveData == null)
         {
-            myStat = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath)[PlayerPrefs.GetInt("selNum")].MyStat;
+            SceneManager.LoadSceneAsync(0);
         }
         else
         {
-            SceneManager.LoadSceneAsync(0);
+            myStat = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath)[PlayerPrefs.GetInt("selNum")].MyStat;
         }
         changeHpAct?.Invoke(myStat.GetHpValue());
         changeMpAct?.Invoke(myStat.GetMpValue());
