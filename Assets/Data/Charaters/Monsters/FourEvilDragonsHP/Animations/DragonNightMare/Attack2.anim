@@ -103300,7 +103300,7 @@ AnimationClip:
     messageOptions: 0
   - time: 1.7666667
     functionName: OnDamage
-    data: 
+    data: Attack2
     objectReferenceParameter: {fileID: 0}
     floatParameter: 50
     intParameter: 0

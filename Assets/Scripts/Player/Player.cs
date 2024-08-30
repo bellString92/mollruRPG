@@ -50,6 +50,10 @@ public class Player : AnimatorProperty, IBattle
     {
         myStat.curHealPoint -= dmg;
         changeHpAct?.Invoke(myStat.GetHpValue());
+        if (myStat.curHealPoint <= 0.0f)
+        {
+            PlayerDeath();
+        }
     }
 
     private bool Critical(float Cri)
@@ -191,6 +195,8 @@ public class Player : AnimatorProperty, IBattle
             if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
             {
                 myAnim.SetBool("Run", true);
+                myAnim.SetBool("Right", false);
+                myAnim.SetBool("Left", false);
             }
 
             // 달리기 해제
@@ -401,6 +407,20 @@ public class Player : AnimatorProperty, IBattle
         }
     }
 
+    void PlayerDeath()
+    {
+        StopAllCoroutines();
+        CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        if (capsuleCollider != null)
+        {
+            capsuleCollider.enabled = false;
+        }
+        myAnim.SetTrigger("Death");
+
+        if (UnityEngine.Cursor.visible == false) return;
+    }
 
     // 던전 문과 상자 제어하기 위한 클라이더
     private void OnTriggerEnter(Collider other)

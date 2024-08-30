@@ -18,6 +18,7 @@ public class BossAI : BattleSystem
     public LayerMask enemyMask;
     public Transform head;
 
+    private float wrpNum; // 플레이어와 거리에 따라 증가하는 수치
     private float AttackdistanceToPlayer = 0.0f;
     private int EnragedAttackCount = 0;
     private int EnragedCount = 0;
@@ -44,7 +45,7 @@ public class BossAI : BattleSystem
 
             Vector3 direction = (player.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 1.5f); // 바라보는 속도
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * (1.5f + (wrpNum * 50))); // 바라보는 속도
         }
     }
 
@@ -85,8 +86,8 @@ public class BossAI : BattleSystem
             if (player == null) return;
 
             Vector3 direction = (player.position - transform.position).normalized;
-            transform.position += direction * moveSpeed * Time.deltaTime;
-            myAnim.SetBool("isMoving", true);
+            transform.position += direction * Time.deltaTime * (moveSpeed + (wrpNum * 6)) ;
+            //myAnim.SetBool("isMoving", true);
         }
     }
 
@@ -108,15 +109,37 @@ public class BossAI : BattleSystem
     void Update()
     {
         distanceToPlayer = Vector3.Distance(player.position, transform.position);
-        if(distanceToPlayer < this.myBattleStat.AttackRange / 2)
-        {
-            AttackdistanceToPlayer = Vector3.Distance(player.position, head.transform.position);
-            Debug.Log(AttackdistanceToPlayer);
-        }
+        //Debug.Log(distanceToPlayer);
 
+        AttackdistanceToPlayer = Vector3.Distance(player.position, head.transform.position);
+        Debug.Log(AttackdistanceToPlayer);
+ 
+
+        if(AttackdistanceToPlayer >= this.myBattleStat.AttackRange / 3)
+        {
+            StopCoroutine(Attack());
+        }
         UpdateStateBasedOnDistance(distanceToPlayer);
         //Debug.Log(distanceToPlayer);
         PerformActionBasedOnState();
+        CheckWalkOrRun();
+    }
+
+    void CheckWalkOrRun()
+    {
+        AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
+        if ((distanceToPlayer - 10) > 0 && stateInfo.IsName("Battle"))
+        {
+            if (wrpNum <= 0.5f)
+            {
+                wrpNum = (distanceToPlayer - 10) / 30;
+
+                if (wrpNum < 0) wrpNum = 0;
+                else if (wrpNum > 0.5f) wrpNum = 0.5f;
+
+                myAnim.SetFloat("WRP", wrpNum);
+            }
+        }
     }
 
     void UpdateStateBasedOnDistance(float distanceToPlayer)
@@ -165,11 +188,12 @@ public class BossAI : BattleSystem
                 break;
 
             case State.Alert:
-                // LookAtPlayer(); // Alert 상태에서는 플레이어를 바라보지 않음
+                myAnim.SetBool("isMoving", false);
                 break;
 
             case State.Battle:
                 BossAttackTriggerDelay += Time.deltaTime;
+                myAnim.SetBool("isMoving", true);
                 if (AttackdistanceToPlayer <= this.myBattleStat.AttackRange / 3 && BossAttackTriggerDelay > 1.5f)
                 {
                     BossAttackTriggerDelay = 0.0f;
@@ -177,16 +201,26 @@ public class BossAI : BattleSystem
                 }
                 else
                 {
+                    StopCoroutine(Attack());
                     LookAtPlayer();
                     MoveIfInChaseAnimation();
                 }
                 break;
 
             case State.Enraged:
-                LookAtPlayer();
-                MoveIfInChaseAnimation();
-                Enraged();
-                Attack();
+                BossAttackTriggerDelay += Time.deltaTime;
+                myAnim.SetBool("isMoving", true);
+                if (AttackdistanceToPlayer <= this.myBattleStat.AttackRange / 3 && BossAttackTriggerDelay > 1.5f)
+                {
+                    BossAttackTriggerDelay = 0.0f;
+                    StartCoroutine(Attack());
+                }
+                else
+                {
+                    StopCoroutine(Attack());
+                    LookAtPlayer();
+                    MoveIfInChaseAnimation();
+                }
                 break;
             case State.Death:
                 OnDeath();
@@ -213,7 +247,7 @@ public class BossAI : BattleSystem
         AnimatorStateInfo stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
 
         // Idle 애니메이션이 아닐 때까지 기다립니다.
-        while (!stateInfo.IsName("Idle") || stateInfo.normalizedTime < 1f)
+        while (!stateInfo.IsName("Scream") || !stateInfo.IsName("Idle") || stateInfo.normalizedTime < 1f)
         {
             yield return null;
             stateInfo = myAnim.GetCurrentAnimatorStateInfo(0);
@@ -361,9 +395,6 @@ public class BossAI : BattleSystem
                     ApplyDamage(list, damage);
                     break;
                 }
-            default:
-                Debug.LogWarning("Unknown attack type");
-                return;
         }
     }
 
@@ -382,42 +413,51 @@ public class BossAI : BattleSystem
 
     IEnumerator Attack()
     {
+        wrpNum = 0;
         AttackLookPlayer();
-
-        if (this.myBattleStat.curHealPoint <= 200 && EnragedAttackCount < 1)
+        if (AttackdistanceToPlayer <= this.myBattleStat.AttackRange / 3)
         {
-            myAnim.SetTrigger("EnragedAttack");
-            EnragedAttackCount++;
-        }
-        else
-        {
-            string[] attackTriggers = { "Attack1", "Attack2", "Attack3" };
-            bool attackTriggered = false;
-
-            while (!attackTriggered)
+            if (this.myBattleStat.curHealPoint <= 200 && EnragedAttackCount < 1)
             {
-                // 다른 공격 트리거가 활성화되어 있는지 확인
-                bool isAnyAttackActive = myAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") ||
-                                         myAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack2") ||
-                                         myAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack3");
+                myAnim.SetTrigger("EnragedAttack");
+                EnragedAttackCount++;
+            }
+            else
+            {
+                string[] attackTriggers = { "Attack1", "Attack2", "Attack3" };
+                bool attackTriggered = false;
 
-                if (!isAnyAttackActive)
+                while (!attackTriggered)
                 {
-                    // 트리거 중 하나를 랜덤하게 선택
-                    string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
-                    Debug.Log($"Setting attack trigger: {chosenAttack}");
-                    myAnim.SetTrigger(chosenAttack);
 
-                    // 공격 트리거가 성공적으로 설정되었음을 표시
-                    attackTriggered = true;
+                    // 다른 공격 트리거가 활성화되어 있는지 확인
+                    bool isAnyAttackActive = myAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") ||
+                                             myAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack2") ||
+                                             myAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack3");
+                    if (!isAnyAttackActive)
+                    {
+                        // 트리거 중 하나를 랜덤하게 선택
+                        string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
+                        Debug.Log($"Setting attack trigger: {chosenAttack}");
+                        myAnim.SetTrigger(chosenAttack);
 
-                    // 공격 애니메이션이 끝날 때까지 기다립니다.
-                    StartCoroutine(WaitForAttackAnimation(chosenAttack));
-                }
-                else
-                {
-                    // 다른 트리거가 활성화되어 있다면 2초 대기
-                    yield return new WaitForSeconds(2.0f);
+                        if (AttackdistanceToPlayer > 6.0f)
+                        {
+                            myAnim.ResetTrigger(chosenAttack);
+                        }
+
+                        // 공격 트리거가 성공적으로 설정되었음을 표시
+                        attackTriggered = true;
+
+                        // 공격 애니메이션이 끝날 때까지 기다립니다.
+                        StartCoroutine(WaitForAttackAnimation(chosenAttack));
+                        break;
+                    }
+                    else
+                    {
+                        // 다른 트리거가 활성화되어 있다면 2초 대기
+                        yield return new WaitForSeconds(2.0f);
+                    }
                 }
             }
         }
