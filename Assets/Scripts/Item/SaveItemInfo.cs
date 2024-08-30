@@ -95,7 +95,8 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
 
         // 쿨타임 UI를 초기화 (쿨타임이 끝난 상태로 표시)
-        CooldownImage.fillAmount = 0;
+        if (CooldownImage != null)
+            CooldownImage.fillAmount = 0;
     }
 
     public void StartCooldownCoroutine(ConsumItem consumItem, float remainingCooldown = -1f)
