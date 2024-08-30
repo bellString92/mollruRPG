@@ -41,6 +41,11 @@ public struct BattleStat
         return Mathf.Clamp(curHealPoint, 0.0f, maxHealPoint) / (maxHealPoint == 0.0f ? 1.0f : maxHealPoint);
     }
 
+    public float GetMpValue()
+    {
+        return Mathf.Clamp(curMagicPoint, 0.0f, maxMagicPoint) / (maxMagicPoint == 0.0f ? 1.0f : maxMagicPoint);
+    }
+
     public BattleStat SetBattleStat(BattleStat myStat)
     {
         OriBattleStat ori = new OriBattleStat(myStat);
@@ -86,7 +91,9 @@ public class OriBattleStat
         oriBattleStat.CriticalProbability = oriBattleStat.CriticalProbability + ((oriBattleStat.myLevel) * 0.5f);
         oriBattleStat.CriticalDamage = oriBattleStat.CriticalDamage + ((oriBattleStat.myLevel) * 0.1f);
         oriBattleStat.maxHealPoint = oriBattleStat.maxHealPoint + ((oriBattleStat.myLevel) * 10.0f);
+        oriBattleStat.curHealPoint = oriBattleStat.maxHealPoint;
         oriBattleStat.maxMagicPoint = oriBattleStat.maxMagicPoint + ((oriBattleStat.myLevel) * 10.0f);
+        oriBattleStat.curMagicPoint = oriBattleStat.maxMagicPoint;
         oriBattleStat.maxExperiencePoint = oriBattleStat.maxExperiencePoint + ((oriBattleStat.myLevel) * 10.0f);
     }
 }

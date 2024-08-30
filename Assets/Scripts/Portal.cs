@@ -16,16 +16,12 @@ public class Portal : MonoBehaviour
         curScene = SceneManager.GetActiveScene();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if ((1 << other.gameObject.layer & targetMask) != 0)
         {
+            MenuManager.Instance.SaveData();
+
             PlayerPrefs.SetString("nextSceneText", nextSceneText);
             PlayerPrefs.SetString("nextSceneImage", nextSceneImage);
             SceneChange.OnSceneChange(nextScene);

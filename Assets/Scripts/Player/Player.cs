@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
@@ -90,6 +91,19 @@ public class Player : AnimatorProperty, IBattle
         }
 
         _myAni = transform.GetComponentInChildren<Animator>();
+
+        string characterPath = $"{Application.dataPath}/Data/SaveData/Characters.dat";
+        Dictionary<int, CharacterData> saveData = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath);
+        if (saveData == null)
+        {
+            myStat = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath)[PlayerPrefs.GetInt("selNum")].MyStat;
+        }
+        else
+        {
+            SceneManager.LoadSceneAsync(0);
+        }
+        changeHpAct?.Invoke(myStat.GetHpValue());
+        changeMpAct?.Invoke(myStat.GetMpValue());
     }
 
     // Update is called once per frame

@@ -100,7 +100,7 @@ public class CharacterSelect : MonoBehaviour
         string characterPath = $"{Application.dataPath}/Data/SaveData/Characters.dat";
 
         characters = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath);
-        
+
         for (int i = 1; i <= slotCount; i++)
         {
             int selNumber = i;

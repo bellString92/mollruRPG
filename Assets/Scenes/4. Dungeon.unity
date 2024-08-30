@@ -13055,6 +13055,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1894048970486712889, guid: 9745439b7ad3da042ae541817b98cbac, type: 3}
   m_PrefabInstance: {fileID: 2044959599}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &726578431 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3776350747502268467, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
+  m_PrefabInstance: {fileID: 1399864240}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 088a579303a9b1649a38f48c944d6e7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &727609424
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22816,11 +22827,11 @@ PrefabInstance:
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 726578431}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: changeMpAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 726578431}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -22835,6 +22846,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: changeHpAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: changeMpAct.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PlayerUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
@@ -25278,7 +25293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2222214542576912002, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 160.00002
+      value: 160.00043
       objectReference: {fileID: 0}
     - target: {fileID: 2555794446862761034, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
       propertyPath: m_AnchorMax.y

@@ -11,7 +11,15 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private Image menuIconBtn;
     private bool menuOpen = false;
+
+    public static MenuManager Instance = null;
+
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void OnMenuClick()
     {
@@ -31,13 +39,14 @@ public class MenuManager : MonoBehaviour
 
     public void OnExitClick()
     {
-        //GameSave();
+        SaveData();
         //Application.Quit(); // 실제 게임 종료
         SceneManager.LoadSceneAsync(0);
     }
 
     public void OnCharacterSelect()
     {
+        SaveData();
         PlayerPrefs.SetString("nextSceneText", "캐릭터 선택");
         PlayerPrefs.SetString("nextSceneImage", "Dungeon");
         SceneChange.OnSceneChange("2-1. CharacterSelect");
@@ -58,6 +67,14 @@ public class MenuManager : MonoBehaviour
             menuIconColor.a = 0.0f;
             menuIconBtn.color = menuIconColor;
         }
+    }
+
+    public void SaveData()
+    {
+        string characterPath = $"{Application.dataPath}/Data/SaveData/Characters.dat";
+        Dictionary<int, CharacterData> characters = FileManager.LoadFromBinary<Dictionary<int, CharacterData>>(characterPath);
+        characters[PlayerPrefs.GetInt("selNum")].MyStat = player.myStat;
+        FileManager.SaveToBinary(characterPath, characters);
     }
 
 }
