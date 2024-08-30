@@ -76,7 +76,7 @@ public class PlayerStateUiManager : MonoBehaviour
         {
             BattleStat stats = user.myStat;
             string playerStats = $"[닉네임]\n" +
-                                 $"  레   벨   : {stats.myLvevel}\n" +
+                                 $"  레   벨   : {stats.myLevel}\n" +
                                  $" 경 험 치  : {stats.curExperiencePoint} / {stats.maxExperiencePoint}\n" +
                                  $"  체   력   : {stats.curHealPoint} / {stats.maxHealPoint}\n" +
                                  $"  마   나   : {stats.curMagicPoint} / {stats.maxMagicPoint}\n" +

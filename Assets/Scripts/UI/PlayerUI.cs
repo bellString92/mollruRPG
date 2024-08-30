@@ -27,7 +27,7 @@ public class PlayerUI : MonoBehaviour
 
     public void OnLevel()
     {
-        myLevel.text = myBody.GetComponent<Player>().myStat.myLvevel.ToString();
+        myLevel.text = myBody.GetComponent<Player>().myStat.myLevel.ToString();
     }
 
     public void OnAddExp()
@@ -42,7 +42,8 @@ public class PlayerUI : MonoBehaviour
             {
                 player.myStat.curExperiencePoint -= player.myStat.maxExperiencePoint;
                 //curExp -= maxExp;
-                player.myStat.myLvevel += 1;
+                player.myStat.myLevel += 1;
+                player.myStat = player.myStat.SetBattleStat(player.myStat);
             }
             PercentExp = curExp / maxExp;
         }

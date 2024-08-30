@@ -31,7 +31,7 @@ public struct BattleStat
     public float curHealPoint;
     public float maxMagicPoint;
     public float curMagicPoint;
-    public int myLvevel;
+    public int myLevel;
     public float maxExperiencePoint;
     public float curExperiencePoint;
     public int myGold;// 최대수치 2147483647
@@ -39,6 +39,55 @@ public struct BattleStat
     public float GetHpValue()
     {
         return Mathf.Clamp(curHealPoint, 0.0f, maxHealPoint) / (maxHealPoint == 0.0f ? 1.0f : maxHealPoint);
+    }
+
+    public BattleStat SetBattleStat(BattleStat myStat)
+    {
+        OriBattleStat ori = new OriBattleStat(myStat);
+        return ori.oriBattleStat;
+    }
+}
+
+public class OriBattleStat
+{
+    public BattleStat oriBattleStat;
+    public OriBattleStat()
+    {
+        oriBattleStat.AttackPoint = 10.0f;
+        oriBattleStat.AttackRange = 2.0f;
+        oriBattleStat.AttackDelay = 2.0f;
+        oriBattleStat.moveSpeed = 300.0f;
+        oriBattleStat.CriticalProbability = 10.0f;
+        oriBattleStat.CriticalDamage = 1.5f;
+        oriBattleStat.maxHealPoint = 100.0f;
+        oriBattleStat.curHealPoint = 100.0f;
+        oriBattleStat.maxMagicPoint = 100.0f;
+        oriBattleStat.curMagicPoint = 100.0f;
+        oriBattleStat.maxExperiencePoint = 100.0f;
+        oriBattleStat.myLevel = 0;
+        oriBattleStat.curExperiencePoint = 0;
+        oriBattleStat.myGold = 0;
+    }
+
+    public OriBattleStat(BattleStat myStat) : this()
+    {
+        oriBattleStat.myLevel = myStat.myLevel;
+        oriBattleStat.curExperiencePoint = myStat.curExperiencePoint;
+        oriBattleStat.myGold = myStat.myGold;
+        LevelUpBattleStat();
+    }
+
+    private void LevelUpBattleStat()
+    {
+        oriBattleStat.AttackPoint = oriBattleStat.AttackPoint + ((oriBattleStat.myLevel) * 0.5f);
+        oriBattleStat.AttackRange = oriBattleStat.AttackRange + ((oriBattleStat.myLevel / 5) * 0.1f);
+        oriBattleStat.AttackDelay = oriBattleStat.AttackDelay - ((oriBattleStat.myLevel / 5) * 0.1f);
+        oriBattleStat.moveSpeed = oriBattleStat.moveSpeed + ((oriBattleStat.myLevel) * 2.0f);
+        oriBattleStat.CriticalProbability = oriBattleStat.CriticalProbability + ((oriBattleStat.myLevel) * 0.5f);
+        oriBattleStat.CriticalDamage = oriBattleStat.CriticalDamage + ((oriBattleStat.myLevel) * 0.1f);
+        oriBattleStat.maxHealPoint = oriBattleStat.maxHealPoint + ((oriBattleStat.myLevel) * 10.0f);
+        oriBattleStat.maxMagicPoint = oriBattleStat.maxMagicPoint + ((oriBattleStat.myLevel) * 10.0f);
+        oriBattleStat.maxExperiencePoint = oriBattleStat.maxExperiencePoint + ((oriBattleStat.myLevel) * 10.0f);
     }
 }
 

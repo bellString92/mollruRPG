@@ -59,16 +59,17 @@ public class Player : AnimatorProperty, IBattle
     }
     public void ExpSystem()
     {
-        myStat.maxExperiencePoint = myStat.myLvevel * 10;
+        myStat.maxExperiencePoint = myStat.myLevel * 10;
     }
 
     public void LevelSystem()
     {
         if (myStat.curExperiencePoint >= myStat.maxExperiencePoint)
         {
-            myStat.myLvevel++;
+            myStat.myLevel++;
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -154,8 +155,8 @@ public class Player : AnimatorProperty, IBattle
 
             inputDir = Vector2.Lerp(inputDir, desireDir, Time.deltaTime * 10.0f);
 
-            myAnim.SetFloat("x", desireDir.x);
-            myAnim.SetFloat("y", desireDir.y);
+            myAnim.SetFloat("x", inputDir.x);
+            myAnim.SetFloat("y", inputDir.y);
 
             // W+W 달리기
             if (Input.GetKeyDown(KeyCode.W))
