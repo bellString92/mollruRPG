@@ -22813,6 +22813,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 975527262}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: youDie
+      value: 
+      objectReference: {fileID: 1395092287}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: BuffManager
       value: 
       objectReference: {fileID: 886219242}
@@ -25005,6 +25009,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8460917321318470221, guid: 3964c23ae9838e84889ea6d65b5861aa, type: 3}
   m_PrefabInstance: {fileID: 1395067126}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1395092287 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4367321330684924324, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
+  m_PrefabInstance: {fileID: 1399864240}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1399864240
 PrefabInstance:
