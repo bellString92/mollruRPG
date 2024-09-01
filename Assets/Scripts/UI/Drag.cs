@@ -35,7 +35,7 @@ public class Drag : DragAble, IChangeParent, IChildObject, ISwapParent, IGetPare
         if (transform.parent.GetComponent<ItemSkillSlot>() == null)
         {
             if (slotType.Equals(SlotType.UseItem))
-                transform.SetParent(transform.parent.parent.parent.parent.parent.GetComponent<Inventory>().dragItem.transform);
+                transform.SetParent(Inventory.Instance.dragItem.transform);
             else if (slotType.Equals(SlotType.Skill))
                 transform.SetParent(transform.parent.parent.GetComponent<SkillSlot>().dragSkill.transform);
         }
