@@ -32,7 +32,7 @@ public class StateUiSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerClick
         }
         if (user == null)
         {
-            user = PlayerStateUiManager.Instance.user;
+            user = UIManager.Instance.player.GetComponent<Player>();
         }
     }
 
