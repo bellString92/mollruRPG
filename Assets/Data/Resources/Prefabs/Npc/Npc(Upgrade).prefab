@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817cee7b90710814e95225ae8c737762, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 9
   enemyMask:
     serializedVersion: 2
     m_Bits: 64
@@ -148,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mystate: 0
   myTarget: {fileID: 0}
-  myJob: {fileID: 680454576595155662, guid: 2600e298cee586e43854730e6eb0549f, type: 3}
+  myType: 1
   urInventory: {fileID: 0}
 --- !u!136 &1879146927675831248
 CapsuleCollider:

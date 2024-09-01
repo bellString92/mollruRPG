@@ -6,7 +6,7 @@ public enum NpcType
 {
   Shop,
   Forge,
-  Quest
+  Healing
 }
 
 public class NpcState : AnimatorProperty
@@ -76,6 +76,17 @@ public class NpcState : AnimatorProperty
                                     case NpcType.Forge:
                                         doMyJob=UIManager.Instance.forge;
                                         break;
+                                    case NpcType.Healing:
+                                        {
+                                            Player user = UIManager.Instance.player.GetComponent<Player>();
+                                            if (user != null)
+                                            {
+                                                user.myStat.curHealPoint = user.myStat.maxHealPoint;
+                                                user.TakeDamage(0);
+                                            }
+                                            break;
+                                        }
+
                                 }
                                 urInventory?.gameObject.SetActive(true);
                                 doingmyjob = true;
