@@ -141,16 +141,14 @@ public class Enemy : BattleSystem
     {
         StateProcess();
 
-        if (myTarget != null && myBattleStat.curHealPoint >= 0)
+        if (myTarget != null && myBattleStat.curHealPoint > 0)
         {
             StopRoamCoroutine();
-
             FollowTarget(myTarget, v => v < myBattleStat.AttackRange, OnAttack);
-            
         }
-        else if(myTarget == null)
+        else if (myTarget == null && myState == State.Battle)
         {
-            
+            OnNormal(); // 타겟이 없어지면 상태를 Normal로 변경
         }
     }
 
@@ -198,7 +196,7 @@ public class Enemy : BattleSystem
         }
 
         // Destroy(gameObject); // 게임 오브젝트를 삭제하거나 비활성화
-        this.myBattleStat.curHealPoint = 100;
+        this.myBattleStat.curHealPoint = this.myBattleStat.maxHealPoint;
         this.isDie = false;
         GetComponent<CapsuleCollider>().enabled = true; // 몬스터 Collider 활성화
         this.gameObject.SetActive(false);
@@ -311,5 +309,6 @@ public class Enemy : BattleSystem
     {
         // 몬스터를 비활성화할 때 풀로 복귀
         //transform.SetParent(gameManager.parentTransform);
+        StopRoamCoroutine();
     }
 }

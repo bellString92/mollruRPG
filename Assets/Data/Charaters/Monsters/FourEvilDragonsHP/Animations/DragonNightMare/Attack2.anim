@@ -103298,7 +103298,14 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.7666667
+  - time: 1.7
+    functionName: ShowAttack2Effect
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.8
     functionName: OnDamage
     data: Attack2
     objectReferenceParameter: {fileID: 0}

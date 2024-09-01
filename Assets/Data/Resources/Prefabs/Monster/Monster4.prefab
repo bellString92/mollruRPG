@@ -102,7 +102,7 @@ MonoBehaviour:
     curHealPoint: 40
     maxMagicPoint: 0
     curMagicPoint: 0
-    myLvevel: 0
+    myLevel: 0
     maxExperiencePoint: 1000000
     curExperiencePoint: 0
     myGold: 0
@@ -149,6 +149,7 @@ MonoBehaviour:
   minDropQuanity: 5
   maxDropQuanity: 10
   noDropChance: 0
+  monsterHpBar: {fileID: 0}
   myState: 0
 --- !u!136 &1689088898848278946
 CapsuleCollider:
@@ -172,7 +173,7 @@ CapsuleCollider:
   m_Radius: 1.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 1.48, z: 0}
 --- !u!54 &2602377364301688658
 Rigidbody:
   m_ObjectHideFlags: 0

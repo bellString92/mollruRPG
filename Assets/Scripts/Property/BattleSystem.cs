@@ -61,7 +61,7 @@ public class OriBattleStat
         oriBattleStat.AttackPoint = 10.0f;
         oriBattleStat.AttackRange = 2.0f;
         oriBattleStat.AttackDelay = 2.0f;
-        oriBattleStat.moveSpeed = 300.0f;
+        oriBattleStat.moveSpeed = 100.0f;
         oriBattleStat.CriticalProbability = 10.0f;
         oriBattleStat.CriticalDamage = 1.5f;
         oriBattleStat.maxHealPoint = 100.0f;
