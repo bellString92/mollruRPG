@@ -434,6 +434,8 @@ public class Player : AnimatorProperty, IBattle
             if (e.gameObject.GetComponent<BossAI>() != null)
                 e.gameObject.GetComponent<BossAI>().myState = State.Sleep;
         }
+        youDie.transform.GetChild(0).gameObject.SetActive(true);
+        youDie.transform.GetChild(1).gameObject.SetActive(true);
 
         Image[] img = youDie.GetComponentsInChildren<Image>();
         TMPro.TMP_Text text = youDie.GetComponentInChildren<TMPro.TMP_Text>();
