@@ -71,7 +71,7 @@ public class OriBattleStat
         oriBattleStat.maxExperiencePoint = 100.0f;
         oriBattleStat.myLevel = 0;
         oriBattleStat.curExperiencePoint = 0;
-        oriBattleStat.myGold = 0;
+        oriBattleStat.myGold = 100000;
     }
 
     public OriBattleStat(BattleStat myStat) : this()
