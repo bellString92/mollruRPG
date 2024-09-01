@@ -20,6 +20,8 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private Coroutine cooldownCoroutine; // 쿨타임 표시를 위한 코루틴
     private ConsumItem consumItem;
 
+    public bool coolTimeDone = false;
+
     public SaveItemInfo(SaveItemInfo original)
     {
         this.item = original.item;
@@ -169,6 +171,7 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private IEnumerator DisplayCooldown(ConsumItem consumItem)
     {
         // 쿨타임 시작 시 이미지를 활성화
+        coolTimeDone = false;
         CooldownImage.gameObject.SetActive(true);
 
         float startTime = itemCooldowns[consumItem.itemID.ToString()];  // 모든 인스턴스가 동일한 쿨타임을 참조하도록 함.
@@ -187,6 +190,7 @@ public class SaveItemInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         // 쿨타임 종료 시 이미지를 비활성화
         CooldownImage.fillAmount = 0f; // 쿨타임 종료 시 이미지를 초기화
         CooldownImage.gameObject.SetActive(false);
+        coolTimeDone = true;
     }
 
     public void StartCooldownCoroutine()

@@ -191,9 +191,11 @@ public class ItemSkillSlot : MonoBehaviour, IDropHandler, ISetChild, IPointerCli
         {
             if (saveItemInfo.item is ConsumItem)
             {
-                // 아이템 사용
-                saveItemInfo.UseItem(UIManager.Instance.player.GetComponent<Player>());
-                originalItemInfo.item.quantity--;
+                if (saveItemInfo.coolTimeDone)
+                {// 아이템 사용
+                    saveItemInfo.UseItem(UIManager.Instance.player.GetComponent<Player>());
+                    originalItemInfo.item.quantity--;
+                }
             }
         }
     }
