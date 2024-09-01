@@ -10812,6 +10812,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 948285779262155724}
     - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
+      propertyPath: youDie
+      value: 
+      objectReference: {fileID: 775555065}
+    - target: {fileID: 8509342971625953752, guid: 5b4da3809ff0b00449945a356450345c, type: 3}
       propertyPath: BuffManager
       value: 
       objectReference: {fileID: 5421192222474366254}
@@ -17086,6 +17090,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4734638368276354, guid: c378119a19828bd4094a244ddab3d03b, type: 3}
   m_PrefabInstance: {fileID: 1914577746}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &775555065 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4367321330684924324, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
+  m_PrefabInstance: {fileID: 3601687368404935891}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &776774153 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4734638368276354, guid: c378119a19828bd4094a244ddab3d03b, type: 3}
@@ -19376,7 +19385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextScene: 4. Dungeon
-  nextSceneText: "\uB85C\uB529 \uC911"
+  nextSceneText: "\uB358\uC804"
   nextSceneImage: Dungeon
   targetMask:
     serializedVersion: 2
@@ -48937,11 +48946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2222214542576912002, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00093621144
-      objectReference: {fileID: 0}
-    - target: {fileID: 2346948175378242479, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.00048828125
+      value: -0.000064926506
       objectReference: {fileID: 0}
     - target: {fileID: 2555794446862761034, guid: 02660910ae481994db2512d0cf50caf7, type: 3}
       propertyPath: m_AnchorMax.y

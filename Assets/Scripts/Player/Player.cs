@@ -1,15 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UI;
 
 public class Player : AnimatorProperty, IBattle
 {
@@ -40,6 +38,7 @@ public class Player : AnimatorProperty, IBattle
     public CoolTimeManager myCool;      // 쿨타임 매니저
     public Animator _myAni;             // 애니메이션 속도 제어를 위한 변수
 
+    [SerializeField] private GameObject youDie;
 
     public bool IsLive
     {
@@ -50,7 +49,7 @@ public class Player : AnimatorProperty, IBattle
     {
         myStat.curHealPoint -= dmg;
         changeHpAct?.Invoke(myStat.GetHpValue());
-        if (myStat.curHealPoint <= 0.0f)
+        if (myStat.curHealPoint <= 0.0f && !myAnim.GetBool("DeathB"))
         {
             PlayerDeath();
         }
@@ -113,6 +112,15 @@ public class Player : AnimatorProperty, IBattle
     // Update is called once per frame
     void Update()
     {
+        if (myAnim.GetBool("DeathB"))
+        {
+            if (Input.anyKey)
+            {
+
+            }
+            return;
+        }
+
         myTargetmonster.Clear();       // 매번 초기화 해서 리스트에 아무것도 없이함
         myTarger.Clear();
 
@@ -144,9 +152,7 @@ public class Player : AnimatorProperty, IBattle
         }
 
         // 마우스 제어
-        {
-            if (UnityEngine.Cursor.visible == true) return;
-        }
+        if (UnityEngine.Cursor.visible == true) return;
 
         // 이동
         {
@@ -418,8 +424,78 @@ public class Player : AnimatorProperty, IBattle
             capsuleCollider.enabled = false;
         }
         myAnim.SetTrigger("Death");
+        myAnim.SetBool("DeathB", true);
+
+        GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject e in enemy)
+        {
+            if (e.gameObject.GetComponent<Enemy>() != null)
+                e.gameObject.GetComponent<Enemy>().OnNormal();
+            if (e.gameObject.GetComponent<BossAI>() != null)
+                e.gameObject.GetComponent<BossAI>().myState = State.Sleep;
+        }
+
+        Image[] img = youDie.GetComponentsInChildren<Image>();
+        TMPro.TMP_Text text = youDie.GetComponentInChildren<TMPro.TMP_Text>();
+        gameObject.GetComponentInChildren<SpringArm>().enabled = false;
+        StartCoroutine(PlayerDied(img[0].gameObject, 0.0f, 1f, 5));
+        StartCoroutine(PlayerDied(img[1].gameObject, 0.0f, 0.8f, 0.5f));
+        StartCoroutine(PlayerDied(text.gameObject, 0.0f, 1f, 0.5f));
+        StartCoroutine(EndCor());
 
         if (UnityEngine.Cursor.visible == false) return;
+    }
+
+    private IEnumerator PlayerDied(GameObject img, float startValue, float endValue, float duration)
+    {
+        float elapsedTime = 0f;
+        float currentValue = startValue;
+        Image imgComponent = img.GetComponent<Image>();
+        TMPro.TMP_Text textComponent = img.GetComponent<TMPro.TMP_Text>();
+        Color color = imgComponent != null ? imgComponent.color : textComponent.color;
+        // 미리 컴포넌트를 가져와 변수에 저장합니다.
+
+
+        while (elapsedTime < duration)
+        {
+            // 시간 경과 계산
+            elapsedTime += Time.deltaTime;
+
+            // 비율 계산
+            float t = elapsedTime / duration;
+
+            // 새로운 값 계산
+            currentValue = Mathf.Lerp(startValue, endValue, t);
+            
+            color.a = currentValue;
+            if (imgComponent != null)
+                imgComponent.color = color;
+            else if (textComponent != null)
+                textComponent.color = color;
+            
+            // 다음 프레임까지 대기
+            yield return null;
+        }
+
+
+        // 최종 값 설정
+        color.a = endValue;
+        if (imgComponent != null)
+            imgComponent.color = color;
+        else if (textComponent != null)
+            textComponent.color = color;
+
+    }
+
+    IEnumerator EndCor()
+    {
+        yield return new WaitForSeconds(7.0f);
+        myStat.curHealPoint = myStat.maxHealPoint;
+        MenuManager.Instance.SaveData();
+
+        PlayerPrefs.SetString("nextSceneText", "몰루 타운");
+        PlayerPrefs.SetString("nextSceneImage", "Dungeon");
+        SceneChange.OnSceneChange("3. Village");
     }
 
     // 던전 문과 상자 제어하기 위한 클라이더
