@@ -17,6 +17,7 @@ public class BossAI : BattleSystem
     public Transform player;
     public LayerMask enemyMask;
     public Transform head;
+    public Transform rightarm;
 
     private float wrpNum; // 플레이어와 거리에 따라 증가하는 수치
     private float AttackdistanceToPlayer = 0.0f;
@@ -32,8 +33,10 @@ public class BossAI : BattleSystem
     public GameObject attackRangePrefab1;
     public GameObject attackRangePrefab2;
     public GameObject attackRangePrefab3;
-
+    public GameObject attackEffectPrefab2;
+    
     private GameObject currentAttackRange;
+    private GameObject currentAttackEffect;
 
     private void LookAtPlayer()
     {
@@ -112,7 +115,7 @@ public class BossAI : BattleSystem
         //Debug.Log(distanceToPlayer);
 
         AttackdistanceToPlayer = Vector3.Distance(player.position, head.transform.position);
-        Debug.Log(AttackdistanceToPlayer);
+        //Debug.Log(AttackdistanceToPlayer);
  
 
         if(AttackdistanceToPlayer >= this.myBattleStat.AttackRange / 3)
@@ -333,6 +336,8 @@ public class BossAI : BattleSystem
     public void OnDeath()
     {
         gameObject.GetComponent<BoxCollider>().enabled = false;
+        gameObject.tag = "Untagged";
+        gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
     public void OnAttackAnimationEnd()
@@ -342,9 +347,9 @@ public class BossAI : BattleSystem
         StartCoroutine(ResetAttack());
     }
 
-    /*public void OnDamage()
+    public void EnragedOnDamage()
     {
-        Collider[] list = Physics.OverlapSphere(transform.position + transform.forward * 6.0f, 9.0f, enemyMask);
+        Collider[] list = Physics.OverlapSphere(transform.position , 10.0f, enemyMask);
 
         foreach (Collider col in list)
         {
@@ -354,7 +359,7 @@ public class BossAI : BattleSystem
                 id.TakeDamage(this.myBattleStat.AttackPoint);
             }
         }
-    }*/
+    }
 
     public void OnDamage(string attackType)
     {
@@ -366,7 +371,7 @@ public class BossAI : BattleSystem
             case "Attack1": // 상자 모양
                 {
                     Vector3 point1 = transform.position + transform.forward * 2.0f; // 캡슐의 첫 번째 끝점
-                    Vector3 point2 = transform.position + transform.forward * 6.0f; // 캡슐의 두 번째 끝점
+                    Vector3 point2 = transform.position + transform.forward * 11.0f; // 캡슐의 두 번째 끝점
                     float radius = 3.0f;
                     int damage = Mathf.RoundToInt(this.myBattleStat.AttackPoint - 5);
 
@@ -377,7 +382,7 @@ public class BossAI : BattleSystem
             case "Attack2": // 구 모양
                 {
                     Vector3 offset = transform.forward * 6.0f;
-                    float radius = 8.0f;
+                    float radius = 10.0f;
                     int damage = Mathf.RoundToInt(this.myBattleStat.AttackPoint + 10);
 
                     list = Physics.OverlapSphere(transform.position + offset, radius, enemyMask);
@@ -386,8 +391,8 @@ public class BossAI : BattleSystem
                 }
             case "Attack3": // 상자 모양
                 {
-                    Vector3 center = transform.position + transform.forward * 7.0f;
-                    Vector3 halfExtents = new Vector3(6.0f, 4.0f, 8.0f); // 상자의 반쪽 크기
+                    Vector3 center = transform.position + transform.forward * 4.0f;
+                    Vector3 halfExtents = new Vector3(5.0f, 4.0f, 10.0f); // 상자의 크기
                     Quaternion orientation = Quaternion.identity;
                     int damage = Mathf.RoundToInt(this.myBattleStat.AttackPoint);
 
@@ -415,11 +420,17 @@ public class BossAI : BattleSystem
     {
         wrpNum = 0;
         AttackLookPlayer();
+
+        // 각 트리거에 대한 카운트 변수 추가
+        int attack1Count = 0;
+        int attack2Count = 0;
+        int attack3Count = 0;
+
         if (AttackdistanceToPlayer <= this.myBattleStat.AttackRange / 3)
         {
             if (this.myBattleStat.curHealPoint <= 200 && EnragedAttackCount < 1)
             {
-                myAnim.SetTrigger("EnragedAttack");
+                //myAnim.SetTrigger("EnragedAttack");
                 EnragedAttackCount++;
             }
             else
@@ -429,16 +440,39 @@ public class BossAI : BattleSystem
 
                 while (!attackTriggered)
                 {
-
-                    // 다른 공격 트리거가 활성화되어 있는지 확인
                     bool isAnyAttackActive = myAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") ||
                                              myAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack2") ||
                                              myAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack3");
+
                     if (!isAnyAttackActive)
                     {
-                        // 트리거 중 하나를 랜덤하게 선택
-                        string chosenAttack = attackTriggers[UnityEngine.Random.Range(0, attackTriggers.Length)];
-                        Debug.Log($"Setting attack trigger: {chosenAttack}");
+                        int chosenIndex = UnityEngine.Random.Range(0, attackTriggers.Length);
+                        string chosenAttack = attackTriggers[chosenIndex];
+
+                        // 각 트리거의 카운트 상태에 따라 선택
+                        if (chosenAttack == "Attack1" && attack1Count < 2)
+                        {
+                            attack1Count++;
+                            attack2Count = Mathf.Max(0, attack2Count - 1);
+                            attack3Count = Mathf.Max(0, attack3Count - 1);
+                        }
+                        else if (chosenAttack == "Attack2" && attack2Count < 2)
+                        {
+                            attack2Count++;
+                            attack1Count = Mathf.Max(0, attack1Count - 1);
+                            attack3Count = Mathf.Max(0, attack3Count - 1);
+                        }
+                        else if (chosenAttack == "Attack3" && attack3Count < 2)
+                        {
+                            attack3Count++;
+                            attack1Count = Mathf.Max(0, attack1Count - 1);
+                            attack2Count = Mathf.Max(0, attack2Count - 1);
+                        }
+                        else
+                        {
+                            continue; // 다시 선택
+                        }
+
                         myAnim.SetTrigger(chosenAttack);
 
                         if (AttackdistanceToPlayer > 6.0f)
@@ -446,16 +480,12 @@ public class BossAI : BattleSystem
                             myAnim.ResetTrigger(chosenAttack);
                         }
 
-                        // 공격 트리거가 성공적으로 설정되었음을 표시
                         attackTriggered = true;
-
-                        // 공격 애니메이션이 끝날 때까지 기다립니다.
                         StartCoroutine(WaitForAttackAnimation(chosenAttack));
                         break;
                     }
                     else
                     {
-                        // 다른 트리거가 활성화되어 있다면 2초 대기
                         yield return new WaitForSeconds(2.0f);
                     }
                 }
@@ -544,7 +574,6 @@ public class BossAI : BattleSystem
         }
     }
 
-
     public void HideAttackRange()
     {
         if (currentAttackRange != null)
@@ -562,5 +591,59 @@ public class BossAI : BattleSystem
     public void OnAttackEnd()
     {
         HideAttackRange();
+    }
+
+    public void ShowAttack2Effect()
+    {
+        if (attackEffectPrefab2 != null)
+        {
+            // 이펙트를 인스턴스화할 위치와 회전 설정
+            Vector3 effectPosition = rightarm.position; // 원하는 위치로 조정
+            effectPosition.y = -4.5f;
+
+            currentAttackEffect = Instantiate(attackEffectPrefab2, effectPosition, Quaternion.identity, transform);
+            // 일정 시간 후 이펙트를 제거
+            StartCoroutine(FadeOutEffect(currentAttackEffect, 3f));
+        }
+    }
+
+    private IEnumerator FadeOutEffect(GameObject effect, float duration)
+    {
+        // 이펙트의 모든 자손들을 포함한 Renderer 컴포넌트를 찾음
+        Renderer[] renderers = effect.GetComponentsInChildren<Renderer>();
+
+        // 초기 색상을 저장 (모든 Renderer가 동일한 Material을 사용하는 경우)
+        Color initialColor = renderers[0].material.color;
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+
+            // 모든 Renderer의 알파 값을 감소시킴
+            foreach (Renderer renderer in renderers)
+            {
+                Color color = renderer.material.color;
+                color.a = alpha;
+                renderer.material.color = color;
+            }
+
+            yield return null;
+        }
+
+        // 이펙트가 완전히 사라지면 제거
+        Destroy(effect);
+    }
+
+    // 공격 이펙트를 숨기는 메서드 (필요한 경우)
+    public void HideAttackEffect()
+    {
+        if (currentAttackEffect != null)
+        {
+            Destroy(currentAttackEffect);
+            currentAttackEffect = null;
+        }
     }
 }

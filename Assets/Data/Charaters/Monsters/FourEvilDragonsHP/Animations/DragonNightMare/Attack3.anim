@@ -83930,14 +83930,14 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.1666666
+  - time: 1
     functionName: OnAttackEnd
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.3
+  - time: 1
     functionName: OnDamage
     data: Attack3
     objectReferenceParameter: {fileID: 11500000, guid: 9a1117e36845a254c9eac115a2c07196, type: 3}

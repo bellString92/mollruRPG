@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class AttackRangeEffect : MonoBehaviour
 {
-    public float initialScaleX = 4f; // 초기 X 스케일
-    public float finalScaleX = 9f;   // 최종 X 스케일
-    public float initialScaleZ = 4f; // 초기 Z 스케일
-    public float finalScaleZ = 9f;   // 최종 Z 스케일
-    public float duration = 1f;      // 스케일이 변화하는 시간
+    public float initialScaleX; // 초기 X 스케일
+    public float finalScaleX;   // 최종 X 스케일
+    public float initialScaleZ; // 초기 Z 스케일
+    public float finalScaleZ;   // 최종 Z 스케일
+    public float duration = 0.5f;      // 스케일이 변화하는 시간
     public float fadeDuration = 1f;  // 사라지는 시간
     public float fixedYScale = 0.1f; // 고정된 Y 스케일 값
 

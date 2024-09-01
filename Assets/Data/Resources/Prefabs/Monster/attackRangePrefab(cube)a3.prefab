@@ -122,9 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5185e73052016cd4db6776a334f3a9e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fixedScaleX: 6
+  fixedScaleX: 8
   fixedScaleY: 0.1
   initialScaleZ: 2
-  finalScaleZ: 8
+  finalScaleZ: 10
   duration: 1
   fadeDuration: 1

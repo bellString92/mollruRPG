@@ -43,7 +43,7 @@ public class AttackRangeEffectCube: MonoBehaviour
 
             // 한쪽 면이 고정된 상태로 다른 쪽으로 커지게 하기 위해 위치를 조정
             // 예를 들어 Z 방향으로 커질 때 Z 위치를 조정할 수 있습니다.
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         }
         else
         {

@@ -97,8 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f36dfab41fd6d149b915457f04735c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialScale: 4
-  finalScale: 9
+  initialScaleX: 4
+  finalScaleX: 11
+  initialScaleZ: 4
+  finalScaleZ: 11
   duration: 1
   fadeDuration: 1
   fixedYScale: 0.1
