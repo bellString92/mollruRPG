@@ -42,8 +42,19 @@ public class PlayerUI : MonoBehaviour
             {
                 player.myStat.curExperiencePoint -= player.myStat.maxExperiencePoint;
                 //curExp -= maxExp;
+                BattleStat tmpStat = player.myStat.SetBattleStat(player.myStat);
+                tmpStat.AttackPoint = player.myStat.AttackPoint - tmpStat.AttackPoint;
+                tmpStat.CriticalProbability = player.myStat.CriticalProbability - tmpStat.CriticalProbability;
+                tmpStat.CriticalDamage = player.myStat.CriticalDamage - tmpStat.CriticalDamage;
+                tmpStat.maxHealPoint = player.myStat.maxHealPoint - tmpStat.maxHealPoint;
+                tmpStat.moveSpeed = player.myStat.moveSpeed - tmpStat.moveSpeed;
                 player.myStat.myLevel += 1;
                 player.myStat = player.myStat.SetBattleStat(player.myStat);
+                player.myStat.AttackPoint += tmpStat.AttackPoint;
+                player.myStat.CriticalProbability += tmpStat.CriticalProbability;
+                player.myStat.CriticalDamage += tmpStat.CriticalDamage;
+                player.myStat.maxHealPoint += tmpStat.maxHealPoint;
+                player.myStat.moveSpeed += tmpStat.moveSpeed;
             }
             PercentExp = curExp / maxExp;
         }
